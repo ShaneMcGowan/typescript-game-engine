@@ -31,23 +31,23 @@ export class Client {
   };
 
   // Debug
-  // console.time('[frame] update');
-  // console.timeEnd('[frame] render');
   debug = {
+    breakpoint: {
+      frame: false
+    },
     timing: {
       frame: false,
+      frameBackground: false,
       frameUpdate: false,
       frameRender: false
     }
   }
-
 
   constructor(container: HTMLElement){
     // load assets
     this.assets.images.tileset_grass.src = '/assets/sample/Tilesets/Grass.png';
     this.assets.images.tileset_water.src = '/assets/sample/Tilesets/Water.png';
     this.assets.images.tileset_player.src = '/assets/sample/Characters/Basic Charakter Spritesheet.png';
-
 
     // initialise canvas
     this.canvas = this.createCanvas();
@@ -85,6 +85,10 @@ export class Client {
    * @param timestamp 
    */
   private frame(timestamp: number): void {
+    if(this.debug.breakpoint.frame){
+      debugger;
+    }
+
     if(this.debug.timing.frame){
       console.log(`[frame] ${this.delta}`);
     }
@@ -119,26 +123,16 @@ export class Client {
   }
 
   private renderBackground(): void {
+    if(this.debug.timing.frameBackground){
+      console.time('[frame] background');
+    }
+
     // TODO(smg): only render within viewport as it is expensive to render the whole background
-    this.currentScene.backgroundLayers.forEach((layer) => {
-      for(let x = 0; x < layer.tiles.length; x++){
-        for(let y = 0; y < layer.tiles[x].length; y++){
-          const tile = layer.tiles[x][y];
-          if(tile === undefined){
-            continue;
-          }
-          
-          RenderUtils.renderSprite(
-            this.context,
-            this.assets.images[tile.tileset],
-            tile.spriteX,
-            tile.spriteY,
-            x,
-            y
-          );
-        }
-      }
-    });
+    this.currentScene.renderBackground();
+
+    if(this.debug.timing.frameBackground){
+      console.timeEnd('[frame] background');
+    }
   }
 
   private updateObjects(): void {
@@ -148,7 +142,7 @@ export class Client {
 
     this.currentScene.objects.forEach((object) => {
       if(object.update){
-        object.update();
+        object.update(this.delta);
       }
     });
 

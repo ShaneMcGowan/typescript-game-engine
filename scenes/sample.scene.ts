@@ -5,7 +5,7 @@ import { SAMPLE_SCENE_BACKGROUND_0 } from "./sample/backgrounds/0.background";
 import { SAMPLE_SCENE_BACKGROUND_1 } from "./sample/backgrounds/1.background";
 import { SampleObject } from "./sample/objects/player.object";
 
-export class SampleScene implements Scene {
+export class SampleScene extends Scene {
   id = 'sample-scene';
   backgroundLayers: BackgroundLayer[] = [
     SAMPLE_SCENE_BACKGROUND_0,
@@ -19,6 +19,7 @@ export class SampleScene implements Scene {
   objects: SceneObject[] = [];
   
   constructor(context: CanvasRenderingContext2D, assets: Record<string, any>){
+    super(context, assets);
     // instanciate objects
     this._objects.forEach((ObjectClass) => this.objects.push(
       Reflect.construct(ObjectClass, [context, assets])
