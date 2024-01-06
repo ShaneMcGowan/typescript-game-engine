@@ -11,3 +11,6 @@ The background shall consist of layers. We will allow for an infinite number of 
 
 ### Objects
 Objects are a generic, programable class. Objects can spawn other objects
+
+### Sample Texture pack
+Sprout Lands texture pack courtesy of https://cupnooble.itch.io/

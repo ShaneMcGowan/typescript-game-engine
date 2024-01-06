@@ -13,7 +13,7 @@ export class SampleScene implements Scene {
   ];
   width = 10;
   height = 10;
-    // TODO(smg): how do we render multiple instances of an object
+  // TODO(smg): how do we render multiple instances of an object
   // We define an object, then we have an additional concept of an object instance?
   _objects = [SampleObject];
   objects: SceneObject[] = [];

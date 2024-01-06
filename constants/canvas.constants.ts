@@ -14,5 +14,5 @@ export class CanvasConstants {
   static readonly CANVIS_TILE_WIDTH = 21; // total width in tiles
   static readonly CANVIS_CENTER_TILE_Y = Math.floor(15 / 2); // 15 comes from CANVIS_TILE_HEIGHT
   static readonly CANVIS_CENTER_TILE_X = Math.floor(21 / 2); // 21 comes from CANVIS_TILE_WIDTH
-  static readonly TILE_SIZE: number = 32; // pixel size of tile (32px x 32px) 
+  static readonly TILE_SIZE: number = 16; // pixel size of tile (32px x 32px) 
 }

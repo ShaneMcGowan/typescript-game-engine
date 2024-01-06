@@ -24,8 +24,9 @@ export class Client {
     images: Record<string, HTMLImageElement>
   } = {
     images: {
-      background: new Image(),
-      player: new Image(),
+      tileset_grass: new Image(),
+      tileset_water: new Image(),
+      tileset_player: new Image(),
     }
   };
 
@@ -43,8 +44,10 @@ export class Client {
 
   constructor(container: HTMLElement){
     // load assets
-    this.assets.images.background.src = '/assets/sample/tile-set.png';
-    this.assets.images.player.src = '/assets/sample/player-sprites.png';
+    this.assets.images.tileset_grass.src = '/assets/sample/Tilesets/Grass.png';
+    this.assets.images.tileset_water.src = '/assets/sample/Tilesets/Water.png';
+    this.assets.images.tileset_player.src = '/assets/sample/Characters/Basic Charakter Spritesheet.png';
+
 
     // initialise canvas
     this.canvas = this.createCanvas();

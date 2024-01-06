@@ -11,31 +11,34 @@ export class SampleObject implements SceneObject {
       switch(event.key.toLocaleLowerCase()){
         case 'd':
           this.positionX += 1;
-          this.spriteY = 2;
+          this.spriteX = 1;
+          this.spriteY = 10;
           break;
         case 'a':
           this.positionX -= 1;
-          this.spriteY = 1;
+          this.spriteX = 1;
+          this.spriteY = 7;
           break;
         case 'w':
           this.positionY -= 1;
-          this.spriteY = 3;
+          this.spriteX = 1;
+          this.spriteY = 4;
           break;
         case 's':
           this.positionY += 1;
-          this.spriteY = 0;
+          this.spriteX = 1;
+          this.spriteY = 1;
           break;
       }
     });
   }
 
-  collision: boolean;
   isRenderable: boolean;
-  positionX = 10;
-  positionY = 10;
-  tileset = 'player';
-  spriteX = 0;
-  spriteY = 0;
+  positionX = 1;
+  positionY = 1;
+  tileset = 'tileset_player';
+  spriteX = 1;
+  spriteY = 1;
 
   update?(): void {
     // throw new Error("Method not implemented.");
