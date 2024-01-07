@@ -1,6 +1,9 @@
 import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
+import { MathUtils } from "../../../utils/math.utils";
 import { RenderUtils } from "../../../utils/render.utils";
+import { ChickenObject } from "./chicken.object";
+import { FenceObject, FenceType } from "./fence.object";
 
 enum Direction {
   UP = 'w',
@@ -29,13 +32,15 @@ export class PlayerObject implements SceneObject {
     [Direction.LEFT]: false,
     [Direction.UP]: false,
     [Direction.DOWN]: false,
+    ['remove_fence']: false,
+    ['place_fence']: false,
   }
 
   animations = {
-    [Direction.RIGHT]: [{ x: 1, y: 10 }, { x: 7, y: 10 }, { x: 10, y: 10 }],
-    [Direction.LEFT]: [{ x: 1, y: 7 }, { x: 7, y: 7 }, { x: 10, y: 7}],
-    [Direction.UP]: [{ x: 1, y: 4 }, { x: 7, y: 4 }, { x: 10, y: 4}],
-    [Direction.DOWN]: [{ x: 1, y: 1 }, { x: 7, y: 1 }, { x: 10, y: 1 }],
+    [Direction.RIGHT]: [{ x: 7, y: 10 }, { x: 10, y: 10 }, { x: 1, y: 10 }],
+    [Direction.LEFT]: [{ x: 7, y: 7 }, { x: 10, y: 7}, { x: 1, y: 7 }],
+    [Direction.UP]: [{ x: 7, y: 4 }, { x: 10, y: 4}, { x: 1, y: 4 }],
+    [Direction.DOWN]: [{ x: 7, y: 1 }, { x: 10, y: 1 }, { x: 1, y: 1 }],
   }
 
   animationsIdle = {
@@ -58,18 +63,29 @@ export class PlayerObject implements SceneObject {
     private assets: Record<string, any>
   ){
     document.addEventListener('keydown', (event) => {
+      console.log(event);
       switch(event.key.toLocaleLowerCase()){
         case Direction.RIGHT:
+        case 'arrowright':
           this.controls[Direction.RIGHT] = true;
           break;
         case Direction.LEFT:
+        case 'arrowleft':
           this.controls[Direction.LEFT] = true;
           break;
         case Direction.UP:
+        case 'arrowup':
           this.controls[Direction.UP] = true;
           break;
         case Direction.DOWN:
+        case 'arrowdown':
           this.controls[Direction.DOWN] = true;
+          break;
+        case 'j':
+          this.controls['remove_fence'] = true;
+          break;
+        case 'k':
+          this.controls['place_fence'] = true;
           break;
       }
     });
@@ -77,16 +93,26 @@ export class PlayerObject implements SceneObject {
     document.addEventListener('keyup', (event) => {
       switch(event.key.toLocaleLowerCase()){
         case Direction.RIGHT:
+        case 'arrowright':
           this.controls[Direction.RIGHT] = false;
           break;
         case Direction.LEFT:
+        case 'arrowleft':
           this.controls[Direction.LEFT] = false;
           break;
         case Direction.UP:
+        case 'arrowup':
           this.controls[Direction.UP] = false;
           break;
         case Direction.DOWN:
+        case 'arrowdown':
           this.controls[Direction.DOWN] = false;
+          break;
+        case 'j':
+          this.controls['remove_fence'] = false;
+          break;
+        case 'k':
+          this.controls['place_fence'] = false;
           break;
       }
     });
@@ -215,6 +241,9 @@ export class PlayerObject implements SceneObject {
         }
       }
     }
+
+    this.updateRemoveFence();
+    this.updatePlaceFence();
   }
 
   render(): void {
@@ -229,8 +258,60 @@ export class PlayerObject implements SceneObject {
     );
   }
 
+  updateRemoveFence(): void {
+    if(this.controls['remove_fence'] === false){
+      return;
+    }
+
+    let position = this.getPositionFacing();
+    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+    if(object instanceof FenceObject){
+      this.scene.removeObject(object);
+    }
+
+    this.controls['remove_fence'] = false;
+  }
+
+  updatePlaceFence(): void {
+     if(this.controls['place_fence'] === false){
+      return;
+    }
+
+    let position = this.getPositionFacing();
+    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+    if(object){
+      return;
+    }
+
+    let fence = new FenceObject(
+      this.scene, 
+      this.context, 
+      this.assets,
+      {
+        positionX: Math.floor(position.x),
+        positionY: Math.floor(position.y),
+        type: FenceType.FencePost
+      },
+    );
+    this.scene.addObject(fence);
+
+    this.controls['place_fence'] = false;
+  }
+
   destroy?(): void {
     // throw new Error("Method not implemented.");
+  }
+
+  getPositionFacing(): { x: number, y: number } {
+    if(this.direction === Direction.RIGHT){
+      return { x: this.positionX + 1, y: this.positionY };
+    } else if(this.direction === Direction.LEFT){
+      return { x: this.positionX - 1, y: this.positionY };
+    } else if(this.direction === Direction.UP){
+      return { x: this.positionX, y: this.positionY - 1 };
+    } else if (this.direction === Direction.DOWN){
+      return { x: this.positionX, y: this.positionY + 1 };
+    }
   }
 
 }
