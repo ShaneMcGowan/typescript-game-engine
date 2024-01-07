@@ -27,7 +27,8 @@ export class Client {
       tileset_grass: new Image(),
       tileset_water: new Image(),
       tileset_player: new Image(),
-      tileset_chicken: new Image()
+      tileset_chicken: new Image(),
+      tileset_fence: new Image()
     }
   };
 
@@ -49,7 +50,8 @@ export class Client {
     this.assets.images.tileset_grass.src = '/assets/sample/Tilesets/Grass.png';
     this.assets.images.tileset_water.src = '/assets/sample/Tilesets/Water.png';
     this.assets.images.tileset_player.src = '/assets/sample/Characters/Basic Charakter Spritesheet.png';
-    this.assets.images.tileset_chicken.src = '/assets/sample/Characters/Free Chicken Sprites.png'
+    this.assets.images.tileset_chicken.src = '/assets/sample/Characters/Free Chicken Sprites.png';
+    this.assets.images.tileset_fence.src = '/assets/sample/Tilesets/Fences.png';
 
     // initialise canvas
     this.canvas = this.createCanvas();

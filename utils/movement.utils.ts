@@ -83,4 +83,5 @@ export class MovementUtils {
   static frameVelocity(speed: number, delta: number){
     return speed * delta;
   }
+
 }

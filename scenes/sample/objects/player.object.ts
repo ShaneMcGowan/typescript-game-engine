@@ -10,6 +10,18 @@ enum Direction {
 
 export class PlayerObject implements SceneObject {
   
+  isRenderable: boolean;
+  positionX = 2;
+  positionY = 2;
+  targetX = 2;
+  targetY = 2;
+  tileset = 'tileset_player';
+  spriteX = 1;
+  spriteY = 1;
+
+  // constants
+  speed = 4; // 4 tiles per second
+
   controls = {
     [Direction.RIGHT]: false,
     [Direction.LEFT]: false,
@@ -76,38 +88,6 @@ export class PlayerObject implements SceneObject {
       }
     });
   }
-
-  isRenderable: boolean;
-  positionX = 1;
-  positionY = 1;
-  targetX = 1;
-  targetY = 1;
-  tileset = 'tileset_player';
-  spriteX = 1;
-  spriteY = 1;
-
-  // constants
-  speed = 4; // 4 tiles per second
-
-  /**
-   * // Animation based off time
-    let animationIndex = 0;
-    if (player.state.position.directionTime < .25) {
-      animationIndex = 0;
-    } else if (player.state.position.directionTime >= .25 && player.state.position.directionTime < .5) {
-      animationIndex = 1;
-    } else if (player.state.position.directionTime >= .5 && player.state.position.directionTime < .75) {
-      animationIndex = 2;
-    } else {
-      animationIndex = 3;
-    }
-   * 
-   * 
-   * 
-   * 
-   *     // Move
-
-   */
 
   update(delta: number): void {
     const velocity = this.speed * delta
