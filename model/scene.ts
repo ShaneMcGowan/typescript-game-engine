@@ -62,6 +62,13 @@ export class Scene {
     this.objects.push(sceneObject);
   }
 
+  removeObject(sceneObject: SceneObject): void {
+    if(sceneObject.destroy){
+      sceneObject.destroy();
+    }
+    this.objects.splice(this.objects.indexOf(sceneObject), 1);
+  }
+
   /**
    * Checks if an object exists at the provided position and has collision
    * @param x 
@@ -80,7 +87,7 @@ export class Scene {
    * @returns 
    */
   getObjectAtPosition(positionX: number, positionY: number, type: any){
-    return this.objects.find(o => o.positionX === positionX && o.positionY);
+    return this.objects.find(o => o.positionX === positionX && o.positionY && o.positionY === positionY);
   }
 
 }
