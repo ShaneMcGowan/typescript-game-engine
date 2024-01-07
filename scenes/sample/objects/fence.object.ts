@@ -1,3 +1,4 @@
+import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 
@@ -8,10 +9,12 @@ export class FenceType {
   static BottomRight = {x: 3, y: 2};
   static MiddleHorizontal = { x: 2, y: 3};
   static MiddleVertical = { x: 0, y: 1};
+  static FencePost = { x: 0, y: 3 }
 }
 
 export class FenceObject implements SceneObject {
   isRenderable = true;
+  hasCollision = true;
   positionX = 0;
   positionY = 0;
   spriteX = 1;
@@ -19,6 +22,7 @@ export class FenceObject implements SceneObject {
   tileset = 'tileset_fence';
 
   constructor(
+    private scene: Scene,
     private context: CanvasRenderingContext2D,
     private assets: Record<string, any>,
     private config: Partial<{ positionX: number, positionY: number, type: { x: number, y: number } }>,

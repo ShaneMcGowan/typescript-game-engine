@@ -1,3 +1,4 @@
+import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
 import { MathUtils } from "../../../utils/math.utils";
 import { Movement, MovementUtils } from "../../../utils/movement.utils";
@@ -6,6 +7,7 @@ import { PlayerObject } from "./player.object";
 
 export class ChickenObject implements SceneObject {
   isRenderable = true;
+  hasCollision = true;
   positionX = 4;
   positionY = 4;
   spriteX = 0;
@@ -27,6 +29,7 @@ export class ChickenObject implements SceneObject {
   targetY = this.positionY;
 
   constructor(
+    private scene: Scene,
     private context: CanvasRenderingContext2D,
     private assets: Record<string, any>,
     private config: { positionX?: number, positionY?: number },
@@ -91,13 +94,27 @@ export class ChickenObject implements SceneObject {
 
       this.targetX = movement.targetX;
       this.targetY = movement.targetY;
+
+      // cancel if follow player flag is disabled
+      if(this.scene.globals['chickens_follow_player'] === false){
+        this.targetX = this.positionX;
+        this.targetY = this.positionY;
+      }
       
       // cancel if next position would be on top of the player
-      // TODO(smg): cancel if next position would be on top of another chicken
       if(this.targetX === this.player.targetX && this.targetY === this.player.targetY){
         this.targetX = this.positionX;
         this.targetY = this.positionY;
       }
+
+      // cancel if next position would be on top of another chicken
+      // TODO(smg): this may cause issues if player is already moving etc
+      if(this.scene.hasCollisionAtPosition(this.targetX, this.targetY)){
+        this.targetX = Math.floor(this.positionX);
+        this.targetY = Math.floor(this.positionY);
+      }
+
+      // TODO(smg): currently an issue exists where chickens can stack up if they are both moving at the same time, perhaps round down everything when doing checks
 
       this.movementTimer = 0;
     }

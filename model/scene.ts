@@ -8,6 +8,7 @@ export class Scene {
   objects: SceneObject[];
   width: number; // width in tiles (e.g. 16 would be 16 tiles wide)
   height: number; // height in tiles
+  globals: Record<string, any> = {}; // a place to store flags for the scene
 
   constructor(
     public context: CanvasRenderingContext2D, 
@@ -59,6 +60,27 @@ export class Scene {
 
   addObject(sceneObject: SceneObject): void {
     this.objects.push(sceneObject);
+  }
+
+  /**
+   * Checks if an object exists at the provided position and has collision
+   * @param x 
+   * @param y 
+   * @returns 
+   */
+  hasCollisionAtPosition(positionX: number, positionY: number): boolean {
+    return this.objects.some(o => o.positionX === positionX && o.positionY === positionY && o.hasCollision);
+  }
+
+  /**
+   * returns the first object found at the provided position 
+   * @param positionX
+   * @param positionY 
+   * @param type 
+   * @returns 
+   */
+  getObjectAtPosition(positionX: number, positionY: number, type: any){
+    return this.objects.find(o => o.positionX === positionX && o.positionY);
   }
 
 }

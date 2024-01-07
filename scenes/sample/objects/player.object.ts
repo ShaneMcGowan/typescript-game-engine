@@ -1,3 +1,4 @@
+import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 
@@ -11,10 +12,11 @@ enum Direction {
 export class PlayerObject implements SceneObject {
   
   isRenderable: boolean;
-  positionX = 2;
-  positionY = 2;
-  targetX = 2;
-  targetY = 2;
+  hasCollision = true;
+  positionX = 7;
+  positionY = 3;
+  targetX = 7;
+  targetY = 3;
   tileset = 'tileset_player';
   spriteX = 1;
   spriteY = 1;
@@ -51,6 +53,7 @@ export class PlayerObject implements SceneObject {
   isIdle: boolean = true;
 
   constructor(
+    private scene: Scene,
     private context: CanvasRenderingContext2D,
     private assets: Record<string, any>
   ){
@@ -153,6 +156,12 @@ export class PlayerObject implements SceneObject {
     this.directionTime = (this.directionTime + delta) % 1;
 
     // update player position
+
+    // check if can move to position
+    if(this.scene.hasCollisionAtPosition(this.targetX, this.targetY)){
+      this.targetX = Math.floor(this.positionX);
+      this.targetY = Math.floor(this.positionY);
+    }
 
     if(this.targetX > this.positionX){ // right
       this.positionX += velocity;
