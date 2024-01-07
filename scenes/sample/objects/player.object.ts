@@ -8,7 +8,7 @@ enum Direction {
   RIGHT = 'd',
 }
 
-export class SampleObject implements SceneObject {
+export class PlayerObject implements SceneObject {
   
   controls = {
     [Direction.RIGHT]: false,
@@ -175,7 +175,6 @@ export class SampleObject implements SceneObject {
     // update player position
 
     if(this.targetX > this.positionX){ // right
-      console.log('right');
       this.positionX += velocity;
       this.direction = Direction.RIGHT;
 
@@ -188,7 +187,6 @@ export class SampleObject implements SceneObject {
         }
       }
     } else if(this.targetX < this.positionX){ // left
-      console.log('left');
       this.positionX -= velocity;
       this.direction = Direction.LEFT;
 
@@ -202,7 +200,6 @@ export class SampleObject implements SceneObject {
         } 
       }
     } else if(this.targetY > this.positionY){ // down
-      console.log('down');
       this.positionY += velocity;
       this.direction = Direction.DOWN;
       
@@ -216,7 +213,6 @@ export class SampleObject implements SceneObject {
         }
       }
     } else if(this.targetY < this.positionY){ // up
-      console.log('up');
       this.positionY -= velocity;
       this.direction = Direction.UP;
 
@@ -230,7 +226,6 @@ export class SampleObject implements SceneObject {
         }
       }
     }
-    console.log({ target: this.targetX, position: this.positionX });
   }
 
   render(): void {
