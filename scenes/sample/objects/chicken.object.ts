@@ -57,9 +57,7 @@ export class ChickenObject implements SceneObject {
     );
   }
 
-  destroy?(): void {
-    console.log('[ChickenObject] destroyed');
-  }
+  destroy?(): void {}
 
   private updateAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 4;

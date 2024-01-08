@@ -63,14 +63,12 @@ export class PlayerObject implements SceneObject {
     private assets: Record<string, any>,
     private config: { positionX?: number, positionY?: number, targetX?: number, targetY?: number },
   ){
-
     this.positionX = this.config.positionX ?? 5;
     this.targetX = this.config.targetX ?? this.positionX;
     this.positionY = this.config.positionY ?? 5;
     this.targetY = this.config.targetY ?? this.positionY;
 
     document.addEventListener('keydown', (event) => {
-      console.log(event);
       switch(event.key.toLocaleLowerCase()){
         case Direction.RIGHT:
         case 'arrowright':
@@ -270,8 +268,10 @@ export class PlayerObject implements SceneObject {
       return;
     }
 
+    
     let position = this.getPositionFacing();
     let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+    
     if(object instanceof FenceObject){
       this.scene.removeObject(object);
     }

@@ -117,7 +117,7 @@ export class Scene {
    * @returns 
    */
   getObjectAtPosition(positionX: number, positionY: number, type: any){
-    return this.objects.find(o => o.positionX === positionX && o.positionY && o.positionY === positionY);
+    return this.objects.find(o => o.positionX === positionX && o.positionY === positionY);
   }
 
 }
