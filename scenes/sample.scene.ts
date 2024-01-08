@@ -25,16 +25,21 @@ export class SampleScene extends Scene {
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    this.objects.push(new PlayerObject(this, context, assets));
+    this.objects.push(new PlayerObject(this, context, assets, { positionX: 7, positionY: 3, targetX: 7, targetY: 3  }));
 
     // chickens
-    // TODO: some sort of way to get an object by id or name to avoid below way of referencing player via objects[0]
-    this.objects.push(new ChickenObject(this, context, assets, { positionX: 7, positionY: 2}, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(this, context, assets, { positionX: 2, positionY: 2 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(this, context, assets, { positionX: 9, positionY: 5 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(this, context, assets, { positionX: 5, positionY: 4 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(this, context, assets, { positionX: 11, positionY: 8 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(this, context, assets, { positionX: 8, positionY: 10 }, this.objects[0] as PlayerObject));
+    // TODO(smg): some sort of way to get an object by id or name to avoid below way of referencing player via objects[0]
+    // this.objects.push(new ChickenObject(this, context, assets, { positionX: 7, positionY: 2}, this.objects[0] as PlayerObject));
+    // this.objects.push(new ChickenObject(this, context, assets, { positionX: 2, positionY: 2 }, this.objects[0] as PlayerObject));
+    // this.objects.push(new ChickenObject(this, context, assets, { positionX: 9, positionY: 5 }, this.objects[0] as PlayerObject));
+    // this.objects.push(new ChickenObject(this, context, assets, { positionX: 5, positionY: 4 }, this.objects[0] as PlayerObject));
+    // this.objects.push(new ChickenObject(this, context, assets, { positionX: 11, positionY: 8 }, this.objects[0] as PlayerObject));
+    // this.objects.push(new ChickenObject(this, context, assets, { positionX: 8, positionY: 10 }, this.objects[0] as PlayerObject));
+
+    // chickens for collision testing 
+    this.objects.push(new ChickenObject(this, context, assets, { positionX: 6, positionY: 3 }, this.objects[0] as PlayerObject));
+    this.objects.push(new ChickenObject(this, context, assets, { positionX: 8, positionY: 3 }, this.objects[0] as PlayerObject));
+    this.objects.push(new ChickenObject(this, context, assets, { positionX: 7, positionY: 2 }, this.objects[0] as PlayerObject));
     
     // fences
     this.objects.push(new FenceObject(this, context, assets, { positionX: 1, positionY: 1, type: FenceType.TopLeft }));

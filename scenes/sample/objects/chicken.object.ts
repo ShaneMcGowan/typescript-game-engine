@@ -91,25 +91,35 @@ export class ChickenObject implements SceneObject {
           this.player.targetY
         )
       );
-
+        
+      console.log('[ChickenObject] movement', movement);
       this.targetX = movement.targetX;
       this.targetY = movement.targetY;
 
       // cancel if follow player flag is disabled
       if(this.scene.globals['chickens_follow_player'] === false){
-        this.targetX = this.positionX;
-        this.targetY = this.positionY;
+        this.targetX = Math.floor(this.positionX);
+        this.targetY = Math.floor(this.positionY);
+        // TODO(smg): return early here
       }
       
       // cancel if next position would be on top of the player
       if(this.targetX === this.player.targetX && this.targetY === this.player.targetY){
-        this.targetX = this.positionX;
-        this.targetY = this.positionY;
+        this.targetX = Math.floor(this.positionX);
+        this.targetY = Math.floor(this.positionY);
+        // TODO(smg): return early here
       }
 
       // cancel if next position would be on top of another chicken
       // TODO(smg): this may cause issues if player is already moving etc
-      if(this.scene.hasCollisionAtPosition(this.targetX, this.targetY)){
+      if(this.scene.hasCollisionAtPosition(this.targetX, this.targetY, this)){
+        this.targetX = Math.floor(this.positionX);
+        this.targetY = Math.floor(this.positionY);
+        // TODO(smg): return early here
+      }
+
+      if(this.scene.willHaveCollisionAtPosition(this.targetX, this.targetY, this)){
+        debugger;
         this.targetX = Math.floor(this.positionX);
         this.targetY = Math.floor(this.positionY);
       }

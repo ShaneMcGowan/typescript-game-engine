@@ -5,6 +5,8 @@ export interface SceneObject extends Renderable {
   hasCollision?: boolean;
   positionX: number; // starting x position
   positionY: number; // starting y position
+  targetX: number; // target x position
+  targetY: number; // target y position
   update?(delta: number): void;
   render?(): void;
   destroy?(): void;

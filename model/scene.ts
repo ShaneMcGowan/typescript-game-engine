@@ -75,8 +75,38 @@ export class Scene {
    * @param y 
    * @returns 
    */
-  hasCollisionAtPosition(positionX: number, positionY: number): boolean {
-    return this.objects.some(o => o.positionX === positionX && o.positionY === positionY && o.hasCollision);
+  hasCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
+    let object = this.objects.find(o => o.positionX === positionX && o.positionY === positionY && o.hasCollision);
+    if(object === undefined){
+      return false;
+    }
+
+    // ignore provided object (usually self)
+    if(sceneObject === object){
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Checks if an object is on it's way to the provided position and has collision
+   * @param x 
+   * @param y 
+   * @returns 
+   */
+  willHaveCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
+    let object = this.objects.find(o => o.targetX === positionX && o.targetY === positionY && o.hasCollision);
+    if(object === undefined){
+      return false;
+    }
+
+    // ignore provided object (usually self)
+    if(sceneObject === object){
+      return false;
+    }
+
+    return true;
   }
 
   /**

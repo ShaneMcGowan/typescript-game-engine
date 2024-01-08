@@ -17,6 +17,8 @@ export class FenceObject implements SceneObject {
   hasCollision = true;
   positionX = 0;
   positionY = 0;
+  targetX = 0;
+  targetY = 0;
   spriteX = 1;
   spriteY = 0;
   tileset = 'tileset_fence';
