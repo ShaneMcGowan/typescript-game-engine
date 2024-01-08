@@ -75,62 +75,51 @@ export class ChickenObject implements SceneObject {
 
     // determine next movement
     if(this.movementTimer > this.movementDelay){
-
-      // TODO(smg): add some randomness to movement, can be done later
-      let movement = MovementUtils.moveTowardsOtherEntity(
-        new Movement(
-          this.positionX,
-          this.positionY,
-          this.targetX,
-          this.targetY
-        ),
-        new Movement(
-          this.player.positionX,
-          this.player.positionY,
-          this.player.targetX,
-          this.player.targetY
-        )
-      );
-        
-      console.log('[ChickenObject] movement', movement);
-      this.targetX = movement.targetX;
-      this.targetY = movement.targetY;
-
-      // cancel if follow player flag is disabled
-      if(this.scene.globals['chickens_follow_player'] === false){
-        this.targetX = Math.floor(this.positionX);
-        this.targetY = Math.floor(this.positionY);
-        // TODO(smg): return early here
-      }
-      
-      // cancel if next position would be on top of the player
-      if(this.targetX === this.player.targetX && this.targetY === this.player.targetY){
-        this.targetX = Math.floor(this.positionX);
-        this.targetY = Math.floor(this.positionY);
-        // TODO(smg): return early here
-      }
-
-      // cancel if next position would be on top of another chicken
-      // TODO(smg): this may cause issues if player is already moving etc
-      if(this.scene.hasCollisionAtPosition(this.targetX, this.targetY, this)){
-        this.targetX = Math.floor(this.positionX);
-        this.targetY = Math.floor(this.positionY);
-        // TODO(smg): return early here
-      }
-
-      if(this.scene.willHaveCollisionAtPosition(this.targetX, this.targetY, this)){
-        debugger;
-        this.targetX = Math.floor(this.positionX);
-        this.targetY = Math.floor(this.positionY);
-      }
-
-      // TODO(smg): currently an issue exists where chickens can stack up if they are both moving at the same time, perhaps round down everything when doing checks
-
-      this.movementTimer = 0;
+      this.determineNextMovement(delta);
     }
 
     // process movement
+    this.processMovement(delta);
+  }
 
+  private determineNextMovement(delta: number): void {
+    this.movementTimer = 0;
+
+    // TODO(smg): add some randomness to movement, can be done later
+    let movement = MovementUtils.moveTowardsOtherEntity(
+      new Movement(
+        this.positionX,
+        this.positionY,
+        this.targetX,
+        this.targetY
+      ),
+      new Movement(
+        this.player.positionX,
+        this.player.positionY,
+        this.player.targetX,
+        this.player.targetY
+      )
+    );
+      
+    // cancel if follow player flag is disabled
+    if(this.scene.globals['chickens_follow_player'] === false){
+      return;
+    }
+    
+    // cancel if next position would be on top of another entity
+    if(this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY, this)){
+      return;
+    }
+
+    if(this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY, this)){
+      return;
+    }
+
+    this.targetX = movement.targetX;
+    this.targetY = movement.targetY;
+  }
+
+  private processMovement(delta: number): void {
     if(this.targetX !== this.positionX || this.targetY !== this.positionY){
       let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(this.movementSpeed, delta));
