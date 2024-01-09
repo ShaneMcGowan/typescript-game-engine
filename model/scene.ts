@@ -17,7 +17,7 @@ export class Scene {
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
 
-  renderBackground(): void {
+  renderBackground(delta: number): void {
     this.backgroundLayers.forEach((layer) => {
       
       // 0 , 1 , 2 , 3

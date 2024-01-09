@@ -34,6 +34,10 @@ export class Client {
 
   // Debug
   debug = {
+    stats: {
+      fps: false, // show fps
+      fpsCounter: 0 // time since last check
+    },
     breakpoint: {
       frame: false
     },
@@ -112,6 +116,14 @@ export class Client {
     // Render objects
     this.renderObjects();
 
+    // Render stats
+    if(this.debug.stats.fps){
+      if (this.debug.stats.fpsCounter) {
+        this.renderStats(Math.round(1000/((performance.now() - this.debug.stats.fpsCounter))));
+      }
+      this.debug.stats.fpsCounter = timestamp;
+    }
+
     // Call next frame
     // (we set `this` context for when using window.requestAnimationFrame)
     window.requestAnimationFrame(this.frame.bind(this));
@@ -132,7 +144,7 @@ export class Client {
     }
 
     // TODO(smg): only render within viewport as it is expensive to render the whole background
-    this.currentScene.renderBackground();
+    this.currentScene.renderBackground(this.delta);
 
     if(this.debug.timing.frameBackground){
       console.timeEnd('[frame] background');
@@ -169,6 +181,11 @@ export class Client {
     if(this.debug.timing.frameRender){
       console.timeEnd('[frame] render');
     }
+  }
+
+  private renderStats(fps: number): void {
+    this.context.font = "12px serif";
+    this.context.fillText(`${fps} FPS`, this.CANVAS_WIDTH - 50, 16);
   }
 
 }

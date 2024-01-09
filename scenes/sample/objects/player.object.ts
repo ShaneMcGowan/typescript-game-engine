@@ -1,6 +1,7 @@
 import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
 import { MathUtils } from "../../../utils/math.utils";
+import { Movement, MovementUtils } from "../../../utils/movement.utils";
 import { RenderUtils } from "../../../utils/render.utils";
 import { ChickenObject } from "./chicken.object";
 import { FenceObject, FenceType } from "./fence.object";
@@ -25,7 +26,7 @@ export class PlayerObject implements SceneObject {
   spriteY = 1;
 
   // constants
-  speed = 4; // 4 tiles per second
+  movementSpeed = 4; // 4 tiles per second
 
   controls = {
     [Direction.RIGHT]: false,
@@ -37,10 +38,10 @@ export class PlayerObject implements SceneObject {
   }
 
   animations = {
-    [Direction.RIGHT]: [{ x: 7, y: 10 }, { x: 10, y: 10 }, { x: 1, y: 10 }],
-    [Direction.LEFT]: [{ x: 7, y: 7 }, { x: 10, y: 7}, { x: 1, y: 7 }],
-    [Direction.UP]: [{ x: 7, y: 4 }, { x: 10, y: 4}, { x: 1, y: 4 }],
-    [Direction.DOWN]: [{ x: 7, y: 1 }, { x: 10, y: 1 }, { x: 1, y: 1 }],
+    [Direction.RIGHT]: [{ x: 7, y: 10 }, { x: 10, y: 10 }],
+    [Direction.LEFT]: [{ x: 7, y: 7 }, { x: 10, y: 7}],
+    [Direction.UP]: [{ x: 7, y: 4 }, { x: 10, y: 4}],
+    [Direction.DOWN]: [{ x: 7, y: 1 }, { x: 10, y: 1 }],
   }
 
   animationsIdle = {
@@ -53,7 +54,7 @@ export class PlayerObject implements SceneObject {
   // direction state
   direction: Direction = Direction.DOWN;
   directionTime: number = 0;
-  directionFrames: number = 0;
+  directionTimer: number = 0;
   animationIndex: number = 0;
   isIdle: boolean = true;
 
@@ -124,129 +125,7 @@ export class PlayerObject implements SceneObject {
   }
 
   update(delta: number): void {
-    const velocity = this.speed * delta
-    
-    // update target position and direction based on controls, if we are no longer moving
-    if(this.targetX === this.positionX && this.targetY === this.positionY) {
-      let direction;
-      if(this.controls[Direction.RIGHT]){
-        this.targetX += 1;
-        direction = Direction.RIGHT;
-      } else if(this.controls[Direction.LEFT]){
-        this.targetX -= 1;
-        direction = Direction.LEFT;
-      } else if(this.controls[Direction.UP]){
-        this.targetY -= 1;
-        direction = Direction.UP;
-      } else if(this.controls[Direction.DOWN]){
-        this.targetY += 1;
-        direction = Direction.DOWN;
-      }
-
-      if(direction){
-        this.direction = direction;
-        this.directionTime = 0;
-      }
-
-      this.isIdle = true;
-    } else {
-      this.isIdle = false;
-    }
-
-    // update animation based on direction and time spent moving in direction
-    if(this.isIdle){
-      // idle
-      if (this.directionTime < .5) {
-        this.animationIndex = 0;
-      } else {
-        this.animationIndex = 1;
-      } 
-    } else {
-      // moving
-      if (this.directionTime < .333) {
-        this.animationIndex = 0;
-      } else if (this.directionTime < .666){
-        this.animationIndex = 1;
-      } else {
-        this.animationIndex = 2;
-      }
-    }
-
-    /*
-    if (this.directionTime < .25) {
-      this.animationIndex = 0;
-    } else if (this.directionTime >= .25 && this.directionTime < .5) {
-      this.animationIndex = 1;
-    } else if (this.directionTime >= .5 && this.directionTime < .75) {
-      this.animationIndex = 2;
-    } else {
-      this.animationIndex = 3;
-    }
-    */
-
-    this.directionTime = (this.directionTime + delta) % 1;
-
-    // update player position
-
-    // check if can move to position
-    if(this.scene.hasCollisionAtPosition(this.targetX, this.targetY)){
-      this.targetX = Math.floor(this.positionX);
-      this.targetY = Math.floor(this.positionY);
-    }
-
-    if(this.targetX > this.positionX){ // right
-      this.positionX += velocity;
-      this.direction = Direction.RIGHT;
-
-      // snap to position
-      if(this.targetX < this.positionX){
-        this.positionX = this.targetX;
-
-        if(this.controls[Direction.RIGHT]){
-          this.targetX += 1;
-        }
-      }
-    } else if(this.targetX < this.positionX){ // left
-      this.positionX -= velocity;
-      this.direction = Direction.LEFT;
-
-      // snap to position
-      if(this.targetX > this.positionX){
-        this.positionX = this.targetX;
-
-        if(this.controls[Direction.LEFT]){
-          this.targetX -= 1;
-          this.direction = Direction.LEFT;
-        } 
-      }
-    } else if(this.targetY > this.positionY){ // down
-      this.positionY += velocity;
-      this.direction = Direction.DOWN;
-      
-      // snap to position
-      if(this.targetY < this.positionY){
-        this.positionY = this.targetY;
-
-        if(this.controls[Direction.DOWN]){
-          this.targetY += 1;
-          this.direction = Direction.DOWN;
-        }
-      }
-    } else if(this.targetY < this.positionY){ // up
-      this.positionY -= velocity;
-      this.direction = Direction.UP;
-
-      // snap to position
-      if(this.targetY > this.positionY){
-        this.positionY = this.targetY;
-
-        if(this.controls[Direction.UP]){
-          this.targetY -= 1;
-          this.direction = Direction.UP;
-        }
-      }
-    }
-
+    this.updateMovement(delta);
     this.updateRemoveFence();
     this.updatePlaceFence();
   }
@@ -268,15 +147,116 @@ export class PlayerObject implements SceneObject {
       return;
     }
 
-    
     let position = this.getPositionFacing();
     let object = this.scene.getObjectAtPosition(position.x, position.y, null);
-    
+
     if(object instanceof FenceObject){
       this.scene.removeObject(object);
     }
 
     this.controls['remove_fence'] = false;
+  }
+
+  updateMovement(delta: number): void {
+    this.determineNextMovement(delta);
+    this.processAnimations(delta);
+    this.processMovement(delta);
+  }
+
+  private determineNextMovement(delta: number): void {
+
+    // check if we are moving
+    if(this.targetX !== this.positionX || this.targetY !== this.positionY) {
+      return;
+    }
+
+    // check if button pressed
+    if(!this.controls[Direction.RIGHT] && !this.controls[Direction.LEFT] && !this.controls[Direction.UP] && !this.controls[Direction.DOWN]){
+      return;
+    }
+
+    let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
+    let direction;
+
+    // determine next position and set direction
+    if(this.controls[Direction.RIGHT]){
+      movement.targetX += 1;
+      direction = Direction.RIGHT;
+    } else if(this.controls[Direction.LEFT]){
+      movement.targetX -= 1;
+      direction = Direction.LEFT;
+    } else if(this.controls[Direction.UP]){
+      movement.targetY -= 1;
+      direction = Direction.UP;
+    } else if(this.controls[Direction.DOWN]){
+      movement.targetY += 1;
+      direction = Direction.DOWN;
+    }
+
+    // update direction regardless of movement
+    // reset animations if new direction
+    if(this.direction !== direction){
+      this.direction = direction;
+      this.directionTime = 0;
+      this.directionTimer = 0;
+    } else {
+      this.directionTimer += delta;
+    }
+
+    // if direction has not been held for 5 frames, do not move
+    if(this.directionTimer < .05){
+      return;
+    }
+    
+    // check if can move to position
+    if(this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY)){
+      return;
+    }
+    if(this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY)){
+      return;
+    }
+
+    this.targetX = movement.targetX;
+    this.targetY = movement.targetY;
+  }
+
+  private processAnimations(delta: number): void {
+    if(this.targetX !== this.positionX || this.targetY !== this.positionY){
+      this.isIdle = false;
+    } else {
+      this.isIdle = true;
+    }
+
+    if(this.isIdle){
+      // idle
+      if (this.directionTime < .5) {
+        this.animationIndex = 0;
+      } else {
+        this.animationIndex = 1;
+      } 
+    } else {
+      if (this.directionTime < .25) {
+        this.animationIndex = 0;
+      } else if (this.directionTime < .5) {
+        this.animationIndex = 1;
+      } else if (this.directionTime < .75){
+        this.animationIndex = 0;
+      } else {
+        this.animationIndex = 1;
+      }
+    }
+
+    this.directionTime = (this.directionTime + delta) % 1;
+  }
+
+  private processMovement(delta: number): void {
+    if(this.targetX !== this.positionX || this.targetY !== this.positionY){
+      let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
+      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(this.movementSpeed, delta));
+      
+      this.positionX = updatedMovement.positionX; 
+      this.positionY = updatedMovement.positionY;
+    }
   }
 
   updatePlaceFence(): void {
@@ -285,8 +265,10 @@ export class PlayerObject implements SceneObject {
     }
 
     let position = this.getPositionFacing();
-    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
-    if(object){
+    if(this.scene.hasCollisionAtPosition(position.x, position.y)){
+      return;
+    }
+    if(this.scene.willHaveCollisionAtPosition(position.x, position.y)){
       return;
     }
 
