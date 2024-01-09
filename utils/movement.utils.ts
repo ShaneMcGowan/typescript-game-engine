@@ -1,3 +1,5 @@
+import { MathUtils } from "./math.utils";
+
 export class Movement {
 
   constructor(
@@ -66,6 +68,31 @@ export class MovementUtils {
       currentMovement.targetY -= 1;
     }
 
+    return new Movement(
+      currentMovement.positionX,
+      currentMovement.positionY,
+      currentMovement.targetX,
+      currentMovement.targetY
+    )
+  }
+
+  static moveInRandomDirection(currentMovement: Movement): Movement{
+    let randomValue = MathUtils.randomIntFromRange(1, 4);
+    switch(randomValue){
+      case 1:
+        currentMovement.targetX += 1;
+        break;
+      case 2:
+        currentMovement.targetX -= 1;
+        break;
+      case 3:
+        currentMovement.targetY += 1;
+        break;
+      case 4:
+        currentMovement.targetY -= 1;
+        break;
+    }
+    
     return new Movement(
       currentMovement.positionX,
       currentMovement.positionY,

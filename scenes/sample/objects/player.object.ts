@@ -35,6 +35,7 @@ export class PlayerObject implements SceneObject {
     [Direction.DOWN]: false,
     ['remove_fence']: false,
     ['place_fence']: false,
+    ['toggle_follow']: false,
   }
 
   animations = {
@@ -93,6 +94,9 @@ export class PlayerObject implements SceneObject {
         case 'k':
           this.controls['place_fence'] = true;
           break;
+        case ' ':
+          this.controls['toggle_follow'] = true;
+          break;
       }
     });
 
@@ -120,6 +124,9 @@ export class PlayerObject implements SceneObject {
         case 'k':
           this.controls['place_fence'] = false;
           break;
+        case ' ':
+          this.controls['toggle_follow'] = false;
+          break;
       }
     });
   }
@@ -128,6 +135,7 @@ export class PlayerObject implements SceneObject {
     this.updateMovement(delta);
     this.updateRemoveFence();
     this.updatePlaceFence();
+    this.updateToggleFollow();
   }
 
   render(): void {
@@ -285,6 +293,16 @@ export class PlayerObject implements SceneObject {
     this.scene.addObject(fence);
 
     this.controls['place_fence'] = false;
+  }
+
+  updateToggleFollow(): void {
+    if(this.controls['toggle_follow'] === false){
+      return;
+    }
+
+    this.scene.globals['chickens_follow_player'] = !this.scene.globals['chickens_follow_player'];
+
+    this.controls['toggle_follow'] = false;
   }
 
   destroy?(): void {

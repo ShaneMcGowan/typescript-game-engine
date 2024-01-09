@@ -82,26 +82,35 @@ export class ChickenObject implements SceneObject {
 
   private determineNextMovement(delta: number): void {
     this.movementTimer = 0;
-
-    // TODO(smg): add some randomness to movement, can be done later
-    let movement = MovementUtils.moveTowardsOtherEntity(
-      new Movement(
-        this.positionX,
-        this.positionY,
-        this.targetX,
-        this.targetY
-      ),
-      new Movement(
-        this.player.positionX,
-        this.player.positionY,
-        this.player.targetX,
-        this.player.targetY
-      )
-    );
       
-    // cancel if follow player flag is disabled
-    if(this.scene.globals['chickens_follow_player'] === false){
-      return;
+    let movement: Movement;
+    if(this.scene.globals['chickens_follow_player'] === true){
+      // move towards player
+      // TODO(smg): add some randomness to movement, can be done later
+      movement = MovementUtils.moveTowardsOtherEntity(
+        new Movement(
+          this.positionX,
+          this.positionY,
+          this.targetX,
+          this.targetY
+        ),
+        new Movement(
+          this.player.positionX,
+          this.player.positionY,
+          this.player.targetX,
+          this.player.targetY
+        )
+      );
+    } else {
+      // move in a random direction
+      movement = MovementUtils.moveInRandomDirection(
+        new Movement(
+          this.positionX,
+          this.positionY,
+          this.targetX,
+          this.targetY
+        )
+      );
     }
     
     // cancel if next position would be on top of another entity
