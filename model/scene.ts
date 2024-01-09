@@ -5,6 +5,9 @@ import { SceneObject } from "./scene-object";
 export class Scene {
   id: string;
   backgroundLayers: BackgroundLayer[];
+  backgroundLayerTimer: Record<number, number> = {}; // used for timings for background layer animations
+  backgroundLayerAnimationIndex: Record<number, number> = {} // used for timings for background layer animations
+
   objects: SceneObject[];
   width: number; // width in tiles (e.g. 16 would be 16 tiles wide)
   height: number; // height in tiles
@@ -17,20 +20,31 @@ export class Scene {
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
 
+  // TODO(smg): this is currently set up to work with the sample scene, make this generic
   renderBackground(delta: number): void {
     this.backgroundLayers.forEach((layer) => {
       
-      // 0 , 1 , 2 , 3
+      // increment timer for layer
+      if(this.backgroundLayerTimer[layer.index] === undefined){
+        this.backgroundLayerTimer[layer.index] = 0;
+      } else {
+        this.backgroundLayerTimer[layer.index] += delta;
+      }
 
       // animation test for water
       if(layer.index === 0) {
-        if(this.backgroundLayerAnimationFrame[layer.index] !== undefined){
-          this.backgroundLayerAnimationFrame[layer.index]++;
-          if(this.backgroundLayerAnimationFrame[layer.index] > 3){
-            this.backgroundLayerAnimationFrame[layer.index] = 0;
-          }
+        if(this.backgroundLayerTimer[layer.index] < 0.25) {
+          this.backgroundLayerAnimationIndex[layer.index] = 0;
+        } else if (this.backgroundLayerTimer[layer.index] < 0.5){
+          this.backgroundLayerAnimationIndex[layer.index] = 1;
+        } else if (this.backgroundLayerTimer[layer.index] < 0.75){
+          this.backgroundLayerAnimationIndex[layer.index] = 2;
         } else {
-          this.backgroundLayerAnimationFrame[layer.index] = 0;
+          this.backgroundLayerAnimationIndex[layer.index] = 3;
+        }
+
+        if(this.backgroundLayerTimer[layer.index] > 1){
+          this.backgroundLayerTimer[layer.index] = 0;
         }
       }
       
@@ -40,15 +54,10 @@ export class Scene {
           if(tile === undefined){
             continue;
           }
-          
-          if(layer.index === 0) {
-            // console.log(tile.spriteX + (layer.index === 0 ? this.backgroundLayerAnimationFrame[layer.index] : 0));
-          }
-
           RenderUtils.renderSprite(
             this.context,
             this.assets.images[tile.tileset],
-            tile.spriteX + (layer.index === 0 ? this.backgroundLayerAnimationFrame[layer.index] : 0),
+            tile.spriteX + (layer.index === 0 ? this.backgroundLayerAnimationIndex[layer.index] : 0),
             tile.spriteY,
             x,
             y
