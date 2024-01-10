@@ -33,4 +33,5 @@ html, body {
 #render-area canvas {
   background-color: black;
   height: 100%;
+  image-rendering: pixelated;
 }
