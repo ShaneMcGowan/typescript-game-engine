@@ -28,7 +28,8 @@ export class Client {
       tileset_water: new Image(),
       tileset_player: new Image(),
       tileset_chicken: new Image(),
-      tileset_fence: new Image()
+      tileset_fence: new Image(),
+      tileset_egg: new Image()
     }
   };
 
@@ -36,7 +37,8 @@ export class Client {
   debug = {
     stats: {
       fps: false, // show fps
-      fpsCounter: 0 // time since last check
+      fpsCounter: 0, // time since last check
+      objectCount: true, // show object count
     },
     breakpoint: {
       frame: false
@@ -56,6 +58,7 @@ export class Client {
     this.assets.images.tileset_player.src = '/assets/sample/Characters/Basic Charakter Spritesheet.png';
     this.assets.images.tileset_chicken.src = '/assets/sample/Characters/Free Chicken Sprites.png';
     this.assets.images.tileset_fence.src = '/assets/sample/Tilesets/Fences.png';
+    this.assets.images.tileset_egg.src = '/assets/sample/Characters/Egg_And_Nest.png';
 
     // initialise canvas
     this.canvas = this.createCanvas();
@@ -63,6 +66,11 @@ export class Client {
 
     // attach canvas to ui
     container.prepend(this.canvas);
+
+    // go fullscreen
+    // this.canvas.addEventListener('click', () => {
+    //   this.canvas.requestFullscreen();
+    // })
     
     // load first scene
     this.changeScene(this.scenes[0]);
@@ -74,6 +82,11 @@ export class Client {
   private createCanvas(): HTMLCanvasElement {
     // create canvas
     const canvas = document.createElement('canvas');
+
+    // prevent right click menu
+    canvas.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+    });
 
     // configure canvas
     canvas.height = this.CANVAS_HEIGHT;
@@ -119,9 +132,12 @@ export class Client {
     // Render stats
     if(this.debug.stats.fps){
       if (this.debug.stats.fpsCounter) {
-        this.renderStats(Math.round(1000/((performance.now() - this.debug.stats.fpsCounter))));
+        this.renderStats(`${Math.round(1000/((performance.now() - this.debug.stats.fpsCounter)))} FPS`);
       }
       this.debug.stats.fpsCounter = timestamp;
+    }
+    if(this.debug.stats.objectCount){
+      this.renderStats(`${this.currentScene.objects.length} objects`);
     }
 
     // Call next frame
@@ -183,9 +199,9 @@ export class Client {
     }
   }
 
-  private renderStats(fps: number): void {
+  private renderStats(text: string): void {
     this.context.font = "12px serif";
-    this.context.fillText(`${fps} FPS`, this.CANVAS_WIDTH - 50, 16);
+    this.context.fillText(text, this.CANVAS_WIDTH - 50, 16);
   }
 
 }

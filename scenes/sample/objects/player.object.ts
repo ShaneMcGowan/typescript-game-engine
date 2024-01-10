@@ -1,9 +1,8 @@
 import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
-import { MathUtils } from "../../../utils/math.utils";
 import { Movement, MovementUtils } from "../../../utils/movement.utils";
 import { RenderUtils } from "../../../utils/render.utils";
-import { ChickenObject } from "./chicken.object";
+import { EggObject } from "./egg.object";
 import { FenceObject, FenceType } from "./fence.object";
 
 enum Direction {
@@ -36,6 +35,7 @@ export class PlayerObject implements SceneObject {
     ['remove_fence']: false,
     ['place_fence']: false,
     ['toggle_follow']: false,
+    ['place_egg']: false,
   }
 
   animations = {
@@ -97,6 +97,9 @@ export class PlayerObject implements SceneObject {
         case ' ':
           this.controls['toggle_follow'] = true;
           break;
+        case 'e':
+          this.controls['place_egg'] = true;
+          break;
       }
     });
 
@@ -127,6 +130,9 @@ export class PlayerObject implements SceneObject {
         case ' ':
           this.controls['toggle_follow'] = false;
           break;
+        case 'e':
+          this.controls['place_egg'] = false;
+          break;
       }
     });
   }
@@ -136,6 +142,7 @@ export class PlayerObject implements SceneObject {
     this.updateRemoveFence();
     this.updatePlaceFence();
     this.updateToggleFollow();
+    this.updateEgg();
   }
 
   render(): void {
@@ -303,6 +310,25 @@ export class PlayerObject implements SceneObject {
     this.scene.globals['chickens_follow_player'] = !this.scene.globals['chickens_follow_player'];
 
     this.controls['toggle_follow'] = false;
+  }
+
+  updateEgg(): void {
+    if(this.controls['place_egg'] === false){
+      return;
+    }
+
+    let egg = new EggObject(
+      this.scene, 
+      this.context, 
+      this.assets,
+      {
+        positionX: Math.floor(this.positionX),
+        positionY: Math.floor(this.positionY),
+      },
+    );
+    this.scene.addObject(egg);
+
+    this.controls['place_egg'] = false;
   }
 
   destroy?(): void {

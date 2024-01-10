@@ -79,6 +79,15 @@ export class Scene {
   }
 
   /**
+   * Returns all instances of the provided class
+   * @param type 
+   * @returns 
+   */
+  getObjectsByType(type: any): SceneObject[] {
+    return this.objects.filter(o => o instanceof type);
+  }
+
+  /**
    * Checks if an object exists at the provided position and has collision
    * @param x 
    * @param y 

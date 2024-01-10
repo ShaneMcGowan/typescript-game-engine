@@ -3,6 +3,7 @@ import { SceneObject } from "../../../model/scene-object";
 import { MathUtils } from "../../../utils/math.utils";
 import { Movement, MovementUtils } from "../../../utils/movement.utils";
 import { RenderUtils } from "../../../utils/render.utils";
+import { EggObject } from "./egg.object";
 import { PlayerObject } from "./player.object";
 
 export class ChickenObject implements SceneObject {
@@ -28,6 +29,10 @@ export class ChickenObject implements SceneObject {
   targetX = this.positionX;
   targetY = this.positionY;
 
+  // egg
+  eggTimer = MathUtils.randomStartingDelta(2);;
+  eggTimerMax = 7; // seconds until next egg
+
   constructor(
     private scene: Scene,
     private context: CanvasRenderingContext2D,
@@ -44,6 +49,7 @@ export class ChickenObject implements SceneObject {
   update(delta: number): void {
     this.updateAnimation(delta);
     this.updateMovement(delta);
+    this.updateEgg(delta);
   }
 
   render?(): void {
@@ -134,6 +140,25 @@ export class ChickenObject implements SceneObject {
       this.positionX = updatedMovement.positionX; 
       this.positionY = updatedMovement.positionY;
     }
+  }
+
+  private updateEgg(delta: number): void {
+    this.eggTimer += delta;
+
+    if(this.eggTimer < this.eggTimerMax){
+      return;
+    }
+
+    let totalChickens = this.scene.getObjectsByType(ChickenObject).length;
+    if(totalChickens > 30){
+      return;
+    }
+
+    this.scene.addObject(
+      new EggObject(this.scene, this.context, this.assets, { positionX: Math.floor(this.positionX), positionY: Math.floor(this.positionY) })
+    );
+
+    this.eggTimer = 0;
   }
 
 }
