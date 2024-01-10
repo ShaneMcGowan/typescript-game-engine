@@ -150,7 +150,7 @@ export class ChickenObject implements SceneObject {
     }
 
     let totalChickens = this.scene.getObjectsByType(ChickenObject).length;
-    if(totalChickens > 30){
+    if(totalChickens > 10){
       return;
     }
 
