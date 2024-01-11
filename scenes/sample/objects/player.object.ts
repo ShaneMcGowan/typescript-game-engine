@@ -280,10 +280,7 @@ export class PlayerObject implements SceneObject {
     }
 
     let position = this.getPositionFacing();
-    if(this.scene.hasCollisionAtPosition(position.x, position.y)){
-      return;
-    }
-    if(this.scene.willHaveCollisionAtPosition(position.x, position.y)){
+    if(this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)){
       return;
     }
 
@@ -317,13 +314,18 @@ export class PlayerObject implements SceneObject {
       return;
     }
 
+    let position = this.getPositionFacing();
+    if(this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)){
+      return;
+    }
+
     let egg = new EggObject(
       this.scene, 
       this.context, 
       this.assets,
       {
-        positionX: Math.floor(this.positionX),
-        positionY: Math.floor(this.positionY),
+        positionX: Math.floor(position.x),
+        positionY: Math.floor(position.y),
       },
     );
     this.scene.addObject(egg);
@@ -335,6 +337,11 @@ export class PlayerObject implements SceneObject {
     // throw new Error("Method not implemented.");
   }
 
+  /**
+   * TODO: make 'Direction' a generic concept
+   * TODO: this needs to be rounded down
+   * @returns 
+   */
   getPositionFacing(): { x: number, y: number } {
     if(this.direction === Direction.RIGHT){
       return { x: this.positionX + 1, y: this.positionY };

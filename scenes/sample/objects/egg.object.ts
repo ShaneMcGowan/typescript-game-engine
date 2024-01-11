@@ -24,7 +24,7 @@ export class EggObject implements SceneObject {
 
   // actions
   hatchTimer = 0;
-  hatchTimerMax = 7; // 5 seconds to hatch
+  hatchTimerMax = 7; // seconds to hatch
 
   constructor(
     private scene: Scene,

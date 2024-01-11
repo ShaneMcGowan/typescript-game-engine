@@ -84,6 +84,7 @@ export class Scene {
    * @returns 
    */
   getObjectsByType(type: any): SceneObject[] {
+    // TODO(smg): horribly underperformant, perhaps use a hash on object type instead?
     return this.objects.filter(o => o instanceof type);
   }
 
@@ -125,6 +126,17 @@ export class Scene {
     }
 
     return true;
+  }
+
+  /**
+   * A combination of hasCollisionAtPosition and willHaveCollisionAtPosition
+   * @param positionX 
+   * @param positionY 
+   * @param sceneObject 
+   * @returns 
+   */
+  hasOrWillHaveCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
+    return this.hasCollisionAtPosition(positionX, positionY, sceneObject) || this.willHaveCollisionAtPosition(positionX, positionY, sceneObject);
   }
 
   /**

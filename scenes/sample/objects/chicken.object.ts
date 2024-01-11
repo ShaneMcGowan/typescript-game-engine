@@ -32,6 +32,10 @@ export class ChickenObject implements SceneObject {
   // egg
   eggTimer = MathUtils.randomStartingDelta(2);;
   eggTimerMax = 7; // seconds until next egg
+  eggMax = 200; // max total chickens + eggs allowed at one time
+
+  // additional flags
+  isMovingThisFrame = false;
 
   constructor(
     private scene: Scene,
@@ -47,8 +51,10 @@ export class ChickenObject implements SceneObject {
   }
   
   update(delta: number): void {
-    this.updateAnimation(delta);
+    this.isMovingThisFrame = false;
+
     this.updateMovement(delta);
+    this.updateAnimation(delta);
     this.updateEgg(delta);
   }
 
@@ -139,6 +145,9 @@ export class ChickenObject implements SceneObject {
       
       this.positionX = updatedMovement.positionX; 
       this.positionY = updatedMovement.positionY;
+
+      // set flag
+      this.isMovingThisFrame = true;
     }
   }
 
@@ -149,13 +158,27 @@ export class ChickenObject implements SceneObject {
       return;
     }
 
-    let totalChickens = this.scene.getObjectsByType(ChickenObject).length;
-    if(totalChickens > 10){
+    // only lay egg if moving
+    if(this.isMovingThisFrame === false){
       return;
     }
 
+    // only lay egg if there are less than 10 chickens
+    let totalChickens = this.scene.getObjectsByType(ChickenObject).length;
+    let totalEggs = this.scene.getObjectsByType(EggObject).length;
+    if((totalChickens + totalEggs) > this.eggMax){
+      return;
+    }
+
+    // check direction travelling to ensure that egg is always beneath chicken as they walk away
+    let roundDirection;
+    if(this.positionX > this.targetX || this.positionY > this.targetY){
+      roundDirection = Math.ceil;
+    } else {
+      roundDirection = Math.floor;
+    }
     this.scene.addObject(
-      new EggObject(this.scene, this.context, this.assets, { positionX: Math.floor(this.positionX), positionY: Math.floor(this.positionY) })
+      new EggObject(this.scene, this.context, this.assets, { positionX: roundDirection(this.positionX), positionY: roundDirection(this.positionY) })
     );
 
     this.eggTimer = 0;

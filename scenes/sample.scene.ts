@@ -99,6 +99,11 @@ export class SampleScene extends Scene {
     this.objects.push(new FenceObject(this, context, assets, { positionX: 16, positionY: 12, type: FenceType.MiddleHorizontal }));
     this.objects.push(new FenceObject(this, context, assets, { positionX: 17, positionY: 12, type: FenceType.MiddleHorizontal }));
     this.objects.push(new FenceObject(this, context, assets, { positionX: 18, positionY: 12, type: FenceType.BottomRight }));
+
+    // load test
+    // for(let i = 0; i < 5000; i++){
+    //   this.objects.push(new ChickenObject(this, context, assets, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));
+    // }
   }
 
 }

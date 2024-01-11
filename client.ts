@@ -36,9 +36,9 @@ export class Client {
   // Debug
   debug = {
     stats: {
-      fps: false, // show fps
+      fps: true, // show fps
       fpsCounter: 0, // time since last check
-      objectCount: true, // show object count
+      objectCount: false, // show object count
     },
     breakpoint: {
       frame: false
@@ -48,6 +48,12 @@ export class Client {
       frameBackground: false,
       frameUpdate: false,
       frameRender: false
+    },
+    ui: {
+      grid: {
+        lines: false,
+        numbers: false
+      }
     }
   }
 
@@ -140,6 +146,9 @@ export class Client {
       this.renderStats(`${this.currentScene.objects.length} objects`);
     }
 
+    // debug grid
+    this.renderGrid();
+
     // Call next frame
     // (we set `this` context for when using window.requestAnimationFrame)
     window.requestAnimationFrame(this.frame.bind(this));
@@ -204,4 +213,22 @@ export class Client {
     this.context.fillText(text, this.CANVAS_WIDTH - 50, 16);
   }
 
+  private renderGrid(): void {
+    if(this.debug.ui.grid.lines)
+    for(let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE){
+      for(let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE){
+        this.context.strokeRect(x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE);
+      }
+    }
+
+    if(this.debug.ui.grid.numbers) {
+      for(let x = 0; x < CanvasConstants.CANVIS_TILE_WIDTH; x++){
+        for(let y = 0; y < CanvasConstants.CANVIS_TILE_HEIGHT; y++){
+          this.context.font = "8px helvetica";
+          this.context.fillText(`${x},${y}`, x * CanvasConstants.TILE_SIZE, (y + .5) * CanvasConstants.TILE_SIZE);
+        }
+      }
+    }
+  }
 }
+
