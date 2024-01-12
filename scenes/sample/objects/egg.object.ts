@@ -54,8 +54,8 @@ export class EggObject implements SceneObject {
     );
   }
 
-  // TODO(smg): do timers need to be cleaned up?
-  destroy?(): void {}
+  // TODO(smg): what needs to be cleaned up here? are we sure the object is being properly released?
+  destroy(): void {}
 
   private updateAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 1;

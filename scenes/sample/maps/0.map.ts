@@ -98,26 +98,7 @@ export class SAMPLE_SCENE_MAP_0 extends SceneMap {
     this.objects.push(new FenceObject(scene, context, assets, { positionX: 16, positionY: 12, type: FenceType.MiddleHorizontal }));
     this.objects.push(new FenceObject(scene, context, assets, { positionX: 17, positionY: 12, type: FenceType.MiddleHorizontal }));
     this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 12, type: FenceType.BottomRight }));
-
-    // house
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 13, positionY: 3 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 17, positionY: 3 }));
-
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 13, positionY: 4 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 17, positionY: 4 }));
     
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 13, positionY: 5 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 17, positionY: 5 }));
-
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 13, positionY: 6 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 17, positionY: 6 }));
-
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 13, positionY: 7 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 14, positionY: 7 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 15, positionY: 7 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 16, positionY: 7 }));
-    this.objects.push(new CollisionObject(scene, context, assets, { positionX: 17, positionY: 7 }));
-
     // load test
     // for(let i = 0; i < 5000; i++){
     //   this.objects.push(new ChickenObject(scene, context, assets, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));

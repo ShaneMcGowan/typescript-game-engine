@@ -105,11 +105,10 @@ export class Client {
     return canvas
   }
 
-  // TODO(smg): need some sort of scene class list
+  // TODO(smg): need some sort of scene class list type
   private changeScene(sceneClass: any): void {
     this.currentScene = Reflect.construct(sceneClass, [this.context, this.assets]);
   }
-
 
   /**
    * One frame of game logic

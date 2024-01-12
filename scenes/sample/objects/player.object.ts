@@ -354,8 +354,8 @@ export class PlayerObject implements SceneObject {
     this.controls['change_map'] = false;
   }
 
-  destroy?(): void {
-    // throw new Error("Method not implemented.");
+  destroy(): void {
+    // TODO(smg): what needs to be cleaned up here? are we sure the object is being properly released?  
   }
 
   /**

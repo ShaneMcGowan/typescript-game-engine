@@ -1,7 +1,5 @@
-// TODO(smg): these comments are from client 1, need to update them for client 2
-
 export class CanvasConstants {
-  // odd number allows player character to be rendered in direct center of screen
+  // an odd number width and height allows player character to be rendered in direct center of screen if you are doing a player following camera
   // this is effectively the resolution of the game, text scales with it so can't increase it too much
 
   // Canvas Constants
