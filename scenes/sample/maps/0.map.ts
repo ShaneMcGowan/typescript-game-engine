@@ -11,8 +11,8 @@ import { SAMPLE_SCENE_MAP_0_BACKGROUND_1 } from "./0/backgrounds/1.background";
 
 export class SAMPLE_SCENE_MAP_0 extends SceneMap {
 
-  height = 10;
-  width = 10;
+  height = 15;
+  width = 21;
   backgroundLayers: BackgroundLayer[] = [
     SAMPLE_SCENE_MAP_0_BACKGROUND_0,
     SAMPLE_SCENE_MAP_0_BACKGROUND_1
