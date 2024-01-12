@@ -7,10 +7,10 @@ import { PlayerObject } from "./player.object";
 export class EggObject implements SceneObject {
   isRenderable = true;
   hasCollision = true;
-  positionX = -1;
-  positionY = -1;
-  targetX = this.positionX;
-  targetY = this.positionY;
+  positionX;
+  positionY;
+  targetX;
+  targetY;
   spriteX = 0;
   spriteY = 0;
   tileset = 'tileset_egg';
@@ -32,9 +32,9 @@ export class EggObject implements SceneObject {
     private assets: Record<string, any>,
     private config: { positionX?: number, positionY?: number },
   ){
-    this.positionX = this.config.positionX ?? 5;
+    this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
-    this.positionY = this.config.positionY ?? 5;
+    this.positionY = this.config.positionY ?? -1;
     this.targetY = this.positionY;
   }
   

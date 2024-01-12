@@ -15,10 +15,10 @@ export class FenceType {
 export class FenceObject implements SceneObject {
   isRenderable = true;
   hasCollision = true;
-  positionX = 0;
-  positionY = 0;
-  targetX = 0;
-  targetY = 0;
+  positionX;
+  positionY;
+  targetX;
+  targetY;
   spriteX = 1;
   spriteY = 0;
   tileset = 'tileset_fence';
@@ -29,8 +29,10 @@ export class FenceObject implements SceneObject {
     private assets: Record<string, any>,
     private config: Partial<{ positionX: number, positionY: number, type: { x: number, y: number } }>,
   ){
-    this.positionX = this.config.positionX || 0;
-    this.positionY = this.config.positionY || 0;
+    this.positionX = this.config.positionX ?? -1;
+    this.targetX = this.positionX;
+    this.positionY = this.config.positionY ?? -1;
+    this.targetY = this.positionY;
     if(this.config.type){
       this.spriteX = this.config.type.x;
       this.spriteY = this.config.type.y;

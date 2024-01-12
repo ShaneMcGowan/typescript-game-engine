@@ -16,10 +16,10 @@ export class PlayerObject implements SceneObject {
   
   isRenderable: boolean;
   hasCollision = true;
-  positionX = 7;
-  positionY = 3;
-  targetX = 7;
-  targetY = 3;
+  positionX;
+  positionY;
+  targetX;
+  targetY;
   tileset = 'tileset_player';
   spriteX = 1;
   spriteY = 1;
@@ -66,9 +66,9 @@ export class PlayerObject implements SceneObject {
     private assets: Record<string, any>,
     private config: { positionX?: number, positionY?: number, targetX?: number, targetY?: number },
   ){
-    this.positionX = this.config.positionX ?? 5;
+    this.positionX = this.config.positionX ?? -1;
     this.targetX = this.config.targetX ?? this.positionX;
-    this.positionY = this.config.positionY ?? 5;
+    this.positionY = this.config.positionY ?? -1;
     this.targetY = this.config.targetY ?? this.positionY;
 
     document.addEventListener('keydown', (event) => {

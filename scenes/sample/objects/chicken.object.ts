@@ -9,8 +9,8 @@ import { PlayerObject } from "./player.object";
 export class ChickenObject implements SceneObject {
   isRenderable = true;
   hasCollision = true;
-  positionX = 4;
-  positionY = 4;
+  positionX;
+  positionY;
   spriteX = 0;
   spriteY = 0;
   tileset = 'tileset_chicken';
@@ -26,8 +26,8 @@ export class ChickenObject implements SceneObject {
   movementSpeed = 2; // tiles per second
   movementTimer = MathUtils.randomStartingDelta(2);
   movementDelay = 2; // seconds until next movement
-  targetX = this.positionX;
-  targetY = this.positionY;
+  targetX;
+  targetY;
 
   // egg
   eggTimer = MathUtils.randomStartingDelta(2);;
@@ -44,9 +44,9 @@ export class ChickenObject implements SceneObject {
     private config: { positionX?: number, positionY?: number },
     private player: PlayerObject
   ){
-    this.positionX = this.config.positionX ?? 5;
+    this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
-    this.positionY = this.config.positionY ?? 5;
+    this.positionY = this.config.positionY ?? -1;
     this.targetY = this.positionY;
   }
   
