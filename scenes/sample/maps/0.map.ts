@@ -5,6 +5,7 @@ import { SceneObject } from "../../../model/scene-object";
 import { ChickenObject } from "../objects/chicken.object";
 import { CollisionObject } from "../objects/collision.object";
 import { FenceObject, FenceType } from "../objects/fence.object";
+import { HoleObject } from "../objects/hole.object";
 import { PlayerObject } from "../objects/player.object";
 import { SAMPLE_SCENE_MAP_0_BACKGROUND_0 } from "./0/backgrounds/0.background";
 import { SAMPLE_SCENE_MAP_0_BACKGROUND_1 } from "./0/backgrounds/1.background";
@@ -21,6 +22,10 @@ export class SAMPLE_SCENE_MAP_0 extends SceneMap {
   
   constructor(scene: Scene, context: CanvasRenderingContext2D, assets: Record<string, any>){
     super(scene, context, assets);
+
+    // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index. 
+    // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
+    this.objects.push(new HoleObject(scene, context, assets, { positionX: 17, positionY: 3}));
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors

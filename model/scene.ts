@@ -99,51 +99,6 @@ export class Scene {
     });
 
     return;
-    /*
-    this.backgroundLayers.forEach((layer) => {
-      
-      // increment timer for layer
-      if(this.backgroundLayerTimer[layer.index] === undefined){
-        this.backgroundLayerTimer[layer.index] = 0;
-      } else {
-        this.backgroundLayerTimer[layer.index] += delta;
-      }
-
-      // animation test for water
-      if(layer.index === 0) {
-        if(this.backgroundLayerTimer[layer.index] < 0.25) {
-          this.backgroundLayerAnimationIndex[layer.index] = 0;
-        } else if (this.backgroundLayerTimer[layer.index] < 0.5){
-          this.backgroundLayerAnimationIndex[layer.index] = 1;
-        } else if (this.backgroundLayerTimer[layer.index] < 0.75){
-          this.backgroundLayerAnimationIndex[layer.index] = 2;
-        } else {
-          this.backgroundLayerAnimationIndex[layer.index] = 3;
-        }
-
-        if(this.backgroundLayerTimer[layer.index] > 1){
-          this.backgroundLayerTimer[layer.index] = 0;
-        }
-      }
-      
-      for(let x = 0; x < layer.tiles.length; x++){
-        for(let y = 0; y < layer.tiles[x].length; y++){
-          const tile = layer.tiles[x][y];
-          if(tile === undefined){
-            continue;
-          }
-          RenderUtils.renderSprite(
-            this.context,
-            this.assets.images[tile.tileset],
-            tile.spriteX + (layer.index === 0 ? this.backgroundLayerAnimationIndex[layer.index] : 0),
-            tile.spriteY,
-            x,
-            y
-          );
-        }
-      }
-    });
-    */
   }
 
   addObject(sceneObject: SceneObject): void {
@@ -229,8 +184,23 @@ export class Scene {
    * @param type 
    * @returns 
    */
-  getObjectAtPosition(positionX: number, positionY: number, type: any){
+  getObjectAtPosition(positionX: number, positionY: number, type?: any){
+    // TODO(smg): add optional type check
+    // TODO(smg): this is a very heavy operation
     return this.objects.find(o => o.positionX === positionX && o.positionY === positionY);
+  }
+
+  /**
+   * returns all objects found at the provided position 
+   * @param positionX
+   * @param positionY 
+   * @param type 
+   * @returns 
+   */
+  getAllObjectsAtPosition(positionX: number, positionY: number, type?: any){
+    // TODO(smg): add optional type check
+    // TODO(smg): this is a very heavy operation
+    return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY);
   }
 
   private removeAllObjects(): void {

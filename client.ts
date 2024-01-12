@@ -217,6 +217,7 @@ export class Client {
   }
 
   private renderStats(text: string): void {
+    this.context.fillStyle = "black";
     this.context.font = "12px serif";
     this.context.fillText(text, this.CANVAS_WIDTH - 50, 16);
   }
@@ -232,6 +233,7 @@ export class Client {
     if(this.debug.ui.grid.numbers) {
       for(let x = 0; x < CanvasConstants.CANVIS_TILE_WIDTH; x++){
         for(let y = 0; y < CanvasConstants.CANVIS_TILE_HEIGHT; y++){
+          this.context.fillStyle = "black";
           this.context.font = "8px helvetica";
           this.context.fillText(`${x},${y}`, x * CanvasConstants.TILE_SIZE, (y + .5) * CanvasConstants.TILE_SIZE);
         }
