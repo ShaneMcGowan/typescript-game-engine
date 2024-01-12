@@ -36,6 +36,7 @@ export class PlayerObject implements SceneObject {
     ['place_fence']: false,
     ['toggle_follow']: false,
     ['place_egg']: false,
+    ['change_map']: false,
   }
 
   animations = {
@@ -100,6 +101,9 @@ export class PlayerObject implements SceneObject {
         case 'e':
           this.controls['place_egg'] = true;
           break;
+        case 'm':
+            this.controls['change_map'] = true;
+            break;
       }
     });
 
@@ -133,6 +137,9 @@ export class PlayerObject implements SceneObject {
         case 'e':
           this.controls['place_egg'] = false;
           break;
+        case 'm':
+          this.controls['change_map'] = false;
+          break;
       }
     });
   }
@@ -143,6 +150,7 @@ export class PlayerObject implements SceneObject {
     this.updatePlaceFence();
     this.updateToggleFollow();
     this.updateEgg();
+    this.updateChangeMap();
   }
 
   render(): void {
@@ -331,6 +339,16 @@ export class PlayerObject implements SceneObject {
     this.scene.addObject(egg);
 
     this.controls['place_egg'] = false;
+  }
+
+  updateChangeMap(): void {
+    if(this.controls['change_map'] === false){
+      return;
+    }
+
+    this.scene.loadNewMap(1);
+
+    this.controls['change_map'] = false;
   }
 
   destroy?(): void {

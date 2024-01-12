@@ -1,17 +1,20 @@
 import { RenderUtils } from "../utils/render.utils";
 import { BackgroundLayer } from "./background-layer";
+import { SceneMap } from "./scene-map";
 import { SceneObject } from "./scene-object";
 
 export class Scene {
-  id: string;
   backgroundLayers: BackgroundLayer[];
   backgroundLayerTimer: Record<number, number> = {}; // used for timings for background layer animations
   backgroundLayerAnimationIndex: Record<number, number> = {} // used for timings for background layer animations
-
   objects: SceneObject[];
   width: number; // width in tiles (e.g. 16 would be 16 tiles wide)
   height: number; // height in tiles
   globals: Record<string, any> = {}; // a place to store flags for the scene
+
+  // maps
+  maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap 
+  private map: SceneMap; // the current map
 
   constructor(
     public context: CanvasRenderingContext2D, 
@@ -148,6 +151,31 @@ export class Scene {
    */
   getObjectAtPosition(positionX: number, positionY: number, type: any){
     return this.objects.find(o => o.positionX === positionX && o.positionY === positionY);
+  }
+
+  private removeAllObjects(): void {
+    this.objects = [];
+  }
+
+  private removeAllBackgroundLayers(): void {
+    this.backgroundLayers = [];
+  }
+
+  loadNewMap(index: number): void {
+    // clean up map
+    if(this.map !== undefined){
+      this.map.destroy();
+    }
+
+    // clean up scene
+    // TODO(smg): some sort of scene reset function
+    this.removeAllObjects();
+    this.removeAllBackgroundLayers();
+
+    // set up new map
+    this.map = Reflect.construct(this.maps[index], [this, this.context, this.assets]) as SceneMap;
+    this.backgroundLayers.push(...this.map.backgroundLayers);
+    this.objects.push(...this.map.objects);
   }
 
 }
