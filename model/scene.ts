@@ -3,10 +3,25 @@ import { BackgroundLayer } from "./background-layer";
 import { SceneMap } from "./scene-map";
 import { SceneObject } from "./scene-object";
 
+/**
+
+  adding a quick description here as this shape is pretty gross but I think it will be somewhat performant at scale
+  where <number> from left to right is, <scene index>, <x position>, <y position>, <animation timer in seconds>
+
+  backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>>
+  backgroundLayersAnimationTimer = {
+    0: {
+      0: {
+        0: 0
+      }
+    }
+  }
+  
+*/
+
 export class Scene {
   backgroundLayers: BackgroundLayer[];
-  backgroundLayerTimer: Record<number, number> = {}; // used for timings for background layer animations
-  backgroundLayerAnimationIndex: Record<number, number> = {} // used for timings for background layer animations
+  backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations
   objects: SceneObject[];
   width: number; // width in tiles (e.g. 16 would be 16 tiles wide)
   height: number; // height in tiles
@@ -23,8 +38,68 @@ export class Scene {
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
 
-  // TODO(smg): this is currently set up to work with the sample scene, make this generic
   renderBackground(delta: number): void {
+    this.backgroundLayers.forEach((layer) => {
+      
+      for(let x = 0; x < this.map.width; x++){
+        for(let y = 0; y < this.map.height; y++){
+          let tile = layer.tiles[x] ? layer.tiles[x][y] : undefined;
+          
+          if(tile === undefined){
+            continue;
+          }
+
+          let animationFrame;
+          if(tile.animationFrames.length === 1){
+            // skip animations if only 1 sprite
+            animationFrame = tile.animationFrames[0];
+          } else {
+            // check if timer has started for specific tile on specific layer
+            if(this.backgroundLayersAnimationTimer[layer.index] === undefined){
+              this.backgroundLayersAnimationTimer[layer.index] = {};
+            }
+            
+            if(this.backgroundLayersAnimationTimer[layer.index][x] === undefined){
+              this.backgroundLayersAnimationTimer[layer.index][x] = {};
+            }
+
+            let timer;
+            if(this.backgroundLayersAnimationTimer[layer.index][x][y] === undefined) {
+              timer = 0;
+            } else {
+              timer = this.backgroundLayersAnimationTimer[layer.index][x][y] + delta;
+            }
+                
+            // wrap timer if over animation frame duration
+            if(timer > tile.animationFrameDuration) {
+              timer = timer % tile.animationFrameDuration;
+            }
+            
+            for(let i = 0; i < tile.animationMap.length; i++){
+              if(timer <= tile.animationMap[i]){
+                animationFrame = tile.animationFrames[i];
+                break;
+              }
+            }
+
+            this.backgroundLayersAnimationTimer[layer.index][x][y] = timer;
+          }
+
+          RenderUtils.renderSprite(
+            this.context,
+            this.assets.images[tile.tileset],
+            animationFrame.spriteX,
+            animationFrame.spriteY,
+            x,
+            y
+          );
+          
+        }
+      }
+    });
+
+    return;
+    /*
     this.backgroundLayers.forEach((layer) => {
       
       // increment timer for layer
@@ -68,6 +143,7 @@ export class Scene {
         }
       }
     });
+    */
   }
 
   addObject(sceneObject: SceneObject): void {
@@ -129,6 +205,10 @@ export class Scene {
     }
 
     return true;
+  }
+
+  isOutOfBounds(positionX: number, positionY: number): boolean {
+    return (positionX > this.map.width - 1 || positionY > this.map.height - 1 || positionX < 0 || positionY < 0);
   }
 
   /**

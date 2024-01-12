@@ -238,6 +238,9 @@ export class PlayerObject implements SceneObject {
     if(this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY)){
       return;
     }
+    if(this.scene.isOutOfBounds(movement.targetX, movement.targetY)){
+      return;
+    }
 
     this.targetX = movement.targetX;
     this.targetY = movement.targetY;

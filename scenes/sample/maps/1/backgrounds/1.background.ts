@@ -3,6 +3,7 @@ import { BackgroundLayer } from "../../../../../model/background-layer";
 export const SAMPLE_SCENE_MAP_1_BACKGROUND_1: BackgroundLayer = {
   index: 1,
   tiles: [
+    /*
     [],
     [
       undefined,
@@ -92,6 +93,7 @@ export const SAMPLE_SCENE_MAP_1_BACKGROUND_1: BackgroundLayer = {
       {spriteX: 2, spriteY: 1, tileset: 'tileset_grass'},
       {spriteX: 2, spriteY: 2, tileset: 'tileset_grass'},
     ],
+    */
   ]
 };
     
