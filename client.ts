@@ -1,7 +1,6 @@
 import { CanvasConstants } from "./constants/canvas.constants";
 import { SCENES } from "./constants/scene.constants";
 import { Scene } from "./model/scene";
-import { RenderUtils } from "./utils/render.utils";
 
 export class Client {
 
@@ -37,6 +36,7 @@ export class Client {
 
   // Debug
   debug = {
+    enabled: true, // if true, debug keys are enabled
     stats: {
       fps: true, // show fps
       fpsCounter: 0, // time since last check
@@ -69,6 +69,11 @@ export class Client {
     this.assets.images.tileset_egg.src = '/assets/sample/Characters/Egg_And_Nest.png';
     this.assets.images.tileset_house.src = '/assets/sample/Tilesets/Wooden House.png';
     this.assets.images.tileset_dirt.src = '/assets/sample/Tilesets/Tilled_Dirt.png';
+
+    // initialise debug controls
+    if(this.debug.enabled){
+      this.initialiseDebuggerListeners();
+    }
 
     // initialise canvas
     this.canvas = this.createCanvas();
@@ -232,6 +237,49 @@ export class Client {
         }
       }
     }
+  }
+
+  private initialiseDebuggerListeners(): void {
+    document.addEventListener('keyup', (event) => {
+      switch(event.key){
+        case '1':
+          this.debug.ui.grid.lines = !this.debug.ui.grid.lines; 
+          break;
+        case '2':
+          this.debug.ui.grid.numbers = !this.debug.ui.grid.numbers; 
+          break;
+        case '3':
+          this.debug.breakpoint.frame = !this.debug.breakpoint.frame; 
+          break;
+        case '4':
+          this.debug.stats.fps = !this.debug.stats.fps; 
+          break;
+        case '5':
+          this.debug.stats.objectCount = !this.debug.stats.objectCount; 
+          break;
+        case '6':
+          this.debug.timing.frame = !this.debug.timing.frame; 
+          break;
+        case '7':
+          this.debug.timing.frameBackground = !this.debug.timing.frameBackground;
+          break;
+        case '8':
+          this.debug.timing.frameRender = !this.debug.timing.frameRender;
+          break;
+        case '9':
+          this.debug.timing.frameUpdate = !this.debug.timing.frameUpdate;
+          break;
+        case '0':
+          // nothing yet
+          break;
+        case '+':
+          // nothing yet
+          break;
+        case '-':
+          // nothing yet
+          break;
+      }
+    });
   }
 }
 
