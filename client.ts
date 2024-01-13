@@ -189,11 +189,7 @@ export class Client {
       console.time('[frame] update');
     }
 
-    this.currentScene.objects.forEach((object) => {
-      if(object.update){
-        object.update(this.delta);
-      }
-    });
+    this.currentScene.updateObjects(this.delta);
 
     if(this.debug.timing.frameUpdate){
       console.timeEnd('[frame] update');
@@ -205,11 +201,7 @@ export class Client {
       console.time('[frame] render');
     }
 
-    this.currentScene.objects.forEach((object) => {
-      if(object.render){
-        object.render();
-      }
-    });
+    this.currentScene.renderObjects(this.delta);
 
     if(this.debug.timing.frameRender){
       console.timeEnd('[frame] render');

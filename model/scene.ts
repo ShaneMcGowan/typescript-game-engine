@@ -101,6 +101,22 @@ export class Scene {
     return;
   }
 
+  updateObjects(delta: number): void {
+    this.objects.forEach((object) => {
+      if(object.update){
+        object.update(delta);
+      }
+    });
+  }
+
+  renderObjects(delta: number): void {
+    this.objects.forEach((object) => {
+      if(object.render){
+        object.render();
+      }
+    });
+  }
+
   addObject(sceneObject: SceneObject): void {
     this.objects.push(sceneObject);
   }

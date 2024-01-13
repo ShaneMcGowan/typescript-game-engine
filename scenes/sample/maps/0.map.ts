@@ -3,7 +3,6 @@ import { Scene } from "../../../model/scene";
 import { SceneMap } from "../../../model/scene-map";
 import { SceneObject } from "../../../model/scene-object";
 import { ChickenObject } from "../objects/chicken.object";
-import { CollisionObject } from "../objects/collision.object";
 import { FenceObject, FenceType } from "../objects/fence.object";
 import { HoleObject } from "../objects/hole.object";
 import { PlayerObject } from "../objects/player.object";
