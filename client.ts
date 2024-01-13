@@ -38,7 +38,7 @@ export class Client {
   debug = {
     enabled: true, // if true, debug keys are enabled
     stats: {
-      fps: true, // show fps
+      fps: false, // show fps
       fpsCounter: 0, // time since last check
       objectCount: false, // show object count
     },

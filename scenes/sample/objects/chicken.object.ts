@@ -30,6 +30,7 @@ export class ChickenObject implements SceneObject {
   targetY;
 
   // egg
+  eggEnabled: boolean;
   eggTimer = MathUtils.randomStartingDelta(2);;
   eggTimerMax = 7; // seconds until next egg
   eggMax = 200; // max total chickens + eggs allowed at one time
@@ -41,13 +42,14 @@ export class ChickenObject implements SceneObject {
     private scene: Scene,
     private context: CanvasRenderingContext2D,
     private assets: Record<string, any>,
-    private config: { positionX?: number, positionY?: number },
+    private config: { positionX?: number, positionY?: number, canLayEggs?: boolean },
     private player: PlayerObject
   ){
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;
     this.targetY = this.positionY;
+    this.eggEnabled = this.config.canLayEggs ?? true; 
   }
   
   update(delta: number): void {
@@ -152,6 +154,10 @@ export class ChickenObject implements SceneObject {
   }
 
   private updateEgg(delta: number): void {
+    if(this.eggEnabled === false){
+      return;
+    }
+
     this.eggTimer += delta;
 
     if(this.eggTimer < this.eggTimerMax){

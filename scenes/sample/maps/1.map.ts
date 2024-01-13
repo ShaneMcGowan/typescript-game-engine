@@ -22,7 +22,7 @@ export class SAMPLE_SCENE_MAP_1 extends SceneMap {
     this.objects.push(new PlayerObject(scene, context, assets, { positionX: 1, positionY: 4  }));
 
     // chickens
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 4}, this.objects[0] as PlayerObject));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 4, canLayEggs: false }, this.objects[0] as PlayerObject));
     
   }
 
