@@ -24,7 +24,7 @@ export class SAMPLE_SCENE_MAP_0 extends SceneMap {
 
     // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index. 
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
-    let hole = new HoleObject(scene, context, assets, { positionX: 12, positionY: 9})
+    let hole = new HoleObject(scene, context, assets, { positionX: 10, positionY: 7})
     this.objects.push(hole);
 
     // instanciate objects
@@ -34,12 +34,10 @@ export class SAMPLE_SCENE_MAP_0 extends SceneMap {
 
     // chickens
     // TODO(smg): some sort of way to get an object by id or name to avoid below way of referencing player via objects[0]
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, player, hole));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 3, positionY: 3 }, player, hole));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 16, positionY: 10 }, player, hole));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 5, positionY: 4 }, player, hole));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 11, positionY: 8 }, player, hole));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 10 }, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 4, positionY: 4 }, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 4, positionY: 10}, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 16, positionY: 4}, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 16, positionY: 10}, player, hole));
 
     // fences
     this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 2, type: FenceType.TopLeft }));

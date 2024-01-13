@@ -189,7 +189,7 @@ export class ChickenObject implements SceneObject {
       return;
     }
 
-    if(this.scene.globals['chicken_counter'] > 120){
+    if(this.scene.globals['chicken_counter'] > 67){
       return;
     }
 
