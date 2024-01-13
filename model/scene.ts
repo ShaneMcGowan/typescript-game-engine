@@ -20,11 +20,13 @@ import { SceneObject } from "./scene-object";
 */
 
 export class Scene {
+
+  // background
   backgroundLayers: BackgroundLayer[];
   backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations
+  
+  // objects
   objects: SceneObject[];
-  width: number; // width in tiles (e.g. 16 would be 16 tiles wide)
-  height: number; // height in tiles
   globals: Record<string, any> = {}; // a place to store flags for the scene
 
   // maps
