@@ -19,10 +19,11 @@ export class SAMPLE_SCENE_MAP_1 extends SceneMap {
   constructor(scene: Scene, context: CanvasRenderingContext2D, assets: Record<string, any>){
     super(scene, context, assets);
 
-    this.objects.push(new PlayerObject(scene, context, assets, { positionX: 1, positionY: 4  }));
+    let player = new PlayerObject(scene, context, assets, { positionX: 1, positionY: 4  };
+    this.objects.push(player);
 
     // chickens
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 4, canLayEggs: false }, this.objects[0] as PlayerObject));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 4, canLayEggs: false }, player, undefined));
     
   }
 

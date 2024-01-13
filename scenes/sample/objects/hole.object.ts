@@ -18,7 +18,7 @@ export class HoleObject implements SceneObject {
 
   // consumption timer
   consumptionTimer = 0;
-  consumptionTimerMax = 5; // how often the hole can consume
+  consumptionTimerMax = 1; // how often the hole can consume
   
   constructor(
     private scene: Scene,

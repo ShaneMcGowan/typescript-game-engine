@@ -4,6 +4,7 @@ import { MathUtils } from "../../../utils/math.utils";
 import { Movement, MovementUtils } from "../../../utils/movement.utils";
 import { RenderUtils } from "../../../utils/render.utils";
 import { EggObject } from "./egg.object";
+import { HoleObject } from "./hole.object";
 import { PlayerObject } from "./player.object";
 
 export class ChickenObject implements SceneObject {
@@ -25,6 +26,7 @@ export class ChickenObject implements SceneObject {
   // movement
   movementSpeed = 2; // tiles per second
   movementTimer = MathUtils.randomStartingDelta(2);
+  movementTimerDelayed = 0;
   movementDelay = 2; // seconds until next movement
   targetX;
   targetY;
@@ -37,13 +39,15 @@ export class ChickenObject implements SceneObject {
 
   // additional flags
   isMovingThisFrame = false;
+  
 
   constructor(
     private scene: Scene,
     private context: CanvasRenderingContext2D,
     private assets: Record<string, any>,
     private config: { positionX?: number, positionY?: number, canLayEggs?: boolean },
-    private player: PlayerObject
+    private player: PlayerObject,
+    private hole: HoleObject,
   ){
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
@@ -84,6 +88,7 @@ export class ChickenObject implements SceneObject {
 
   private updateMovement(delta: number): void {
     this.movementTimer += delta;
+    this.movementTimerDelayed += delta;
 
     // determine next movement
     if(this.movementTimer > this.movementDelay){
@@ -113,6 +118,21 @@ export class ChickenObject implements SceneObject {
           this.player.positionY,
           this.player.targetX,
           this.player.targetY
+        )
+      );
+    } else if(this.scene.globals['chickens_drawn_to_hole'] && this.hole !== undefined && this.movementTimerDelayed > 60){
+      movement = MovementUtils.moveTowardsOtherEntity(
+        new Movement(
+          this.positionX,
+          this.positionY,
+          this.targetX,
+          this.targetY
+        ),
+        new Movement(
+          this.hole.positionX,
+          this.hole.positionY,
+          this.hole.targetX,
+          this.hole.targetY
         )
       );
     } else {
@@ -169,7 +189,11 @@ export class ChickenObject implements SceneObject {
       return;
     }
 
-    // only lay egg if there are less than 10 chickens
+    if(this.scene.globals['chicken_counter'] > 120){
+      return;
+    }
+
+    // only lay egg if there are less than the max allowed chickens
     let totalChickens = this.scene.getObjectsByType(ChickenObject).length;
     let totalEggs = this.scene.getObjectsByType(EggObject).length;
     if((totalChickens + totalEggs) > this.eggMax){
@@ -186,6 +210,8 @@ export class ChickenObject implements SceneObject {
     this.scene.addObject(
       new EggObject(this.scene, this.context, this.assets, { positionX: roundDirection(this.positionX), positionY: roundDirection(this.positionY) })
     );
+
+    this.scene.globals['chicken_counter']++;
 
     this.eggTimer = 0;
   }

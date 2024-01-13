@@ -2,6 +2,7 @@ import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 import { ChickenObject } from "./chicken.object";
+import { HoleObject } from "./hole.object";
 import { PlayerObject } from "./player.object";
 
 export class EggObject implements SceneObject {
@@ -70,7 +71,9 @@ export class EggObject implements SceneObject {
     }
 
     let player = this.scene.getObjectsByType(PlayerObject)[0] as PlayerObject;
-    let chicken = new ChickenObject(this.scene, this.context, this.assets, { positionX: this.positionX, positionY: this.positionY }, player);
+    let hole = this.scene.getObjectsByType(HoleObject)[0] as HoleObject;
+
+    let chicken = new ChickenObject(this.scene, this.context, this.assets, { positionX: this.positionX, positionY: this.positionY }, player, hole);
       
     this.scene.removeObject(this);
     this.scene.addObject(chicken);

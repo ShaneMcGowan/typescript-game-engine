@@ -24,20 +24,22 @@ export class SAMPLE_SCENE_MAP_0 extends SceneMap {
 
     // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index. 
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
-    this.objects.push(new HoleObject(scene, context, assets, { positionX: 17, positionY: 3}));
+    let hole = new HoleObject(scene, context, assets, { positionX: 12, positionY: 9})
+    this.objects.push(hole);
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    this.objects.push(new PlayerObject(scene, context, assets, { positionX: 7, positionY: 3, targetX: 7, targetY: 3  }));
+    let player = new PlayerObject(scene, context, assets, { positionX: 7, positionY: 3, targetX: 7, targetY: 3  });
+    this.objects.push(player);
 
     // chickens
     // TODO(smg): some sort of way to get an object by id or name to avoid below way of referencing player via objects[0]
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 3, positionY: 3 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 9, positionY: 5 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 5, positionY: 4 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 11, positionY: 8 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 10 }, this.objects[0] as PlayerObject));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 3, positionY: 3 }, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 16, positionY: 10 }, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 5, positionY: 4 }, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 11, positionY: 8 }, player, hole));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 10 }, player, hole));
 
     // fences
     this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 2, type: FenceType.TopLeft }));

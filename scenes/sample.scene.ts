@@ -5,7 +5,9 @@ import { SAMPLE_SCENE_MAP_1 } from "./sample/maps/1.map";
 export class SampleScene extends Scene {
 
   globals: Record<string, any> = {
-    chickens_follow_player: false
+    chickens_follow_player: false,
+    chickens_drawn_to_hole: true,
+    chicken_counter: 0,
   };
   maps = [
     SAMPLE_SCENE_MAP_0,
