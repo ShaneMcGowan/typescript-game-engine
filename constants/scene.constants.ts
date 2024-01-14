@@ -1,3 +1,4 @@
+import { Scene } from "../model/scene";
 import { SampleScene } from "../scenes/sample.scene";
 
 /**

@@ -1,3 +1,4 @@
+import { ASSETS } from "./constants/assets.constants";
 import { CanvasConstants } from "./constants/canvas.constants";
 import { SCENES } from "./constants/scene.constants";
 import { Scene } from "./model/scene";
@@ -9,9 +10,9 @@ export class Client {
   private readonly CANVAS_WIDTH: number = CanvasConstants.TILE_SIZE * CanvasConstants.CANVIS_TILE_WIDTH;
   
   // UI
-  private canvas: HTMLCanvasElement;
-  private context: CanvasRenderingContext2D;
-  private delta: number = 0;
+  public canvas: HTMLCanvasElement;
+  public context: CanvasRenderingContext2D;
+  public delta: number = 0;
   private lastRenderTimestamp: number = 0;
 
   // Data
@@ -61,14 +62,11 @@ export class Client {
 
   constructor(container: HTMLElement){
     // load assets
-    this.assets.images.tileset_grass.src = '/assets/sample/Tilesets/Grass.png';
-    this.assets.images.tileset_water.src = '/assets/sample/Tilesets/Water.png';
-    this.assets.images.tileset_player.src = '/assets/sample/Characters/Basic Charakter Spritesheet.png';
-    this.assets.images.tileset_chicken.src = '/assets/sample/Characters/Free Chicken Sprites.png';
-    this.assets.images.tileset_fence.src = '/assets/sample/Tilesets/Fences.png';
-    this.assets.images.tileset_egg.src = '/assets/sample/Characters/Egg_And_Nest.png';
-    this.assets.images.tileset_house.src = '/assets/sample/Tilesets/Wooden House.png';
-    this.assets.images.tileset_dirt.src = '/assets/sample/Tilesets/Tilled_Dirt.png';
+    // TODO(smg): some sort of loading screen / rendering delay until assets are loaded
+    Object.keys(ASSETS.images).forEach((key) => {
+      this.assets.images[key] = new Image();
+      this.assets.images[key].src = ASSETS.images[key]
+    });
 
     // initialise debug controls
     if(this.debug.enabled){
@@ -123,7 +121,7 @@ export class Client {
 
   // TODO(smg): need some sort of scene class list type
   private changeScene(sceneClass: any): void {
-    this.currentScene = Reflect.construct(sceneClass, [this.context, this.assets]);
+    this.currentScene = Reflect.construct(sceneClass, [this, this.context, this.assets]);
   }
 
   /**
@@ -145,14 +143,7 @@ export class Client {
     // Clear canvas before render
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // Render background
-    this.renderBackground();
-
-    // Run object logic
-    this.updateObjects();
-
-    // Render objects
-    this.renderObjects();
+    this.currentScene.frame(this.delta);
 
     // Render stats
     if(this.debug.stats.fps){
@@ -180,43 +171,6 @@ export class Client {
   private setDelta(timestamp: number): void {
     this.delta = (timestamp - this.lastRenderTimestamp) / 1000;
     this.lastRenderTimestamp = timestamp;
-  }
-
-  private renderBackground(): void {
-    if(this.debug.timing.frameBackground){
-      console.time('[frame] background');
-    }
-
-    // TODO(smg): only render within viewport as it is expensive to render the whole background
-    this.currentScene.renderBackground(this.delta);
-
-    if(this.debug.timing.frameBackground){
-      console.timeEnd('[frame] background');
-    }
-  }
-
-  private updateObjects(): void {
-    if(this.debug.timing.frameUpdate){
-      console.time('[frame] update');
-    }
-
-    this.currentScene.updateObjects(this.delta);
-
-    if(this.debug.timing.frameUpdate){
-      console.timeEnd('[frame] update');
-    }
-  }
-
-  private renderObjects(): void {
-    if(this.debug.timing.frameRender){
-      console.time('[frame] render');
-    }
-
-    this.currentScene.renderObjects(this.delta);
-
-    if(this.debug.timing.frameRender){
-      console.timeEnd('[frame] render');
-    }
   }
 
   private renderStats(text: string): void {

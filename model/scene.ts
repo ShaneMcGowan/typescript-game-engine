@@ -1,3 +1,4 @@
+import { Client } from "../client";
 import { RenderUtils } from "../utils/render.utils";
 import { BackgroundLayer } from "./background-layer";
 import { SceneMap } from "./scene-map";
@@ -33,14 +34,31 @@ export class Scene {
   maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap 
   private map: SceneMap; // the current map
 
+  // from client
+  private context: CanvasRenderingContext2D;
+  private assets: Record<string, any>;
+
   constructor(
-    public context: CanvasRenderingContext2D, 
-    public assets: Record<string, any>
-  ){}
+    private client: Client,
+  ){
+    this.context = this.client.context;
+    this.assets = this.client.assets;
+  }
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
 
+  // TODO(smg): move client rendering code into here
+  frame(delta: number): void {
+    this.renderBackground(delta);
+    this.updateObjects(delta);
+    this.renderObjects(delta);
+  }
+
   renderBackground(delta: number): void {
+    if(this.client.debug.timing.frameBackground){
+      console.time('[frame] background');
+    }
+
     this.backgroundLayers.forEach((layer) => {
       
       for(let x = 0; x < this.map.width; x++){
@@ -100,23 +118,41 @@ export class Scene {
       }
     });
 
-    return;
+    if(this.client.debug.timing.frameBackground){
+      console.timeEnd('[frame] background');
+    }
   }
 
   updateObjects(delta: number): void {
+    if(this.client.debug.timing.frameUpdate){
+      console.time('[frame] update');
+    }
+
     this.objects.forEach((object) => {
       if(object.update){
         object.update(delta);
       }
     });
+
+    if(this.client.debug.timing.frameUpdate){
+      console.timeEnd('[frame] update');
+    }
   }
 
   renderObjects(delta: number): void {
+    if(this.client.debug.timing.frameRender){
+      console.time('[frame] render');
+    }
+
     this.objects.forEach((object) => {
       if(object.render){
         object.render();
       }
     });
+
+    if(this.client.debug.timing.frameRender){
+      console.timeEnd('[frame] render');
+    }
   }
 
   addObject(sceneObject: SceneObject): void {
