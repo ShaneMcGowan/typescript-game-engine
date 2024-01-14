@@ -121,7 +121,7 @@ export class Client {
 
   // TODO(smg): need some sort of scene class list type
   private changeScene(sceneClass: any): void {
-    this.currentScene = Reflect.construct(sceneClass, [this, this.context, this.assets]);
+    this.currentScene = Reflect.construct(sceneClass, [this]);
   }
 
   /**

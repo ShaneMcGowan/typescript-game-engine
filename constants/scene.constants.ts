@@ -1,3 +1,4 @@
+import { SAMPLE_SCENE_0 } from "../scenes/0.scene";
 import { SAMPLE_SCENE_1 } from "../scenes/1.scene";
 
 /**
@@ -8,5 +9,6 @@ import { SAMPLE_SCENE_1 } from "../scenes/1.scene";
 type IScenes = typeof SAMPLE_SCENE_1; // | typeof OtherScene | typeof AnotherScene;
 
 export const SCENES: IScenes[] = [
-  SAMPLE_SCENE_1
+  SAMPLE_SCENE_0,
+  SAMPLE_SCENE_1,
 ];

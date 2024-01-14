@@ -1,5 +1,6 @@
 import { Renderable } from "./renderable";
 
+// TODO(smg): turn scene object into a class with smart defaults
 export interface SceneObject extends Renderable {
   isRenderable?: boolean; // NOT IMPLEMENTED! to be used to programatically disable the render hook of an object
   hasCollision?: boolean;
