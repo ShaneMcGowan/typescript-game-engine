@@ -8,6 +8,8 @@ interface SceneRenderingContext {
   background: CanvasRenderingContext2D[];
   objects: CanvasRenderingContext2D[];
 }
+
+type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
 /**
 
   adding a quick description here as this shape is pretty gross but I think it will be somewhat performant at scale
@@ -43,7 +45,7 @@ export class Scene {
     background: [],
     objects: [],
   }
-  customRenderer?: () => void;
+  customRenderer?: CustomRendererSignature;
 
   // from client
   private context: CanvasRenderingContext2D;
@@ -65,9 +67,9 @@ export class Scene {
     this.renderObjects(delta);
 
     if(this.customRenderer){
-      this.customRenderer();
+      this.customRenderer(this.renderingContext);
     } else {
-      this.render();
+      this.defaultRenderer();
     }
   }
 
@@ -176,7 +178,7 @@ export class Scene {
     }
   }
 
-  render(): void {
+  defaultRenderer(): void {
     this.renderingContext.background.forEach((context) => {
       this.context.drawImage(context.canvas, 0, 0);
     });
@@ -329,6 +331,14 @@ export class Scene {
 
   changeScene(sceneClass: any): void {
     this.client.changeScene(sceneClass);
+  }
+
+  setCustomRenderer(renderer: CustomRendererSignature): void {
+    this.customRenderer = renderer;
+  }
+
+  removeCustomerRenderer(): void {
+    this.customRenderer = undefined;
   }
 
 }

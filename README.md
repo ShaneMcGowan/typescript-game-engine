@@ -3,6 +3,7 @@ A game engine written in typescript
 
 ## Scene
 A scene will have several components
+- Maps
 - Background
 - Objects
 
