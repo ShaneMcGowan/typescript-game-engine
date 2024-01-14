@@ -71,7 +71,7 @@ const GRASS_TILE_BOTTOM_RIGHT: BackgroundTile2 = {
   ],
 }
 
-export const SAMPLE_SCENE_MAP_0_BACKGROUND_1: BackgroundLayer = {
+export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
   index: 1,
   tiles: [
     

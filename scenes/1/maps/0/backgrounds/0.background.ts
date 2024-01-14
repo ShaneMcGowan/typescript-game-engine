@@ -18,7 +18,7 @@ const WATER_TILE: BackgroundTile2 = {
   ]
 }
 
-export const SAMPLE_SCENE_MAP_0_BACKGROUND_0: BackgroundLayer = {
+export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_0: BackgroundLayer = {
   index: 0,
   tiles: [
     [
