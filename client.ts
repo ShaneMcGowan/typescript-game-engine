@@ -2,12 +2,13 @@ import { ASSETS } from "./constants/assets.constants";
 import { CanvasConstants } from "./constants/canvas.constants";
 import { SCENES } from "./constants/scene.constants";
 import { Scene } from "./model/scene";
+import { RenderUtils } from "./utils/render.utils";
 
 export class Client {
 
   // Constants
-  private readonly CANVAS_HEIGHT: number = CanvasConstants.TILE_SIZE * CanvasConstants.CANVIS_TILE_HEIGHT;
-  private readonly CANVAS_WIDTH: number = CanvasConstants.TILE_SIZE * CanvasConstants.CANVIS_TILE_WIDTH;
+  private readonly CANVAS_HEIGHT: number = CanvasConstants.CANVAS_HEIGHT
+  private readonly CANVAS_WIDTH: number = CanvasConstants.CANVAS_WIDTH;
   
   // UI
   public canvas: HTMLCanvasElement;
@@ -97,7 +98,7 @@ export class Client {
     });
     
     // load first scene
-    this.changeScene(this.scenes[0]);
+    this.changeScene(this.scenes[1]);
 
     // Run game logic
     this.frame(0);
@@ -120,7 +121,7 @@ export class Client {
   }
 
   // TODO(smg): need some sort of scene class list type
-  private changeScene(sceneClass: any): void {
+  changeScene(sceneClass: any): void {
     this.currentScene = Reflect.construct(sceneClass, [this]);
   }
 
@@ -141,8 +142,9 @@ export class Client {
     this.setDelta(timestamp);
 
     // Clear canvas before render
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    RenderUtils.clearCanvas(this.context);
 
+    // run frame logic
     this.currentScene.frame(this.delta);
 
     // Render stats

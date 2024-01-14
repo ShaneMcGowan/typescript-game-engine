@@ -4,6 +4,10 @@ import { BackgroundLayer } from "./background-layer";
 import { SceneMap } from "./scene-map";
 import { SceneObject } from "./scene-object";
 
+interface SceneRenderingContext {
+  background: CanvasRenderingContext2D[];
+  objects: CanvasRenderingContext2D[];
+}
 /**
 
   adding a quick description here as this shape is pretty gross but I think it will be somewhat performant at scale
@@ -34,12 +38,19 @@ export class Scene {
   maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap 
   private map: SceneMap; // the current map
 
+  // rendering contexts
+  renderingContext: SceneRenderingContext = {
+    background: [],
+    objects: [],
+  }
+  customRenderer?: () => void;
+
   // from client
   private context: CanvasRenderingContext2D;
   private assets: Record<string, any>;
 
   constructor(
-    private client: Client,
+    protected client: Client,
   ){
     this.context = this.client.context;
     this.assets = this.client.assets;
@@ -52,6 +63,12 @@ export class Scene {
     this.renderBackground(delta);
     this.updateObjects(delta);
     this.renderObjects(delta);
+
+    if(this.customRenderer){
+      this.customRenderer();
+    } else {
+      this.render();
+    }
   }
 
   renderBackground(delta: number): void {
@@ -59,7 +76,9 @@ export class Scene {
       console.time('[frame] background');
     }
 
-    this.backgroundLayers.forEach((layer) => {
+    this.backgroundLayers.forEach((layer, index) => {
+      let context = this.renderingContext.background[index]
+      RenderUtils.clearCanvas(context);
       
       for(let x = 0; x < this.map.width; x++){
         for(let y = 0; y < this.map.height; y++){
@@ -106,14 +125,13 @@ export class Scene {
           }
 
           RenderUtils.renderSprite(
-            this.context,
+            context,
             this.assets.images[tile.tileset],
             animationFrame.spriteX,
             animationFrame.spriteY,
             x,
             y
           );
-          
         }
       }
     });
@@ -144,15 +162,27 @@ export class Scene {
       console.time('[frame] render');
     }
 
+    let context = this.renderingContext.objects[0];
+    RenderUtils.clearCanvas(context);
+
     this.objects.forEach((object) => {
       if(object.render){
-        object.render();
+        object.render(context);
       }
     });
 
     if(this.client.debug.timing.frameRender){
       console.timeEnd('[frame] render');
     }
+  }
+
+  render(): void {
+    this.renderingContext.background.forEach((context) => {
+      this.context.drawImage(context.canvas, 0, 0);
+    });
+    this.renderingContext.objects.forEach((context) => {
+      this.context.drawImage(context.canvas, 0, 0);
+    });
   }
 
   addObject(sceneObject: SceneObject): void {
@@ -265,7 +295,19 @@ export class Scene {
     this.backgroundLayers = [];
   }
 
-  loadNewMap(index: number): void {
+  setUpRenderingContexts(): void {
+    this.renderingContext = {
+      background: [],
+      objects: [],
+    }
+
+    for(let i = 0; i < this.backgroundLayers.length; i++){
+      this.renderingContext.background[i] = RenderUtils.createCanvas().getContext('2d');
+    }
+    this.renderingContext.objects[0] = RenderUtils.createCanvas().getContext('2d');
+  }
+
+  changeMap(index: number): void {
     // clean up map
     if(this.map !== undefined){
       this.map.destroy();
@@ -280,6 +322,13 @@ export class Scene {
     this.map = Reflect.construct(this.maps[index], [this, this.context, this.assets]) as SceneMap;
     this.backgroundLayers.push(...this.map.backgroundLayers);
     this.objects.push(...this.map.objects);
+
+    // set up rendering contexts
+    this.setUpRenderingContexts();
+  }
+
+  changeScene(sceneClass: any): void {
+    this.client.changeScene(sceneClass);
   }
 
 }

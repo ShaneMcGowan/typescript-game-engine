@@ -9,6 +9,6 @@ export interface SceneObject extends Renderable {
   targetX: number; // target x position
   targetY: number; // target y position
   update?(delta: number): void;
-  render?(): void;
+  render?(context: CanvasRenderingContext2D): void;
   destroy?(): void;
 }

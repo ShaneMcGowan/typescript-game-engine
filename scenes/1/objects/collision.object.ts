@@ -31,9 +31,9 @@ export class CollisionObject implements SceneObject {
     this.isRenderable = this.config.isRenderable 
   }
   
-  render(): void {
+  render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
-      this.context,
+      context,
       this.assets.images[this.tileset],
       this.spriteX, 
       this.spriteY,

@@ -58,7 +58,7 @@ export class HoleObject implements SceneObject {
 
       // if player, change map
       if(o instanceof PlayerObject){
-        this.scene.loadNewMap(1);
+        this.scene.changeMap(1);
         return;
       }
       
@@ -69,9 +69,9 @@ export class HoleObject implements SceneObject {
     this.consumptionTimer = 0;
   }
   
-  render(): void {
+  render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderCircle(
-      this.context,
+      context,
       this.positionX,
       this.positionY
     );

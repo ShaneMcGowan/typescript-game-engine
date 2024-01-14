@@ -43,9 +43,9 @@ export class EggObject implements SceneObject {
     this.updateHatch(delta);
   }
 
-  render?(): void {
+  render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
-      this.context,
+      context,
       this.assets.images[this.tileset],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y

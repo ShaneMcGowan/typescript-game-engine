@@ -5,6 +5,7 @@ import { SceneObject } from "../../../model/scene-object";
 import { SAMPLE_SCENE_0_MAP_0_BACKGROUND_0 } from "./0/backgrounds/0.background";
 import { MenuControllerObject } from "./0/objects/menu-controller.object";
 
+
 export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
 
   height = 15;
@@ -17,6 +18,10 @@ export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
   constructor(scene: Scene, context: CanvasRenderingContext2D, assets: Record<string, any>){
     super(scene, context, assets);
 
+    // TODO(smg): some sort of utility for setting the cursor
+    context.canvas.style.cursor = `url("/assets/sample/Mouse sprites/Triangle Mouse icon 1.png"), auto`;
+
     this.objects.push(new MenuControllerObject(scene, context, assets, {}));
   }
+
 }

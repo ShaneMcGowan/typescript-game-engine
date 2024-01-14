@@ -153,10 +153,10 @@ export class PlayerObject implements SceneObject {
     this.updateChangeMap();
   }
 
-  render(): void {
+  render(context: CanvasRenderingContext2D): void {
     let animations = this.isIdle ? this.animationsIdle : this.animations;
     RenderUtils.renderSprite(
-      this.context,
+      context,
       this.assets.images[this.tileset],
       animations[this.direction][this.animationIndex].x, // sprite x
       animations[this.direction][this.animationIndex].y, // sprite y
@@ -349,7 +349,7 @@ export class PlayerObject implements SceneObject {
       return;
     }
 
-    this.scene.loadNewMap(1);
+    this.scene.changeMap(1);
 
     this.controls['change_map'] = false;
   }

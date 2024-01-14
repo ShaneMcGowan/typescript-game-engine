@@ -15,7 +15,7 @@ export class SAMPLE_SCENE_1 extends Scene {
   
   constructor(client: Client){
     super(client);
-    this.loadNewMap(0); // should this be the default?
+    this.changeMap(0); // should this be the default?
   }
 
 }

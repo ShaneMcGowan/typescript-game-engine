@@ -13,6 +13,7 @@ export const ASSETS: Assets = {
     tileset_egg: '/assets/sample/Characters/Egg_And_Nest.png',
     tileset_house: '/assets/sample/Tilesets/Wooden House.png',
     tileset_dirt: '/assets/sample/Tilesets/Tilled_Dirt.png',
+    tileset_button: '/assets/sample/UI Big Play Button.png',
   },
   audio: {}
 }

@@ -39,9 +39,9 @@ export class FenceObject implements SceneObject {
     }
   }
 
-  render(): void {
+  render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
-      this.context,
+      context,
       this.assets.images[this.tileset],
       this.spriteX, 
       this.spriteY,
