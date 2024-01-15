@@ -329,6 +329,7 @@ export class Scene {
     this.objects.push(...this.map.objects);
 
     // set up rendering contexts
+    // custom renderers in objects for maps require this
     this.setUpRenderingContexts();
   }
 

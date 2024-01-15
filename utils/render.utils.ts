@@ -17,6 +17,27 @@ export class RenderUtils {
     );
   }
 
+  static renderSubsection(
+    source: CanvasRenderingContext2D,
+    destination: CanvasRenderingContext2D,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+  ): void{
+    destination.drawImage(
+      source.canvas,
+      startX * CanvasConstants.TILE_SIZE,
+      startY * CanvasConstants.TILE_SIZE,
+      endX * CanvasConstants.TILE_SIZE,
+      endY * CanvasConstants.TILE_SIZE,
+      0,
+      0,
+      destination.canvas.width,
+      destination.canvas.height,
+    );
+  }
+
   static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number): void{ 
     /*
     context.draw(
@@ -57,5 +78,9 @@ export class RenderUtils {
     canvas.width = CanvasConstants.CANVAS_WIDTH;
 
     return canvas;
+  }
+
+  static positionToPixelPosition(position: number): number {
+    return position * CanvasConstants.TILE_SIZE;
   }
 }

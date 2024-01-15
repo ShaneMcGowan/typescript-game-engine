@@ -1,5 +1,7 @@
 import { CustomRendererSignature, Scene, SceneRenderingContext } from "../../../../../model/scene";
 import { SceneObject } from "../../../../../model/scene-object";
+import { RenderUtils } from "../../../../../utils/render.utils";
+import { PlayerObject } from "../../../objects/player.object";
 
 export class CameraObject implements SceneObject {
   isRenderable = false;
@@ -16,14 +18,19 @@ export class CameraObject implements SceneObject {
   constructor(
     private scene: Scene,
     private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>
+    private assets: Record<string, any>,
+    private config: { player: PlayerObject },
   ){
     this.scene.setCustomRenderer(this.customerRenderer);
   }
 
   customerRenderer: CustomRendererSignature = (renderingContext: SceneRenderingContext) => {
-    renderingContext.background.forEach((layer) => {});
-    renderingContext.objects.forEach((object) => {});
+    renderingContext.background.forEach((context) => {
+      RenderUtils.renderSubsection(context, this.context, 0, 0, 21, 15);
+    });
+    renderingContext.objects.forEach((context) => {
+      RenderUtils.renderSubsection(context, this.context, 0, 0, 21, 15);
+    });
   };
   
   destroy(): void {

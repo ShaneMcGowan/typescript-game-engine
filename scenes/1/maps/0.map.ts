@@ -29,16 +29,17 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    this.objects.push(new PlayerObject(scene, context, assets, { positionX: 7, positionY: 3, targetX: 7, targetY: 3  }));
+    let player = new PlayerObject(scene, context, assets, { positionX: 7, positionY: 3, targetX: 7, targetY: 3  });
+    this.objects.push(player);
 
     // chickens
     // TODO(smg): some sort of way to get an object by id or name to avoid below way of referencing player via objects[0]
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 3, positionY: 3 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 9, positionY: 5 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 5, positionY: 4 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 11, positionY: 8 }, this.objects[0] as PlayerObject));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 10 }, this.objects[0] as PlayerObject));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, player));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 3, positionY: 3 }, player));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 9, positionY: 5 }, player));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 5, positionY: 4 }, player));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 11, positionY: 8 }, player));
+    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 10 }, player));
 
     // fences
     this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 2, type: FenceType.TopLeft }));
@@ -108,7 +109,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     // for(let i = 0; i < 5000; i++){
     //   this.objects.push(new ChickenObject(scene, context, assets, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));
     // }
-    this.objects.push(new CameraObject(scene, context, assets));
+    this.objects.push(new CameraObject(scene, context, assets, { player }));
   }
 
 }
