@@ -4,12 +4,12 @@ import { BackgroundLayer } from "./background-layer";
 import { SceneMap } from "./scene-map";
 import { SceneObject } from "./scene-object";
 
-interface SceneRenderingContext {
+export interface SceneRenderingContext {
   background: CanvasRenderingContext2D[];
   objects: CanvasRenderingContext2D[];
 }
 
-type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
+export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
 /**
 
   adding a quick description here as this shape is pretty gross but I think it will be somewhat performant at scale
@@ -33,7 +33,7 @@ export class Scene {
   backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations
   
   // objects
-  objects: SceneObject[];
+  objects: SceneObject[] = [];
   globals: Record<string, any> = {}; // a place to store flags for the scene
 
   // maps
@@ -45,7 +45,7 @@ export class Scene {
     background: [],
     objects: [],
   }
-  customRenderer?: CustomRendererSignature;
+  private customRenderer?: CustomRendererSignature;
 
   // from client
   private context: CanvasRenderingContext2D;
@@ -290,7 +290,10 @@ export class Scene {
   }
 
   private removeAllObjects(): void {
-    this.objects = [];
+    while(this.objects.length > 0){
+      this.removeObject(this.objects[0]);
+    }
+    // this.objects = [];
   }
 
   private removeAllBackgroundLayers(): void {

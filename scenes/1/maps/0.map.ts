@@ -8,6 +8,7 @@ import { HoleObject } from "../objects/hole.object";
 import { PlayerObject } from "../objects/player.object";
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from "./0/backgrounds/0.background";
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from "./0/backgrounds/1.background";
+import { CameraObject } from "./0/objects/camera.object";
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
@@ -107,6 +108,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     // for(let i = 0; i < 5000; i++){
     //   this.objects.push(new ChickenObject(scene, context, assets, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));
     // }
+    this.objects.push(new CameraObject(scene, context, assets));
   }
 
 }
