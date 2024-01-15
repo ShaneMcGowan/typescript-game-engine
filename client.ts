@@ -150,12 +150,12 @@ export class Client {
     // Render stats
     if(this.debug.stats.fps){
       if (this.debug.stats.fpsCounter) {
-        this.renderStats(`${Math.round(1000/((performance.now() - this.debug.stats.fpsCounter)))} FPS`);
+        this.renderStats(0, 'FPS', `${Math.round(1000/((performance.now() - this.debug.stats.fpsCounter)))} FPS`);
       }
       this.debug.stats.fpsCounter = timestamp;
     }
     if(this.debug.stats.objectCount){
-      this.renderStats(`${this.currentScene.objects.length} objects`);
+      this.renderStats(1, 'Objects', `${this.currentScene.objects.length} objects`);
     }
 
     // debug grid
@@ -175,10 +175,10 @@ export class Client {
     this.lastRenderTimestamp = timestamp;
   }
 
-  private renderStats(text: string): void {
-    this.context.fillStyle = "black";
+  private renderStats(index: number, label: string, value: string): void {
+    this.context.fillStyle = "red";
     this.context.font = "12px serif";
-    this.context.fillText(text, this.CANVAS_WIDTH - 50, 16);
+    this.context.fillText(value, this.CANVAS_WIDTH - 50, (index + 1) * CanvasConstants.TILE_SIZE);
   }
 
   private renderGrid(): void {
@@ -192,7 +192,7 @@ export class Client {
     if(this.debug.ui.grid.numbers) {
       for(let x = 0; x < CanvasConstants.CANVIS_TILE_WIDTH; x++){
         for(let y = 0; y < CanvasConstants.CANVIS_TILE_HEIGHT; y++){
-          this.context.fillStyle = "black";
+          this.context.fillStyle = "red";
           this.context.font = "8px helvetica";
           this.context.fillText(`${x},${y}`, x * CanvasConstants.TILE_SIZE, (y + .5) * CanvasConstants.TILE_SIZE);
         }

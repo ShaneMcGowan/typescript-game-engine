@@ -29,8 +29,8 @@ export class RenderUtils {
       source.canvas,
       startX * CanvasConstants.TILE_SIZE,
       startY * CanvasConstants.TILE_SIZE,
-      endX * CanvasConstants.TILE_SIZE,
-      endY * CanvasConstants.TILE_SIZE,
+      (endX - startX) * CanvasConstants.TILE_SIZE,
+      (endY - startY) * CanvasConstants.TILE_SIZE,
       0,
       0,
       destination.canvas.width,
@@ -39,19 +39,7 @@ export class RenderUtils {
   }
 
   static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number): void{ 
-    /*
-    context.draw(
-      spriteSheet,
-      spriteX * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
-      spriteY * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
-      CanvasConstants.TILE_SIZE,
-      CanvasConstants.TILE_SIZE,
-      positionX * CanvasConstants.TILE_SIZE, // translate grid position to pixel position
-      positionY * CanvasConstants.TILE_SIZE, // translate grid position to pixel position
-      CanvasConstants.TILE_SIZE,
-      CanvasConstants.TILE_SIZE
-    );
-    */
+
     context.beginPath();
     context.arc(
       (positionX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2), 

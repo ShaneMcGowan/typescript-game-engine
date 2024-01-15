@@ -7,8 +7,8 @@ export class CanvasConstants {
   // an odd number width and height allows player character to be rendered in direct center of screen if you are doing a player following camera
   // this is effectively the resolution of the game, text scales with it so can't increase it too much
   
-  static readonly CANVIS_TILE_HEIGHT = 15; // total height in tiles
-  static readonly CANVIS_TILE_WIDTH = 21; // total width in tiles
+  static readonly CANVIS_TILE_HEIGHT = 9; // total height in tiles
+  static readonly CANVIS_TILE_WIDTH = 16; // total width in tiles
   static readonly TILE_SIZE: number = 16; // pixel size of tile (32px x 32px)
 
   /**
@@ -28,6 +28,10 @@ export class CanvasConstants {
 
   static get CANVIS_CENTER_TILE_X(): number {
     return Math.floor(this.CANVIS_TILE_WIDTH / 2);
+  }
+
+  static get ASPECT_RATIO(): number {
+    return CanvasConstants.CANVIS_TILE_HEIGHT / CanvasConstants.CANVIS_TILE_WIDTH;
   }
 
 }
