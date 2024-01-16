@@ -15,3 +15,7 @@ Objects are a generic, programable class. Objects can spawn other objects
 
 ### Sample Texture pack
 Sprout Lands texture pack courtesy of https://cupnooble.itch.io/
+
+
+### Known Issues
+- Sprite bluriness when moving / using custom renderer. 

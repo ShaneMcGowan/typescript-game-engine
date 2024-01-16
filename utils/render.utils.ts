@@ -57,13 +57,13 @@ export class RenderUtils {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   }
 
-  static createCanvas(): HTMLCanvasElement {
+  static createCanvas(width?: number, height?: number ): HTMLCanvasElement {
     // create canvas
     const canvas = document.createElement('canvas');
 
     // configure canvas
-    canvas.height = CanvasConstants.CANVAS_HEIGHT;
-    canvas.width = CanvasConstants.CANVAS_WIDTH;
+    canvas.width = width ? width * CanvasConstants.TILE_SIZE : CanvasConstants.CANVAS_WIDTH;
+    canvas.height = height ? height * CanvasConstants.TILE_SIZE : CanvasConstants.CANVAS_HEIGHT;
 
     return canvas;
   }

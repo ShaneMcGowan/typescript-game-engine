@@ -307,9 +307,19 @@ export class Scene {
     }
 
     for(let i = 0; i < this.backgroundLayers.length; i++){
-      this.renderingContext.background[i] = RenderUtils.createCanvas().getContext('2d');
+      this.renderingContext.background[i] = this.createCanvas().getContext('2d');
     }
-    this.renderingContext.objects[0] = RenderUtils.createCanvas().getContext('2d');
+    this.renderingContext.objects[0] = this.createCanvas().getContext('2d');
+  }
+
+  private createCanvas(): HTMLCanvasElement {
+    let canvas = RenderUtils.createCanvas(this.map.width, this.map.height);
+      
+    if(this.client.debug.ui.canvasLayers) {
+      this.client.container.append(canvas);
+    }
+
+    return canvas;
   }
 
   changeMap(index: number): void {

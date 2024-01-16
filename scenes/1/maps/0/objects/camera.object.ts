@@ -44,7 +44,6 @@ export class CameraObject implements SceneObject {
     let endX = this.config.object.positionX + (this.cameraOffsetX + 1);
     let endY = this.config.object.positionY + (this.cameraOffsetY + 1);
 
-
     renderingContext.background.forEach((context) => {
       RenderUtils.renderSubsection(context, this.context, startX, startY, endX, endY);
     });

@@ -57,11 +57,12 @@ export class Client {
       grid: {
         lines: false,
         numbers: false
-      }
+      },
+      canvasLayers: false,
     }
   }
 
-  constructor(container: HTMLElement){
+  constructor(public container: HTMLElement){
     // load assets
     // TODO(smg): some sort of loading screen / rendering delay until assets are loaded
     Object.keys(ASSETS.images).forEach((key) => {
@@ -79,7 +80,7 @@ export class Client {
     this.context = this.canvas.getContext('2d');
 
     // attach canvas to ui
-    container.prepend(this.canvas);
+    container.append(this.canvas);
 
     // go fullscreen
     // this.canvas.addEventListener('click', () => {
@@ -106,16 +107,13 @@ export class Client {
 
   private createCanvas(): HTMLCanvasElement {
     // create canvas
-    const canvas = document.createElement('canvas');
+    const canvas = RenderUtils.createCanvas();
 
     // prevent right click menu
     canvas.addEventListener('contextmenu', (event) => {
       event.preventDefault();
     });
 
-    // configure canvas
-    canvas.height = this.CANVAS_HEIGHT;
-    canvas.width = this.CANVAS_WIDTH;
 
     return canvas
   }
@@ -231,7 +229,7 @@ export class Client {
           this.debug.timing.frameUpdate = !this.debug.timing.frameUpdate;
           break;
         case '0':
-          // nothing yet
+          this.debug.ui.canvasLayers = !this.debug.ui.canvasLayers;
           break;
         case '+':
           // nothing yet
