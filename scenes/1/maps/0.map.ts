@@ -33,8 +33,8 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     this.objects.push(player);
 
     // chickens
-    // TODO(smg): some sort of way to get an object by id or name to avoid below way of referencing player via objects[0]
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, player));
+    let chicken = new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, player);
+    this.objects.push(chicken);
     this.objects.push(new ChickenObject(scene, context, assets, { positionX: 3, positionY: 3 }, player));
     this.objects.push(new ChickenObject(scene, context, assets, { positionX: 9, positionY: 5 }, player));
     this.objects.push(new ChickenObject(scene, context, assets, { positionX: 5, positionY: 4 }, player));
@@ -109,7 +109,8 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     // for(let i = 0; i < 5000; i++){
     //   this.objects.push(new ChickenObject(scene, context, assets, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));
     // }
-    this.objects.push(new CameraObject(scene, context, assets, { player }));
+    // camera
+    this.objects.push(new CameraObject(scene, context, assets, { object: player }));
   }
 
 }
