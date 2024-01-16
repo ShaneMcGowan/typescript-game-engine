@@ -30,8 +30,8 @@ export class MovementUtils {
       }
     } else if(movement.targetY > movement.positionY){ // down
       movement.positionY += velocity;
-      if(movement.targetX > movement.positionX){
-        movement.positionX = movement.targetX;
+      if(movement.targetY < movement.positionY){
+        movement.positionY = movement.targetY;
       }
     } else if(movement.targetY < movement.positionY){ // up
       movement.positionY -= velocity;
