@@ -12,13 +12,9 @@ export class FenceType {
   static FencePost = { x: 0, y: 3 }
 }
 
-export class FenceObject implements SceneObject {
+export class FenceObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
-  positionX;
-  positionY;
-  targetX;
-  targetY;
   spriteX = 1;
   spriteY = 0;
   tileset = 'tileset_fence';
@@ -29,6 +25,7 @@ export class FenceObject implements SceneObject {
     private assets: Record<string, any>,
     private config: Partial<{ positionX: number, positionY: number, type: { x: number, y: number } }>,
   ){
+    super();
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;

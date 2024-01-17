@@ -6,11 +6,10 @@ import { RenderUtils } from "../../../utils/render.utils";
 import { EggObject } from "./egg.object";
 import { PlayerObject } from "./player.object";
 
-export class ChickenObject implements SceneObject {
+export class ChickenObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
-  positionX;
-  positionY;
+  
   spriteX = 0;
   spriteY = 0;
   tileset = 'tileset_chicken';
@@ -26,8 +25,6 @@ export class ChickenObject implements SceneObject {
   movementSpeed = 2; // tiles per second
   movementTimer = MathUtils.randomStartingDelta(2);
   movementDelay = 2; // seconds until next movement
-  targetX;
-  targetY;
 
   // egg
   eggEnabled: boolean;
@@ -45,6 +42,7 @@ export class ChickenObject implements SceneObject {
     private config: { positionX?: number, positionY?: number, canLayEggs?: boolean },
     private player: PlayerObject
   ){
+    super();
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;

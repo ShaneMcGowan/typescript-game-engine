@@ -4,17 +4,7 @@ import { SceneObject } from "../../../../../model/scene-object";
 import { RenderUtils } from "../../../../../utils/render.utils";
 
 // TODO(smg): this object is generic enough to be included at the engine level
-export class CameraObject implements SceneObject {
-  isRenderable = false;
-  hasCollision = false;
-  positionX = -1;
-  positionY = 1;
-  targetX = -1;
-  targetY = -1;
-
-  tileset = '';
-  spriteX = 0;
-  spriteY = 0;
+export class CameraObject extends SceneObject {
 
   private cameraOffsetX: number;
   private cameraOffsetY: number;
@@ -25,6 +15,7 @@ export class CameraObject implements SceneObject {
     private assets: Record<string, any>,
     private config: { object: SceneObject, zoom?: number },
   ){
+    super();
     // calculation for centering a tile on the screen
     // TODO(smg): figure out why these values lead to a blurry render if the canvas doesn't have an even number CANVIS_TILE_WIDTH and odd number CANVIS_TILE_HEIGHT
     let cameraOffsetX = CanvasConstants.CANVIS_TILE_WIDTH % 2 === 0 ? (CanvasConstants.CANVIS_TILE_WIDTH / 2) - 0.5 : (CanvasConstants.CANVIS_TILE_WIDTH / 2);

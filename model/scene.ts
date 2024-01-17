@@ -168,7 +168,7 @@ export class Scene {
     RenderUtils.clearCanvas(context);
 
     this.objects.forEach((object) => {
-      if(object.render){
+      if(object.render && object.isRenderable){
         object.render(context);
       }
     });

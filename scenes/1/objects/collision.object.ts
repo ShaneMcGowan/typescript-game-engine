@@ -1,14 +1,8 @@
 import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
-import { RenderUtils } from "../../../utils/render.utils";
 
-export class CollisionObject implements SceneObject {
+export class CollisionObject extends SceneObject {
   hasCollision = true;
-  isRenderable = false;
-  positionX;
-  positionY;
-  targetX;
-  targetY;
   tileset = 'tileset_house';
   spriteX = 0;
   spriteY = 0;
@@ -20,26 +14,13 @@ export class CollisionObject implements SceneObject {
     private config: { 
       positionX?: number, 
       positionY?: number,
-      isRenderable?: boolean 
     },
   ){
+    super();
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;
     this.targetY = this.positionY;
-    
-    this.isRenderable = this.config.isRenderable 
   }
   
-  render(context: CanvasRenderingContext2D): void {
-    RenderUtils.renderSprite(
-      context,
-      this.assets.images[this.tileset],
-      this.spriteX, 
-      this.spriteY,
-      this.positionX,
-      this.positionY
-    );
-  }
-
 }

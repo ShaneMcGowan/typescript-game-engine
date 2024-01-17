@@ -4,13 +4,9 @@ import { RenderUtils } from "../../../utils/render.utils";
 import { ChickenObject } from "./chicken.object";
 import { PlayerObject } from "./player.object";
 
-export class EggObject implements SceneObject {
+export class EggObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
-  positionX;
-  positionY;
-  targetX;
-  targetY;
   spriteX = 0;
   spriteY = 0;
   tileset = 'tileset_egg';
@@ -32,6 +28,7 @@ export class EggObject implements SceneObject {
     private assets: Record<string, any>,
     private config: { positionX?: number, positionY?: number },
   ){
+    super();
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;

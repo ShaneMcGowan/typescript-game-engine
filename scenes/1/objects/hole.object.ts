@@ -3,13 +3,8 @@ import { SceneObject } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 import { PlayerObject } from "./player.object";
 
-export class HoleObject implements SceneObject {
-  hasCollision = false;
-  isRenderable = false;
-  positionX;
-  positionY;
-  targetX;
-  targetY;
+export class HoleObject extends SceneObject {
+  isRenderable = true;
 
   // not used for now
   tileset = 'tileset_house';
@@ -27,15 +22,13 @@ export class HoleObject implements SceneObject {
     private config: { 
       positionX?: number, 
       positionY?: number,
-      isRenderable?: boolean 
     },
   ){
+    super();
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;
-    this.targetY = this.positionY;
-    
-    this.isRenderable = this.config.isRenderable 
+    this.targetY = this.positionY; 
   }
 
   update(delta: number): void {

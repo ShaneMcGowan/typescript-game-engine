@@ -3,32 +3,28 @@ import { SceneObject } from "../../../../../model/scene-object";
 import { RenderUtils } from "../../../../../utils/render.utils";
 import { SAMPLE_SCENE_1 } from "../../../../1.scene";
 
-export class MenuControllerObject implements SceneObject {
-  
-  isRenderable = false;
-  hasCollision = false;
-  positionX = -1;
-  positionY = -1;
-  targetX = -1;
-  targetY = -1;
+export class MenuControllerObject extends SceneObject {
+  isRenderable = true;
   tileset = 'tileset_button';
   spriteX = 1;
   spriteY = 1;
 
   controls: Record<string, boolean> = {
     ['start']: false,
-  }
+  };
  
   constructor(
     private scene: Scene,
     private context: CanvasRenderingContext2D,
     private assets: Record<string, any>,
     private config: { },
-  ){ }
+  ){
+    super();
+  }
 
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
-      this.context,
+      context,
       this.assets.images[this.tileset],
       0, // sprite x
       2, // sprite y
@@ -52,9 +48,6 @@ export class MenuControllerObject implements SceneObject {
     this.scene.changeScene(SAMPLE_SCENE_1);
 
     this.controls['start'] = false;
-  }
-
-  destroy(): void {
   }
 
 }

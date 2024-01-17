@@ -12,14 +12,9 @@ enum Direction {
   RIGHT = 'd',
 }
 
-export class PlayerObject implements SceneObject {
-  
-  isRenderable: boolean;
+export class PlayerObject extends SceneObject {
+  isRenderable = true;
   hasCollision = true;
-  positionX;
-  positionY;
-  targetX;
-  targetY;
   tileset = 'tileset_player';
   spriteX = 1;
   spriteY = 1;
@@ -66,6 +61,7 @@ export class PlayerObject implements SceneObject {
     private assets: Record<string, any>,
     private config: { positionX?: number, positionY?: number, targetX?: number, targetY?: number },
   ){
+    super();
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.config.targetX ?? this.positionX;
     this.positionY = this.config.positionY ?? -1;

@@ -2,17 +2,9 @@ import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 
-export class GenericSpriteObject implements SceneObject {
-  hasCollision = true;
-  positionX;
-  positionY;
-  targetX;
-  targetY;
-  
+export class GenericSpriteObject extends SceneObject {
+  hasCollision = true;  
   isRenderable;
-  tileset;
-  spriteX;
-  spriteY;
 
   constructor(
     private scene: Scene,
@@ -27,6 +19,7 @@ export class GenericSpriteObject implements SceneObject {
       isRenderable?: boolean 
     },
   ){
+    super();
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;
