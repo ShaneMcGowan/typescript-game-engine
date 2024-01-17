@@ -12,9 +12,7 @@ export class GenericSpriteObject extends SceneObject {
   spriteY: number;
 
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { 
       positionX?: number, 
       positionY?: number,
@@ -24,7 +22,7 @@ export class GenericSpriteObject extends SceneObject {
       isRenderable?: boolean 
     },
   ){
-    super();
+    super(scene);
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;

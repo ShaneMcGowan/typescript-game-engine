@@ -5,15 +5,13 @@ export class CollisionObject extends SceneObject {
   hasCollision = true;
   
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { 
       positionX?: number, 
       positionY?: number,
     },
   ){
-    super();
+    super(scene);
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;

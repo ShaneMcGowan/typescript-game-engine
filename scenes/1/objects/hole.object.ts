@@ -11,15 +11,13 @@ export class HoleObject extends SceneObject {
   consumptionTimerMax = 5; // how often the hole can consume
   
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { 
       positionX?: number, 
       positionY?: number,
     },
   ){
-    super();
+    super(scene);
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;

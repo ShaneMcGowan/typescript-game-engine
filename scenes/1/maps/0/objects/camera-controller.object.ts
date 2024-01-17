@@ -5,13 +5,11 @@ import { SceneObject } from "../../../../../model/scene-object";
 export class CameraController extends SceneObject {
 
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
   ){
-    super();
-    context.canvas.addEventListener('click', (event) => {
-      let response = this.getMousePosition(context.canvas, event);
+    super(scene);
+    this.mainContext.canvas.addEventListener('click', (event) => {
+      let response = this.getMousePosition(this.mainContext.canvas, event);
       console.log(response);
     });
   }

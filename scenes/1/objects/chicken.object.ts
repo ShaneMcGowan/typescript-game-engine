@@ -34,13 +34,11 @@ export class ChickenObject extends SceneObject {
   isMovingThisFrame = false;
 
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { positionX?: number, positionY?: number, canLayEggs?: boolean },
     private player: PlayerObject
   ){
-    super();
+    super(scene);
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;
@@ -180,7 +178,7 @@ export class ChickenObject extends SceneObject {
       roundDirection = Math.floor;
     }
     this.scene.addObject(
-      new EggObject(this.scene, this.context, this.assets, { positionX: roundDirection(this.positionX), positionY: roundDirection(this.positionY) })
+      new EggObject(this.scene, { positionX: roundDirection(this.positionX), positionY: roundDirection(this.positionY) })
     );
 
     this.eggTimer = 0;

@@ -10,12 +10,10 @@ export class CameraObject extends SceneObject {
   private cameraOffsetY: number;
 
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { object: SceneObject, zoom?: number },
   ){
-    super();
+    super(scene);
     // calculation for centering a tile on the screen
     // TODO(smg): figure out why these values lead to a blurry render if the canvas doesn't have an even number CANVIS_TILE_WIDTH and odd number CANVIS_TILE_HEIGHT
     let cameraOffsetX = CanvasConstants.CANVIS_TILE_WIDTH % 2 === 0 ? (CanvasConstants.CANVIS_TILE_WIDTH / 2) - 0.5 : (CanvasConstants.CANVIS_TILE_WIDTH / 2);
@@ -53,10 +51,10 @@ export class CameraObject extends SceneObject {
     }
     
     renderingContext.background.forEach((context) => {
-      RenderUtils.renderSubsection(context, this.context, startX, startY, endX, endY);
+      RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
     });
     renderingContext.objects.forEach((context) => {
-      RenderUtils.renderSubsection(context, this.context, startX, startY, endX, endY);
+      RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
     });
   };
   

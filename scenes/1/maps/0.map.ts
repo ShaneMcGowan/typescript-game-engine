@@ -24,96 +24,96 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   constructor(scene: Scene, context: CanvasRenderingContext2D, assets: Record<string, any>){
     super(scene, context, assets);
 
-    this.objects.push(new CameraController(scene, context, assets));
+    this.objects.push(new CameraController(scene));
 
     // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index. 
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
-    this.objects.push(new HoleObject(scene, context, assets, { positionX: 17, positionY: 3}));
+    this.objects.push(new HoleObject(scene, { positionX: 17, positionY: 3}));
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    let player = new PlayerObject(scene, context, assets, { positionX: 7, positionY: 3, targetX: 7, targetY: 3  });
+    let player = new PlayerObject(scene, { positionX: 7, positionY: 3, targetX: 7, targetY: 3  });
     this.objects.push(player);
 
     // chickens
-    let chicken = new ChickenObject(scene, context, assets, { positionX: 8, positionY: 3}, player);
+    let chicken = new ChickenObject(scene, { positionX: 8, positionY: 3}, player);
     this.objects.push(chicken);
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 3, positionY: 3 }, player));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 9, positionY: 5 }, player));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 5, positionY: 4 }, player));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 11, positionY: 8 }, player));
-    this.objects.push(new ChickenObject(scene, context, assets, { positionX: 8, positionY: 10 }, player));
+    this.objects.push(new ChickenObject(scene, { positionX: 3, positionY: 3 }, player));
+    this.objects.push(new ChickenObject(scene, { positionX: 9, positionY: 5 }, player));
+    this.objects.push(new ChickenObject(scene, { positionX: 5, positionY: 4 }, player));
+    this.objects.push(new ChickenObject(scene, { positionX: 11, positionY: 8 }, player));
+    this.objects.push(new ChickenObject(scene, { positionX: 8, positionY: 10 }, player));
 
     // fences
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 2, type: FenceType.TopLeft }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 3, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 4, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 5, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 6, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 7, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 8, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 9, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 10, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 11, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 12, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 13, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 14, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 15, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 16, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 17, positionY: 2, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 2, type: FenceType.TopRight }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 2, type: FenceType.TopLeft }));
+    this.objects.push(new FenceObject(scene, { positionX: 3, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 4, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 5, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 6, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 7, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 8, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 9, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 10, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 11, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 12, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 13, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 14, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 15, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 16, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 17, positionY: 2, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 2, type: FenceType.TopRight }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 3, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 3, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 3, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 3, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 4, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 4, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 4, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 4, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 5, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 5, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 5, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 5, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 6, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 6, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 6, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 6, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 7, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 7, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 7, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 7, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 8, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 8, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 8, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 8, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 9, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 9, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 9, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 9, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 10, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 10, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 10, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 10, type: FenceType.MiddleVertical }));
     
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 11, type: FenceType.MiddleVertical }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 11, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 11, type: FenceType.MiddleVertical }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 11, type: FenceType.MiddleVertical }));
 
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 2, positionY: 12, type: FenceType.BottomLeft }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 3, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 4, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 5, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 6, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 7, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 8, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 9, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 10, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 11, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 12, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 13, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 14, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 15, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 16, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 17, positionY: 12, type: FenceType.MiddleHorizontal }));
-    this.objects.push(new FenceObject(scene, context, assets, { positionX: 18, positionY: 12, type: FenceType.BottomRight }));
+    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 12, type: FenceType.BottomLeft }));
+    this.objects.push(new FenceObject(scene, { positionX: 3, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 4, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 5, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 6, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 7, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 8, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 9, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 10, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 11, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 12, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 13, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 14, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 15, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 16, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 17, positionY: 12, type: FenceType.MiddleHorizontal }));
+    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 12, type: FenceType.BottomRight }));
     
     // load test
     // for(let i = 0; i < 5000; i++){
-    //   this.objects.push(new ChickenObject(scene, context, assets, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));
+    //   this.objects.push(new ChickenObject(scene, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));
     // }
     // camera
-    this.objects.push(new CameraObject(scene, context, assets, { object: player }));
+    this.objects.push(new CameraObject(scene, { object: player }));
   }
 
 }

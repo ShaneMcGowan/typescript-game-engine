@@ -14,12 +14,10 @@ export class MenuControllerObject extends SceneObject {
   };
  
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { },
   ){
-    super();
+    super(scene);
   }
 
   render(context: CanvasRenderingContext2D): void {

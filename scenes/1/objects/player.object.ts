@@ -55,12 +55,10 @@ export class PlayerObject extends SceneObject {
   isIdle: boolean = true;
 
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { positionX?: number, positionY?: number, targetX?: number, targetY?: number },
   ){
-    super();
+    super(scene);
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.config.targetX ?? this.positionX;
     this.positionY = this.config.positionY ?? -1;
@@ -292,8 +290,6 @@ export class PlayerObject extends SceneObject {
 
     let fence = new FenceObject(
       this.scene, 
-      this.context, 
-      this.assets,
       {
         positionX: Math.floor(position.x),
         positionY: Math.floor(position.y),
@@ -327,8 +323,6 @@ export class PlayerObject extends SceneObject {
 
     let egg = new EggObject(
       this.scene, 
-      this.context, 
-      this.assets,
       {
         positionX: Math.floor(position.x),
         positionY: Math.floor(position.y),

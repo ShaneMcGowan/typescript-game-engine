@@ -48,8 +48,8 @@ export class Scene {
   private customRenderer?: CustomRendererSignature;
 
   // from client
-  private context: CanvasRenderingContext2D;
-  private assets: Record<string, any>;
+  context: CanvasRenderingContext2D;
+  assets: Record<string, any>;
 
   constructor(
     protected client: Client,

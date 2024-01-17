@@ -22,12 +22,10 @@ export class EggObject extends SceneObject {
   hatchTimerMax = 7; // seconds to hatch
 
   constructor(
-    private scene: Scene,
-    private context: CanvasRenderingContext2D,
-    private assets: Record<string, any>,
+    protected scene: Scene,
     private config: { positionX?: number, positionY?: number },
   ){
-    super();
+    super(scene);
     this.positionX = this.config.positionX ?? -1;
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;
@@ -66,7 +64,7 @@ export class EggObject extends SceneObject {
     }
 
     let player = this.scene.getObjectsByType(PlayerObject)[0] as PlayerObject;
-    let chicken = new ChickenObject(this.scene, this.context, this.assets, { positionX: this.positionX, positionY: this.positionY }, player);
+    let chicken = new ChickenObject(this.scene, { positionX: this.positionX, positionY: this.positionY }, player);
       
     this.scene.removeObject(this);
     this.scene.addObject(chicken);

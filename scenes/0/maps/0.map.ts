@@ -21,7 +21,7 @@ export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
     // TODO(smg): some sort of utility for setting the cursor
     context.canvas.style.cursor = `url("/assets/sample/Mouse sprites/Triangle Mouse icon 1.png"), auto`;
 
-    this.objects.push(new MenuControllerObject(scene, context, assets, {}));
+    this.objects.push(new MenuControllerObject(scene, {}));
   }
 
 }
