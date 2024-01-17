@@ -25,7 +25,7 @@ export class PlayerObject implements SceneObject {
   spriteY = 1;
 
   // constants
-  movementSpeed = 4; // 4 tiles per second
+  movementSpeed = 6; // 4 tiles per second
 
   controls = {
     [Direction.RIGHT]: false,
@@ -72,23 +72,25 @@ export class PlayerObject implements SceneObject {
     this.targetY = this.config.targetY ?? this.positionY;
 
     document.addEventListener('keydown', (event) => {
-      switch(event.key.toLocaleLowerCase()){
-        case Direction.RIGHT:
-        case 'arrowright':
-          this.controls[Direction.RIGHT] = true;
-          break;
-        case Direction.LEFT:
-        case 'arrowleft':
+      let key = event.key.toLocaleLowerCase();
+      if( Direction.RIGHT === key ||  'arrowright' === key) {
+
+        this.controls[Direction.RIGHT] = true;
+      }
+        if( Direction.LEFT === key ||  'arrowleft' === key) {
+
           this.controls[Direction.LEFT] = true;
-          break;
-        case Direction.UP:
-        case 'arrowup':
+        }
+        if( Direction.UP === key ||  'arrowup' === key) {
+
           this.controls[Direction.UP] = true;
-          break;
-        case Direction.DOWN:
-        case 'arrowdown':
+        }
+        if( Direction.DOWN === key ||  'arrowdown' === key) {
+
           this.controls[Direction.DOWN] = true;
-          break;
+        }
+
+      switch(event.key.toLocaleLowerCase()){
         case 'j':
           this.controls['remove_fence'] = true;
           break;
@@ -108,23 +110,25 @@ export class PlayerObject implements SceneObject {
     });
 
     document.addEventListener('keyup', (event) => {
-      switch(event.key.toLocaleLowerCase()){
-        case Direction.RIGHT:
-        case 'arrowright':
-          this.controls[Direction.RIGHT] = false;
-          break;
-        case Direction.LEFT:
-        case 'arrowleft':
+      let key = event.key.toLocaleLowerCase();
+      if( Direction.RIGHT === key ||  'arrowright' === key) {
+
+        this.controls[Direction.RIGHT] = false;
+      }
+        if( Direction.LEFT === key ||  'arrowleft' === key) {
+
           this.controls[Direction.LEFT] = false;
-          break;
-        case Direction.UP:
-        case 'arrowup':
+        }
+        if( Direction.UP === key ||  'arrowup' === key) {
+
           this.controls[Direction.UP] = false;
-          break;
-        case Direction.DOWN:
-        case 'arrowdown':
+        }
+        if( Direction.DOWN === key ||  'arrowdown' === key) {
+
           this.controls[Direction.DOWN] = false;
-          break;
+        }
+      switch(event.key.toLocaleLowerCase()){
+       
         case 'j':
           this.controls['remove_fence'] = false;
           break;
@@ -190,7 +194,7 @@ export class PlayerObject implements SceneObject {
 
     // check if we are moving
     if(this.targetX !== this.positionX || this.targetY !== this.positionY) {
-      return;
+      // return;
     }
 
     // check if button pressed
@@ -202,17 +206,24 @@ export class PlayerObject implements SceneObject {
     let direction;
 
     // determine next position and set direction
+    let x = 0;
+    let y = 0;
+    let speed = this.movementSpeed * delta;
+
     if(this.controls[Direction.RIGHT]){
-      movement.targetX += 1;
+      x += speed;
       direction = Direction.RIGHT;
-    } else if(this.controls[Direction.LEFT]){
-      movement.targetX -= 1;
+    }
+    if(this.controls[Direction.LEFT]){
+      x -= speed;
       direction = Direction.LEFT;
-    } else if(this.controls[Direction.UP]){
-      movement.targetY -= 1;
+    }
+    if(this.controls[Direction.UP]){
+      y -= speed;
       direction = Direction.UP;
-    } else if(this.controls[Direction.DOWN]){
-      movement.targetY += 1;
+    } 
+    if(this.controls[Direction.DOWN]){
+      y += speed;
       direction = Direction.DOWN;
     }
 
@@ -227,11 +238,12 @@ export class PlayerObject implements SceneObject {
     }
 
     // if direction has not been held for 5 frames, do not move
-    if(this.directionTimer < .05){
-      return;
-    }
+    // if(this.directionTimer < .05){
+    //   return;
+    // }
     
     // check if can move to position
+    /*
     if(this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY)){
       return;
     }
@@ -241,9 +253,13 @@ export class PlayerObject implements SceneObject {
     if(this.scene.isOutOfBounds(movement.targetX, movement.targetY)){
       return;
     }
+    */
 
-    this.targetX = movement.targetX;
-    this.targetY = movement.targetY;
+    let normalise = 1; //(x === 0 && y === 0) ? 1 : Math.sqrt(x * x + y * y);
+    this.targetX = this.positionX + (x * normalise);
+    this.targetY = this.positionY + (y * normalise);
+
+    console.log('target', this.targetX, this.targetY);
   }
 
   private processAnimations(delta: number): void {
@@ -278,7 +294,9 @@ export class PlayerObject implements SceneObject {
   private processMovement(delta: number): void {
     if(this.targetX !== this.positionX || this.targetY !== this.positionY){
       let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
-      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(this.movementSpeed, delta));
+
+      let movementSpeed = this.targetX !== this.positionX && this.targetY !== this.positionY ? this.movementSpeed * .71 : this.movementSpeed;
+      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(movementSpeed, delta));
       
       this.positionX = updatedMovement.positionX; 
       this.positionY = updatedMovement.positionY;

@@ -4,8 +4,8 @@
  * Leave as hardcoded value for now
 */
 export class CanvasConstants {
-  static readonly CANVIS_TILE_HEIGHT = 9; // total height in tiles
-  static readonly CANVIS_TILE_WIDTH = 16; // total width in tiles
+  static readonly CANVIS_TILE_HEIGHT = 18; // total height in tiles
+  static readonly CANVIS_TILE_WIDTH = 32; // total width in tiles
   static readonly TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
 
   /**

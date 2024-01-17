@@ -23,17 +23,23 @@ export class MovementUtils {
       if(movement.targetX < movement.positionX){
         movement.positionX = movement.targetX;
       }
-    } else if(movement.targetX < movement.positionX){ // left
+    }
+    
+    if(movement.targetX < movement.positionX){ // left
       movement.positionX -= velocity;
       if(movement.targetX > movement.positionX){
         movement.positionX = movement.targetX;
       }
-    } else if(movement.targetY > movement.positionY){ // down
+    }
+    
+    if(movement.targetY > movement.positionY){ // down
       movement.positionY += velocity;
       if(movement.targetY < movement.positionY){
         movement.positionY = movement.targetY;
       }
-    } else if(movement.targetY < movement.positionY){ // up
+    }
+    
+    if(movement.targetY < movement.positionY){ // up
       movement.positionY -= velocity;
       if(movement.targetY > movement.positionY){
         movement.positionY = movement.targetY;
