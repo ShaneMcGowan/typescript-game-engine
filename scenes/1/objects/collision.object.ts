@@ -1,21 +1,18 @@
 import { Scene } from "../../../model/scene";
-import { SceneObject } from "../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
+
+interface Config extends SceneObjectBaseConfig {
+
+}
 
 export class CollisionObject extends SceneObject {
   hasCollision = true;
   
   constructor(
     protected scene: Scene,
-    private config: { 
-      positionX?: number, 
-      positionY?: number,
-    },
+    protected config: Config
   ){
-    super(scene);
-    this.positionX = this.config.positionX ?? -1;
-    this.targetX = this.positionX;
-    this.positionY = this.config.positionY ?? -1;
-    this.targetY = this.positionY;
+    super(scene, config);
   }
   
 }

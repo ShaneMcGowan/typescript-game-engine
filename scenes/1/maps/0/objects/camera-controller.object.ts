@@ -1,13 +1,17 @@
 import { CanvasConstants } from "../../../../../constants/canvas.constants";
 import { Scene } from "../../../../../model/scene";
-import { SceneObject } from "../../../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../../../model/scene-object";
+
+interface Config extends SceneObjectBaseConfig {
+}
 
 export class CameraController extends SceneObject {
 
   constructor(
     protected scene: Scene,
+    protected config: Config,
   ){
-    super(scene);
+    super(scene, config);
     this.mainContext.canvas.addEventListener('click', (event) => {
       let response = this.getMousePosition(this.mainContext.canvas, event);
       console.log(response);

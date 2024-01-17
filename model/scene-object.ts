@@ -1,5 +1,12 @@
 import { Scene } from "./scene";
 
+export interface SceneObjectBaseConfig {
+  positionX?: number;
+  positionY?: number;
+  targetX?: number;
+  targetY?: number;
+}
+
 export class SceneObject {
   isRenderable: boolean = false;
   hasCollision: boolean = false; 
@@ -14,10 +21,34 @@ export class SceneObject {
   protected assets: Record<string, any>;
 
   constructor(
-    protected scene: Scene
+    protected scene: Scene,
+    protected config: SceneObjectBaseConfig,  
   ){
     this.mainContext = this.scene.context;
     this.assets = this.scene.assets;
+
+    // position default
+    if(this.config.positionX !== undefined){
+      this.positionX = this.config.positionX;
+      if(this.config.targetX === undefined) {
+        this.targetX = this.positionX;
+      }
+    }
+
+    if(this.config.positionY !== undefined){
+      this.positionY = this.config.positionY;
+      if(this.config.targetY === undefined) {
+        this.targetY = this.positionY;
+      }
+    }
+
+    if(this.config.targetX !== undefined){
+      this.targetX = this.config.targetX;
+    }
+
+    if(this.config.targetY !== undefined){
+      this.targetY = this.config.targetY;
+    }
   }
 
   update?(delta: number): void;

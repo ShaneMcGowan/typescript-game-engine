@@ -1,8 +1,11 @@
 import { Scene } from "../../../../../model/scene";
-import { SceneObject } from "../../../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../../../model/scene-object";
 import { RenderUtils } from "../../../../../utils/render.utils";
 import { SAMPLE_SCENE_1 } from "../../../../1.scene";
 
+interface Config extends SceneObjectBaseConfig {
+
+}
 export class MenuControllerObject extends SceneObject {
   isRenderable = true;
   tileset = 'tileset_button';
@@ -15,9 +18,9 @@ export class MenuControllerObject extends SceneObject {
  
   constructor(
     protected scene: Scene,
-    private config: { },
+    protected config: Config,
   ){
-    super(scene);
+    super(scene, config);
   }
 
   render(context: CanvasRenderingContext2D): void {

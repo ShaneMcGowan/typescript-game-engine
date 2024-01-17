@@ -1,10 +1,14 @@
 import { Scene } from "../../../model/scene";
-import { SceneObject } from "../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 import { ChickenObject } from "./chicken.object";
 import { PlayerObject } from "./player.object";
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
+
+interface Config extends SceneObjectBaseConfig {
+
+}
 
 export class EggObject extends SceneObject {
   isRenderable = true;
@@ -23,13 +27,9 @@ export class EggObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    private config: { positionX?: number, positionY?: number },
+    protected config: Config,
   ){
-    super(scene);
-    this.positionX = this.config.positionX ?? -1;
-    this.targetX = this.positionX;
-    this.positionY = this.config.positionY ?? -1;
-    this.targetY = this.positionY;
+    super(scene, config);
   }
   
   update(delta: number): void {
@@ -64,7 +64,7 @@ export class EggObject extends SceneObject {
     }
 
     let player = this.scene.getObjectsByType(PlayerObject)[0] as PlayerObject;
-    let chicken = new ChickenObject(this.scene, { positionX: this.positionX, positionY: this.positionY }, player);
+    let chicken = new ChickenObject(this.scene, { positionX: this.positionX, positionY: this.positionY, follows: player });
       
     this.scene.removeObject(this);
     this.scene.addObject(chicken);

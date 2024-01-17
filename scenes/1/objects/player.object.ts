@@ -1,5 +1,5 @@
 import { Scene } from "../../../model/scene";
-import { SceneObject } from "../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
 import { Movement, MovementUtils } from "../../../utils/movement.utils";
 import { RenderUtils } from "../../../utils/render.utils";
 import { EggObject } from "./egg.object";
@@ -13,6 +13,9 @@ enum Direction {
 }
 
 const TILE_SET = 'tileset_player';
+
+interface Config extends SceneObjectBaseConfig {
+}
 
 export class PlayerObject extends SceneObject {
   isRenderable = true;
@@ -56,13 +59,9 @@ export class PlayerObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    private config: { positionX?: number, positionY?: number, targetX?: number, targetY?: number },
+    protected config: Config,
   ){
-    super(scene);
-    this.positionX = this.config.positionX ?? -1;
-    this.targetX = this.config.targetX ?? this.positionX;
-    this.positionY = this.config.positionY ?? -1;
-    this.targetY = this.config.targetY ?? this.positionY;
+    super(scene, config);
 
     document.addEventListener('keydown', (event) => {
       switch(event.key.toLocaleLowerCase()){

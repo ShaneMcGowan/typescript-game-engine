@@ -15,6 +15,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
   height = 15;
   width = 21;
+  
   backgroundLayers: BackgroundLayer[] = [
     SAMPLE_SCENE_1_MAP_0_BACKGROUND_0,
     SAMPLE_SCENE_1_MAP_0_BACKGROUND_1
@@ -24,7 +25,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   constructor(scene: Scene, context: CanvasRenderingContext2D, assets: Record<string, any>){
     super(scene, context, assets);
 
-    this.objects.push(new CameraController(scene));
+    this.objects.push(new CameraController(scene, {}));
 
     // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index. 
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
@@ -36,13 +37,13 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     this.objects.push(player);
 
     // chickens
-    let chicken = new ChickenObject(scene, { positionX: 8, positionY: 3}, player);
+    let chicken = new ChickenObject(scene, { positionX: 8, positionY: 3, follows: player });
     this.objects.push(chicken);
-    this.objects.push(new ChickenObject(scene, { positionX: 3, positionY: 3 }, player));
-    this.objects.push(new ChickenObject(scene, { positionX: 9, positionY: 5 }, player));
-    this.objects.push(new ChickenObject(scene, { positionX: 5, positionY: 4 }, player));
-    this.objects.push(new ChickenObject(scene, { positionX: 11, positionY: 8 }, player));
-    this.objects.push(new ChickenObject(scene, { positionX: 8, positionY: 10 }, player));
+    this.objects.push(new ChickenObject(scene, { positionX: 3, positionY: 3, follows: player }));
+    this.objects.push(new ChickenObject(scene, { positionX: 9, positionY: 5 , follows: player }));
+    this.objects.push(new ChickenObject(scene, { positionX: 5, positionY: 4 , follows: player }));
+    this.objects.push(new ChickenObject(scene, { positionX: 11, positionY: 8 , follows: player }));
+    this.objects.push(new ChickenObject(scene, { positionX: 8, positionY: 10 , follows: player }));
 
     // fences
     this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 2, type: FenceType.TopLeft }));

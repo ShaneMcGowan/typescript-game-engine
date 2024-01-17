@@ -1,5 +1,5 @@
 import { Scene } from "../../../model/scene";
-import { SceneObject } from "../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 
 export class FenceType {
@@ -14,6 +14,10 @@ export class FenceType {
 
 const TILE_SET = 'tileset_fence';
 
+interface Config extends SceneObjectBaseConfig {
+  type?: { x: number, y: number }
+}
+
 export class FenceObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
@@ -22,14 +26,10 @@ export class FenceObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    private config: Partial<{ positionX: number, positionY: number, type: { x: number, y: number } }>,
+    protected config: Config
   ){
-    super(scene);
-    this.positionX = this.config.positionX ?? -1;
-    this.targetX = this.positionX;
-    this.positionY = this.config.positionY ?? -1;
-    this.targetY = this.positionY;
-    
+    super(scene, config);
+        
     if(this.config.type){
       this.type = this.config.type
     }

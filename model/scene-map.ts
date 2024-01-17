@@ -18,7 +18,7 @@ export class SceneMap {
   /**
    * Called when the map is destroyed
    */
-  destroy(): void {
+  destroy?(): void {
     // do nothing by default
   } 
 }

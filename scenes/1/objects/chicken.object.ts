@@ -1,12 +1,16 @@
 import { Scene } from "../../../model/scene";
-import { SceneObject } from "../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
 import { MathUtils } from "../../../utils/math.utils";
 import { Movement, MovementUtils } from "../../../utils/movement.utils";
 import { RenderUtils } from "../../../utils/render.utils";
 import { EggObject } from "./egg.object";
-import { PlayerObject } from "./player.object";
 
 const TILE_SET = 'tileset_chicken';
+
+interface Config extends SceneObjectBaseConfig {
+  follows: SceneObject; // object to follow
+  canLayEggs?: boolean;
+}
 
 export class ChickenObject extends SceneObject {
   isRenderable = true;
@@ -35,14 +39,9 @@ export class ChickenObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    private config: { positionX?: number, positionY?: number, canLayEggs?: boolean },
-    private player: PlayerObject
+    protected config: Config,
   ){
-    super(scene);
-    this.positionX = this.config.positionX ?? -1;
-    this.targetX = this.positionX;
-    this.positionY = this.config.positionY ?? -1;
-    this.targetY = this.positionY;
+    super(scene, config);
     this.eggEnabled = this.config.canLayEggs ?? true; 
   }
   
@@ -103,10 +102,10 @@ export class ChickenObject extends SceneObject {
           this.targetY
         ),
         new Movement(
-          this.player.positionX,
-          this.player.positionY,
-          this.player.targetX,
-          this.player.targetY
+          this.config.follows.positionX,
+          this.config.follows.positionY,
+          this.config.follows.targetX,
+          this.config.follows.targetY
         )
       );
     } else {

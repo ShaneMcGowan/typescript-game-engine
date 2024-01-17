@@ -1,7 +1,13 @@
 import { Scene } from "../../../model/scene";
-import { SceneObject } from "../../../model/scene-object";
+import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 
+interface Config extends SceneObjectBaseConfig {
+  tileset: string,
+  spriteX: number,
+  spriteY: number, 
+  isRenderable?: boolean 
+}
 
 export class GenericSpriteObject extends SceneObject {
   hasCollision = true;  
@@ -13,23 +19,13 @@ export class GenericSpriteObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    private config: { 
-      positionX?: number, 
-      positionY?: number,
-      spriteX: number,
-      spriteY: number, 
-      tileset: string,
-      isRenderable?: boolean 
-    },
+    protected config: Config,
   ){
-    super(scene);
-    this.positionX = this.config.positionX ?? -1;
-    this.targetX = this.positionX;
-    this.positionY = this.config.positionY ?? -1;
-    this.targetY = this.positionY;
-    
-    this.isRenderable = this.config.isRenderable ?? true;
-    
+    super(scene, config);
+
+    if(this.config.isRenderable === undefined) {
+      this.isRenderable = this.config.isRenderable;    
+    }
     this.tileset = this.config.tileset;
     this.spriteX = this.config.spriteX;
     this.spriteY = this.config.spriteY;
