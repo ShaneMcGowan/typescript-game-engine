@@ -1,3 +1,4 @@
+import { CanvasConstants } from "../../../../../constants/canvas.constants";
 import { Scene } from "../../../../../model/scene";
 import { SceneObject } from "../../../../../model/scene-object";
 
@@ -10,16 +11,25 @@ export class CameraController extends SceneObject {
   ){
     super();
     context.canvas.addEventListener('click', (event) => {
-      console.log(event);
-      let rect = context.canvas.getBoundingClientRect();
-      let x = event.clientX - rect.left;
-      let y = event.clientY - rect.top;
-      console.log(x, y);
-      let tileX = Math.floor(x / 32);
-      let tileY = Math.floor(y / 32);
-      console.log(tileX, tileY);
-      // this.scene.camera.targetX = tileX;
-      // this.scene.camera.targetY = tileY;
-    })
+      let response = this.getMousePosition(context.canvas, event);
+      console.log(response);
+    });
+  }
+
+  /**
+   * 
+   * @param canvas 
+   * @param evt 
+   * @returns 
+   */
+  getMousePosition(canvas: HTMLCanvasElement, evt: MouseEvent): { x: number, y: number} {
+    let rect = canvas.getBoundingClientRect(); // abs. size of element
+    let scaleX = canvas.width / rect.width;    // relationship bitmap vs. element for x
+    let scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for y
+  
+    return {
+      x: Math.floor(((evt.clientX - rect.left) * scaleX) / CanvasConstants.TILE_SIZE),   // scale mouse coordinates after they have
+      y: Math.floor(((evt.clientY - rect.top) * scaleY) / CanvasConstants.TILE_SIZE)    // been adjusted to be relative to element
+    }
   }
 }

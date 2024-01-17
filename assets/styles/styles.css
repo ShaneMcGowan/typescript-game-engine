@@ -21,13 +21,9 @@ html, body {
 }
 
 #render-area {
-  height: 100%;
-  width: 100%;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  height: 50%;
+  width: 50%;
+  margin: 16px;
 }
 
 #render-area canvas {

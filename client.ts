@@ -22,18 +22,11 @@ export class Client {
 
   // Assets
   assets: {
-    images: Record<string, HTMLImageElement>
+    images: Record<string, HTMLImageElement>,
+    audio: Record<string, HTMLAudioElement>,
   } = {
-    images: {
-      tileset_grass: new Image(),
-      tileset_water: new Image(),
-      tileset_player: new Image(),
-      tileset_chicken: new Image(),
-      tileset_fence: new Image(),
-      tileset_egg: new Image(),
-      tileset_house: new Image(),
-      tileset_dirt: new Image(),
-    }
+    images: {},
+    audio: {}
   };
 
   // Debug
@@ -68,6 +61,9 @@ export class Client {
     Object.keys(ASSETS.images).forEach((key) => {
       this.assets.images[key] = new Image();
       this.assets.images[key].src = ASSETS.images[key]
+    });
+    Object.keys(ASSETS.audio).forEach((key) => {
+      this.assets.audio[key] = new Audio(ASSETS.audio[key]);
     });
 
     // initialise debug controls
