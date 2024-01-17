@@ -12,12 +12,11 @@ enum Direction {
   RIGHT = 'd',
 }
 
+const TILE_SET = 'tileset_player';
+
 export class PlayerObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
-  tileset = 'tileset_player';
-  spriteX = 1;
-  spriteY = 1;
 
   // constants
   movementSpeed = 4; // 4 tiles per second
@@ -153,7 +152,7 @@ export class PlayerObject extends SceneObject {
     let animations = this.isIdle ? this.animationsIdle : this.animations;
     RenderUtils.renderSprite(
       context,
-      this.assets.images[this.tileset],
+      this.assets.images[TILE_SET],
       animations[this.direction][this.animationIndex].x, // sprite x
       animations[this.direction][this.animationIndex].y, // sprite y
       this.positionX,

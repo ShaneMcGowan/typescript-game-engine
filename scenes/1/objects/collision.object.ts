@@ -3,9 +3,6 @@ import { SceneObject } from "../../../model/scene-object";
 
 export class CollisionObject extends SceneObject {
   hasCollision = true;
-  tileset = 'tileset_house';
-  spriteX = 0;
-  spriteY = 0;
   
   constructor(
     private scene: Scene,

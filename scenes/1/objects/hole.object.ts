@@ -6,11 +6,6 @@ import { PlayerObject } from "./player.object";
 export class HoleObject extends SceneObject {
   isRenderable = true;
 
-  // not used for now
-  tileset = 'tileset_house';
-  spriteX = 0;
-  spriteY = 0;
-
   // consumption timer
   consumptionTimer = 0;
   consumptionTimerMax = 5; // how often the hole can consume

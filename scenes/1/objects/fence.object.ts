@@ -12,12 +12,13 @@ export class FenceType {
   static FencePost = { x: 0, y: 3 }
 }
 
+const TILE_SET = 'tileset_fence';
+
 export class FenceObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
-  spriteX = 1;
-  spriteY = 0;
-  tileset = 'tileset_fence';
+
+  private type: { x: number, y: number } = FenceType.FencePost;
 
   constructor(
     private scene: Scene,
@@ -30,18 +31,18 @@ export class FenceObject extends SceneObject {
     this.targetX = this.positionX;
     this.positionY = this.config.positionY ?? -1;
     this.targetY = this.positionY;
+    
     if(this.config.type){
-      this.spriteX = this.config.type.x;
-      this.spriteY = this.config.type.y;
+      this.type = this.config.type
     }
   }
 
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[this.tileset],
-      this.spriteX, 
-      this.spriteY,
+      this.assets.images[TILE_SET],
+      this.type.x, 
+      this.type.y,
       this.positionX,
       this.positionY
     );

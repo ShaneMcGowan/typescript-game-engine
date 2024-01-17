@@ -6,13 +6,11 @@ import { RenderUtils } from "../../../utils/render.utils";
 import { EggObject } from "./egg.object";
 import { PlayerObject } from "./player.object";
 
+const TILE_SET = 'tileset_chicken';
+
 export class ChickenObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
-  
-  spriteX = 0;
-  spriteY = 0;
-  tileset = 'tileset_chicken';
 
   // animation
   animations = {
@@ -61,7 +59,7 @@ export class ChickenObject extends SceneObject {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[this.tileset],
+      this.assets.images[TILE_SET],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
       this.positionX,

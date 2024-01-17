@@ -1,7 +1,3 @@
-import { Renderable } from "./renderable";
-
-export interface BackgroundTile extends Renderable {}
-
 export interface BackgroundTile2 {
   tileset: string;
   animationFrameDuration: number; // length of animation in seconds

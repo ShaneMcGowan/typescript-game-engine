@@ -2,9 +2,14 @@ import { Scene } from "../../../model/scene";
 import { SceneObject } from "../../../model/scene-object";
 import { RenderUtils } from "../../../utils/render.utils";
 
+
 export class GenericSpriteObject extends SceneObject {
   hasCollision = true;  
-  isRenderable;
+  isRenderable = true;
+
+  tileset: string;
+  spriteX: number;
+  spriteY: number;
 
   constructor(
     private scene: Scene,
@@ -13,9 +18,9 @@ export class GenericSpriteObject extends SceneObject {
     private config: { 
       positionX?: number, 
       positionY?: number,
-      spriteX?: number,
-      spriteY?: number, 
-      tileset?: string,
+      spriteX: number,
+      spriteY: number, 
+      tileset: string,
       isRenderable?: boolean 
     },
   ){
@@ -26,9 +31,10 @@ export class GenericSpriteObject extends SceneObject {
     this.targetY = this.positionY;
     
     this.isRenderable = this.config.isRenderable ?? true;
-    this.tileset = this.config.tileset ?? 'tileset_house'; // default to house tileset
-    this.spriteX = this.config.spriteX ?? 0;
-    this.spriteY = this.config.spriteY ?? 0;
+    
+    this.tileset = this.config.tileset;
+    this.spriteX = this.config.spriteX;
+    this.spriteY = this.config.spriteY;
   }
   
   render(context: CanvasRenderingContext2D): void {
