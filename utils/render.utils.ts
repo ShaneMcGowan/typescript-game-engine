@@ -4,14 +4,15 @@ export class RenderUtils {
   static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number): void{ 
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
+
     context.drawImage(
       spriteSheet,
       spriteX * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
       spriteY * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
       width,
       height,
-      positionX * CanvasConstants.TILE_SIZE, // translate grid position to pixel position
-      positionY * CanvasConstants.TILE_SIZE, // translate grid position to pixel position
+      Math.floor(positionX * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
+      Math.floor(positionY * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
       width,
       height,
     );
@@ -25,12 +26,17 @@ export class RenderUtils {
     endX: number,
     endY: number,
   ): void{
+    let startXPixel = Math.floor(startX * CanvasConstants.TILE_SIZE);
+    let startYPixel = Math.floor(startY * CanvasConstants.TILE_SIZE);
+    let endXPixel = Math.floor(endX * CanvasConstants.TILE_SIZE);
+    let endYPixel = Math.floor(endY * CanvasConstants.TILE_SIZE);
+
     destination.drawImage(
       source.canvas,
-      startX * CanvasConstants.TILE_SIZE,
-      startY * CanvasConstants.TILE_SIZE,
-      (endX - startX) * CanvasConstants.TILE_SIZE,
-      (endY - startY) * CanvasConstants.TILE_SIZE,
+      startXPixel,
+      startYPixel,
+      endXPixel - startXPixel,
+      endYPixel - startYPixel,
       0,
       0,
       destination.canvas.width,
@@ -60,8 +66,9 @@ export class RenderUtils {
   static createCanvas(width?: number, height?: number ): HTMLCanvasElement {
     // create canvas
     const canvas = document.createElement('canvas');
-
+    
     // configure canvas
+    canvas.getContext('2d').imageSmoothingEnabled = false;
     canvas.width = width ? width * CanvasConstants.TILE_SIZE : CanvasConstants.CANVAS_WIDTH;
     canvas.height = height ? height * CanvasConstants.TILE_SIZE : CanvasConstants.CANVAS_HEIGHT;
 
@@ -71,4 +78,5 @@ export class RenderUtils {
   static positionToPixelPosition(position: number): number {
     return position * CanvasConstants.TILE_SIZE;
   }
+
 }
