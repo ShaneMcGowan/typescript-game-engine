@@ -38,7 +38,7 @@ export class Scene {
 
   // maps
   maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap 
-  private map: SceneMap; // the current map
+  map: SceneMap; // the current map
 
   // rendering contexts
   renderingContext: SceneRenderingContext = {

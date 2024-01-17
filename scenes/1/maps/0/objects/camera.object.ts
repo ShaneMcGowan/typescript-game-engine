@@ -44,6 +44,23 @@ export class CameraObject implements SceneObject {
     let endX = this.config.object.positionX + (this.cameraOffsetX + 1);
     let endY = this.config.object.positionY + (this.cameraOffsetY + 1);
 
+    // if the camera is at the edge of the map, don't render outside of the map
+    if(startX < 0){
+      startX = 0;
+      endX = startX + CanvasConstants.CANVIS_TILE_WIDTH;
+    } else if(endX > this.scene.map.width){
+      endX = this.scene.map.width;
+      startX = endX - CanvasConstants.CANVIS_TILE_WIDTH;
+    }
+
+    if(startY < 0){
+      startY = 0;
+      endY = startY + CanvasConstants.CANVIS_TILE_HEIGHT;
+    } else if(endY > this.scene.map.height){
+      endY = this.scene.map.height;
+      startY = endY - CanvasConstants.CANVIS_TILE_HEIGHT;
+    }
+    
     renderingContext.background.forEach((context) => {
       RenderUtils.renderSubsection(context, this.context, startX, startY, endX, endY);
     });
