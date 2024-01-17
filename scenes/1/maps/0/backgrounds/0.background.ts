@@ -1,7 +1,7 @@
 import { BackgroundLayer } from "../../../../../model/background-layer";
-import { BackgroundTile2 } from "../../../../../model/background-tile";
+import { BackgroundTile } from "../../../../../model/background-tile";
 
-const WATER_TILE: BackgroundTile2 = {
+const WATER_TILE: BackgroundTile = {
   tileset: 'tileset_water',
   animationFrameDuration: 1,
   animationFrames: [

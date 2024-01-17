@@ -1,4 +1,4 @@
-export interface BackgroundTile2 {
+export interface BackgroundTile {
   tileset: string;
   animationFrameDuration: number; // length of animation in seconds
   animationFrames: {spriteX: number, spriteY: number}[],

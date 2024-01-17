@@ -1,6 +1,6 @@
 export class SceneObject {
-  isRenderable: boolean = false; // NOT IMPLEMENTED! to be used to programatically disable the render hook of an object
-  hasCollision: boolean = false; // TODO(smg): review
+  isRenderable: boolean = false;
+  hasCollision: boolean = false; 
 
   // position
   positionX: number = -1; 

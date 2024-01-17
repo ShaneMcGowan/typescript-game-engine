@@ -1,70 +1,70 @@
 import { BackgroundLayer } from "../../../../../model/background-layer";
-import { BackgroundTile2 } from "../../../../../model/background-tile";
+import { BackgroundTile } from "../../../../../model/background-tile";
 
-const GRASS_TILE : BackgroundTile2 = {
+const GRASS_TILE : BackgroundTile = {
   tileset: 'tileset_grass',
   animationFrameDuration: 1,
   animationFrames: [],
   animationMap: [1]
 }
 
-const GRASS_TILE_TOP: BackgroundTile2 = {
+const GRASS_TILE_TOP: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 0, spriteY: 1},
   ]
 }
 
-const GRASS_TILE_TOP_LEFT: BackgroundTile2 = {
+const GRASS_TILE_TOP_LEFT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 0, spriteY: 0},
   ],
 }
 
-const GRASS_TILE_TOP_RIGHT: BackgroundTile2 = {
+const GRASS_TILE_TOP_RIGHT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 0, spriteY: 2},
   ],
 }
 
-const GRASS_TILE_CENTER: BackgroundTile2 = {
+const GRASS_TILE_CENTER: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 1, spriteY: 1},
   ],
 }
 
-const GRASS_TILE_LEFT: BackgroundTile2 = {
+const GRASS_TILE_LEFT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 1, spriteY: 0},
   ],
 }
 
-const GRASS_TILE_RIGHT: BackgroundTile2 = {
+const GRASS_TILE_RIGHT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 1, spriteY: 2},
   ],
 }
 
-const GRASS_TILE_BOTTOM_LEFT: BackgroundTile2 = {
+const GRASS_TILE_BOTTOM_LEFT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 2, spriteY: 0},
   ],
 }
 
-const GRASS_TILE_BOTTOM: BackgroundTile2 = {
+const GRASS_TILE_BOTTOM: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 2, spriteY: 1},
   ],
 }
 
-const GRASS_TILE_BOTTOM_RIGHT: BackgroundTile2 = {
+const GRASS_TILE_BOTTOM_RIGHT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
     {spriteX: 2, spriteY: 2},

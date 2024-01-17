@@ -1,70 +1,70 @@
 import { BackgroundLayer } from "../../../../../model/background-layer";
-import { BackgroundTile2 } from "../../../../../model/background-tile";
+import { BackgroundTile } from "../../../../../model/background-tile";
 
-const BASE_TILE : BackgroundTile2 = {
+const BASE_TILE : BackgroundTile = {
   tileset: 'tileset_dirt',
   animationFrameDuration: 1,
   animationFrames: [],
   animationMap: [1]
 }
 
-const TOP_LEFT: BackgroundTile2 = {
+const TOP_LEFT: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 0, spriteY: 0},
   ]
 }
 
-const TOP: BackgroundTile2 = {
+const TOP: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 1, spriteY: 0},
   ]
 }
 
-const TOP_RIGHT: BackgroundTile2 = {
+const TOP_RIGHT: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 2, spriteY: 0},
   ]
 }
 
-const LEFT: BackgroundTile2 = {
+const LEFT: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 0, spriteY: 1},
   ]
 }
 
-const CENTER: BackgroundTile2 = {
+const CENTER: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 1, spriteY: 1},
   ]
 }
 
-const RIGHT: BackgroundTile2 = {
+const RIGHT: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 2, spriteY: 1},
   ]
 }
 
-const BOTTOM_LEFT: BackgroundTile2 = {
+const BOTTOM_LEFT: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 0, spriteY: 2},
   ]
 }
 
-const BOTTOM: BackgroundTile2 = {
+const BOTTOM: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 1, spriteY: 2},
   ]
 }
 
-const BOTTOM_RIGHT: BackgroundTile2 = {
+const BOTTOM_RIGHT: BackgroundTile = {
   ...BASE_TILE,
   animationFrames: [
     {spriteX: 2, spriteY: 2},
