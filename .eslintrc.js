@@ -33,6 +33,7 @@ module.exports = {
     }],
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
-    'no-useless-computed-key': 'off'
+    'no-useless-computed-key': 'off',
+    '@typescript-eslint/member-delimiter-style': 'off'
   }
 };
