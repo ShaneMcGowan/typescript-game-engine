@@ -1,9 +1,9 @@
-import { Client } from "../client";
-import { CanvasConstants } from "../constants/canvas.constants";
-import { RenderUtils } from "../utils/render.utils";
-import { BackgroundLayer } from "./background-layer";
-import { SceneMap } from "./scene-map";
-import { SceneObject } from "./scene-object";
+import { type Client } from '../client';
+import { CanvasConstants } from '../constants/canvas.constants';
+import { RenderUtils } from '../utils/render.utils';
+import { type BackgroundLayer } from './background-layer';
+import { type SceneMap } from './scene-map';
+import { type SceneObject } from './scene-object';
 
 export interface SceneRenderingContext {
   background: CanvasRenderingContext2D[];
@@ -24,28 +24,28 @@ export type CustomRendererSignature = (renderingContext: SceneRenderingContext) 
       }
     }
   }
-  
+
 */
 
 export class Scene {
-
   // background
   backgroundLayers: BackgroundLayer[];
   backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations
-  
+
   // objects
   objects: SceneObject[] = [];
   globals: Record<string, any> = {}; // a place to store flags for the scene
 
   // maps
-  maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap 
+  maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap
   map: SceneMap; // the current map
 
   // rendering contexts
   renderingContext: SceneRenderingContext = {
     background: [],
     objects: [],
-  }
+  };
+
   private customRenderer?: CustomRendererSignature;
 
   // from client
@@ -53,8 +53,8 @@ export class Scene {
   assets: Record<string, any>;
 
   constructor(
-    protected client: Client,
-  ){
+    protected client: Client
+  ) {
     this.context = this.client.context;
     this.assets = this.client.assets;
   }
@@ -67,7 +67,7 @@ export class Scene {
     this.updateObjects(delta);
     this.renderObjects(delta);
 
-    if(this.customRenderer){
+    if (this.customRenderer) {
       this.customRenderer(this.renderingContext);
     } else {
       this.defaultRenderer();
@@ -75,50 +75,50 @@ export class Scene {
   }
 
   renderBackground(delta: number): void {
-    if(this.client.debug.timing.frameBackground){
+    if (this.client.debug.timing.frameBackground) {
       console.time('[frame] background');
     }
 
     this.backgroundLayers.forEach((layer, index) => {
-      let context = this.renderingContext.background[index]
+      let context = this.renderingContext.background[index];
       RenderUtils.clearCanvas(context);
-      
-      for(let x = 0; x < this.map.width; x++){
-        for(let y = 0; y < this.map.height; y++){
+
+      for (let x = 0; x < this.map.width; x++) {
+        for (let y = 0; y < this.map.height; y++) {
           let tile = layer.tiles[x] ? layer.tiles[x][y] : undefined;
-          
-          if(tile === undefined){
+
+          if (tile === undefined) {
             continue;
           }
 
           let animationFrame;
-          if(tile.animationFrames.length === 1){
+          if (tile.animationFrames.length === 1) {
             // skip animations if only 1 sprite
             animationFrame = tile.animationFrames[0];
           } else {
             // check if timer has started for specific tile on specific layer
-            if(this.backgroundLayersAnimationTimer[layer.index] === undefined){
+            if (this.backgroundLayersAnimationTimer[layer.index] === undefined) {
               this.backgroundLayersAnimationTimer[layer.index] = {};
             }
-            
-            if(this.backgroundLayersAnimationTimer[layer.index][x] === undefined){
+
+            if (this.backgroundLayersAnimationTimer[layer.index][x] === undefined) {
               this.backgroundLayersAnimationTimer[layer.index][x] = {};
             }
 
             let timer;
-            if(this.backgroundLayersAnimationTimer[layer.index][x][y] === undefined) {
+            if (this.backgroundLayersAnimationTimer[layer.index][x][y] === undefined) {
               timer = 0;
             } else {
               timer = this.backgroundLayersAnimationTimer[layer.index][x][y] + delta;
             }
-                
+
             // wrap timer if over animation frame duration
-            if(timer > tile.animationFrameDuration) {
+            if (timer > tile.animationFrameDuration) {
               timer = timer % tile.animationFrameDuration;
             }
-            
-            for(let i = 0; i < tile.animationMap.length; i++){
-              if(timer <= tile.animationMap[i]){
+
+            for (let i = 0; i < tile.animationMap.length; i++) {
+              if (timer <= tile.animationMap[i]) {
                 animationFrame = tile.animationFrames[i];
                 break;
               }
@@ -139,29 +139,29 @@ export class Scene {
       }
     });
 
-    if(this.client.debug.timing.frameBackground){
+    if (this.client.debug.timing.frameBackground) {
       console.timeEnd('[frame] background');
     }
   }
 
   updateObjects(delta: number): void {
-    if(this.client.debug.timing.frameUpdate){
+    if (this.client.debug.timing.frameUpdate) {
       console.time('[frame] update');
     }
 
     this.objects.forEach((object) => {
-      if(object.update){
+      if (object.update) {
         object.update(delta);
       }
     });
 
-    if(this.client.debug.timing.frameUpdate){
+    if (this.client.debug.timing.frameUpdate) {
       console.timeEnd('[frame] update');
     }
   }
 
   renderObjects(delta: number): void {
-    if(this.client.debug.timing.frameRender){
+    if (this.client.debug.timing.frameRender) {
       console.time('[frame] render');
     }
 
@@ -172,14 +172,14 @@ export class Scene {
 
     // render objects
     this.objects.forEach((object) => {
-      if(object.render && object.isRenderable){
+      if (object.render && object.isRenderable) {
         object.render(
           this.renderingContext.objects[object.renderLayer]
         );
       }
     });
 
-    if(this.client.debug.timing.frameRender){
+    if (this.client.debug.timing.frameRender) {
       console.timeEnd('[frame] render');
     }
   }
@@ -198,7 +198,7 @@ export class Scene {
   }
 
   removeObject(sceneObject: SceneObject): void {
-    if(sceneObject.destroy){
+    if (sceneObject.destroy) {
       sceneObject.destroy();
     }
     this.objects.splice(this.objects.indexOf(sceneObject), 1);
@@ -206,8 +206,8 @@ export class Scene {
 
   /**
    * Returns all instances of the provided class
-   * @param type 
-   * @returns 
+   * @param type
+   * @returns
    */
   getObjectsByType(type: any): SceneObject[] {
     // TODO(smg): horribly underperformant, perhaps use a hash on object type instead?
@@ -216,18 +216,18 @@ export class Scene {
 
   /**
    * Checks if an object exists at the provided position and has collision
-   * @param x 
-   * @param y 
-   * @returns 
+   * @param x
+   * @param y
+   * @returns
    */
   hasCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
     let object = this.objects.find(o => o.positionX === positionX && o.positionY === positionY && o.hasCollision);
-    if(object === undefined){
+    if (object === undefined) {
       return false;
     }
 
     // ignore provided object (usually self)
-    if(sceneObject === object){
+    if (sceneObject === object) {
       return false;
     }
 
@@ -236,18 +236,18 @@ export class Scene {
 
   /**
    * Checks if an object is on it's way to the provided position and has collision
-   * @param x 
-   * @param y 
-   * @returns 
+   * @param x
+   * @param y
+   * @returns
    */
   willHaveCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
     let object = this.objects.find(o => o.targetX === positionX && o.targetY === positionY && o.hasCollision);
-    if(object === undefined){
+    if (object === undefined) {
       return false;
     }
 
     // ignore provided object (usually self)
-    if(sceneObject === object){
+    if (sceneObject === object) {
       return false;
     }
 
@@ -260,43 +260,43 @@ export class Scene {
 
   /**
    * A combination of hasCollisionAtPosition and willHaveCollisionAtPosition
-   * @param positionX 
-   * @param positionY 
-   * @param sceneObject 
-   * @returns 
+   * @param positionX
+   * @param positionY
+   * @param sceneObject
+   * @returns
    */
   hasOrWillHaveCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
     return this.hasCollisionAtPosition(positionX, positionY, sceneObject) || this.willHaveCollisionAtPosition(positionX, positionY, sceneObject);
   }
 
   /**
-   * returns the first object found at the provided position 
+   * returns the first object found at the provided position
    * @param positionX
-   * @param positionY 
-   * @param type 
-   * @returns 
+   * @param positionY
+   * @param type
+   * @returns
    */
-  getObjectAtPosition(positionX: number, positionY: number, type?: any){
+  getObjectAtPosition(positionX: number, positionY: number, type?: any) {
     // TODO(smg): add optional type check
     // TODO(smg): this is a very heavy operation
     return this.objects.find(o => o.positionX === positionX && o.positionY === positionY);
   }
 
   /**
-   * returns all objects found at the provided position 
+   * returns all objects found at the provided position
    * @param positionX
-   * @param positionY 
-   * @param type 
-   * @returns 
+   * @param positionY
+   * @param type
+   * @returns
    */
-  getAllObjectsAtPosition(positionX: number, positionY: number, type?: any){
+  getAllObjectsAtPosition(positionX: number, positionY: number, type?: any) {
     // TODO(smg): add optional type check
     // TODO(smg): this is a very heavy operation
     return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY);
   }
 
   private removeAllObjects(): void {
-    while(this.objects.length > 0){
+    while (this.objects.length > 0) {
       this.removeObject(this.objects[0]);
     }
     // this.objects = [];
@@ -310,20 +310,20 @@ export class Scene {
     this.renderingContext = {
       background: [],
       objects: [],
-    }
+    };
 
-    for(let i = 0; i < this.backgroundLayers.length; i++){
+    for (let i = 0; i < this.backgroundLayers.length; i++) {
       this.renderingContext.background[i] = this.createCanvas().getContext('2d');
     }
-    for(let i = 0; i < CanvasConstants.OBJECT_RENDERING_LAYERS; i++){
+    for (let i = 0; i < CanvasConstants.OBJECT_RENDERING_LAYERS; i++) {
       this.renderingContext.objects[i] = this.createCanvas().getContext('2d');
     }
   }
 
   private createCanvas(): HTMLCanvasElement {
     let canvas = RenderUtils.createCanvas(this.map.width, this.map.height);
-      
-    if(this.client.debug.ui.canvasLayers) {
+
+    if (this.client.debug.ui.canvasLayers) {
       this.client.container.append(canvas);
     }
 
@@ -332,7 +332,7 @@ export class Scene {
 
   changeMap(index: number): void {
     // clean up map
-    if(this.map !== undefined){
+    if (this.map !== undefined) {
       this.map.destroy();
     }
 
@@ -342,7 +342,7 @@ export class Scene {
     this.removeAllBackgroundLayers();
 
     // set up new map
-    this.map = Reflect.construct(this.maps[index], [this, this.context, this.assets]) as SceneMap;
+    this.map = Reflect.construct(this.maps[index], [this, this.context, this.assets]);
     this.backgroundLayers.push(...this.map.backgroundLayers);
     this.objects.push(...this.map.objects);
 
@@ -362,5 +362,4 @@ export class Scene {
   removeCustomerRenderer(): void {
     this.customRenderer = undefined;
   }
-
 }

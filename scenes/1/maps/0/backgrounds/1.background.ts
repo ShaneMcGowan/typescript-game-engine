@@ -1,80 +1,80 @@
-import { BackgroundLayer } from "../../../../../model/background-layer";
-import { BackgroundTile } from "../../../../../model/background-tile";
+import { type BackgroundLayer } from '../../../../../model/background-layer';
+import { type BackgroundTile } from '../../../../../model/background-tile';
 
-const GRASS_TILE : BackgroundTile = {
+const GRASS_TILE: BackgroundTile = {
   tileset: 'tileset_grass',
   animationFrameDuration: 1,
   animationFrames: [],
-  animationMap: [1]
-}
+  animationMap: [1],
+};
 
 const GRASS_TILE_TOP: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 0, spriteY: 1},
-  ]
-}
+    { spriteX: 0, spriteY: 1, }
+  ],
+};
 
 const GRASS_TILE_TOP_LEFT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 0, spriteY: 0},
+    { spriteX: 0, spriteY: 0, }
   ],
-}
+};
 
 const GRASS_TILE_TOP_RIGHT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 0, spriteY: 2},
+    { spriteX: 0, spriteY: 2, }
   ],
-}
+};
 
 const GRASS_TILE_CENTER: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 1, spriteY: 1},
+    { spriteX: 1, spriteY: 1, }
   ],
-}
+};
 
 const GRASS_TILE_LEFT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 1, spriteY: 0},
+    { spriteX: 1, spriteY: 0, }
   ],
-}
+};
 
 const GRASS_TILE_RIGHT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 1, spriteY: 2},
+    { spriteX: 1, spriteY: 2, }
   ],
-}
+};
 
 const GRASS_TILE_BOTTOM_LEFT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 2, spriteY: 0},
+    { spriteX: 2, spriteY: 0, }
   ],
-}
+};
 
 const GRASS_TILE_BOTTOM: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 2, spriteY: 1},
+    { spriteX: 2, spriteY: 1, }
   ],
-}
+};
 
 const GRASS_TILE_BOTTOM_RIGHT: BackgroundTile = {
   ...GRASS_TILE,
   animationFrames: [
-    {spriteX: 2, spriteY: 2},
+    { spriteX: 2, spriteY: 2, }
   ],
-}
+};
 
 export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
   index: 1,
   tiles: [
-    
+
     [],
     [],
     [
@@ -91,21 +91,6 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_TOP,
       GRASS_TILE_TOP,
       GRASS_TILE_TOP_RIGHT
-    ], 
-    [
-      undefined,
-      undefined,
-      GRASS_TILE_LEFT,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
     ],
     [
       undefined,
@@ -120,7 +105,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -135,7 +120,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -150,7 +135,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -165,7 +150,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -180,7 +165,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -195,7 +180,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -210,7 +195,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -225,7 +210,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -240,7 +225,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -255,7 +240,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -270,7 +255,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -285,7 +270,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -300,7 +285,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -315,7 +300,22 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
       GRASS_TILE_CENTER,
-      GRASS_TILE_RIGHT,
+      GRASS_TILE_RIGHT
+    ],
+    [
+      undefined,
+      undefined,
+      GRASS_TILE_LEFT,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_CENTER,
+      GRASS_TILE_RIGHT
     ],
     [
       undefined,
@@ -330,7 +330,7 @@ export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_1: BackgroundLayer = {
       GRASS_TILE_BOTTOM,
       GRASS_TILE_BOTTOM,
       GRASS_TILE_BOTTOM,
-      GRASS_TILE_BOTTOM_RIGHT,
-    ],
-  ]
+      GRASS_TILE_BOTTOM_RIGHT
+    ]
+  ],
 };

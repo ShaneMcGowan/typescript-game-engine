@@ -15,5 +15,5 @@ export const ASSETS: Assets = {
     tileset_dirt: '/assets/sample/Tilesets/Tilled_Dirt.png',
     tileset_button: '/assets/sample/UI Big Play Button.png',
   },
-  audio: {}
-}
+  audio: {},
+};

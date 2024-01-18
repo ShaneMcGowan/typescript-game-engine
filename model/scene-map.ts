@@ -1,8 +1,8 @@
-import { BackgroundLayer } from "./background-layer";
-import { Scene } from "./scene";
-import { SceneObject } from "./scene-object";
+import { type BackgroundLayer } from './background-layer';
+import { type Scene } from './scene';
+import { type SceneObject } from './scene-object';
 
-export class SceneMap {  
+export class SceneMap {
   width: number;
   height: number;
   backgroundLayers: BackgroundLayer[];
@@ -13,8 +13,8 @@ export class SceneMap {
   protected assets: Record<string, any>;
 
   constructor(
-    protected scene: Scene,
-  ){
+    protected scene: Scene
+  ) {
     this.context = this.scene.context;
     this.assets = this.scene.assets;
   }
@@ -24,5 +24,5 @@ export class SceneMap {
    */
   destroy?(): void {
     // do nothing by default
-  } 
+  }
 }

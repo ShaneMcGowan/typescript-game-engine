@@ -1,6 +1,6 @@
-import { Client } from "../client"
+import { type Client } from '../client';
 
-export {}
+export {};
 
 declare global {
   interface Window {

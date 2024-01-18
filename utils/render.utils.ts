@@ -1,7 +1,7 @@
-import { CanvasConstants } from "../constants/canvas.constants";
+import { CanvasConstants } from '../constants/canvas.constants';
 
 export class RenderUtils {
-  static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number): void{ 
+  static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number): void {
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
 
@@ -14,7 +14,7 @@ export class RenderUtils {
       Math.floor(positionX * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
       Math.floor(positionY * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
       width,
-      height,
+      height
     );
   }
 
@@ -24,8 +24,8 @@ export class RenderUtils {
     startX: number,
     startY: number,
     endX: number,
-    endY: number,
-  ): void{
+    endY: number
+  ): void {
     let startXPixel = Math.floor(startX * CanvasConstants.TILE_SIZE);
     let startYPixel = Math.floor(startY * CanvasConstants.TILE_SIZE);
     let endXPixel = Math.floor(endX * CanvasConstants.TILE_SIZE);
@@ -40,22 +40,21 @@ export class RenderUtils {
       0,
       0,
       destination.canvas.width,
-      destination.canvas.height,
+      destination.canvas.height
     );
   }
 
-  static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number): void{ 
-
+  static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number): void {
     context.beginPath();
     context.arc(
-      (positionX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2), 
-      (positionY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2), 
-      CanvasConstants.TILE_SIZE / 2, 
-      0, 
+      (positionX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      (positionY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      CanvasConstants.TILE_SIZE / 2,
+      0,
       2 * Math.PI
     );
     context.stroke();
-    context.fillStyle = "saddlebrown";
+    context.fillStyle = 'saddlebrown';
     context.fill();
   }
 
@@ -63,10 +62,10 @@ export class RenderUtils {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   }
 
-  static createCanvas(width?: number, height?: number ): HTMLCanvasElement {
+  static createCanvas(width?: number, height?: number): HTMLCanvasElement {
     // create canvas
     const canvas = document.createElement('canvas');
-    
+
     // configure canvas
     canvas.getContext('2d').imageSmoothingEnabled = false;
     canvas.width = width ? width * CanvasConstants.TILE_SIZE : CanvasConstants.CANVAS_WIDTH;
@@ -78,5 +77,4 @@ export class RenderUtils {
   static positionToPixelPosition(position: number): number {
     return position * CanvasConstants.TILE_SIZE;
   }
-
 }

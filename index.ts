@@ -1,5 +1,5 @@
-import { Client } from "./client"
+import { Client } from './client';
 
-(function(){
+(function() {
   window.engine = new Client(document.getElementById('render-area'));
-})()
+})();
