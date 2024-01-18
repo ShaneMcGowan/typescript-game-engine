@@ -1,3 +1,4 @@
+import { CanvasConstants } from "../../../../../constants/canvas.constants";
 import { Scene } from "../../../../../model/scene";
 import { SceneObject, SceneObjectBaseConfig } from "../../../../../model/scene-object";
 import { MathUtils } from "../../../../../utils/math.utils";
@@ -40,7 +41,7 @@ export class MainMenuControllerObject extends SceneObject {
     let randomY = MathUtils.randomIntFromRange(0, this.scene.map.height);
     this.scene.addObject(new GenericSpriteObject(
       this.scene, 
-      { positionX: 15, positionY: randomY, targetX: -1, targetY: randomY, tileset: 'tileset_egg', spriteX: 1, spriteY: 0, destroyAtTarget: true }
+      { positionX: CanvasConstants.CANVIS_TILE_WIDTH, positionY: randomY, targetX: -1, targetY: randomY, tileset: 'tileset_egg', spriteX: 1, spriteY: 0, destroyAtTarget: true }
     ));
 
     this.newItemTimer = 0;

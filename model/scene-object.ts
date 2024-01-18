@@ -5,11 +5,15 @@ export interface SceneObjectBaseConfig {
   positionY?: number;
   targetX?: number;
   targetY?: number;
+  renderLayer?: number;
 }
+
+const DEFAULT_RENDER_LAYER = 0;
 
 export class SceneObject {
   isRenderable: boolean = false;
-  hasCollision: boolean = false; 
+  hasCollision: boolean = false;
+  renderLayer: number;
 
   // position
   positionX: number = -1; 
@@ -49,6 +53,8 @@ export class SceneObject {
     if(this.config.targetY !== undefined){
       this.targetY = this.config.targetY;
     }
+
+    this.renderLayer = this.config.renderLayer ?? DEFAULT_RENDER_LAYER;
   }
 
   update?(delta: number): void;

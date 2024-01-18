@@ -5,6 +5,7 @@ import { ChickenObject } from "./chicken.object";
 import { PlayerObject } from "./player.object";
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
+const DEFAULT_RENDER_LAYER: number = 7;
 
 interface Config extends SceneObjectBaseConfig {
 
@@ -13,6 +14,7 @@ interface Config extends SceneObjectBaseConfig {
 export class EggObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
+  renderLayer = DEFAULT_RENDER_LAYER;
 
   // animation
   animations = {

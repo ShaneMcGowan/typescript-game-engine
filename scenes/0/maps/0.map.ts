@@ -26,7 +26,7 @@ export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
     MouseUtils.setCursor(this.context.canvas, "/assets/sample/Mouse sprites/Triangle Mouse icon 1.png");
 
     // TODO(smg): object layers so rendering order is correct
-    this.objects.push(new StartButtonObject(scene, {}));
+    this.objects.push(new StartButtonObject(scene, { renderLayer: 15 }));
     this.objects.push(new MainMenuControllerObject(scene, {}));
   }
 

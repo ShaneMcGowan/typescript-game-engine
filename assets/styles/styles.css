@@ -23,7 +23,7 @@ html, body {
 #render-area {
   height: 50%;
   width: 50%;
-  margin: 16px;
+  padding: 16px;
 }
 
 #render-area canvas {

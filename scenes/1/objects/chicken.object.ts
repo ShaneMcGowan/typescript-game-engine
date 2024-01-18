@@ -5,7 +5,8 @@ import { Movement, MovementUtils } from "../../../utils/movement.utils";
 import { RenderUtils } from "../../../utils/render.utils";
 import { EggObject } from "./egg.object";
 
-const TILE_SET = 'tileset_chicken';
+const TILE_SET: string = 'tileset_chicken';
+const DEFAULT_RENDER_LAYER: number = 8;
 
 interface Config extends SceneObjectBaseConfig {
   follows: SceneObject; // object to follow
@@ -15,6 +16,7 @@ interface Config extends SceneObjectBaseConfig {
 export class ChickenObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
+  renderLayer = DEFAULT_RENDER_LAYER;
 
   // animation
   animations = {
@@ -126,6 +128,10 @@ export class ChickenObject extends SceneObject {
     }
 
     if(this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY, this)){
+      return;
+    }
+
+    if(this.scene.isOutOfBounds(movement.targetX, movement.targetY)){
       return;
     }
 

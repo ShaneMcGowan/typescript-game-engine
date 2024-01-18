@@ -1,4 +1,5 @@
 import { Client } from "../client";
+import { CanvasConstants } from "../constants/canvas.constants";
 import { RenderUtils } from "../utils/render.utils";
 import { BackgroundLayer } from "./background-layer";
 import { SceneMap } from "./scene-map";
@@ -164,12 +165,17 @@ export class Scene {
       console.time('[frame] render');
     }
 
-    let context = this.renderingContext.objects[0];
-    RenderUtils.clearCanvas(context);
+    // clear object canvases
+    this.renderingContext.objects.forEach((context) => {
+      RenderUtils.clearCanvas(context);
+    });
 
+    // render objects
     this.objects.forEach((object) => {
       if(object.render && object.isRenderable){
-        object.render(context);
+        object.render(
+          this.renderingContext.objects[object.renderLayer]
+        );
       }
     });
 
@@ -309,7 +315,9 @@ export class Scene {
     for(let i = 0; i < this.backgroundLayers.length; i++){
       this.renderingContext.background[i] = this.createCanvas().getContext('2d');
     }
-    this.renderingContext.objects[0] = this.createCanvas().getContext('2d');
+    for(let i = 0; i < CanvasConstants.OBJECT_RENDERING_LAYERS; i++){
+      this.renderingContext.objects[i] = this.createCanvas().getContext('2d');
+    }
   }
 
   private createCanvas(): HTMLCanvasElement {

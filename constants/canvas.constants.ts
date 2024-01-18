@@ -7,6 +7,7 @@ export class CanvasConstants {
   static readonly CANVIS_TILE_HEIGHT = 9; // total height in tiles
   static readonly CANVIS_TILE_WIDTH = 16; // total width in tiles
   static readonly TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
+  static readonly OBJECT_RENDERING_LAYERS: number = 16; // number of layers to render objects on. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
 
   /**
    * Keep an eye on this and any getters, don't run it on hot code paths

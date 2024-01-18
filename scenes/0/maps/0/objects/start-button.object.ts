@@ -99,7 +99,6 @@ export class StartButtonObject extends SceneObject {
       return;
     }
 
-    console.log('start pressed');
     this.scene.changeScene(SAMPLE_SCENE_1);
 
     this.controls['start'] = false;
