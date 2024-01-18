@@ -22,5 +22,14 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    'prefer-const': 'off',
+    semi: ['error', 'always'],
+    '@typescript-eslint/semi': 'off',
+    '@typescript-eslint/no-extraneous-class': 'off',
+    '@typescript-eslint/space-before-function-paren': ['error', {
+      anonymous: 'never',
+      named: 'never',
+      asyncArrow: 'never'
+    }]
   }
-}
+};
