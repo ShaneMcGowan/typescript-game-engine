@@ -1,15 +1,20 @@
+import { CanvasConstants } from "../../../constants/canvas.constants";
 import { BackgroundLayer } from "../../../model/background-layer";
 import { Scene } from "../../../model/scene";
 import { SceneMap } from "../../../model/scene-map";
 import { SceneObject } from "../../../model/scene-object";
+import { MouseUtils } from "../../../utils/mouse.utils";
 import { SAMPLE_SCENE_0_MAP_0_BACKGROUND_0 } from "./0/backgrounds/0.background";
-import { MenuControllerObject } from "./0/objects/menu-controller.object";
+import { MainMenuControllerObject } from "./0/objects/main-menu-controller.object";
+import { StartButtonObject } from "./0/objects/start-button.object";
 
+const MAP_HEIGHT: number = CanvasConstants.CANVIS_TILE_HEIGHT;
+const MAP_WIDTH: number = CanvasConstants.CANVIS_TILE_WIDTH;
 
 export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
 
-  height = 15;
-  width = 21;
+  height = MAP_HEIGHT;
+  width = MAP_WIDTH;
   backgroundLayers: BackgroundLayer[] = [
     SAMPLE_SCENE_0_MAP_0_BACKGROUND_0
   ];
@@ -18,10 +23,11 @@ export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
   constructor(protected scene: Scene){
     super(scene);
 
-    // TODO(smg): some sort of utility for setting the cursor
-    this.context.canvas.style.cursor = `url("/assets/sample/Mouse sprites/Triangle Mouse icon 1.png"), auto`;
+    MouseUtils.setCursor(this.context.canvas, "/assets/sample/Mouse sprites/Triangle Mouse icon 1.png");
 
-    this.objects.push(new MenuControllerObject(scene, {}));
+    // TODO(smg): object layers so rendering order is correct
+    this.objects.push(new StartButtonObject(scene, {}));
+    this.objects.push(new MainMenuControllerObject(scene, {}));
   }
 
 }
