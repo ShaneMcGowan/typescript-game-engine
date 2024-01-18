@@ -31,5 +31,4 @@ export class CanvasConstants {
   static get ASPECT_RATIO(): number {
     return CanvasConstants.CANVIS_TILE_HEIGHT / CanvasConstants.CANVIS_TILE_WIDTH;
   }
-
 }

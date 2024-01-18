@@ -1,15 +1,14 @@
-import { ASSETS } from "./constants/assets.constants";
-import { CanvasConstants } from "./constants/canvas.constants";
-import { SCENES } from "./constants/scene.constants";
-import { Scene } from "./model/scene";
-import { RenderUtils } from "./utils/render.utils";
+import { ASSETS } from './constants/assets.constants';
+import { CanvasConstants } from './constants/canvas.constants';
+import { SCENES } from './constants/scene.constants';
+import { type Scene } from './model/scene';
+import { RenderUtils } from './utils/render.utils';
 
 export class Client {
-
   // Constants
-  private readonly CANVAS_HEIGHT: number = CanvasConstants.CANVAS_HEIGHT
+  private readonly CANVAS_HEIGHT: number = CanvasConstants.CANVAS_HEIGHT;
   private readonly CANVAS_WIDTH: number = CanvasConstants.CANVAS_WIDTH;
-  
+
   // UI
   public canvas: HTMLCanvasElement;
   public context: CanvasRenderingContext2D;
@@ -17,17 +16,17 @@ export class Client {
   private lastRenderTimestamp: number = 0;
 
   // Data
-  private scenes = [...SCENES];
+  private readonly scenes = [...SCENES];
   private currentScene: Scene;
 
   // Assets
   assets: {
-    images: Record<string, HTMLImageElement>,
-    audio: Record<string, HTMLAudioElement>,
+    images: Record<string, HTMLImageElement>;
+    audio: Record<string, HTMLAudioElement>;
   } = {
-    images: {},
-    audio: {}
-  };
+      images: {},
+      audio: {},
+    };
 
   // Debug
   debug = {
@@ -38,36 +37,36 @@ export class Client {
       objectCount: false, // show object count
     },
     breakpoint: {
-      frame: false
+      frame: false,
     },
     timing: {
       frame: false,
       frameBackground: false,
       frameUpdate: false,
-      frameRender: false
+      frameRender: false,
     },
     ui: {
       grid: {
         lines: false,
-        numbers: false
+        numbers: false,
       },
       canvasLayers: false,
-    }
-  }
+    },
+  };
 
-  constructor(public container: HTMLElement){
+  constructor(public container: HTMLElement) {
     // load assets
     // TODO(smg): some sort of loading screen / rendering delay until assets are loaded
     Object.keys(ASSETS.images).forEach((key) => {
       this.assets.images[key] = new Image();
-      this.assets.images[key].src = ASSETS.images[key]
+      this.assets.images[key].src = ASSETS.images[key];
     });
     Object.keys(ASSETS.audio).forEach((key) => {
       this.assets.audio[key] = new Audio(ASSETS.audio[key]);
     });
 
     // initialise debug controls
-    if(this.debug.enabled){
+    if (this.debug.enabled) {
       this.initialiseDebuggerListeners();
     }
 
@@ -84,16 +83,16 @@ export class Client {
     // })
 
     // handle tabbed out state
-    document.addEventListener("visibilitychange", (event) => {
-      if (document.visibilityState == "visible") {
+    document.addEventListener('visibilitychange', (event) => {
+      if (document.visibilityState === 'visible') {
         // TODO: pause frame execution
-        console.log("tab is active")
+        console.log('tab is active');
       } else {
         // TODO: continue frame execution
-        console.log("tab is inactive")
+        console.log('tab is inactive');
       }
     });
-    
+
     // load first scene
     this.changeScene(this.scenes[0]);
 
@@ -110,8 +109,7 @@ export class Client {
       event.preventDefault();
     });
 
-
-    return canvas
+    return canvas;
   }
 
   // TODO(smg): need some sort of scene class list type
@@ -121,17 +119,17 @@ export class Client {
 
   /**
    * One frame of game logic
-   * @param timestamp 
+   * @param timestamp
    */
   private frame(timestamp: number): void {
-    if(this.debug.breakpoint.frame){
+    if (this.debug.breakpoint.frame) {
       debugger;
     }
 
-    if(this.debug.timing.frame){
+    if (this.debug.timing.frame) {
       console.log(`[frame] ${this.delta}`);
     }
-    
+
     // Set Delata
     this.setDelta(timestamp);
 
@@ -142,13 +140,13 @@ export class Client {
     this.currentScene.frame(this.delta);
 
     // Render stats
-    if(this.debug.stats.fps){
+    if (this.debug.stats.fps) {
       if (this.debug.stats.fpsCounter) {
-        this.renderStats(0, 'FPS', `${Math.round(1000/((performance.now() - this.debug.stats.fpsCounter)))} FPS`);
+        this.renderStats(0, 'FPS', `${Math.round(1000 / ((performance.now() - this.debug.stats.fpsCounter)))} FPS`);
       }
       this.debug.stats.fpsCounter = timestamp;
     }
-    if(this.debug.stats.objectCount){
+    if (this.debug.stats.objectCount) {
       this.renderStats(1, 'Objects', `${this.currentScene.objects.length} objects`);
     }
 
@@ -162,7 +160,7 @@ export class Client {
 
   /**
    * Calculate the time since the previous frame
-   * @param timestamp 
+   * @param timestamp
    */
   private setDelta(timestamp: number): void {
     this.delta = (timestamp - this.lastRenderTimestamp) / 1000;
@@ -170,25 +168,26 @@ export class Client {
   }
 
   private renderStats(index: number, label: string, value: string): void {
-    this.context.fillStyle = "red";
-    this.context.font = "12px serif";
+    this.context.fillStyle = 'red';
+    this.context.font = '12px serif';
     this.context.fillText(value, this.CANVAS_WIDTH - 50, (index + 1) * CanvasConstants.TILE_SIZE);
   }
 
   private renderGrid(): void {
-    if(this.debug.ui.grid.lines)
-    for(let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE){
-      for(let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE){
-        this.context.strokeRect(x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE);
+    if (this.debug.ui.grid.lines) {
+      for (let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE) {
+        for (let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE) {
+          this.context.strokeRect(x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE);
+        }
       }
     }
 
-    if(this.debug.ui.grid.numbers) {
-      for(let x = 0; x < CanvasConstants.CANVIS_TILE_WIDTH; x++){
-        for(let y = 0; y < CanvasConstants.CANVIS_TILE_HEIGHT; y++){
-          this.context.fillStyle = "red";
-          this.context.font = "8px helvetica";
-          this.context.fillText(`${x},${y}`, x * CanvasConstants.TILE_SIZE, (y + .5) * CanvasConstants.TILE_SIZE);
+    if (this.debug.ui.grid.numbers) {
+      for (let x = 0; x < CanvasConstants.CANVIS_TILE_WIDTH; x++) {
+        for (let y = 0; y < CanvasConstants.CANVIS_TILE_HEIGHT; y++) {
+          this.context.fillStyle = 'red';
+          this.context.font = '8px helvetica';
+          this.context.fillText(`${x},${y}`, x * CanvasConstants.TILE_SIZE, (y + 0.5) * CanvasConstants.TILE_SIZE);
         }
       }
     }
@@ -196,24 +195,24 @@ export class Client {
 
   private initialiseDebuggerListeners(): void {
     document.addEventListener('keyup', (event) => {
-      switch(event.key){
+      switch (event.key) {
         case '1':
-          this.debug.ui.grid.lines = !this.debug.ui.grid.lines; 
+          this.debug.ui.grid.lines = !this.debug.ui.grid.lines;
           break;
         case '2':
-          this.debug.ui.grid.numbers = !this.debug.ui.grid.numbers; 
+          this.debug.ui.grid.numbers = !this.debug.ui.grid.numbers;
           break;
         case '3':
-          this.debug.breakpoint.frame = !this.debug.breakpoint.frame; 
+          this.debug.breakpoint.frame = !this.debug.breakpoint.frame;
           break;
         case '4':
-          this.debug.stats.fps = !this.debug.stats.fps; 
+          this.debug.stats.fps = !this.debug.stats.fps;
           break;
         case '5':
-          this.debug.stats.objectCount = !this.debug.stats.objectCount; 
+          this.debug.stats.objectCount = !this.debug.stats.objectCount;
           break;
         case '6':
-          this.debug.timing.frame = !this.debug.timing.frame; 
+          this.debug.timing.frame = !this.debug.timing.frame;
           break;
         case '7':
           this.debug.timing.frameBackground = !this.debug.timing.frameBackground;
@@ -237,4 +236,3 @@ export class Client {
     });
   }
 }
-

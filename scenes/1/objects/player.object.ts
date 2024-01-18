@@ -1,15 +1,15 @@
-import { Scene } from "../../../model/scene";
-import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
-import { Movement, MovementUtils } from "../../../utils/movement.utils";
-import { RenderUtils } from "../../../utils/render.utils";
-import { EggObject } from "./egg.object";
-import { FenceObject, FenceType } from "./fence.object";
+import { type Scene } from '../../../model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '../../../model/scene-object';
+import { Movement, MovementUtils } from '../../../utils/movement.utils';
+import { RenderUtils } from '../../../utils/render.utils';
+import { EggObject } from './egg.object';
+import { FenceObject, FenceType } from './fence.object';
 
 enum Direction {
   UP = 'w',
   DOWN = 's',
   LEFT = 'a',
-  RIGHT = 'd',
+  RIGHT = 'd'
 }
 
 const TILE_SET = 'tileset_player';
@@ -34,21 +34,21 @@ export class PlayerObject extends SceneObject {
     ['toggle_follow']: false,
     ['place_egg']: false,
     ['change_map']: false,
-  }
+  };
 
   animations = {
-    [Direction.RIGHT]: [{ x: 7, y: 10 }, { x: 10, y: 10 }],
-    [Direction.LEFT]: [{ x: 7, y: 7 }, { x: 10, y: 7}],
-    [Direction.UP]: [{ x: 7, y: 4 }, { x: 10, y: 4}],
-    [Direction.DOWN]: [{ x: 7, y: 1 }, { x: 10, y: 1 }],
-  }
+    [Direction.RIGHT]: [{ x: 7, y: 10, }, { x: 10, y: 10, }],
+    [Direction.LEFT]: [{ x: 7, y: 7, }, { x: 10, y: 7, }],
+    [Direction.UP]: [{ x: 7, y: 4, }, { x: 10, y: 4, }],
+    [Direction.DOWN]: [{ x: 7, y: 1, }, { x: 10, y: 1, }],
+  };
 
   animationsIdle = {
-    [Direction.RIGHT]: [{ x: 1, y: 10 }, { x: 4, y: 10 }],
-    [Direction.LEFT]: [{ x: 1, y: 7 }, { x: 4, y: 7 }],
-    [Direction.UP]: [{ x: 1, y: 4 }, { x: 4, y: 4 }],
-    [Direction.DOWN]: [{ x: 1, y: 1 }, { x: 4, y: 1 }],
-  }
+    [Direction.RIGHT]: [{ x: 1, y: 10, }, { x: 4, y: 10, }],
+    [Direction.LEFT]: [{ x: 1, y: 7, }, { x: 4, y: 7, }],
+    [Direction.UP]: [{ x: 1, y: 4, }, { x: 4, y: 4, }],
+    [Direction.DOWN]: [{ x: 1, y: 1, }, { x: 4, y: 1, }],
+  };
 
   // direction state
   direction: Direction = Direction.DOWN;
@@ -59,12 +59,12 @@ export class PlayerObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    protected config: Config,
-  ){
+    protected config: Config
+  ) {
     super(scene, config);
 
     document.addEventListener('keydown', (event) => {
-      switch(event.key.toLocaleLowerCase()){
+      switch (event.key.toLocaleLowerCase()) {
         case Direction.RIGHT:
         case 'arrowright':
           this.controls[Direction.RIGHT] = true;
@@ -82,25 +82,25 @@ export class PlayerObject extends SceneObject {
           this.controls[Direction.DOWN] = true;
           break;
         case 'j':
-          this.controls['remove_fence'] = true;
+          this.controls.remove_fence = true;
           break;
         case 'k':
-          this.controls['place_fence'] = true;
+          this.controls.place_fence = true;
           break;
         case ' ':
-          this.controls['toggle_follow'] = true;
+          this.controls.toggle_follow = true;
           break;
         case 'e':
-          this.controls['place_egg'] = true;
+          this.controls.place_egg = true;
           break;
         case 'm':
-            this.controls['change_map'] = true;
-            break;
+          this.controls.change_map = true;
+          break;
       }
     });
 
     document.addEventListener('keyup', (event) => {
-      switch(event.key.toLocaleLowerCase()){
+      switch (event.key.toLocaleLowerCase()) {
         case Direction.RIGHT:
         case 'arrowright':
           this.controls[Direction.RIGHT] = false;
@@ -118,19 +118,19 @@ export class PlayerObject extends SceneObject {
           this.controls[Direction.DOWN] = false;
           break;
         case 'j':
-          this.controls['remove_fence'] = false;
+          this.controls.remove_fence = false;
           break;
         case 'k':
-          this.controls['place_fence'] = false;
+          this.controls.place_fence = false;
           break;
         case ' ':
-          this.controls['toggle_follow'] = false;
+          this.controls.toggle_follow = false;
           break;
         case 'e':
-          this.controls['place_egg'] = false;
+          this.controls.place_egg = false;
           break;
         case 'm':
-          this.controls['change_map'] = false;
+          this.controls.change_map = false;
           break;
       }
     });
@@ -158,18 +158,18 @@ export class PlayerObject extends SceneObject {
   }
 
   updateRemoveFence(): void {
-    if(this.controls['remove_fence'] === false){
+    if (!this.controls.remove_fence) {
       return;
     }
 
     let position = this.getPositionFacing();
     let object = this.scene.getObjectAtPosition(position.x, position.y, null);
 
-    if(object instanceof FenceObject){
+    if (object instanceof FenceObject) {
       this.scene.removeObject(object);
     }
 
-    this.controls['remove_fence'] = false;
+    this.controls.remove_fence = false;
   }
 
   updateMovement(delta: number): void {
@@ -179,14 +179,13 @@ export class PlayerObject extends SceneObject {
   }
 
   private determineNextMovement(delta: number): void {
-
     // check if we are moving
-    if(this.targetX !== this.positionX || this.targetY !== this.positionY) {
+    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
       return;
     }
 
     // check if button pressed
-    if(!this.controls[Direction.RIGHT] && !this.controls[Direction.LEFT] && !this.controls[Direction.UP] && !this.controls[Direction.DOWN]){
+    if (!this.controls[Direction.RIGHT] && !this.controls[Direction.LEFT] && !this.controls[Direction.UP] && !this.controls[Direction.DOWN]) {
       return;
     }
 
@@ -194,23 +193,23 @@ export class PlayerObject extends SceneObject {
     let direction;
 
     // determine next position and set direction
-    if(this.controls[Direction.RIGHT]){
+    if (this.controls[Direction.RIGHT]) {
       movement.targetX += 1;
       direction = Direction.RIGHT;
-    } else if(this.controls[Direction.LEFT]){
+    } else if (this.controls[Direction.LEFT]) {
       movement.targetX -= 1;
       direction = Direction.LEFT;
-    } else if(this.controls[Direction.UP]){
+    } else if (this.controls[Direction.UP]) {
       movement.targetY -= 1;
       direction = Direction.UP;
-    } else if(this.controls[Direction.DOWN]){
+    } else if (this.controls[Direction.DOWN]) {
       movement.targetY += 1;
       direction = Direction.DOWN;
     }
 
     // update direction regardless of movement
     // reset animations if new direction
-    if(this.direction !== direction){
+    if (this.direction !== direction) {
       this.direction = direction;
       this.directionTime = 0;
       this.directionTimer = 0;
@@ -219,18 +218,18 @@ export class PlayerObject extends SceneObject {
     }
 
     // if direction has not been held for 5 frames, do not move
-    if(this.directionTimer < .05){
+    if (this.directionTimer < 0.05) {
       return;
     }
-    
+
     // check if can move to position
-    if(this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY)){
+    if (this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY)) {
       return;
     }
-    if(this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY)){
+    if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY)) {
       return;
     }
-    if(this.scene.isOutOfBounds(movement.targetX, movement.targetY)){
+    if (this.scene.isOutOfBounds(movement.targetX, movement.targetY)) {
       return;
     }
 
@@ -239,25 +238,25 @@ export class PlayerObject extends SceneObject {
   }
 
   private processAnimations(delta: number): void {
-    if(this.targetX !== this.positionX || this.targetY !== this.positionY){
+    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
       this.isIdle = false;
     } else {
       this.isIdle = true;
     }
 
-    if(this.isIdle){
+    if (this.isIdle) {
       // idle
-      if (this.directionTime < .5) {
+      if (this.directionTime < 0.5) {
         this.animationIndex = 0;
       } else {
         this.animationIndex = 1;
-      } 
+      }
     } else {
-      if (this.directionTime < .25) {
+      if (this.directionTime < 0.25) {
         this.animationIndex = 0;
-      } else if (this.directionTime < .5) {
+      } else if (this.directionTime < 0.5) {
         this.animationIndex = 1;
-      } else if (this.directionTime < .75){
+      } else if (this.directionTime < 0.75) {
         this.animationIndex = 0;
       } else {
         this.animationIndex = 1;
@@ -268,99 +267,98 @@ export class PlayerObject extends SceneObject {
   }
 
   private processMovement(delta: number): void {
-    if(this.targetX !== this.positionX || this.targetY !== this.positionY){
+    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
       let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(this.movementSpeed, delta));
-      
-      this.positionX = updatedMovement.positionX; 
+
+      this.positionX = updatedMovement.positionX;
       this.positionY = updatedMovement.positionY;
     }
   }
 
   updatePlaceFence(): void {
-     if(this.controls['place_fence'] === false){
+    if (!this.controls.place_fence) {
       return;
     }
 
     let position = this.getPositionFacing();
-    if(this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)){
+    if (this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)) {
       return;
     }
 
     let fence = new FenceObject(
-      this.scene, 
+      this.scene,
       {
         positionX: Math.floor(position.x),
         positionY: Math.floor(position.y),
-        type: FenceType.FencePost
-      },
+        type: FenceType.FencePost,
+      }
     );
     this.scene.addObject(fence);
 
-    this.controls['place_fence'] = false;
+    this.controls.place_fence = false;
   }
 
   updateToggleFollow(): void {
-    if(this.controls['toggle_follow'] === false){
+    if (!this.controls.toggle_follow) {
       return;
     }
 
-    this.scene.globals['chickens_follow_player'] = !this.scene.globals['chickens_follow_player'];
+    this.scene.globals.chickens_follow_player = !this.scene.globals.chickens_follow_player;
 
-    this.controls['toggle_follow'] = false;
+    this.controls.toggle_follow = false;
   }
 
   updateEgg(): void {
-    if(this.controls['place_egg'] === false){
+    if (!this.controls.place_egg) {
       return;
     }
 
     let position = this.getPositionFacing();
-    if(this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)){
+    if (this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)) {
       return;
     }
 
     let egg = new EggObject(
-      this.scene, 
+      this.scene,
       {
         positionX: Math.floor(position.x),
         positionY: Math.floor(position.y),
-      },
+      }
     );
     this.scene.addObject(egg);
 
-    this.controls['place_egg'] = false;
+    this.controls.place_egg = false;
   }
 
   updateChangeMap(): void {
-    if(this.controls['change_map'] === false){
+    if (!this.controls.change_map) {
       return;
     }
 
     this.scene.changeMap(1);
 
-    this.controls['change_map'] = false;
+    this.controls.change_map = false;
   }
 
   destroy(): void {
-    // TODO(smg): what needs to be cleaned up here? are we sure the object is being properly released?  
+    // TODO(smg): what needs to be cleaned up here? are we sure the object is being properly released?
   }
 
   /**
    * TODO: make 'Direction' a generic concept
    * TODO: this needs to be rounded down
-   * @returns 
+   * @returns
    */
-  getPositionFacing(): { x: number, y: number } {
-    if(this.direction === Direction.RIGHT){
-      return { x: this.positionX + 1, y: this.positionY };
-    } else if(this.direction === Direction.LEFT){
-      return { x: this.positionX - 1, y: this.positionY };
-    } else if(this.direction === Direction.UP){
-      return { x: this.positionX, y: this.positionY - 1 };
-    } else if (this.direction === Direction.DOWN){
-      return { x: this.positionX, y: this.positionY + 1 };
+  getPositionFacing(): { x: number; y: number; } {
+    if (this.direction === Direction.RIGHT) {
+      return { x: this.positionX + 1, y: this.positionY, };
+    } else if (this.direction === Direction.LEFT) {
+      return { x: this.positionX - 1, y: this.positionY, };
+    } else if (this.direction === Direction.UP) {
+      return { x: this.positionX, y: this.positionY - 1, };
+    } else if (this.direction === Direction.DOWN) {
+      return { x: this.positionX, y: this.positionY + 1, };
     }
   }
-
 }

@@ -1,8 +1,8 @@
-import { Scene } from "../../../model/scene";
-import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
-import { RenderUtils } from "../../../utils/render.utils";
-import { ChickenObject } from "./chicken.object";
-import { PlayerObject } from "./player.object";
+import { type Scene } from '../../../model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '../../../model/scene-object';
+import { RenderUtils } from '../../../utils/render.utils';
+import { ChickenObject } from './chicken.object';
+import { PlayerObject } from './player.object';
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
 const DEFAULT_RENDER_LAYER: number = 7;
@@ -18,8 +18,9 @@ export class EggObject extends SceneObject {
 
   // animation
   animations = {
-    idle: [{x: 0, y: 0}, {x: 1, y: 0}]
+    idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
   };
+
   animationTimer = 0;
   animationIndex = 0;
 
@@ -29,11 +30,11 @@ export class EggObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    protected config: Config,
-  ){
+    protected config: Config
+  ) {
     super(scene, config);
   }
-  
+
   update(delta: number): void {
     this.updateAnimation(delta);
     this.updateHatch(delta);
@@ -61,15 +62,14 @@ export class EggObject extends SceneObject {
   private updateHatch(delta: number): void {
     this.hatchTimer += delta;
 
-    if(this.hatchTimer < this.hatchTimerMax){
+    if (this.hatchTimer < this.hatchTimerMax) {
       return;
     }
 
     let player = this.scene.getObjectsByType(PlayerObject)[0] as PlayerObject;
-    let chicken = new ChickenObject(this.scene, { positionX: this.positionX, positionY: this.positionY, follows: player });
-      
+    let chicken = new ChickenObject(this.scene, { positionX: this.positionX, positionY: this.positionY, follows: player, });
+
     this.scene.removeObject(this);
     this.scene.addObject(chicken);
   }
-
 }

@@ -1,12 +1,12 @@
-import { Scene } from "../../../model/scene";
-import { SceneObject, SceneObjectBaseConfig } from "../../../model/scene-object";
-import { Movement, MovementUtils } from "../../../utils/movement.utils";
-import { RenderUtils } from "../../../utils/render.utils";
+import { type Scene } from '../../../model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '../../../model/scene-object';
+import { Movement, MovementUtils } from '../../../utils/movement.utils';
+import { RenderUtils } from '../../../utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
   tileset: string;
   spriteX: number;
-  spriteY: number; 
+  spriteY: number;
   spriteWidth?: number;
   spriteHeight?: number;
   isRenderable?: boolean;
@@ -20,7 +20,7 @@ interface Config extends SceneObjectBaseConfig {
 const DEFAULT_MOVEMENT_SPEED = 0.5;
 
 export class GenericSpriteObject extends SceneObject {
-  hasCollision = true;  
+  hasCollision = true;
   isRenderable = true;
 
   tileset: string;
@@ -31,18 +31,18 @@ export class GenericSpriteObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    protected config: Config,
-  ){
+    protected config: Config
+  ) {
     super(scene, config);
 
-    if(this.config.isRenderable !== undefined) {
-      this.isRenderable = this.config.isRenderable;    
+    if (this.config.isRenderable !== undefined) {
+      this.isRenderable = this.config.isRenderable;
     }
     this.tileset = this.config.tileset;
     this.spriteX = this.config.spriteX;
     this.spriteY = this.config.spriteY;
 
-    if(this.config.movementSpeed !== undefined) {
+    if (this.config.movementSpeed !== undefined) {
       this.movementSpeed = this.config.movementSpeed;
     }
   }
@@ -52,8 +52,8 @@ export class GenericSpriteObject extends SceneObject {
   }
 
   private updatePosition(delta: number): void {
-    if(this.positionX === this.targetX && this.positionY === this.targetY) {
-      if(this.config.destroyAtTarget) {
+    if (this.positionX === this.targetX && this.positionY === this.targetY) {
+      if (this.config.destroyAtTarget) {
         this.scene.removeObject(this);
       }
       return;
@@ -61,23 +61,22 @@ export class GenericSpriteObject extends SceneObject {
 
     let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
     let velocity = this.movementSpeed * delta;
-    let updatedMovement = MovementUtils.moveTowardsPosition(movement, velocity); 
+    let updatedMovement = MovementUtils.moveTowardsPosition(movement, velocity);
 
-    this.positionX = updatedMovement.positionX; 
+    this.positionX = updatedMovement.positionX;
     this.positionY = updatedMovement.positionY;
   }
-  
+
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       this.assets.images[this.tileset],
-      this.spriteX, 
+      this.spriteX,
       this.spriteY,
       this.positionX,
       this.positionY,
       this.config.spriteWidth,
-      this.config.spriteWidth,
+      this.config.spriteWidth
     );
   }
-
 }

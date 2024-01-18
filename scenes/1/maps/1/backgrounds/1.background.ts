@@ -1,4 +1,4 @@
-import { BackgroundLayer } from "../../../../../model/background-layer";
+import { type BackgroundLayer } from '../../../../../model/background-layer';
 
 export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_1: BackgroundLayer = {
   index: 1,
@@ -15,7 +15,7 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_1: BackgroundLayer = {
       {spriteX: 0, spriteY: 1, tileset: 'tileset_grass'},
       {spriteX: 0, spriteY: 1, tileset: 'tileset_grass'},
       {spriteX: 0, spriteY: 2, tileset: 'tileset_grass'},
-    ], 
+    ],
     [
       undefined,
       {spriteX: 1, spriteY: 0, tileset: 'tileset_grass'},
@@ -94,6 +94,5 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_1: BackgroundLayer = {
       {spriteX: 2, spriteY: 2, tileset: 'tileset_grass'},
     ],
     */
-  ]
+  ],
 };
-    

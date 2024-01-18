@@ -1,4 +1,4 @@
-import { BackgroundTile } from "./background-tile";
+import { type BackgroundTile } from './background-tile';
 
 export interface BackgroundLayer {
   index: number; // the order in which the layer is rendered
