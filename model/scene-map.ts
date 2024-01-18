@@ -9,11 +9,15 @@ export class SceneMap {
   objects: SceneObject[];
   globals: Record<string, any> = {};
 
+  protected context: CanvasRenderingContext2D;
+  protected assets: Record<string, any>;
+
   constructor(
     protected scene: Scene,
-    protected context: CanvasRenderingContext2D, 
-    protected assets: Record<string, any>
-  ){}
+  ){
+    this.context = this.scene.context;
+    this.assets = this.scene.assets;
+  }
 
   /**
    * Called when the map is destroyed

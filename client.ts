@@ -95,7 +95,7 @@ export class Client {
     });
     
     // load first scene
-    this.changeScene(this.scenes[1]);
+    this.changeScene(this.scenes[0]);
 
     // Run game logic
     this.frame(0);

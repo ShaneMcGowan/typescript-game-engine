@@ -16,8 +16,8 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   ];
   objects: SceneObject[] = [];
   
-  constructor(scene: Scene, context: CanvasRenderingContext2D, assets: Record<string, any>){
-    super(scene, context, assets);
+  constructor(protected scene: Scene){
+    super(scene);
 
     let player = new PlayerObject(scene, { positionX: 1, positionY: 4  });
     this.objects.push(player);

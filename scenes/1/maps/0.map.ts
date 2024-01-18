@@ -22,8 +22,8 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   ];
   objects: SceneObject[] = [];
   
-  constructor(scene: Scene, context: CanvasRenderingContext2D, assets: Record<string, any>){
-    super(scene, context, assets);
+  constructor(protected scene: Scene){
+    super(scene);
 
     this.objects.push(new CameraController(scene, {}));
 
