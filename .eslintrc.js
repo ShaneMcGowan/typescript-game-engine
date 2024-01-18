@@ -30,6 +30,9 @@ module.exports = {
       anonymous: 'never',
       named: 'never',
       asyncArrow: 'never'
-    }]
+    }],
+    '@typescript-eslint/no-unsafe-argument': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    'no-useless-computed-key': 'off'
   }
 };
