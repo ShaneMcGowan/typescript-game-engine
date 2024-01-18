@@ -1,25 +1,25 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
   },
   extends: 'standard-with-typescript',
   overrides: [
     {
       env: {
-        node: true
+        node: true,
       },
       files: [
         '.eslintrc.{js,cjs}'
       ],
       parserOptions: {
-        sourceType: 'script'
-      }
+        sourceType: 'script',
+      },
     }
   ],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
   },
   rules: {
     'prefer-const': 'off',
@@ -29,11 +29,19 @@ module.exports = {
     '@typescript-eslint/space-before-function-paren': ['error', {
       anonymous: 'never',
       named: 'never',
-      asyncArrow: 'never'
+      asyncArrow: 'never',
     }],
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     'no-useless-computed-key': 'off',
-    '@typescript-eslint/member-delimiter-style': 'off'
-  }
+    '@typescript-eslint/member-delimiter-style': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/comma-dangle': ['error', {
+      arrays: 'never',
+      objects: 'always',
+      imports: 'never',
+      exports: 'never',
+      functions: 'never',
+    }],
+  },
 };
