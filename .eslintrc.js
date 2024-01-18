@@ -34,7 +34,17 @@ module.exports = {
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     'no-useless-computed-key': 'off',
-    '@typescript-eslint/member-delimiter-style': 'off',
+    '@typescript-eslint/member-delimiter-style': ['error', {
+      multiline: {
+        delimiter: 'semi',
+        requireLast: true,
+      },
+      singleline: {
+        delimiter: 'semi',
+        requireLast: true,
+      },
+      multilineDetection: 'brackets',
+    }],
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     '@typescript-eslint/comma-dangle': ['error', {
       arrays: 'never',
