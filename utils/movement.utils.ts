@@ -53,7 +53,6 @@ export class MovementUtils {
    */
   static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: Movement): Movement {
     // TODO(smg): add some randomness to this, potentially via MathUtils.randomIntFromRange(1, 4);
-    let movement = new Movement(0, 0, 0, 0);
 
     if (targetMovement.positionX > currentMovement.positionX) {
       currentMovement.targetX += 1;
@@ -104,7 +103,7 @@ export class MovementUtils {
    * @param delta time since last frame
    * @returns
    */
-  static frameVelocity(speed: number, delta: number) {
+  static frameVelocity(speed: number, delta: number): number {
     return speed * delta;
   }
 }

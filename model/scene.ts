@@ -276,7 +276,7 @@ export class Scene {
    * @param type
    * @returns
    */
-  getObjectAtPosition(positionX: number, positionY: number, type?: any) {
+  getObjectAtPosition(positionX: number, positionY: number, type?: any): SceneObject | undefined {
     // TODO(smg): add optional type check
     // TODO(smg): this is a very heavy operation
     return this.objects.find(o => o.positionX === positionX && o.positionY === positionY);
@@ -289,7 +289,7 @@ export class Scene {
    * @param type
    * @returns
    */
-  getAllObjectsAtPosition(positionX: number, positionY: number, type?: any) {
+  getAllObjectsAtPosition(positionX: number, positionY: number, type?: any): SceneObject[] {
     // TODO(smg): add optional type check
     // TODO(smg): this is a very heavy operation
     return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY);

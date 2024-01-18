@@ -84,7 +84,7 @@ export class Client {
 
     // handle tabbed out state
     document.addEventListener('visibilitychange', (event) => {
-      if (document.visibilityState == 'visible') {
+      if (document.visibilityState === 'visible') {
         // TODO: pause frame execution
         console.log('tab is active');
       } else {
