@@ -8,8 +8,8 @@ import { SAMPLE_SCENE_0_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background'
 import { MainMenuControllerObject } from './0/objects/main-menu-controller.object';
 import { StartButtonObject } from './0/objects/start-button.object';
 
-const MAP_HEIGHT: number = CanvasConstants.CANVIS_TILE_HEIGHT;
-const MAP_WIDTH: number = CanvasConstants.CANVIS_TILE_WIDTH;
+const MAP_HEIGHT: number = CanvasConstants.CANVAS_TILE_HEIGHT;
+const MAP_WIDTH: number = CanvasConstants.CANVAS_TILE_WIDTH;
 
 export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
   height = MAP_HEIGHT;

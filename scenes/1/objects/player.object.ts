@@ -289,8 +289,8 @@ export class PlayerObject extends SceneObject {
     let fence = new FenceObject(
       this.scene,
       {
-        positionX: Math.floor(position.x),
-        positionY: Math.floor(position.y),
+        positionX: position.x,
+        positionY: position.y,
         type: FenceType.FencePost,
       }
     );
@@ -322,8 +322,8 @@ export class PlayerObject extends SceneObject {
     let egg = new EggObject(
       this.scene,
       {
-        positionX: Math.floor(position.x),
-        positionY: Math.floor(position.y),
+        positionX: position.x,
+        positionY: position.y,
       }
     );
     this.scene.addObject(egg);
@@ -351,14 +351,17 @@ export class PlayerObject extends SceneObject {
    * @returns
    */
   getPositionFacing(): { x: number; y: number; } {
+    let x: number = Math.floor(this.positionX);
+    let y: number = Math.floor(this.positionY);
+
     if (this.direction === Direction.RIGHT) {
-      return { x: this.positionX + 1, y: this.positionY, };
+      return { x: x + 1, y, };
     } else if (this.direction === Direction.LEFT) {
-      return { x: this.positionX - 1, y: this.positionY, };
+      return { x: x - 1, y, };
     } else if (this.direction === Direction.UP) {
-      return { x: this.positionX, y: this.positionY - 1, };
+      return { x, y: y - 1, };
     } else if (this.direction === Direction.DOWN) {
-      return { x: this.positionX, y: this.positionY + 1, };
+      return { x, y: y + 1, };
     }
   }
 }

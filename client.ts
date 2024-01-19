@@ -78,9 +78,9 @@ export class Client {
     container.append(this.canvas);
 
     // go fullscreen
-    // this.canvas.addEventListener('click', () => {
-    //   this.canvas.requestFullscreen();
-    // })
+    this.canvas.addEventListener('click', () => {
+      this.canvas.requestFullscreen();
+    });
 
     // handle tabbed out state
     document.addEventListener('visibilitychange', (event) => {
@@ -94,7 +94,7 @@ export class Client {
     });
 
     // load first scene
-    this.changeScene(this.scenes[0]);
+    this.changeScene(this.scenes[1]);
 
     // Run game logic
     this.frame(0);
@@ -183,8 +183,8 @@ export class Client {
     }
 
     if (this.debug.ui.grid.numbers) {
-      for (let x = 0; x < CanvasConstants.CANVIS_TILE_WIDTH; x++) {
-        for (let y = 0; y < CanvasConstants.CANVIS_TILE_HEIGHT; y++) {
+      for (let x = 0; x < CanvasConstants.CANVAS_TILE_WIDTH; x++) {
+        for (let y = 0; y < CanvasConstants.CANVAS_TILE_HEIGHT; y++) {
           this.context.fillStyle = 'red';
           this.context.font = '8px helvetica';
           this.context.fillText(`${x},${y}`, x * CanvasConstants.TILE_SIZE, (y + 0.5) * CanvasConstants.TILE_SIZE);

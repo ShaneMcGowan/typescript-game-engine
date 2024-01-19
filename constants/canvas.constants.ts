@@ -4,8 +4,9 @@
  * Leave as hardcoded value for now
 */
 export class CanvasConstants {
-  static readonly CANVIS_TILE_HEIGHT = 9; // total height in tiles
-  static readonly CANVIS_TILE_WIDTH = 16; // total width in tiles
+  // 18 / 30
+  static readonly CANVAS_TILE_HEIGHT = 16; // total height in tiles
+  static readonly CANVAS_TILE_WIDTH = 30; // total width in tiles
   static readonly TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
   static readonly OBJECT_RENDERING_LAYERS: number = 16; // number of layers to render objects on. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
 
@@ -13,22 +14,22 @@ export class CanvasConstants {
    * Keep an eye on this and any getters, don't run it on hot code paths
    */
   static get CANVAS_HEIGHT(): number {
-    return CanvasConstants.TILE_SIZE * CanvasConstants.CANVIS_TILE_HEIGHT;
+    return CanvasConstants.TILE_SIZE * CanvasConstants.CANVAS_TILE_HEIGHT;
   }
 
   static get CANVAS_WIDTH(): number {
-    return CanvasConstants.TILE_SIZE * CanvasConstants.CANVIS_TILE_WIDTH;
+    return CanvasConstants.TILE_SIZE * CanvasConstants.CANVAS_TILE_WIDTH;
   }
 
-  static get CANVIS_CENTER_TILE_Y(): number {
-    return Math.floor(this.CANVIS_TILE_HEIGHT / 2);
+  static get CANVAS_CENTER_TILE_Y(): number {
+    return Math.floor(this.CANVAS_TILE_HEIGHT / 2);
   }
 
-  static get CANVIS_CENTER_TILE_X(): number {
-    return Math.floor(this.CANVIS_TILE_WIDTH / 2);
+  static get CANVAS_CENTER_TILE_X(): number {
+    return Math.floor(this.CANVAS_TILE_WIDTH / 2);
   }
 
   static get ASPECT_RATIO(): number {
-    return CanvasConstants.CANVIS_TILE_HEIGHT / CanvasConstants.CANVIS_TILE_WIDTH;
+    return CanvasConstants.CANVAS_TILE_HEIGHT / CanvasConstants.CANVAS_TILE_WIDTH;
   }
 }

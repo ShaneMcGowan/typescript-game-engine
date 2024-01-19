@@ -40,7 +40,7 @@ export class MainMenuControllerObject extends SceneObject {
     let randomY = MathUtils.randomIntFromRange(0, this.scene.map.height);
     this.scene.addObject(new GenericSpriteObject(
       this.scene,
-      { positionX: CanvasConstants.CANVIS_TILE_WIDTH, positionY: randomY, targetX: -1, targetY: randomY, tileset: 'tileset_egg', spriteX: 1, spriteY: 0, destroyAtTarget: true, }
+      { positionX: CanvasConstants.CANVAS_TILE_WIDTH, positionY: randomY, targetX: -1, targetY: randomY, tileset: 'tileset_egg', spriteX: 1, spriteY: 0, destroyAtTarget: true, }
     ));
 
     this.newItemTimer = 0;

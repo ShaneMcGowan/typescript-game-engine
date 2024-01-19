@@ -18,7 +18,7 @@ export class StartButtonObject extends SceneObject {
   };
 
   // button
-  buttonX = (CanvasConstants.CANVIS_TILE_WIDTH - 6) / 2;
+  buttonX = (CanvasConstants.CANVAS_TILE_WIDTH - 6) / 2;
   buttonY = 6;
   buttonWidth = 6;
   buttonHeight = 2;

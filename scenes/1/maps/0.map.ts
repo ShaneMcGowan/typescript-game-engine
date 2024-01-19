@@ -11,8 +11,8 @@ import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background'
 import { CameraObject } from './0/objects/camera.object';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
-  height = 15;
-  width = 21;
+  height = 40;
+  width = 40;
 
   backgroundLayers: BackgroundLayer[] = [
     SAMPLE_SCENE_1_MAP_0_BACKGROUND_0,
@@ -30,7 +30,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    let player = new PlayerObject(scene, { positionX: 7, positionY: 3, targetX: 7, targetY: 3, });
+    let player = new PlayerObject(scene, { positionX: 6, positionY: 9, });
     this.objects.push(player);
 
     // chickens
