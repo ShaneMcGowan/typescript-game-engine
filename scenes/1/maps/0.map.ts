@@ -30,7 +30,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    let player = new PlayerObject(scene, { positionX: 6, positionY: 9, });
+    let player = new PlayerObject(scene, { positionX: 11, positionY: 11, });
     this.objects.push(player);
 
     // chickens
