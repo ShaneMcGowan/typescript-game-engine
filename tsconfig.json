@@ -7,9 +7,15 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": false,
+    "baseUrl" : "./",
+    "paths": {
+      "@constants/*": ["./constants/*"],
+      "@model/*": ["./model/*"],
+      "@scenes/*": ["./scenes/*"],
+      "@utils/*": ["./utils/*"],
+    }
   },
   "include": [
     "./**/*",
