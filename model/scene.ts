@@ -1,6 +1,6 @@
-import { type Client } from '../client';
-import { CanvasConstants } from '../constants/canvas.constants';
-import { RenderUtils } from '../utils/render.utils';
+import { CanvasConstants } from '@constants/canvas.constants';
+import { RenderUtils } from '@utils/render.utils';
+import { type Client } from 'client';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMap } from './scene-map';
 import { type SceneObject } from './scene-object';

@@ -5,9 +5,7 @@ interface Config extends SceneObjectBaseConfig {
 
 }
 
-export class CollisionObject extends SceneObject {
-  hasCollision = true;
-
+export class UiObject extends SceneObject {
   constructor(
     protected scene: Scene,
     protected config: Config

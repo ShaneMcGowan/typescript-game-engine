@@ -1,9 +1,9 @@
-import { CanvasConstants } from '../../../../../constants/canvas.constants';
-import { type Scene } from '../../../../../model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '../../../../../model/scene-object';
-import { MouseUtils } from '../../../../../utils/mouse.utils';
-import { RenderUtils } from '../../../../../utils/render.utils';
-import { SAMPLE_SCENE_1 } from '../../../../1.scene';
+import { CanvasConstants } from '@constants/canvas.constants';
+import { type Scene } from '@model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { SAMPLE_SCENE_1 } from '@scenes/1.scene';
+import { MouseUtils } from '@utils/mouse.utils';
+import { RenderUtils } from '@utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
 

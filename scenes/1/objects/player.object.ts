@@ -1,7 +1,7 @@
-import { type Scene } from '../../../model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '../../../model/scene-object';
-import { Movement, MovementUtils } from '../../../utils/movement.utils';
-import { RenderUtils } from '../../../utils/render.utils';
+import { type Scene } from '@model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { Movement, MovementUtils } from '@utils/movement.utils';
+import { RenderUtils } from '@utils/render.utils';
 import { EggObject } from './egg.object';
 import { FenceObject, FenceType } from './fence.object';
 

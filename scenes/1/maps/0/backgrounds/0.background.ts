@@ -1,5 +1,5 @@
-import { type BackgroundLayer } from '../../../../../model/background-layer';
-import { type BackgroundTile } from '../../../../../model/background-tile';
+import { type BackgroundLayer } from '@model/background-layer';
+import { type BackgroundTile } from '@model/background-tile';
 
 const WATER_TILE: BackgroundTile = {
   tileset: 'tileset_water',

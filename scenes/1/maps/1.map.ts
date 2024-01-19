@@ -1,7 +1,7 @@
-import { type BackgroundLayer } from '../../../model/background-layer';
-import { type Scene } from '../../../model/scene';
-import { SceneMap } from '../../../model/scene-map';
-import { type SceneObject } from '../../../model/scene-object';
+import { type BackgroundLayer } from '@model/background-layer';
+import { type Scene } from '@model/scene';
+import { SceneMap } from '@model/scene-map';
+import { type SceneObject } from '@model/scene-object';
 import { ChickenObject } from '../objects/chicken.object';
 import { PlayerObject } from '../objects/player.object';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background';

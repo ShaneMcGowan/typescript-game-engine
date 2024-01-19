@@ -1,9 +1,9 @@
-import { CanvasConstants } from '../../../constants/canvas.constants';
-import { type BackgroundLayer } from '../../../model/background-layer';
-import { type Scene } from '../../../model/scene';
-import { SceneMap } from '../../../model/scene-map';
-import { type SceneObject } from '../../../model/scene-object';
-import { MouseUtils } from '../../../utils/mouse.utils';
+import { CanvasConstants } from '@constants/canvas.constants';
+import { type BackgroundLayer } from '@model/background-layer';
+import { type Scene } from '@model/scene';
+import { SceneMap } from '@model/scene-map';
+import { type SceneObject } from '@model/scene-object';
+import { MouseUtils } from '@utils/mouse.utils';
 import { SAMPLE_SCENE_0_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background';
 import { MainMenuControllerObject } from './0/objects/main-menu-controller.object';
 import { StartButtonObject } from './0/objects/start-button.object';

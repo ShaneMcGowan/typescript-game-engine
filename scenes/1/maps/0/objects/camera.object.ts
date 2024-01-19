@@ -1,7 +1,7 @@
-import { CanvasConstants } from '../../../../../constants/canvas.constants';
-import { type CustomRendererSignature, type Scene, type SceneRenderingContext } from '../../../../../model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '../../../../../model/scene-object';
-import { RenderUtils } from '../../../../../utils/render.utils';
+import { CanvasConstants } from '@constants/canvas.constants';
+import { type Scene, type CustomRendererSignature, type SceneRenderingContext } from '@model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { RenderUtils } from '@utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
   object: SceneObject;
@@ -21,7 +21,6 @@ export class CameraObject extends SceneObject {
 
     // calculation for centering a tile on the screen
     // -0.5 to center the tile (e.g 16 / 2 is 8, which is the center of the tile, but we want to render the player half on either side of this value)
-
     let cameraOffsetX = (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 0.5;
     let cameraOffsetY = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.5;
 

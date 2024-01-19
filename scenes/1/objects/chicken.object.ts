@@ -1,8 +1,8 @@
-import { type Scene } from '../../../model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '../../../model/scene-object';
-import { MathUtils } from '../../../utils/math.utils';
-import { Movement, MovementUtils } from '../../../utils/movement.utils';
-import { RenderUtils } from '../../../utils/render.utils';
+import { type Scene } from '@model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { MathUtils } from '@utils/math.utils';
+import { Movement, MovementUtils } from '@utils/movement.utils';
+import { RenderUtils } from '@utils/render.utils';
 import { EggObject } from './egg.object';
 
 const TILE_SET: string = 'tileset_chicken';

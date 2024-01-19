@@ -1,7 +1,7 @@
-import { type BackgroundLayer } from '../../../model/background-layer';
-import { type Scene } from '../../../model/scene';
-import { SceneMap } from '../../../model/scene-map';
-import { type SceneObject } from '../../../model/scene-object';
+import { type BackgroundLayer } from '@model/background-layer';
+import { type Scene } from '@model/scene';
+import { SceneMap } from '@model/scene-map';
+import { type SceneObject } from '@model/scene-object';
 import { ChickenObject } from '../objects/chicken.object';
 import { FenceObject, FenceType } from '../objects/fence.object';
 import { HoleObject } from '../objects/hole.object';
