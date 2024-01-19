@@ -33,6 +33,7 @@ export class PlayerObject extends SceneObject {
     ['place_fence']: false,
     ['toggle_follow']: false,
     ['place_egg']: false,
+    ['pickup_egg']: false,
     ['change_map']: false,
   };
 
@@ -93,6 +94,9 @@ export class PlayerObject extends SceneObject {
         case 'e':
           this.controls.place_egg = true;
           break;
+        case 'q':
+          this.controls['pickup_egg'] = true;
+          break;
         case 'm':
           this.controls.change_map = true;
           break;
@@ -129,6 +133,9 @@ export class PlayerObject extends SceneObject {
         case 'e':
           this.controls.place_egg = false;
           break;
+        case 'q':
+          this.controls['pickup_egg'] = false;
+          break;
         case 'm':
           this.controls.change_map = false;
           break;
@@ -141,7 +148,8 @@ export class PlayerObject extends SceneObject {
     this.updateRemoveFence();
     this.updatePlaceFence();
     this.updateToggleFollow();
-    this.updateEgg();
+    this.updatePlaceEgg();
+    this.updatePickupEgg();
     this.updateChangeMap();
   }
 
@@ -277,7 +285,7 @@ export class PlayerObject extends SceneObject {
   }
 
   updatePlaceFence(): void {
-    if (!this.controls.place_fence) {
+    if (!this.controls['place_fence']) {
       return;
     }
 
@@ -296,7 +304,7 @@ export class PlayerObject extends SceneObject {
     );
     this.scene.addObject(fence);
 
-    this.controls.place_fence = false;
+    this.controls['place_fence'] = false;
   }
 
   updateToggleFollow(): void {
@@ -309,8 +317,12 @@ export class PlayerObject extends SceneObject {
     this.controls.toggle_follow = false;
   }
 
-  updateEgg(): void {
-    if (!this.controls.place_egg) {
+  updatePlaceEgg(): void {
+    if (!this.controls['place_egg']) {
+      return;
+    }
+
+    if (this.scene.globals['total_eggs'] === 0) {
       return;
     }
 
@@ -328,7 +340,31 @@ export class PlayerObject extends SceneObject {
     );
     this.scene.addObject(egg);
 
-    this.controls.place_egg = false;
+    this.controls['place_egg'] = false;
+    this.scene.globals['total_eggs']--;
+  }
+
+  updatePickupEgg(): void {
+    if (!this.controls['pickup_egg']) {
+      return;
+    }
+
+    if (this.scene.globals['total_eggs'] === 9) {
+      return;
+    }
+
+    let position = this.getPositionFacing();
+
+    // TODO(smg): see how getObjectAtPosition works with rendering layers etc
+    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+    if (!(object instanceof EggObject)) {
+      return;
+    }
+
+    this.scene.removeObject(object);
+
+    this.controls['pickup_egg'] = false;
+    this.scene.globals['total_eggs']++;
   }
 
   updateChangeMap(): void {

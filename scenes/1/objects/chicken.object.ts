@@ -45,7 +45,7 @@ export class ChickenObject extends SceneObject {
     protected config: Config
   ) {
     super(scene, config);
-    this.eggEnabled = this.config.canLayEggs ?? false;
+    this.eggEnabled = this.config.canLayEggs ?? true;
   }
 
   update(delta: number): void {

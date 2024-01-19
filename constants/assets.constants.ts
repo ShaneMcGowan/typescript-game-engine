@@ -14,6 +14,7 @@ export const ASSETS: Assets = {
     tileset_house: '/assets/sample/Tilesets/Wooden House.png',
     tileset_dirt: '/assets/sample/Tilesets/Tilled_Dirt.png',
     tileset_button: '/assets/sample/UI Big Play Button.png',
+    tileset_ui: '/assets/sample/Sprite sheet for Basic Pack.png',
   },
   audio: {},
 };

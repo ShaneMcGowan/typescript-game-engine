@@ -58,9 +58,12 @@ export class CameraObject extends SceneObject {
     renderingContext.background.forEach((context) => {
       RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
     });
-    renderingContext.objects.forEach((context) => {
-      // TODO(smg): define a UI layer
-      RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
+    renderingContext.objects.forEach((context, index) => {
+      if (index === CanvasConstants.UI_RENDER_LAYER) {
+        RenderUtils.renderSubsection(context, this.mainContext, 0, 0, CanvasConstants.CANVAS_TILE_WIDTH, CanvasConstants.CANVAS_TILE_HEIGHT);
+      } else {
+        RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
+      }
     });
   };
 

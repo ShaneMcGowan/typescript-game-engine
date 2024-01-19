@@ -53,5 +53,6 @@ module.exports = {
       exports: 'never',
       functions: 'never',
     }],
+    '@typescript-eslint/dot-notation': 'off',
   },
 };

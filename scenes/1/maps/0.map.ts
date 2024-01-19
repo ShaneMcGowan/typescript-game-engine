@@ -9,6 +9,7 @@ import { PlayerObject } from '../objects/player.object';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background';
 import { CameraObject } from './0/objects/camera.object';
+import { UiObject } from './0/objects/ui.object';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   height = 40;
@@ -23,6 +24,8 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
   constructor(protected scene: Scene) {
     super(scene);
+
+    this.objects.push(new UiObject(scene, { positionX: 6, positionY: 15, }));
 
     // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index.
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player

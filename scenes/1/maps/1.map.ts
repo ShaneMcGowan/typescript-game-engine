@@ -6,10 +6,11 @@ import { ChickenObject } from '../objects/chicken.object';
 import { PlayerObject } from '../objects/player.object';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './1/backgrounds/1.background';
+import { UiObject } from './0/objects/ui.object';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
-  height = 10;
-  width = 10;
+  height = 40;
+  width = 40;
   backgroundLayers: BackgroundLayer[] = [
     SAMPLE_SCENE_1_MAP_1_BACKGROUND_0,
     SAMPLE_SCENE_1_MAP_1_BACKGROUND_1
@@ -19,6 +20,8 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
 
   constructor(protected scene: Scene) {
     super(scene);
+
+    this.objects.push(new UiObject(scene, { positionX: 6, positionY: 15, }));
 
     let player = new PlayerObject(scene, { positionX: 1, positionY: 4, });
     this.objects.push(player);

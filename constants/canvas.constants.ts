@@ -32,4 +32,11 @@ export class CanvasConstants {
   static get ASPECT_RATIO(): number {
     return CanvasConstants.CANVAS_TILE_HEIGHT / CanvasConstants.CANVAS_TILE_WIDTH;
   }
+
+  /**
+   * The layer that UI elements should be rendered on
+   */
+  static get UI_RENDER_LAYER(): number {
+    return CanvasConstants.OBJECT_RENDERING_LAYERS - 1;
+  }
 }

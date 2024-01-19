@@ -6,6 +6,7 @@ import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';
 export class SAMPLE_SCENE_1 extends Scene {
   globals: Record<string, any> = {
     chickens_follow_player: false,
+    total_eggs: 0,
   };
 
   maps = [
