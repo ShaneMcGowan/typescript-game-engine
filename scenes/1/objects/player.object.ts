@@ -1,9 +1,9 @@
-import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
 import { FenceObject, FenceType } from './fence.object';
 import { CameraObject } from '../maps/0/objects/camera.object';
+import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 
 enum Direction {
   UP = 'w',
@@ -61,7 +61,7 @@ export class PlayerObject extends SceneObject {
   isIdle: boolean = true;
 
   constructor(
-    protected scene: Scene,
+    protected scene: SAMPLE_SCENE_1,
     protected config: Config
   ) {
     super(scene, config);
@@ -421,7 +421,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let objectClass = this.scene.globals['inventory'][this.scene.globals['hotbar_selected_index']];
+    let index = this.scene.globals['hotbar_selected_index'];
+    let objectClass = this.scene.globals['inventory'][index];
     if (objectClass === undefined) {
       return;
     }
@@ -431,11 +432,12 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
+    // TODO(smg): needs to be updated once invetory is no longer just a list of classes
     let object: SceneObject = Reflect.construct(objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
     this.scene.addObject(object);
+    this.scene.removeFromInventory(index);
 
     this.controls['place_object'] = false;
-    this.scene.globals['inventory'][this.scene.globals['hotbar_selected_index']] = undefined;
   }
 
   updatePickupObject(): void {
@@ -443,7 +445,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if (this.scene.globals['inventory'].length === this.scene.globals['inventory_size']) {
+    // no free inventory space
+    if (this.scene.firstFreeInventorySpaceIndex === undefined) {
       return;
     }
 
@@ -455,7 +458,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    // prevent placing
+    // prevent picking up certain objects
+    // TODO(smg): this should be made more generic, perhaps using collisionLayers
     switch (true) {
       case object instanceof CameraObject:
         return;
@@ -464,9 +468,9 @@ export class PlayerObject extends SceneObject {
     }
 
     this.scene.removeObject(object);
+    this.scene.addToInventory(object.constructor);
 
     this.controls['pick_up_object'] = false;
-    this.scene.globals['inventory'].push(object.constructor);
   }
 
   destroy(): void {
@@ -497,7 +501,8 @@ export class PlayerObject extends SceneObject {
     if (this.controls['hotbar_left']) {
       this.controls['hotbar_left'] = false;
       this.scene.globals['hotbar_selected_index'] = (this.scene.globals['hotbar_selected_index'] - 1 + this.scene.globals['hotbar_size']) % this.scene.globals['hotbar_size'];
-    } else if (this.controls['hotbar_right']) {
+    }
+    if (this.controls['hotbar_right']) {
       this.controls['hotbar_right'] = false;
       this.scene.globals['hotbar_selected_index'] = (this.scene.globals['hotbar_selected_index'] + 1) % this.scene.globals['hotbar_size'];
     }

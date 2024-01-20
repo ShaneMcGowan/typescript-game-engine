@@ -1,5 +1,4 @@
 import { type BackgroundLayer } from '@model/background-layer';
-import { type Scene } from '@model/scene';
 import { SceneMap } from '@model/scene-map';
 import { type SceneObject } from '@model/scene-object';
 import { ChickenObject } from '../objects/chicken.object';
@@ -10,6 +9,7 @@ import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background'
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background';
 import { CameraObject } from './0/objects/camera.object';
 import { UiObject } from './0/objects/ui.object';
+import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   height = 40;
@@ -22,7 +22,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
   objects: SceneObject[] = [];
 
-  constructor(protected scene: Scene) {
+  constructor(protected scene: SAMPLE_SCENE_1) {
     super(scene);
 
     this.objects.push(new UiObject(scene, { positionX: 0, positionY: 0, }));

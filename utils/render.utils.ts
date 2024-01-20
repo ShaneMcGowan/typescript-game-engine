@@ -58,7 +58,9 @@ export class RenderUtils {
     context.fill();
   }
 
-  static renderRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number): void {
+  static fillRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, colour?: string): void {
+    context.strokeStyle = colour || 'black';
+    context.fillStyle = colour || 'black';
     context.beginPath();
     context.rect(
       positionX * CanvasConstants.TILE_SIZE,
@@ -67,9 +69,12 @@ export class RenderUtils {
       height
     );
     context.stroke();
-    context.strokeStyle = 'saddlebrown';
-    context.fillStyle = 'saddlebrown';
     context.fill();
+  }
+
+  static strokeRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, colour?: string): void {
+    context.strokeStyle = colour || 'black';
+    context.strokeRect(positionX, positionY, width, height);
   }
 
   static clearCanvas(context: CanvasRenderingContext2D): void {

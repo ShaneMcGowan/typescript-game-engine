@@ -1,10 +1,53 @@
 import { CanvasConstants } from '@constants/canvas.constants';
 import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { MouseUtils } from '@utils/mouse.utils';
 import { RenderUtils } from '@utils/render.utils';
 
 const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
+const INDEX_TO_POSITION_MAP = [
+  // hot bar
+  { x: 6, y: 15, },
+  { x: 8, y: 15, },
+  { x: 10, y: 15, },
+  { x: 12, y: 15, },
+  { x: 14, y: 15, },
+  { x: 16, y: 15, },
+  { x: 18, y: 15, },
+  { x: 20, y: 15, },
+  { x: 22, y: 15, },
+  // inventory - row 1
+  { x: 6, y: 5, },
+  { x: 8, y: 5, },
+  { x: 10, y: 5, },
+  { x: 12, y: 5, },
+  { x: 14, y: 5, },
+  { x: 16, y: 5, },
+  { x: 18, y: 5, },
+  { x: 20, y: 5, },
+  { x: 22, y: 5, },
+  // inventory - row 2
+  { x: 6, y: 7, },
+  { x: 8, y: 7, },
+  { x: 10, y: 7, },
+  { x: 12, y: 7, },
+  { x: 14, y: 7, },
+  { x: 16, y: 7, },
+  { x: 18, y: 7, },
+  { x: 20, y: 7, },
+  { x: 22, y: 7, },
+  // inventory - row 3
+  { x: 6, y: 9, },
+  { x: 8, y: 9, },
+  { x: 10, y: 9, },
+  { x: 12, y: 9, },
+  { x: 14, y: 9, },
+  { x: 16, y: 9, },
+  { x: 18, y: 9, },
+  { x: 20, y: 9, },
+  { x: 22, y: 9, }
+];
 
 interface Config extends SceneObjectBaseConfig {
 
@@ -24,8 +67,15 @@ export class UiObject extends SceneObject {
   ) {
     super(scene, config);
 
+    // key listeners references
+    this.keyListeners.onMouseDown = this.onMouseDown.bind(this);
+    this.keyListeners.onMouseUp = this.onMouseUp.bind(this);
+
     // event listener references
     this.eventListeners.onToggleInventory = this.onToggleInventory.bind(this);
+
+    // add listeners
+    this.disableClickListeners();
 
     // add event listener
     this.scene.addEventListener(this.scene.eventTypes.TOGGLE_INVENTORY, this.eventListeners.onToggleInventory);
@@ -33,8 +83,12 @@ export class UiObject extends SceneObject {
 
   private onToggleInventory(event: CustomEvent): void {
     if (this.showInventory) {
+      // close inventory
+      this.disableClickListeners();
       this.scene.dispatchEvent(this.scene.eventTypes.INVENTORY_CLOSED);
     } else {
+      // open inventory
+      this.enableClickListeners();
       this.scene.dispatchEvent(this.scene.eventTypes.INVENTORY_OPENED);
     }
     this.showInventory = !this.showInventory;
@@ -45,7 +99,10 @@ export class UiObject extends SceneObject {
     this.renderHotbarBackground(context);
     this.renderHotbarContainers(context);
     this.renderHotbarItems(context);
-    this.renderHotbarSelector(context);
+    if (!this.showInventory) {
+      this.renderHotbarSelector(context);
+    }
+
     // inventory
     if (this.showInventory) {
       this.renderInventoryBackground(context);
@@ -55,12 +112,13 @@ export class UiObject extends SceneObject {
   }
 
   private renderHotbarBackground(context: CanvasRenderingContext2D): void {
-    RenderUtils.renderRectangle(
+    RenderUtils.fillRectangle(
       context,
       5.75,
       14.75,
       CanvasConstants.TILE_SIZE * 18.5,
-      CanvasConstants.TILE_SIZE * 2.5
+      CanvasConstants.TILE_SIZE * 2.5,
+      'saddlebrown'
     );
   }
 
@@ -126,12 +184,13 @@ export class UiObject extends SceneObject {
   }
 
   private renderInventoryBackground(context: CanvasRenderingContext2D): void {
-    RenderUtils.renderRectangle(
+    RenderUtils.fillRectangle(
       context,
       5.75,
       4.75,
       CanvasConstants.TILE_SIZE * 18.5,
-      CanvasConstants.TILE_SIZE * 6.75
+      CanvasConstants.TILE_SIZE * 6.75,
+      'saddlebrown'
     );
   }
 
@@ -155,7 +214,7 @@ export class UiObject extends SceneObject {
   private renderInventoryItems(context: CanvasRenderingContext2D): void {
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 9; col++) {
-        let index = row * 9 + col;
+        let index = (row * 9 + col) + this.hotbarSize;
         let object = this.inventory[index];
         if (object === undefined) {
           continue;
@@ -201,5 +260,37 @@ export class UiObject extends SceneObject {
 
   get hotbarSelectedIndex(): number {
     return this.scene.globals['hotbar_selected_index'];
+  }
+
+  private onMouseDown(event: MouseEvent): void {
+    console.log('mouse down');
+    let mousePosition = MouseUtils.getMousePosition(this.mainContext.canvas, event);
+    console.log(mousePosition);
+    INDEX_TO_POSITION_MAP.forEach((position, index) => {
+      if (
+        mousePosition.x >= position.x &&
+        mousePosition.x <= (position.x + 1) &&
+        mousePosition.y >= position.y &&
+        mousePosition.y <= (position.y + 1)
+      ) {
+        console.log('clicked on index', index);
+        this.scene.globals['hotbar_selected_index'] = index;
+      }
+    });
+  }
+
+  private onMouseUp(event: MouseEvent): void {
+    console.log('mouse up');
+    console.log(MouseUtils.getMousePosition(this.mainContext.canvas, event));
+  }
+
+  private enableClickListeners(): void {
+    this.mainContext.canvas.addEventListener('mousedown', this.keyListeners.onMouseDown);
+    this.mainContext.canvas.addEventListener('mouseup', this.keyListeners.onMouseUp);
+  }
+
+  private disableClickListeners(): void {
+    this.mainContext.canvas.removeEventListener('mousedown', this.keyListeners.onMouseDown);
+    this.mainContext.canvas.removeEventListener('mouseup', this.keyListeners.onMouseUp);
   }
 }

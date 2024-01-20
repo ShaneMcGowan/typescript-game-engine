@@ -174,10 +174,14 @@ export class Client {
   }
 
   private renderGrid(): void {
+    if (this.debug.ui.grid.lines || this.debug.ui.grid.numbers) {
+      RenderUtils.fillRectangle(this.context, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, 'rgba(0, 0, 0, 0.25)');
+    }
+
     if (this.debug.ui.grid.lines) {
       for (let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE) {
         for (let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE) {
-          this.context.strokeRect(x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE);
+          RenderUtils.strokeRectangle(this.context, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, 'black');
         }
       }
     }
@@ -185,9 +189,10 @@ export class Client {
     if (this.debug.ui.grid.numbers) {
       for (let x = 0; x < CanvasConstants.CANVAS_TILE_WIDTH; x++) {
         for (let y = 0; y < CanvasConstants.CANVAS_TILE_HEIGHT; y++) {
-          this.context.fillStyle = 'red';
+          this.context.fillStyle = 'black';
           this.context.font = '8px helvetica';
-          this.context.fillText(`${x},${y}`, x * CanvasConstants.TILE_SIZE, (y + 0.5) * CanvasConstants.TILE_SIZE);
+          this.context.fillText(`${x}`, (x * CanvasConstants.TILE_SIZE) + 1, (y * CanvasConstants.TILE_SIZE) + 8); // 8 is 8 px
+          this.context.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
         }
       }
     }
