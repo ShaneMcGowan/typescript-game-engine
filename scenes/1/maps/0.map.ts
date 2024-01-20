@@ -25,7 +25,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   constructor(protected scene: Scene) {
     super(scene);
 
-    this.objects.push(new UiObject(scene, { positionX: 6, positionY: 15, }));
+    this.objects.push(new UiObject(scene, { positionX: 0, positionY: 0, }));
 
     // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index.
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player

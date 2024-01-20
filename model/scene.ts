@@ -34,6 +34,7 @@ export class Scene {
 
   // objects
   objects: SceneObject[] = [];
+  // TODO(smg): how do we access types for this from the scene object?
   globals: Record<string, any> = {}; // a place to store flags for the scene
 
   // maps
@@ -45,6 +46,10 @@ export class Scene {
     background: [],
     objects: [],
   };
+
+  // for firing events
+  private readonly eventEmitter: Element = document.createElement('eventEmitter');
+  readonly eventTypes: Record<string, string> = {}; // TODO(smg): some way typing this so there is intellisense for event types for a scene
 
   private customRenderer?: CustomRendererSignature;
 
@@ -279,7 +284,7 @@ export class Scene {
   getObjectAtPosition(positionX: number, positionY: number, type?: any): SceneObject | undefined {
     // TODO(smg): add optional type check
     // TODO(smg): this is a very heavy operation
-    return this.objects.find(o => o.positionX === positionX && o.positionY === positionY);
+    return this.objects.find(o => o.positionX === positionX && o.positionY === positionY && o.collisionLayer !== CanvasConstants.UI_COLLISION_LAYER);
   }
 
   /**
@@ -292,7 +297,7 @@ export class Scene {
   getAllObjectsAtPosition(positionX: number, positionY: number, type?: any): SceneObject[] {
     // TODO(smg): add optional type check
     // TODO(smg): this is a very heavy operation
-    return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY);
+    return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY && o.collisionLayer !== CanvasConstants.UI_COLLISION_LAYER);
   }
 
   private removeAllObjects(): void {
@@ -361,5 +366,17 @@ export class Scene {
 
   removeCustomerRenderer(): void {
     this.customRenderer = undefined;
+  }
+
+  addEventListener(eventName: string, callback: any): void {
+    this.eventEmitter.addEventListener(eventName, callback);
+  }
+
+  removeEventListener(eventName: string, callback: any): void {
+    this.eventEmitter.removeEventListener(eventName, callback);
+  }
+
+  dispatchEvent(eventName: string, detail?: any): void {
+    this.eventEmitter.dispatchEvent(new CustomEvent(eventName, { detail, }));
   }
 }

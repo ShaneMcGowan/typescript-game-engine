@@ -58,6 +58,20 @@ export class RenderUtils {
     context.fill();
   }
 
+  static renderRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number): void {
+    context.beginPath();
+    context.rect(
+      positionX * CanvasConstants.TILE_SIZE,
+      positionY * CanvasConstants.TILE_SIZE,
+      width,
+      height
+    );
+    context.stroke();
+    context.strokeStyle = 'saddlebrown';
+    context.fillStyle = 'saddlebrown';
+    context.fill();
+  }
+
   static clearCanvas(context: CanvasRenderingContext2D): void {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   }

@@ -6,20 +6,27 @@ export interface SceneObjectBaseConfig {
   targetX?: number;
   targetY?: number;
   renderLayer?: number;
+  collisionLayer?: number;
 }
 
 const DEFAULT_RENDER_LAYER = 0;
+const DEFAULT_COLLISION_LAYER = 0;
 
 export class SceneObject {
   isRenderable: boolean = false;
   hasCollision: boolean = false;
   renderLayer: number;
+  collisionLayer: number;
 
   // position
   positionX: number = -1;
   positionY: number = -1;
   targetX: number = -1;
   targetY: number = -1;
+
+  // TODO(smg): I'm not convinced of this but I will go with it for now
+  keyListeners: Record<string, (event: KeyboardEvent) => void> = {}; // for keyboard events
+  eventListeners: Record<string, (event: CustomEvent) => void> = {}; // for scene events
 
   protected mainContext: CanvasRenderingContext2D;
   protected assets: Record<string, any>;
@@ -55,6 +62,7 @@ export class SceneObject {
     }
 
     this.renderLayer = this.config.renderLayer ?? DEFAULT_RENDER_LAYER;
+    this.collisionLayer = this.config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
   }
 
   update?(delta: number): void;

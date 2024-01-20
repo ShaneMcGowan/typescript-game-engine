@@ -9,6 +9,7 @@ export class CanvasConstants {
   static readonly CANVAS_TILE_WIDTH = 30; // total width in tiles
   static readonly TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
   static readonly OBJECT_RENDERING_LAYERS: number = 16; // number of layers to render objects on. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
+  static readonly OBJECT_COLLISION_LAYERS: number = 16; // number of layers on which objects can collide. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
 
   /**
    * Keep an eye on this and any getters, don't run it on hot code paths
@@ -38,5 +39,12 @@ export class CanvasConstants {
    */
   static get UI_RENDER_LAYER(): number {
     return CanvasConstants.OBJECT_RENDERING_LAYERS - 1;
+  }
+
+  /**
+   * The collision layer for UI elements so that game elements don't interact with them
+   */
+  static get UI_COLLISION_LAYER(): number {
+    return CanvasConstants.OBJECT_COLLISION_LAYERS - 1;
   }
 }

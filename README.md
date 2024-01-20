@@ -18,4 +18,4 @@ Sprout Lands texture pack courtesy of https://cupnooble.itch.io/
 
 
 ### Known Issues
-- Sprite bluriness when moving / using custom renderer. 
+Nothing specific at the minute

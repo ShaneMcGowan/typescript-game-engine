@@ -2,8 +2,8 @@ import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
-import { EggObject } from './egg.object';
 import { FenceObject, FenceType } from './fence.object';
+import { CameraObject } from '../maps/0/objects/camera.object';
 
 enum Direction {
   UP = 'w',
@@ -32,9 +32,11 @@ export class PlayerObject extends SceneObject {
     ['remove_fence']: false,
     ['place_fence']: false,
     ['toggle_follow']: false,
-    ['place_egg']: false,
-    ['pickup_egg']: false,
-    ['change_map']: false,
+    ['place_object']: false,
+    ['pick_up_object']: false,
+    ['hotbar_left']: false,
+    ['hotbar_right']: false,
+    ['toggle_inventory']: false,
   };
 
   animations = {
@@ -64,83 +66,175 @@ export class PlayerObject extends SceneObject {
   ) {
     super(scene, config);
 
-    document.addEventListener('keydown', (event) => {
-      switch (event.key.toLocaleLowerCase()) {
-        case Direction.RIGHT:
-        case 'arrowright':
-          this.controls[Direction.RIGHT] = true;
-          break;
-        case Direction.LEFT:
-        case 'arrowleft':
-          this.controls[Direction.LEFT] = true;
-          break;
-        case Direction.UP:
-        case 'arrowup':
-          this.controls[Direction.UP] = true;
-          break;
-        case Direction.DOWN:
-        case 'arrowdown':
-          this.controls[Direction.DOWN] = true;
-          break;
-        case 'j':
-          this.controls.remove_fence = true;
-          break;
-        case 'k':
-          this.controls.place_fence = true;
-          break;
-        case ' ':
-          this.controls.toggle_follow = true;
-          break;
-        case 'e':
-          this.controls.place_egg = true;
-          break;
-        case 'q':
-          this.controls['pickup_egg'] = true;
-          break;
-        case 'm':
-          this.controls.change_map = true;
-          break;
-      }
-    });
+    // store a reference to functions we are using in event listeners
+    // key listeners references
+    this.keyListeners.onMovementKeyDown = this.onMovementKeyDown.bind(this);
+    this.keyListeners.onMovementKeyUp = this.onMovementKeyUp.bind(this);
+    this.keyListeners.onControlKeyDown = this.onControlKeyDown.bind(this);
+    this.keyListeners.onControlKeyUp = this.onControlKeyUp.bind(this);
+    // event listener references
+    this.eventListeners.onInventoryOpened = this.onInventoryOpened.bind(this);
+    this.eventListeners.onInventoryClosed = this.onInventoryClosed.bind(this);
 
-    document.addEventListener('keyup', (event) => {
-      switch (event.key.toLocaleLowerCase()) {
-        case Direction.RIGHT:
-        case 'arrowright':
-          this.controls[Direction.RIGHT] = false;
-          break;
-        case Direction.LEFT:
-        case 'arrowleft':
-          this.controls[Direction.LEFT] = false;
-          break;
-        case Direction.UP:
-        case 'arrowup':
-          this.controls[Direction.UP] = false;
-          break;
-        case Direction.DOWN:
-        case 'arrowdown':
-          this.controls[Direction.DOWN] = false;
-          break;
-        case 'j':
-          this.controls.remove_fence = false;
-          break;
-        case 'k':
-          this.controls.place_fence = false;
-          break;
-        case ' ':
-          this.controls.toggle_follow = false;
-          break;
-        case 'e':
-          this.controls.place_egg = false;
-          break;
-        case 'q':
-          this.controls['pickup_egg'] = false;
-          break;
-        case 'm':
-          this.controls.change_map = false;
-          break;
-      }
-    });
+    // add control listeners
+    this.enableMovementKeys();
+    this.enableControlKeys();
+
+    // add event listeners
+    this.enableEventListeners();
+  }
+
+  private enableMovementKeys(): void {
+    document.addEventListener('keydown', this.keyListeners.onMovementKeyDown);
+    document.addEventListener('keyup', this.keyListeners.onMovementKeyUp);
+  }
+
+  private disableMovementKeys(): void {
+    document.removeEventListener('keydown', this.keyListeners.onMovementKeyDown);
+    document.removeEventListener('keyup', this.keyListeners.onMovementKeyUp);
+  }
+
+  private enableControlKeys(): void {
+    document.addEventListener('keydown', this.keyListeners.onControlKeyDown);
+    document.addEventListener('keyup', this.keyListeners.onControlKeyUp);
+  }
+
+  private disableControlKeys(): void {
+    document.removeEventListener('keydown', this.keyListeners.onControlKeyDown);
+    document.removeEventListener('keyup', this.keyListeners.onControlKeyUp);
+  }
+
+  private enableEventListeners(): void {
+    this.scene.addEventListener(this.scene.eventTypes.INVENTORY_OPENED, this.eventListeners.onInventoryOpened);
+    this.scene.addEventListener(this.scene.eventTypes.INVENTORY_CLOSED, this.eventListeners.onInventoryClosed);
+  }
+
+  private onInventoryOpened(event: CustomEvent): void {
+    this.disableMovementKeys();
+  }
+
+  private onInventoryClosed(event: CustomEvent): void {
+    this.enableMovementKeys();
+  }
+
+  private onMovementKeyDown(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
+      case Direction.RIGHT:
+      case 'arrowright':
+        this.controls[Direction.RIGHT] = true;
+        break;
+      case Direction.LEFT:
+      case 'arrowleft':
+        this.controls[Direction.LEFT] = true;
+        break;
+      case Direction.UP:
+      case 'arrowup':
+        this.controls[Direction.UP] = true;
+        break;
+      case Direction.DOWN:
+      case 'arrowdown':
+        this.controls[Direction.DOWN] = true;
+        break;
+    }
+  }
+
+  private onMovementKeyUp(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
+      case Direction.RIGHT:
+      case 'arrowright':
+        this.controls[Direction.RIGHT] = false;
+        break;
+      case Direction.LEFT:
+      case 'arrowleft':
+        this.controls[Direction.LEFT] = false;
+        break;
+      case Direction.UP:
+      case 'arrowup':
+        this.controls[Direction.UP] = false;
+        break;
+      case Direction.DOWN:
+      case 'arrowdown':
+        this.controls[Direction.DOWN] = false;
+        break;
+    }
+  }
+
+  private onControlKeyDown(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
+      case 'j':
+        this.controls.remove_fence = true;
+        break;
+      case 'k':
+        this.controls.place_fence = true;
+        break;
+      case ' ':
+        this.controls.toggle_follow = true;
+        break;
+      case 'e':
+        this.controls['place_object'] = true;
+        break;
+      case 'q':
+        this.controls['pick_up_object'] = true;
+        break;
+      case 'l':
+        this.controls['hotbar_left'] = true;
+        break;
+      case ';':
+        this.controls['hotbar_right'] = true;
+        break;
+      case 'i':
+        this.controls['toggle_inventory'] = true;
+        break;
+    }
+  }
+
+  private onControlKeyUp(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
+      case 'j':
+        this.controls.remove_fence = false;
+        break;
+      case 'k':
+        this.controls.place_fence = false;
+        break;
+      case ' ':
+        this.controls.toggle_follow = false;
+        break;
+      case 'e':
+        this.controls['place_object'] = false;
+        break;
+      case 'q':
+        this.controls['pick_up_object'] = false;
+        break;
+      case 'l':
+        this.controls['hotbar_left'] = false;
+        break;
+      case ';':
+        this.controls['hotbar_right'] = false;
+        break;
+      case 'i':
+        this.controls['toggle_inventory'] = false;
+        break;
+    }
   }
 
   update(delta: number): void {
@@ -148,9 +242,10 @@ export class PlayerObject extends SceneObject {
     this.updateRemoveFence();
     this.updatePlaceFence();
     this.updateToggleFollow();
-    this.updatePlaceEgg();
-    this.updatePickupEgg();
-    this.updateChangeMap();
+    this.updatePlaceObject();
+    this.updatePickupObject();
+    this.updateHotbar();
+    this.updateToggleInventory();
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -317,12 +412,12 @@ export class PlayerObject extends SceneObject {
     this.controls.toggle_follow = false;
   }
 
-  updatePlaceEgg(): void {
-    if (!this.controls['place_egg']) {
+  updatePlaceObject(): void {
+    if (!this.controls['place_object']) {
       return;
     }
 
-    if (this.scene.globals['total_eggs'] === 0) {
+    if (this.scene.globals['inventory'].length === 0) {
       return;
     }
 
@@ -331,25 +426,20 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let egg = new EggObject(
-      this.scene,
-      {
-        positionX: position.x,
-        positionY: position.y,
-      }
-    );
-    this.scene.addObject(egg);
+    let objectClass = this.scene.globals['inventory'][this.scene.globals['inventory'].length - 1];
+    let object: SceneObject = Reflect.construct(objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
+    this.scene.addObject(object);
 
-    this.controls['place_egg'] = false;
-    this.scene.globals['total_eggs']--;
+    this.controls['place_object'] = false;
+    this.scene.globals['inventory'].pop();
   }
 
-  updatePickupEgg(): void {
-    if (!this.controls['pickup_egg']) {
+  updatePickupObject(): void {
+    if (!this.controls['pick_up_object']) {
       return;
     }
 
-    if (this.scene.globals['total_eggs'] === 9) {
+    if (this.scene.globals['inventory'].length === this.scene.globals['inventory_size']) {
       return;
     }
 
@@ -357,24 +447,22 @@ export class PlayerObject extends SceneObject {
 
     // TODO(smg): see how getObjectAtPosition works with rendering layers etc
     let object = this.scene.getObjectAtPosition(position.x, position.y, null);
-    if (!(object instanceof EggObject)) {
+    if (object === undefined) {
       return;
+    }
+
+    // prevent placing
+    switch (true) {
+      case object instanceof CameraObject:
+        return;
+      default:
+        break;
     }
 
     this.scene.removeObject(object);
 
-    this.controls['pickup_egg'] = false;
-    this.scene.globals['total_eggs']++;
-  }
-
-  updateChangeMap(): void {
-    if (!this.controls.change_map) {
-      return;
-    }
-
-    this.scene.changeMap(1);
-
-    this.controls.change_map = false;
+    this.controls['pick_up_object'] = false;
+    this.scene.globals['inventory'].push(object.constructor);
   }
 
   destroy(): void {
@@ -399,5 +487,25 @@ export class PlayerObject extends SceneObject {
     } else if (this.direction === Direction.DOWN) {
       return { x, y: y + 1, };
     }
+  }
+
+  private updateHotbar(): void {
+    if (this.controls['hotbar_left']) {
+      this.controls['hotbar_left'] = false;
+      this.scene.globals['hotbar_selected_index'] = (this.scene.globals['hotbar_selected_index'] - 1 + this.scene.globals['hotbar_size']) % this.scene.globals['hotbar_size'];
+    } else if (this.controls['hotbar_right']) {
+      this.controls['hotbar_right'] = false;
+      this.scene.globals['hotbar_selected_index'] = (this.scene.globals['hotbar_selected_index'] + 1) % this.scene.globals['hotbar_size'];
+    }
+  }
+
+  private updateToggleInventory(): void {
+    if (!this.controls['toggle_inventory']) {
+      return;
+    }
+
+    this.scene.dispatchEvent(this.scene.eventTypes.TOGGLE_INVENTORY, {});
+
+    this.controls['toggle_inventory'] = false;
   }
 }
