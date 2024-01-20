@@ -81,11 +81,29 @@ export class UiObject extends SceneObject {
 
   private renderHotbarItems(context: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.hotbarSize; i++) {
+      let object = this.inventory[i];
+      if (object === undefined) {
+        continue;
+      }
+
+      // TODO(smg): this is terrible
+      let spriteSheet;
+      let spriteX = 0;
+      let spriteY = 0;
+      // TODO(smg): this is terrible
+      if (object.name === 'EggObject') {
+        spriteSheet = this.assets.images.tileset_egg;
+      } else if (object.name === 'ChickenObject') {
+        spriteSheet = this.assets.images.tileset_chicken;
+      } else {
+        spriteSheet = this.assets.images.tileset_egg;
+      }
+
       RenderUtils.renderSprite(
         context,
-        this.assets.images.tileset_egg,
-        0,
-        0,
+        spriteSheet,
+        spriteX,
+        spriteY,
         6.5 + (i * 2),
         15.5
       );
@@ -138,16 +156,28 @@ export class UiObject extends SceneObject {
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 9; col++) {
         let index = row * 9 + col;
-
-        if (this.inventory[index] === undefined) {
+        let object = this.inventory[index];
+        if (object === undefined) {
           continue;
+        }
+
+        let spriteSheet;
+        let spriteX = 0;
+        let spriteY = 0;
+        // TODO(smg): this is terrible
+        if (object.name === 'EggObject') {
+          spriteSheet = this.assets.images.tileset_egg;
+        } else if (object.name === 'ChickenObject') {
+          spriteSheet = this.assets.images.tileset_chicken;
+        } else {
+          spriteSheet = this.assets.images.tileset_egg;
         }
 
         RenderUtils.renderSprite(
           context,
-          this.assets.images.tileset_egg,
-          0,
-          0,
+          spriteSheet,
+          spriteX,
+          spriteY,
           6.5 + (col * 2),
           5.5 + (row * 2),
           1,
@@ -157,7 +187,7 @@ export class UiObject extends SceneObject {
     }
   }
 
-  get inventory(): SceneObject[] {
+  get inventory(): any[] {
     return this.scene.globals['inventory'];
   }
 

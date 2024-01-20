@@ -92,6 +92,10 @@ export class PlayerObject extends SceneObject {
   private disableMovementKeys(): void {
     document.removeEventListener('keydown', this.keyListeners.onMovementKeyDown);
     document.removeEventListener('keyup', this.keyListeners.onMovementKeyUp);
+    this.controls[Direction.RIGHT] = false;
+    this.controls[Direction.LEFT] = false;
+    this.controls[Direction.UP] = false;
+    this.controls[Direction.DOWN] = false;
   }
 
   private enableControlKeys(): void {
@@ -417,7 +421,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if (this.scene.globals['inventory'].length === 0) {
+    let objectClass = this.scene.globals['inventory'][this.scene.globals['hotbar_selected_index']];
+    if (objectClass === undefined) {
       return;
     }
 
@@ -426,12 +431,11 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let objectClass = this.scene.globals['inventory'][this.scene.globals['inventory'].length - 1];
     let object: SceneObject = Reflect.construct(objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
     this.scene.addObject(object);
 
     this.controls['place_object'] = false;
-    this.scene.globals['inventory'].pop();
+    this.scene.globals['inventory'][this.scene.globals['hotbar_selected_index']] = undefined;
   }
 
   updatePickupObject(): void {
