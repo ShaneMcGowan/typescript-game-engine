@@ -7,18 +7,20 @@ import { HoleObject } from '../objects/hole.object';
 import { PlayerObject } from '../objects/player.object';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background';
+import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './0/backgrounds/2.background';
 import { CameraObject } from './0/objects/camera.object';
 import { UiObject } from './0/objects/ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { MouseUtils } from '@utils/mouse.utils';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
-  height = 40;
-  width = 40;
+  height = 100;
+  width = 100;
 
   backgroundLayers: BackgroundLayer[] = [
     SAMPLE_SCENE_1_MAP_0_BACKGROUND_0,
-    SAMPLE_SCENE_1_MAP_0_BACKGROUND_1
+    SAMPLE_SCENE_1_MAP_0_BACKGROUND_1,
+    SAMPLE_SCENE_1_MAP_0_BACKGROUND_2
   ];
 
   objects: SceneObject[] = [];

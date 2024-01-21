@@ -5,6 +5,13 @@ export interface BackgroundTile {
   animationMap: number[]; // length of each animation frame in seconds, index matching animationFrames
 }
 
+export const BASE_BACKGROUND_TILE: BackgroundTile = {
+  tileset: '',
+  animationFrameDuration: 1,
+  animationFrames: [{ spriteX: 0, spriteY: 0, }],
+  animationMap: [1],
+};
+
 /*
 const TEST_TILE = {
   tileset: 'tileset_water',
