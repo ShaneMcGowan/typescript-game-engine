@@ -4,10 +4,21 @@ import { type Client } from 'client';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMap } from './scene-map';
 import { type SceneObject } from './scene-object';
+import { MouseUtils } from '@utils/mouse.utils';
 
 export interface SceneRenderingContext {
   background: CanvasRenderingContext2D[];
   objects: CanvasRenderingContext2D[];
+}
+
+export interface SceneGlobalsBaseConfig {
+  mousePosition: {
+    x: number;
+    y: number;
+    exactX: number; // not rounded to tile
+    exactY: number; // not rounded to tile
+  };
+  latestMouseEvent: MouseEvent;
 }
 
 export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
@@ -35,7 +46,17 @@ export class Scene {
   // objects
   objects: SceneObject[] = [];
   // TODO(smg): how do we access types for this from the scene object?
-  globals: Record<string, any> = {}; // a place to store flags for the scene
+
+  // a place to store flags for the scene
+  globals: SceneGlobalsBaseConfig = {
+    mousePosition: {
+      x: 0,
+      y: 0,
+      exactX: 0,
+      exactY: 0,
+    },
+    latestMouseEvent: new MouseEvent(''),
+  };
 
   // maps
   maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap
@@ -62,6 +83,12 @@ export class Scene {
   ) {
     this.context = this.client.context;
     this.assets = this.client.assets;
+
+    // set up mouse listener
+    client.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+      this.globals.mousePosition = MouseUtils.getMousePosition(client.canvas, event);
+      this.globals.latestMouseEvent = event;
+    });
   }
 
   backgroundLayerAnimationFrame: Record<string, number> = {};

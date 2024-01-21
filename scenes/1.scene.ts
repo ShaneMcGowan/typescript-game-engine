@@ -1,5 +1,5 @@
 import { type Client } from '../client';
-import { Scene } from '../model/scene';
+import { Scene, type SceneGlobalsBaseConfig } from '../model/scene';
 import { SAMPLE_SCENE_1_MAP_0 } from './1/maps/0.map';
 import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';
 import { ChickenObject } from './1/objects/chicken.object';
@@ -11,8 +11,17 @@ const EVENT_TYPES: Record<string, string> = {
   INVENTORY_CLOSED: 'INVENTORY_CLOSED',
 };
 
+interface Globals extends SceneGlobalsBaseConfig {
+  chickens_follow_player: boolean;
+  inventory: Array<typeof ChickenObject | typeof EggObject>;
+  inventory_size: number;
+  hotbar_size: number;
+  hotbar_selected_index: number;
+}
+
 export class SAMPLE_SCENE_1 extends Scene {
-  globals: Record<string, any> = {
+  globals: Globals = {
+    ...this.globals,
     chickens_follow_player: false,
     inventory: [EggObject, ChickenObject],
     inventory_size: 36,
@@ -55,5 +64,12 @@ export class SAMPLE_SCENE_1 extends Scene {
 
   removeFromInventory(index: number): void {
     this.globals.inventory[index] = undefined;
+  }
+
+  swapInventoryItems(index1: number, index2: number): void {
+    let item1 = this.globals.inventory[index1];
+    let item2 = this.globals.inventory[index2];
+    this.globals.inventory[index1] = item2;
+    this.globals.inventory[index2] = item1;
   }
 }

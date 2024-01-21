@@ -10,6 +10,7 @@ import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background'
 import { CameraObject } from './0/objects/camera.object';
 import { UiObject } from './0/objects/ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
+import { MouseUtils } from '@utils/mouse.utils';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   height = 40;
@@ -24,6 +25,9 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
   constructor(protected scene: SAMPLE_SCENE_1) {
     super(scene);
+
+    // TODO(smg): remove this when no longer debugging as it will be set in start menu map
+    MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
 
     this.objects.push(new UiObject(scene, { positionX: 0, positionY: 0, }));
 

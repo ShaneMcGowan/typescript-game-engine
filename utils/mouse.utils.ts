@@ -8,7 +8,7 @@ export class MouseUtils {
    * @param evt
    * @returns
    */
-  static getMousePosition(canvas: HTMLCanvasElement, event: MouseEvent): { x: number; y: number; } {
+  static getMousePosition(canvas: HTMLCanvasElement, event: MouseEvent): { x: number; y: number; exactX: number; exactY: number; } {
     let boundingRect = canvas.getBoundingClientRect();
 
     let adjustedBountingRect = {
@@ -47,9 +47,13 @@ export class MouseUtils {
     let scaleY = canvas.height / adjustedBountingRect.height;
 
     // scale mouse coordinates after they have been adjusted to be relative to element
+    let x = ((adjustedEvent.clientX - boundingRect.left) * scaleX) / CanvasConstants.TILE_SIZE;
+    let y = ((adjustedEvent.clientY - boundingRect.top) * scaleY) / CanvasConstants.TILE_SIZE;
     return {
-      x: Math.floor(((adjustedEvent.clientX - boundingRect.left) * scaleX) / CanvasConstants.TILE_SIZE),
-      y: Math.floor(((adjustedEvent.clientY - boundingRect.top) * scaleY) / CanvasConstants.TILE_SIZE),
+      x: Math.floor(x),
+      y: Math.floor(y),
+      exactX: x,
+      exactY: y,
     };
   }
 

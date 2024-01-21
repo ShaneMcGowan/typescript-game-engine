@@ -1,12 +1,12 @@
 import { CanvasConstants } from '@constants/canvas.constants';
-import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { MouseUtils } from '@utils/mouse.utils';
 import { RenderUtils } from '@utils/render.utils';
 
 const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
-const INDEX_TO_POSITION_MAP = [
+const INVENTORY_INDEX_TO_POSITION_MAP = [
   // hot bar
   { x: 6, y: 15, },
   { x: 8, y: 15, },
@@ -60,9 +60,10 @@ export class UiObject extends SceneObject {
 
   // TODO(smg): should properties be stored directly on the scene or in some sort of private object?
   private showInventory: boolean = false;
+  private itemHoldingIndex: number | undefined = undefined;
 
   constructor(
-    protected scene: Scene,
+    protected scene: SAMPLE_SCENE_1,
     protected config: Config
   ) {
     super(scene, config);
@@ -108,6 +109,7 @@ export class UiObject extends SceneObject {
       this.renderInventoryBackground(context);
       this.renderInventoryContainers(context);
       this.renderInventoryItems(context);
+      this.renderInventoryItemGrabbed(context);
     }
   }
 
@@ -246,6 +248,34 @@ export class UiObject extends SceneObject {
     }
   }
 
+  private renderInventoryItemGrabbed(context: CanvasRenderingContext2D): void {
+    let item = this.itemHolding;
+
+    if (item === undefined) {
+      return;
+    }
+
+    let spriteSheet;
+    let spriteX = 0;
+    let spriteY = 0;
+    // TODO(smg): this will need to be updated once inventory items are more than just eggs and chickens
+    if (item.name === 'EggObject') {
+      spriteSheet = this.assets.images.tileset_egg;
+    } else if (item.name === 'ChickenObject') {
+      spriteSheet = this.assets.images.tileset_chicken;
+    } else {
+      spriteSheet = this.assets.images.tileset_egg;
+    }
+    RenderUtils.renderSprite(
+      context,
+      spriteSheet,
+      spriteX,
+      spriteY,
+      this.scene.globals.mousePosition.exactX - 0.5,
+      this.scene.globals.mousePosition.exactY - 0.5
+    );
+  }
+
   get inventory(): any[] {
     return this.scene.globals['inventory'];
   }
@@ -263,25 +293,43 @@ export class UiObject extends SceneObject {
   }
 
   private onMouseDown(event: MouseEvent): void {
-    console.log('mouse down');
     let mousePosition = MouseUtils.getMousePosition(this.mainContext.canvas, event);
-    console.log(mousePosition);
-    INDEX_TO_POSITION_MAP.forEach((position, index) => {
+
+    // find item at position
+    INVENTORY_INDEX_TO_POSITION_MAP.forEach((position, index) => {
       if (
         mousePosition.x >= position.x &&
         mousePosition.x <= (position.x + 1) &&
         mousePosition.y >= position.y &&
         mousePosition.y <= (position.y + 1)
       ) {
-        console.log('clicked on index', index);
-        this.scene.globals['hotbar_selected_index'] = index;
+        let item = this.scene.globals.inventory[index];
+        if (item) {
+          this.itemHoldingIndex = index;
+        }
       }
     });
   }
 
   private onMouseUp(event: MouseEvent): void {
-    console.log('mouse up');
-    console.log(MouseUtils.getMousePosition(this.mainContext.canvas, event));
+    if (this.itemHoldingIndex === undefined) {
+      return;
+    }
+
+    let mousePosition = MouseUtils.getMousePosition(this.mainContext.canvas, event);
+    // find item at position
+    INVENTORY_INDEX_TO_POSITION_MAP.forEach((position, index) => {
+      if (
+        mousePosition.x >= position.x &&
+        mousePosition.x <= (position.x + 1) &&
+        mousePosition.y >= position.y &&
+        mousePosition.y <= (position.y + 1)
+      ) {
+        this.scene.swapInventoryItems(index, this.itemHoldingIndex);
+      }
+    });
+
+    this.itemHoldingIndex = undefined;
   }
 
   private enableClickListeners(): void {
@@ -292,5 +340,13 @@ export class UiObject extends SceneObject {
   private disableClickListeners(): void {
     this.mainContext.canvas.removeEventListener('mousedown', this.keyListeners.onMouseDown);
     this.mainContext.canvas.removeEventListener('mouseup', this.keyListeners.onMouseUp);
+  }
+
+  get itemHolding(): any | undefined {
+    if (this.itemHoldingIndex === undefined) {
+      return undefined;
+    }
+
+    return this.scene.globals.inventory[this.itemHoldingIndex];
   }
 }
