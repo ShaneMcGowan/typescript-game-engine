@@ -2,8 +2,7 @@ import { type Client } from '../client';
 import { Scene, type SceneGlobalsBaseConfig } from '../model/scene';
 import { SAMPLE_SCENE_1_MAP_0 } from './1/maps/0.map';
 import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';
-import { ChickenObject } from './1/objects/chicken.object';
-import { EggObject } from './1/objects/egg.object';
+import { type InventoryItemType, InventoryItemObject } from './1/objects/inventory-item.object';
 
 const EVENT_TYPES: Record<string, string> = {
   TOGGLE_INVENTORY: 'TOGGLE_INVENTORY',
@@ -13,7 +12,7 @@ const EVENT_TYPES: Record<string, string> = {
 
 interface Globals extends SceneGlobalsBaseConfig {
   chickens_follow_player: boolean;
-  inventory: Array<typeof ChickenObject | typeof EggObject>;
+  inventory: InventoryItemObject[];
   inventory_size: number;
   hotbar_size: number;
   hotbar_selected_index: number;
@@ -23,7 +22,11 @@ export class SAMPLE_SCENE_1 extends Scene {
   globals: Globals = {
     ...this.globals,
     chickens_follow_player: false,
-    inventory: [EggObject, ChickenObject],
+    inventory: [
+      new InventoryItemObject(this, { type: 'ChickenObject', }),
+      new InventoryItemObject(this, { type: 'RandomObject', }),
+      new InventoryItemObject(this, { type: 'EggObject', currentStackSize: 10, })
+    ], // TODO(smg): start off with some chickens and eggs
     inventory_size: 36,
     hotbar_size: 9,
     hotbar_selected_index: 0,
@@ -51,19 +54,47 @@ export class SAMPLE_SCENE_1 extends Scene {
     return undefined;
   }
 
-  addToInventory(item: any): void {
-    let index = this.firstFreeInventorySpaceIndex;
+  getFirstInventoryItemWithRoomInStack(type: string): InventoryItemObject | undefined {
+    for (let i = 0; i < this.globals.inventory_size; i++) {
+      let item = this.globals.inventory[i];
+      if (item !== undefined && item.type === type && item.currentStackSize < item.maxStackSize) {
+        return item;
+      }
+    }
+  }
 
-    // no free space
-    if (index === undefined) {
+  addToInventory(type: string): void {
+    // check if there is already an item of this type in the inventory with room in the stack
+    let item = this.getFirstInventoryItemWithRoomInStack(type);
+    if (item !== undefined) {
+      item.currentStackSize++;
       return;
     }
 
-    this.globals.inventory[index] = item;
+    let index = this.firstFreeInventorySpaceIndex;
+    // no free space
+    if (index === undefined) {
+      // TODO(smg): this is techically an error state so should an error be thrown here instead of silently returning?
+      return;
+    }
+
+    // create a new item
+    let newItem = new InventoryItemObject(this, { type, });
+    this.globals.inventory[index] = newItem;
   }
 
   removeFromInventory(index: number): void {
-    this.globals.inventory[index] = undefined;
+    let item = this.globals.inventory[index];
+    if (item === undefined) {
+      return;
+    }
+
+    item.currentStackSize--;
+
+    // remove if stack is empty
+    if (item.currentStackSize <= 0) {
+      this.globals.inventory[index] = undefined;
+    }
   }
 
   swapInventoryItems(index1: number, index2: number): void {

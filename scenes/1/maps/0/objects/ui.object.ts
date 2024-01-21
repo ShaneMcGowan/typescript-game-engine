@@ -1,6 +1,7 @@
 import { CanvasConstants } from '@constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
+import { type InventoryItemObject } from '@scenes/1/objects/inventory-item.object';
 import { MouseUtils } from '@utils/mouse.utils';
 import { RenderUtils } from '@utils/render.utils';
 
@@ -141,29 +142,17 @@ export class UiObject extends SceneObject {
 
   private renderHotbarItems(context: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.hotbarSize; i++) {
-      let object = this.inventory[i];
-      if (object === undefined) {
+      let item = this.inventory[i];
+      if (item === undefined) {
         continue;
       }
 
-      // TODO(smg): this is terrible
-      let spriteSheet;
-      let spriteX = 0;
-      let spriteY = 0;
-      // TODO(smg): this is terrible
-      if (object.name === 'EggObject') {
-        spriteSheet = this.assets.images.tileset_egg;
-      } else if (object.name === 'ChickenObject') {
-        spriteSheet = this.assets.images.tileset_chicken;
-      } else {
-        spriteSheet = this.assets.images.tileset_egg;
-      }
-
-      RenderUtils.renderSprite(
+      this.renderInventoryItem(
         context,
-        spriteSheet,
-        spriteX,
-        spriteY,
+        item.sprite.tileset,
+        item.currentStackSize,
+        item.sprite.spriteX,
+        item.sprite.spriteY,
         6.5 + (i * 2),
         15.5
       );
@@ -217,32 +206,20 @@ export class UiObject extends SceneObject {
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 9; col++) {
         let index = (row * 9 + col) + this.hotbarSize;
-        let object = this.inventory[index];
-        if (object === undefined) {
+
+        let item = this.inventory[index];
+        if (item === undefined) {
           continue;
         }
 
-        let spriteSheet;
-        let spriteX = 0;
-        let spriteY = 0;
-        // TODO(smg): this is terrible
-        if (object.name === 'EggObject') {
-          spriteSheet = this.assets.images.tileset_egg;
-        } else if (object.name === 'ChickenObject') {
-          spriteSheet = this.assets.images.tileset_chicken;
-        } else {
-          spriteSheet = this.assets.images.tileset_egg;
-        }
-
-        RenderUtils.renderSprite(
+        this.renderInventoryItem(
           context,
-          spriteSheet,
-          spriteX,
-          spriteY,
+          item.sprite.tileset,
+          item.currentStackSize,
+          item.sprite.spriteX,
+          item.sprite.spriteY,
           6.5 + (col * 2),
-          5.5 + (row * 2),
-          1,
-          1
+          5.5 + (row * 2)
         );
       }
     }
@@ -255,28 +232,17 @@ export class UiObject extends SceneObject {
       return;
     }
 
-    let spriteSheet;
-    let spriteX = 0;
-    let spriteY = 0;
-    // TODO(smg): this will need to be updated once inventory items are more than just eggs and chickens
-    if (item.name === 'EggObject') {
-      spriteSheet = this.assets.images.tileset_egg;
-    } else if (item.name === 'ChickenObject') {
-      spriteSheet = this.assets.images.tileset_chicken;
-    } else {
-      spriteSheet = this.assets.images.tileset_egg;
-    }
     RenderUtils.renderSprite(
       context,
-      spriteSheet,
-      spriteX,
-      spriteY,
+      this.assets.images[item.sprite.tileset],
+      item.sprite.spriteX,
+      item.sprite.spriteY,
       this.scene.globals.mousePosition.exactX - 0.5,
       this.scene.globals.mousePosition.exactY - 0.5
     );
   }
 
-  get inventory(): any[] {
+  get inventory(): InventoryItemObject[] {
     return this.scene.globals['inventory'];
   }
 
@@ -342,11 +308,29 @@ export class UiObject extends SceneObject {
     this.mainContext.canvas.removeEventListener('mouseup', this.keyListeners.onMouseUp);
   }
 
-  get itemHolding(): any | undefined {
+  get itemHolding(): InventoryItemObject | undefined {
     if (this.itemHoldingIndex === undefined) {
       return undefined;
     }
 
     return this.scene.globals.inventory[this.itemHoldingIndex];
+  }
+
+  private renderInventoryItem(context: CanvasRenderingContext2D, tileset: string, stackSize: number, spriteX: number, spriteY: number, positionX: number, positionY: number): void {
+    RenderUtils.renderSprite(
+      context,
+      this.assets.images[tileset],
+      spriteX,
+      spriteY,
+      positionX,
+      positionY
+    );
+    RenderUtils.renderText(
+      context,
+      `${stackSize}`,
+      positionX + 0.75,
+      positionY + 1,
+      { size: 8, colour: 'black', }
+    );
   }
 }

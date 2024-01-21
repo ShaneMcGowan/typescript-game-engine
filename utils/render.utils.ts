@@ -96,4 +96,14 @@ export class RenderUtils {
   static positionToPixelPosition(position: number): number {
     return position * CanvasConstants.TILE_SIZE;
   }
+
+  static renderText(context: CanvasRenderingContext2D, text: string, positionX: number, positionY: number, config?: { size: number; colour: string; }): void {
+    context.font = `${config?.size ?? 16}px Helvetica`;
+    context.fillStyle = `${config?.colour ?? 'black'}`;
+    context.fillText(
+      text,
+      positionX * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
+      positionY * CanvasConstants.TILE_SIZE // translate sprite position to pixel position
+    );
+  }
 }

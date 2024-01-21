@@ -422,8 +422,8 @@ export class PlayerObject extends SceneObject {
     }
 
     let index = this.scene.globals['hotbar_selected_index'];
-    let objectClass = this.scene.globals['inventory'][index];
-    if (objectClass === undefined) {
+    let item = this.scene.globals['inventory'][index];
+    if (item === undefined) {
       return;
     }
 
@@ -432,8 +432,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    // TODO(smg): needs to be updated once invetory is no longer just a list of classes
-    let object: SceneObject = Reflect.construct(objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
+    let object: SceneObject = Reflect.construct(item.objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
     this.scene.addObject(object);
     this.scene.removeFromInventory(index);
 
@@ -468,7 +467,8 @@ export class PlayerObject extends SceneObject {
     }
 
     this.scene.removeObject(object);
-    this.scene.addToInventory(object.constructor);
+
+    this.scene.addToInventory(object.constructor.name);
 
     this.controls['pick_up_object'] = false;
   }
@@ -478,8 +478,8 @@ export class PlayerObject extends SceneObject {
   }
 
   /**
-   * TODO: make 'Direction' a generic concept
-   * TODO: this needs to be rounded down
+   * TODO(smg): make 'Direction' a generic concept
+   * TODO(smg): this needs to be rounded down
    * @returns
    */
   getPositionFacing(): { x: number; y: number; } {
