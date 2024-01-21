@@ -3,6 +3,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
 import { ChickenObject } from './chicken.object';
 import { PlayerObject } from './player.object';
+import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
 const DEFAULT_RENDER_LAYER: number = 7;
@@ -29,7 +30,7 @@ export class EggObject extends SceneObject {
   hatchTimerMax = 7; // seconds to hatch
 
   constructor(
-    protected scene: Scene,
+    protected scene: SAMPLE_SCENE_1,
     protected config: Config
   ) {
     super(scene, config);

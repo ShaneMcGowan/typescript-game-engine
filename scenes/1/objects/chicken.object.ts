@@ -1,9 +1,9 @@
-import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { MathUtils } from '@utils/math.utils';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
 import { EggObject } from './egg.object';
+import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
@@ -41,7 +41,7 @@ export class ChickenObject extends SceneObject {
   isMovingThisFrame = false;
 
   constructor(
-    protected scene: Scene,
+    protected scene: SAMPLE_SCENE_1,
     protected config: Config
   ) {
     super(scene, config);
