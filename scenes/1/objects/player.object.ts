@@ -4,6 +4,7 @@ import { RenderUtils } from '@utils/render.utils';
 import { FenceObject, FenceType } from './fence.object';
 import { CameraObject } from '../maps/0/objects/camera.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
+import { ChestObject } from './chest.object';
 
 enum Direction {
   UP = 'w',
@@ -14,12 +15,15 @@ enum Direction {
 
 const TILE_SET = 'tileset_player';
 
+const DEFAULT_RENDER_LAYER: number = 10;
+
 interface Config extends SceneObjectBaseConfig {
 }
 
 export class PlayerObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
+  renderLayer = DEFAULT_RENDER_LAYER;
 
   // constants
   movementSpeed = 4; // 4 tiles per second
@@ -32,7 +36,7 @@ export class PlayerObject extends SceneObject {
     ['remove_fence']: false,
     ['place_fence']: false,
     ['toggle_follow']: false,
-    ['place_object']: false,
+    ['interact']: false,
     ['pick_up_object']: false,
     ['hotbar_left']: false,
     ['hotbar_right']: false,
@@ -75,6 +79,8 @@ export class PlayerObject extends SceneObject {
     // event listener references
     this.eventListeners.onInventoryOpened = this.onInventoryOpened.bind(this);
     this.eventListeners.onInventoryClosed = this.onInventoryClosed.bind(this);
+    this.eventListeners.onChestOpened = this.onChestOpened.bind(this);
+    this.eventListeners.onChestClosed = this.onChestClosed.bind(this);
 
     // add control listeners
     this.enableMovementKeys();
@@ -111,6 +117,8 @@ export class PlayerObject extends SceneObject {
   private enableEventListeners(): void {
     this.scene.addEventListener(this.scene.eventTypes.INVENTORY_OPENED, this.eventListeners.onInventoryOpened);
     this.scene.addEventListener(this.scene.eventTypes.INVENTORY_CLOSED, this.eventListeners.onInventoryClosed);
+    this.scene.addEventListener(this.scene.eventTypes.CHEST_OPENED, this.eventListeners.onChestOpened);
+    this.scene.addEventListener(this.scene.eventTypes.CHEST_CLOSED, this.eventListeners.onChestClosed);
   }
 
   private onInventoryOpened(event: CustomEvent): void {
@@ -118,6 +126,14 @@ export class PlayerObject extends SceneObject {
   }
 
   private onInventoryClosed(event: CustomEvent): void {
+    this.enableMovementKeys();
+  }
+
+  private onChestOpened(event: CustomEvent): void {
+    this.disableMovementKeys();
+  }
+
+  private onChestClosed(event: CustomEvent): void {
     this.enableMovementKeys();
   }
 
@@ -190,7 +206,7 @@ export class PlayerObject extends SceneObject {
         this.controls.toggle_follow = true;
         break;
       case 'e':
-        this.controls['place_object'] = true;
+        this.controls['interact'] = true;
         break;
       case 'q':
         this.controls['pick_up_object'] = true;
@@ -224,7 +240,7 @@ export class PlayerObject extends SceneObject {
         this.controls.toggle_follow = false;
         break;
       case 'e':
-        this.controls['place_object'] = false;
+        this.controls['interact'] = false;
         break;
       case 'q':
         this.controls['pick_up_object'] = false;
@@ -246,7 +262,7 @@ export class PlayerObject extends SceneObject {
     this.updateRemoveFence();
     this.updatePlaceFence();
     this.updateToggleFollow();
-    this.updatePlaceObject();
+    this.updateInteract();
     this.updatePickupObject();
     this.updateHotbar();
     this.updateToggleInventory();
@@ -416,8 +432,32 @@ export class PlayerObject extends SceneObject {
     this.controls.toggle_follow = false;
   }
 
-  updatePlaceObject(): void {
-    if (!this.controls['place_object']) {
+  private updateInteract(): void {
+    if (!this.controls['interact']) {
+      return;
+    }
+
+    let position = this.getPositionFacing();
+    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+
+    switch (true) {
+      case object instanceof ChestObject:
+        this.updateInteractChest(object);
+        break;
+      default:
+        this.updateInteractDefault(position);
+        break;
+    }
+
+    this.controls['interact'] = false;
+  }
+
+  private updateInteractChest(object: ChestObject): void {
+    this.scene.dispatchEvent(this.scene.eventTypes.OPEN_CHEST, { object, });
+  }
+
+  private updateInteractDefault(position: { x: number; y: number; }): void {
+    if (this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)) {
       return;
     }
 
@@ -427,16 +467,9 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let position = this.getPositionFacing();
-    if (this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)) {
-      return;
-    }
-
-    let object: SceneObject = Reflect.construct(item.objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
-    this.scene.addObject(object);
+    let newObject: SceneObject = Reflect.construct(item.objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
+    this.scene.addObject(newObject);
     this.scene.removeFromInventory(index);
-
-    this.controls['place_object'] = false;
   }
 
   updatePickupObject(): void {

@@ -5,7 +5,7 @@ import { ChickenObject } from '../objects/chicken.object';
 import { PlayerObject } from '../objects/player.object';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './1/backgrounds/1.background';
-import { UiObject } from './0/objects/ui.object';
+import { InventoryUiObject } from './0/objects/inventory-ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
@@ -21,7 +21,7 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   constructor(protected scene: SAMPLE_SCENE_1) {
     super(scene);
 
-    this.objects.push(new UiObject(scene, { positionX: 6, positionY: 15, }));
+    this.objects.push(new InventoryUiObject(scene, { positionX: 6, positionY: 15, }));
 
     let player = new PlayerObject(scene, { positionX: 1, positionY: 4, });
     this.objects.push(player);

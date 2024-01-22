@@ -9,9 +9,10 @@ import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background'
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './0/backgrounds/2.background';
 import { CameraObject } from './0/objects/camera.object';
-import { UiObject } from './0/objects/ui.object';
+import { InventoryUiObject } from './0/objects/inventory-ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { MouseUtils } from '@utils/mouse.utils';
+import { ChestObject } from '../objects/chest.object';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   height = 100;
@@ -31,7 +32,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     // TODO(smg): remove this when no longer debugging as it will be set in start menu map
     MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
 
-    this.objects.push(new UiObject(scene, { positionX: 0, positionY: 0, }));
+    this.objects.push(new InventoryUiObject(scene, { positionX: 0, positionY: 0, }));
 
     // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index.
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
@@ -39,13 +40,16 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    let player = new PlayerObject(scene, { positionX: 11, positionY: 11, });
+    let player = new PlayerObject(scene, { positionX: 3, positionY: 4, });
     this.objects.push(player);
+
+    this.objects.push(new ChestObject(scene, { positionX: 3, positionY: 3, }));
+    this.objects.push(new ChestObject(scene, { positionX: 4, positionY: 3, }));
 
     // chickens
     let chicken = new ChickenObject(scene, { positionX: 8, positionY: 3, follows: player, });
     this.objects.push(chicken);
-    this.objects.push(new ChickenObject(scene, { positionX: 3, positionY: 3, follows: player, }));
+    this.objects.push(new ChickenObject(scene, { positionX: 4, positionY: 3, follows: player, }));
     this.objects.push(new ChickenObject(scene, { positionX: 9, positionY: 5, follows: player, }));
     this.objects.push(new ChickenObject(scene, { positionX: 5, positionY: 4, follows: player, }));
     this.objects.push(new ChickenObject(scene, { positionX: 11, positionY: 8, follows: player, }));

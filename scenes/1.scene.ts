@@ -2,12 +2,15 @@ import { type Client } from '../client';
 import { Scene, type SceneGlobalsBaseConfig } from '../model/scene';
 import { SAMPLE_SCENE_1_MAP_0 } from './1/maps/0.map';
 import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';
-import { type InventoryItemType, InventoryItemObject } from './1/objects/inventory-item.object';
+import { InventoryItemObject } from './1/objects/inventory-item.object';
 
 const EVENT_TYPES: Record<string, string> = {
   TOGGLE_INVENTORY: 'TOGGLE_INVENTORY',
   INVENTORY_OPENED: 'INVENTORY_OPENED',
   INVENTORY_CLOSED: 'INVENTORY_CLOSED',
+  OPEN_CHEST: 'OPEN_CHEST',
+  CHEST_OPENED: 'CHEST_OPENED',
+  CHEST_CLOSED: 'CHEST_CLOSED',
 };
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -95,12 +98,5 @@ export class SAMPLE_SCENE_1 extends Scene {
     if (item.currentStackSize <= 0) {
       this.globals.inventory[index] = undefined;
     }
-  }
-
-  swapInventoryItems(index1: number, index2: number): void {
-    let item1 = this.globals.inventory[index1];
-    let item2 = this.globals.inventory[index2];
-    this.globals.inventory[index1] = item2;
-    this.globals.inventory[index2] = item1;
   }
 }

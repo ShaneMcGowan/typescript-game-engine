@@ -17,6 +17,7 @@ export const ASSETS: Assets = {
     tileset_button: '/assets/sample/UI Big Play Button.png',
     tileset_ui: '/assets/sample/Sprite sheet for Basic Pack.png',
     tileset_wood_bridge: '/assets/sample/Objects/Wood_Bridge.png',
+    tileset_chest: '/assets/sample/Objects/Chest.png',
   },
   audio: {},
 };
