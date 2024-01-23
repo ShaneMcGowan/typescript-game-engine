@@ -54,6 +54,9 @@ export class Client {
     },
   };
 
+  // controllers
+  gamepad: Gamepad | undefined = undefined;
+
   constructor(public container: HTMLElement) {
     // load assets
     // TODO(smg): some sort of loading screen / rendering delay until assets are loaded
@@ -92,6 +95,9 @@ export class Client {
         console.log('tab is inactive');
       }
     });
+
+    // initialise gamepad listeners
+    this.intialiseGamepadListeners();
 
     // load first scene
     this.changeScene(this.scenes[1]);
@@ -238,6 +244,22 @@ export class Client {
           // nothing yet
           break;
       }
+    });
+  }
+
+  private intialiseGamepadListeners(): void {
+    window.addEventListener('gamepadconnected', (event: GamepadEvent) => {
+      console.log(
+        'Gamepad connected at index %d: %s. %d buttons, %d axes.',
+        event.gamepad.index,
+        event.gamepad.id,
+        event.gamepad.buttons.length,
+        event.gamepad.axes.length
+      );
+      this.gamepad = event.gamepad;
+    });
+    window.addEventListener('gamepaddisconnected', (event: GamepadEvent) => {
+      this.gamepad = undefined;
     });
   }
 }

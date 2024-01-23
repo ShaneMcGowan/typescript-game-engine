@@ -5,6 +5,7 @@ import { FenceObject, FenceType } from './fence.object';
 import { CameraObject } from '../maps/0/objects/camera.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { ChestObject } from './chest.object';
+import { DirtObject } from './dirt.object';
 
 enum Direction {
   UP = 'w',
@@ -41,6 +42,7 @@ export class PlayerObject extends SceneObject {
     ['hotbar_left']: false,
     ['hotbar_right']: false,
     ['toggle_inventory']: false,
+    ['dig']: false,
   };
 
   animations = {
@@ -248,6 +250,9 @@ export class PlayerObject extends SceneObject {
       case ';':
         this.controls['hotbar_right'] = true;
         break;
+      case 'f':
+        this.controls['dig'] = true;
+        break;
     }
   }
 
@@ -275,6 +280,9 @@ export class PlayerObject extends SceneObject {
         break;
       case ';':
         this.controls['hotbar_right'] = false;
+        break;
+      case 'f':
+        this.controls['dig'] = false;
         break;
     }
   }
@@ -340,6 +348,7 @@ export class PlayerObject extends SceneObject {
     this.updatePickupObject();
     this.updateHotbar();
     this.updateToggleInventory();
+    this.updateDig();
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -623,5 +632,22 @@ export class PlayerObject extends SceneObject {
     this.scene.dispatchEvent(this.scene.eventTypes.TOGGLE_INVENTORY, {});
 
     this.controls['toggle_inventory'] = false;
+  }
+
+  private updateDig(): void {
+    if (!this.controls['dig']) {
+      return;
+    }
+
+    let position = this.getPositionFacing();
+    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+    if (object !== undefined) {
+      return;
+    }
+
+    this.scene.addObject(new DirtObject(this.scene, { positionX: position.x, positionY: position.y, }));
+    this.scene.dispatchEvent(this.scene.eventTypes.DIRT_PLACED, { x: position.x, y: position.y, });
+
+    this.controls['dig'] = false;
   }
 }
