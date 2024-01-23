@@ -74,8 +74,12 @@ export class PlayerObject extends SceneObject {
     // key listeners references
     this.keyListeners.onMovementKeyDown = this.onMovementKeyDown.bind(this);
     this.keyListeners.onMovementKeyUp = this.onMovementKeyUp.bind(this);
-    this.keyListeners.onControlKeyDown = this.onControlKeyDown.bind(this);
-    this.keyListeners.onControlKeyUp = this.onControlKeyUp.bind(this);
+    this.keyListeners.onOtherKeyDown = this.onOtherKeyDown.bind(this);
+    this.keyListeners.onOtherKeyUp = this.onOtherKeyUp.bind(this);
+    this.keyListeners.onInventoryKeyDown = this.onInventoryKeyDown.bind(this);
+    this.keyListeners.onInventoryKeyUp = this.onInventoryKeyUp.bind(this);
+    this.keyListeners.onInteractKeyDown = this.onInteractKeyDown.bind(this);
+    this.keyListeners.onInteractKeyUp = this.onInteractKeyUp.bind(this);
     // event listener references
     this.eventListeners.onInventoryOpened = this.onInventoryOpened.bind(this);
     this.eventListeners.onInventoryClosed = this.onInventoryClosed.bind(this);
@@ -84,7 +88,9 @@ export class PlayerObject extends SceneObject {
 
     // add control listeners
     this.enableMovementKeys();
-    this.enableControlKeys();
+    this.enableInteractKeys();
+    this.enableInventoryKeys();
+    this.enableOtherKeys();
 
     // add event listeners
     this.enableEventListeners();
@@ -104,14 +110,34 @@ export class PlayerObject extends SceneObject {
     this.controls[Direction.DOWN] = false;
   }
 
-  private enableControlKeys(): void {
-    document.addEventListener('keydown', this.keyListeners.onControlKeyDown);
-    document.addEventListener('keyup', this.keyListeners.onControlKeyUp);
+  private enableOtherKeys(): void {
+    document.addEventListener('keydown', this.keyListeners.onOtherKeyDown);
+    document.addEventListener('keyup', this.keyListeners.onOtherKeyUp);
   }
 
-  private disableControlKeys(): void {
-    document.removeEventListener('keydown', this.keyListeners.onControlKeyDown);
-    document.removeEventListener('keyup', this.keyListeners.onControlKeyUp);
+  private disableOtherKeys(): void {
+    document.removeEventListener('keydown', this.keyListeners.onOtherKeyDown);
+    document.removeEventListener('keyup', this.keyListeners.onOtherKeyUp);
+  }
+
+  private enableInventoryKeys(): void {
+    document.addEventListener('keydown', this.keyListeners.onInventoryKeyDown);
+    document.addEventListener('keyup', this.keyListeners.onInventoryKeyUp);
+  }
+
+  private disableInventoryKeys(): void {
+    document.removeEventListener('keydown', this.keyListeners.onInventoryKeyDown);
+    document.removeEventListener('keyup', this.keyListeners.onInventoryKeyUp);
+  }
+
+  private enableInteractKeys(): void {
+    document.addEventListener('keydown', this.keyListeners.onInteractKeyDown);
+    document.addEventListener('keyup', this.keyListeners.onInteractKeyUp);
+  }
+
+  private disableInteractKeys(): void {
+    document.removeEventListener('keydown', this.keyListeners.onInteractKeyDown);
+    document.removeEventListener('keyup', this.keyListeners.onInteractKeyUp);
   }
 
   private enableEventListeners(): void {
@@ -123,18 +149,26 @@ export class PlayerObject extends SceneObject {
 
   private onInventoryOpened(event: CustomEvent): void {
     this.disableMovementKeys();
+    this.disableInteractKeys();
+    this.disableOtherKeys();
   }
 
   private onInventoryClosed(event: CustomEvent): void {
     this.enableMovementKeys();
+    this.enableInteractKeys();
+    this.enableOtherKeys();
   }
 
   private onChestOpened(event: CustomEvent): void {
     this.disableMovementKeys();
+    this.disableInventoryKeys();
+    this.disableOtherKeys();
   }
 
   private onChestClosed(event: CustomEvent): void {
     this.enableMovementKeys();
+    this.enableInventoryKeys();
+    this.enableOtherKeys();
   }
 
   private onMovementKeyDown(event: KeyboardEvent): void {
@@ -189,7 +223,7 @@ export class PlayerObject extends SceneObject {
     }
   }
 
-  private onControlKeyDown(event: KeyboardEvent): void {
+  private onOtherKeyDown(event: KeyboardEvent): void {
     // only accept first event
     if (event.repeat) {
       return;
@@ -205,9 +239,6 @@ export class PlayerObject extends SceneObject {
       case ' ':
         this.controls.toggle_follow = true;
         break;
-      case 'e':
-        this.controls['interact'] = true;
-        break;
       case 'q':
         this.controls['pick_up_object'] = true;
         break;
@@ -217,13 +248,10 @@ export class PlayerObject extends SceneObject {
       case ';':
         this.controls['hotbar_right'] = true;
         break;
-      case 'i':
-        this.controls['toggle_inventory'] = true;
-        break;
     }
   }
 
-  private onControlKeyUp(event: KeyboardEvent): void {
+  private onOtherKeyUp(event: KeyboardEvent): void {
     // only accept first event
     if (event.repeat) {
       return;
@@ -239,9 +267,6 @@ export class PlayerObject extends SceneObject {
       case ' ':
         this.controls.toggle_follow = false;
         break;
-      case 'e':
-        this.controls['interact'] = false;
-        break;
       case 'q':
         this.controls['pick_up_object'] = false;
         break;
@@ -251,8 +276,57 @@ export class PlayerObject extends SceneObject {
       case ';':
         this.controls['hotbar_right'] = false;
         break;
+    }
+  }
+
+  private onInventoryKeyDown(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
+      case 'i':
+        this.controls['toggle_inventory'] = true;
+        break;
+    }
+  }
+
+  private onInventoryKeyUp(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
       case 'i':
         this.controls['toggle_inventory'] = false;
+        break;
+    }
+  }
+
+  private onInteractKeyDown(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
+      case 'e':
+        this.controls['interact'] = true;
+        break;
+    }
+  }
+
+  private onInteractKeyUp(event: KeyboardEvent): void {
+    // only accept first event
+    if (event.repeat) {
+      return;
+    }
+
+    switch (event.key.toLocaleLowerCase()) {
+      case 'e':
+        this.controls['interact'] = false;
         break;
     }
   }
@@ -453,7 +527,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateInteractChest(object: ChestObject): void {
-    this.scene.dispatchEvent(this.scene.eventTypes.OPEN_CHEST, { object, });
+    this.scene.dispatchEvent(this.scene.eventTypes.TOGGLE_CHEST, { object, });
   }
 
   private updateInteractDefault(position: { x: number; y: number; }): void {

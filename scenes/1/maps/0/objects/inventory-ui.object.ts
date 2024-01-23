@@ -54,34 +54,34 @@ const INVENTORY_INDEX_TO_POSITION_MAP = [
 const CHEST_INDEX_TO_POSITION_MAP = [
   // chest - row 1
   { x: 6, y: 1, },
-  { x: 7, y: 1, },
   { x: 8, y: 1, },
-  { x: 9, y: 1, },
   { x: 10, y: 1, },
-  { x: 11, y: 1, },
   { x: 12, y: 1, },
-  { x: 13, y: 1, },
   { x: 14, y: 1, },
+  { x: 16, y: 1, },
+  { x: 18, y: 1, },
+  { x: 20, y: 1, },
+  { x: 22, y: 1, },
   // chest - row 2
   { x: 6, y: 3, },
-  { x: 7, y: 3, },
   { x: 8, y: 3, },
-  { x: 9, y: 3, },
   { x: 10, y: 3, },
-  { x: 11, y: 3, },
   { x: 12, y: 3, },
-  { x: 13, y: 3, },
   { x: 14, y: 3, },
+  { x: 16, y: 3, },
+  { x: 18, y: 3, },
+  { x: 20, y: 3, },
+  { x: 22, y: 3, },
   // chest - row 3
   { x: 6, y: 5, },
-  { x: 7, y: 5, },
   { x: 8, y: 5, },
-  { x: 9, y: 5, },
   { x: 10, y: 5, },
-  { x: 11, y: 5, },
   { x: 12, y: 5, },
-  { x: 13, y: 5, },
-  { x: 14, y: 5, }
+  { x: 14, y: 5, },
+  { x: 16, y: 5, },
+  { x: 18, y: 5, },
+  { x: 20, y: 5, },
+  { x: 22, y: 5, }
 ];
 
 interface Config extends SceneObjectBaseConfig {
@@ -109,14 +109,11 @@ export class InventoryUiObject extends SceneObject {
     this.keyListeners.onMouseDown = this.onMouseDown.bind(this);
     this.keyListeners.onMouseUp = this.onMouseUp.bind(this);
 
-    // event listener references
-    this.eventListeners.onToggleInventory = this.onToggleInventory.bind(this);
-
     // add listeners
     this.disableClickListeners();
 
     // add event listener
-    this.scene.addEventListener(this.scene.eventTypes.TOGGLE_INVENTORY, this.eventListeners.onToggleInventory);
+    this.scene.addEventListener(this.scene.eventTypes.TOGGLE_INVENTORY, this.onToggleInventory.bind(this));
     this.scene.addEventListener(this.scene.eventTypes.CHEST_OPENED, this.onChestOpened.bind(this));
     this.scene.addEventListener(this.scene.eventTypes.CHEST_CLOSED, this.onChestClosed.bind(this));
   }
@@ -166,17 +163,19 @@ export class InventoryUiObject extends SceneObject {
 
     // chest
     if (this.showChest) {
+      this.renderChestHeader(context, 6, 0);
       for (let row = 0; row < 3; row++) {
         let x = 6;
         let y = 1 + (row * 2);
         this.renderInventoryBackground(context, x, y);
         this.renderInventoryContainers(context, x, y);
-        this.renderInventoryItems(context, x, y, this.chest.inventory.slice(this.hotbarSize * (row + 1), this.hotbarSize * (row + 2)));
+        this.renderInventoryItems(context, x, y, this.chest.inventory.slice(this.hotbarSize * row, this.hotbarSize * (row + 1)));
       }
     }
 
     // inventory
     if (this.showInventory) {
+      this.renderInventoryHeader(context, 6, 7);
       for (let row = 0; row < 3; row++) {
         let x = 6;
         let y = 8 + (row * 2);
@@ -201,6 +200,46 @@ export class InventoryUiObject extends SceneObject {
       y,
       2,
       2
+    );
+  }
+
+  private renderInventoryHeader(context: CanvasRenderingContext2D, positionX: number, positionY: number): void {
+    let width = CanvasConstants.TILE_SIZE * 4;
+    let height = CanvasConstants.TILE_SIZE * 2;
+    RenderUtils.fillRectangle(
+      context,
+      positionX,
+      positionY,
+      width,
+      height,
+      'saddlebrown'
+    );
+    RenderUtils.renderText(
+      context,
+      'Inventory',
+      positionX + 0.4,
+      positionY + 0.75,
+      { size: 12, colour: 'white', }
+    );
+  }
+
+  private renderChestHeader(context: CanvasRenderingContext2D, positionX: number, positionY: number): void {
+    let width = CanvasConstants.TILE_SIZE * 4;
+    let height = CanvasConstants.TILE_SIZE * 2;
+    RenderUtils.fillRectangle(
+      context,
+      positionX,
+      positionY,
+      width,
+      height,
+      'saddlebrown'
+    );
+    RenderUtils.renderText(
+      context,
+      'Chest',
+      positionX + 0.9,
+      positionY + 0.75,
+      { size: 12, colour: 'white', }
     );
   }
 
@@ -287,29 +326,35 @@ export class InventoryUiObject extends SceneObject {
 
   private onMouseDown(event: MouseEvent): void {
     let mousePosition = MouseUtils.getMousePosition(this.mainContext.canvas, event);
-    console.log(mousePosition);
     // check inventory
     let indexInventory = this.getIndexFromPositionMap(mousePosition, INVENTORY_INDEX_TO_POSITION_MAP);
-    console.log(indexInventory);
     if (indexInventory !== undefined) {
+      let item = this.inventory[indexInventory];
+      if (item === undefined) {
+        return;
+      }
+
       this.itemHolding = {
         location: 'inventory',
-        item: this.inventory[indexInventory],
+        item,
         index: indexInventory,
       };
-      console.log(this.itemHolding);
       return;
     }
 
     // check chest
     let indexChest = this.getIndexFromPositionMap(mousePosition, CHEST_INDEX_TO_POSITION_MAP);
     if (indexChest !== undefined) {
+      let item = this.chest.inventory[indexChest];
+      if (item === undefined) {
+        return;
+      }
+
       this.itemHolding = {
-        location: 'inventory',
-        item: this.inventory[indexChest],
+        location: 'chest',
+        item,
         index: indexChest,
       };
-      console.log(this.itemHolding);
       return;
     }
 
@@ -335,22 +380,23 @@ export class InventoryUiObject extends SceneObject {
         this.inventory[indexInventory] = this.itemHolding.item;
         this.chest.inventory[this.itemHolding.index] = temp;
       }
-
+      this.itemHolding = undefined;
       return;
     }
 
     // check chest
     let indexChest = this.getIndexFromPositionMap(mousePosition, CHEST_INDEX_TO_POSITION_MAP);
     if (indexChest !== undefined) {
-      let temp = this.inventory[indexChest];
+      let temp = this.chest.inventory[indexChest];
 
       if (this.itemHolding.location === 'inventory') {
-        this.inventory[indexChest] = this.itemHolding.item;
+        this.chest.inventory[indexChest] = this.itemHolding.item;
         this.inventory[this.itemHolding.index] = temp;
       } else if (this.itemHolding.location === 'chest') {
-        this.inventory[indexChest] = this.itemHolding.item;
+        this.chest.inventory[indexChest] = this.itemHolding.item;
         this.chest.inventory[this.itemHolding.index] = temp;
       }
+      this.itemHolding = undefined;
       return;
     }
 

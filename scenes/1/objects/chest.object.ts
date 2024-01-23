@@ -22,30 +22,22 @@ export class ChestObject extends SceneObject {
     super(scene, config);
 
     // register
-    this.eventListeners.onOpenChest = this.onOpenChest.bind(this);
-    this.eventListeners.onCloseChest = this.onCloseChest.bind(this);
+    this.eventListeners.onToggleChest = this.onToggleChest.bind(this);
 
     // enable
     this.enableEventListeners();
   }
 
   private enableEventListeners(): void {
-    this.scene.addEventListener(this.scene.eventTypes.OPEN_CHEST, this.eventListeners.onOpenChest);
-    this.scene.addEventListener(this.scene.eventTypes.CLOSE_CHEST, this.eventListeners.onCloseChest);
+    this.scene.addEventListener(this.scene.eventTypes.TOGGLE_CHEST, this.eventListeners.onToggleChest);
   }
 
-  private onOpenChest(event: CustomEvent): void {
-    if (event.detail.object !== this) {
-      return;
+  private onToggleChest(event: CustomEvent): void {
+    if (this.isOpen) {
+      this.closeChest();
+    } else if (event.detail.object === this) {
+      this.openChest();
     }
-    this.openChest();
-  }
-
-  private onCloseChest(event: CustomEvent): void {
-    if (event.detail.object !== this) {
-      return;
-    }
-    this.closeChest();
   }
 
   private openChest(): void {

@@ -405,7 +405,7 @@ export class Scene {
 
   dispatchEvent(eventName: string, detail?: any): void {
     let event = new CustomEvent(eventName, { detail, });
-    console.log(event);
+    console.log('[dispatchEvent]', event);
     this.eventEmitter.dispatchEvent(event);
   }
 }
