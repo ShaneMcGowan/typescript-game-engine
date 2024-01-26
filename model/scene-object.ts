@@ -1,4 +1,6 @@
+import { RenderUtils } from '@utils/render.utils';
 import { type Scene } from './scene';
+import { CanvasConstants } from '@constants/canvas.constants';
 
 export interface SceneObjectBaseConfig {
   positionX?: number;
@@ -23,6 +25,10 @@ export class SceneObject {
   positionY: number = -1;
   targetX: number = -1;
   targetY: number = -1;
+
+  // dimensions
+  width: number = 0;
+  height: number = 0;
 
   // TODO(smg): I'm not convinced of this but I will go with it for now
   keyListeners: Record<string, (event: KeyboardEvent) => void> = {}; // for keyboard events
@@ -68,4 +74,19 @@ export class SceneObject {
   update?(delta: number): void;
   render?(context: CanvasRenderingContext2D): void;
   destroy?(): void;
+
+  /**
+   * Used for debugging
+   * @param context
+   */
+  debuggerRenderBoundary(context: CanvasRenderingContext2D): void {
+    RenderUtils.strokeRectangle(
+      context,
+      Math.floor(this.positionX * CanvasConstants.TILE_SIZE),
+      Math.floor(this.positionY * CanvasConstants.TILE_SIZE),
+      Math.floor(this.width * CanvasConstants.TILE_SIZE),
+      Math.floor(this.height * CanvasConstants.TILE_SIZE),
+      'red'
+    );
+  }
 }

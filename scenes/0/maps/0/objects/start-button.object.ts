@@ -2,7 +2,7 @@ import { CanvasConstants } from '@constants/canvas.constants';
 import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { SAMPLE_SCENE_1 } from '@scenes/1.scene';
-import { MouseUtils } from '@utils/mouse.utils';
+import { type MousePosition, MouseUtils } from '@utils/mouse.utils';
 import { RenderUtils } from '@utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
@@ -17,11 +17,8 @@ export class StartButtonObject extends SceneObject {
     ['button_held']: false,
   };
 
-  // button
-  buttonX = (CanvasConstants.CANVAS_TILE_WIDTH - 6) / 2;
-  buttonY = 6;
-  buttonWidth = 6;
-  buttonHeight = 2;
+  width = 6;
+  height = 2;
 
   constructor(
     protected scene: Scene,
@@ -52,35 +49,35 @@ export class StartButtonObject extends SceneObject {
       this.assets.images.tileset_button,
       this.controls.button_held ? 6 : 0, // sprite x
       2, // sprite y
-      this.buttonX,
-      this.buttonY,
-      this.buttonWidth,
-      this.buttonHeight
+      this.positionX,
+      this.positionY,
+      this.width,
+      this.height
     );
   }
 
-  private onMouseDown(position: { x: number; y: number; }): void {
-    if (position.x < this.buttonX || position.x > (this.buttonX + this.buttonWidth - 1)) { // -1 because of mouse position compared to tile position
+  private onMouseDown(mousePosition: MousePosition): void {
+    if (mousePosition.exactX < this.positionX || mousePosition.exactX > (this.positionX + this.width - 0)) { // -1 because of mouse position compared to tile position
       return;
     }
-    if (position.y < this.buttonY || position.y > (this.buttonY + this.buttonHeight - 1)) {
+    if (mousePosition.exactY < this.positionY || mousePosition.exactY > (this.positionY + this.height - 0)) {
       return;
     }
 
     this.controls.button_held = true;
   }
 
-  private onMouseUp(position: { x: number; y: number; }): void {
+  private onMouseUp(mousePosition: MousePosition): void {
     if (!this.controls.button_held) {
       return;
     }
 
-    if (position.x < this.buttonX || position.x > (this.buttonX + this.buttonWidth - 1)) { // -1 because of mouse position compared to tile position
+    if (mousePosition.exactX < this.positionX || mousePosition.exactX > (this.positionX + this.width - 0)) { // -1 because of mouse position compared to tile position
       this.controls.button_held = false;
       return;
     }
 
-    if (position.y < this.buttonY || position.y > (this.buttonY + this.buttonHeight - 1)) {
+    if (mousePosition.exactY < this.positionY || mousePosition.exactY > (this.positionY + this.height - 0)) {
       this.controls.button_held = false;
       return;
     }

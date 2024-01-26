@@ -25,6 +25,8 @@ export class PlayerObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
+  width = 1;
+  height = 1;
 
   // constants
   movementSpeed = 4; // 4 tiles per second

@@ -1,5 +1,12 @@
 import { CanvasConstants } from '../constants/canvas.constants';
 
+export interface MousePosition {
+  x: number;
+  y: number;
+  exactX: number;
+  exactY: number;
+}
+
 export class MouseUtils {
   /**
    * Gets the current mouse position relative to the canvas, taking into account fullscreen mode
@@ -8,7 +15,7 @@ export class MouseUtils {
    * @param evt
    * @returns
    */
-  static getMousePosition(canvas: HTMLCanvasElement, event: MouseEvent): { x: number; y: number; exactX: number; exactY: number; } {
+  static getMousePosition(canvas: HTMLCanvasElement, event: MouseEvent): MousePosition {
     let boundingRect = canvas.getBoundingClientRect();
 
     let adjustedBountingRect = {

@@ -21,6 +21,8 @@ interface Config extends SceneObjectBaseConfig {
 export class FenceObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
+  width = 1;
+  height = 1;
 
   private readonly type: { x: number; y: number; } = FenceType.FencePost;
 

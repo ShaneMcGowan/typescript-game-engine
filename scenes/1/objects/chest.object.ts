@@ -14,6 +14,8 @@ export class ChestObject extends SceneObject {
   hasCollision = true;
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
+  width = 1;
+  height = 1;
 
   private isOpen: boolean = false;
   inventory: InventoryItemObject[] = [];

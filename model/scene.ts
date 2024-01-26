@@ -209,6 +209,12 @@ export class Scene {
           this.renderingContext.objects[object.renderLayer]
         );
       }
+
+      if (this.client.debug.object.renderBoundary) {
+        object.debuggerRenderBoundary(
+          this.renderingContext.objects[object.renderLayer]
+        );
+      }
     });
 
     if (this.client.debug.timing.frameRender) {

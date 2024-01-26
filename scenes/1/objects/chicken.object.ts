@@ -17,6 +17,8 @@ export class ChickenObject extends SceneObject {
   isRenderable = true;
   hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
+  width = 1;
+  height = 1;
 
   // animation
   animations = {
@@ -94,7 +96,7 @@ export class ChickenObject extends SceneObject {
     this.movementTimer = 0;
 
     let movement: Movement;
-    if (this.scene.globals.chickens_follow_player === true) {
+    if (this.scene.globals.chickens_follow_player) {
       // move towards player
       // TODO(smg): add some randomness to movement, can be done later
       movement = MovementUtils.moveTowardsOtherEntity(
