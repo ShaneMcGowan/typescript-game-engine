@@ -27,8 +27,8 @@ export class SceneObject {
   targetY: number = -1;
 
   // dimensions
-  width: number = 0;
-  height: number = 0;
+  width: number = 1;
+  height: number = 1;
 
   // TODO(smg): I'm not convinced of this but I will go with it for now
   keyListeners: Record<string, (event: KeyboardEvent) => void> = {}; // for keyboard events

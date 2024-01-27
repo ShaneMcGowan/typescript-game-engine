@@ -103,7 +103,7 @@ export class Client {
     this.intialiseGamepadListeners();
 
     // load first scene
-    this.changeScene(this.scenes[0]);
+    this.changeScene(this.scenes[1]);
 
     // Run game logic
     this.frame(0);

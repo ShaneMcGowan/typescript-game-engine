@@ -5,6 +5,7 @@ interface Assets {
 
 export const ASSETS: Assets = {
   images: {
+    tileset_sample: '/assets/16x16.png',
     tileset_grass: '/assets/sample/Tilesets/Grass.png',
     tileset_hills: '/assets/sample/Tilesets/Hills.png',
     tileset_water: '/assets/sample/Tilesets/Water.png',

@@ -74,7 +74,9 @@ export class RenderUtils {
 
   static strokeRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, colour?: string): void {
     context.strokeStyle = colour || 'black';
-    context.strokeRect(positionX, positionY, width, height);
+    // canvas renders on a half pixel so we need to offset by .5 in order to get the stroke width to be 1px, otherwise it was 2px wide https://stackoverflow.com/a/13879402
+    context.lineWidth = 1;
+    context.strokeRect(positionX + 0.5, positionY + 0.5, width - 1, height - 1);
   }
 
   static clearCanvas(context: CanvasRenderingContext2D): void {
