@@ -2,6 +2,7 @@ import { type Client } from '../client';
 import { Scene, type SceneGlobalsBaseConfig } from '../model/scene';
 import { SAMPLE_SCENE_1_MAP_0 } from './1/maps/0.map';
 import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';
+import { InventoryItemType } from './1/models/inventory-item.model';
 import { InventoryItemObject } from './1/objects/inventory-item.object';
 
 const EVENT_TYPES: Record<string, string> = {
@@ -12,6 +13,7 @@ const EVENT_TYPES: Record<string, string> = {
   CHEST_OPENED: 'CHEST_OPENED',
   CHEST_CLOSED: 'CHEST_CLOSED',
   DIRT_PLACED: 'DIRT_PLACED',
+  DIRT_REMOVED: 'DIRT_REMOVED',
 };
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -27,10 +29,11 @@ export class SAMPLE_SCENE_1 extends Scene {
     ...this.globals,
     chickens_follow_player: false,
     inventory: [
-      new InventoryItemObject(this, { type: 'ChickenObject', }),
-      new InventoryItemObject(this, { type: 'RandomObject', }),
-      new InventoryItemObject(this, { type: 'EggObject', currentStackSize: 10, })
-    ], // TODO(smg): start off with some chickens and eggs
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
+      new InventoryItemObject(this, { type: InventoryItemType.TomatoSeeds, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 10, })
+    ],
     inventory_size: 36,
     hotbar_size: 9,
     hotbar_selected_index: 0,
@@ -67,7 +70,7 @@ export class SAMPLE_SCENE_1 extends Scene {
     }
   }
 
-  addToInventory(type: string): void {
+  addToInventory(type: InventoryItemType): void {
     // check if there is already an item of this type in the inventory with room in the stack
     let item = this.getFirstInventoryItemWithRoomInStack(type);
     if (item !== undefined) {

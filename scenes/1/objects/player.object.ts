@@ -2,10 +2,10 @@ import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
 import { FenceObject, FenceType } from './fence.object';
-import { CameraObject } from '../maps/0/objects/camera.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
+import { getInventoryItemClass, getInventoryItemType, isInventoryItem } from '../models/inventory-item.model';
 
 enum Direction {
   UP = 'w',
@@ -552,7 +552,9 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let newObject: SceneObject = Reflect.construct(item.objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
+    let objectClass = getInventoryItemClass(item.type);
+
+    let newObject: SceneObject = Reflect.construct(objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
     this.scene.addObject(newObject);
     this.scene.removeFromInventory(index);
   }
@@ -576,17 +578,16 @@ export class PlayerObject extends SceneObject {
     }
 
     // prevent picking up certain objects
-    // TODO(smg): this should be made more generic, perhaps using collisionLayers
-    switch (true) {
-      case object instanceof CameraObject:
-        return;
-      default:
-        break;
+    if (!isInventoryItem(object)) {
+      return;
     }
 
     this.scene.removeObject(object);
 
-    this.scene.addToInventory(object.constructor.name);
+    let type = getInventoryItemType(object);
+    if (type !== undefined) {
+      this.scene.addToInventory(type);
+    }
 
     this.controls['pick_up_object'] = false;
   }

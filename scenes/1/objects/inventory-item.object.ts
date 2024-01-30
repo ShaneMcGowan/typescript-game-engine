@@ -1,34 +1,32 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
-import { ChickenObject } from './chicken.object';
-import { EggObject } from './egg.object';
+import { InventoryItemType } from '../models/inventory-item.model';
 
-export enum InventoryItemType {
-  Chicken = 'ChickenObject',
-  Egg = 'EggObject'
-}
-
-const TYPE_TO_MAX_STACK_MAP: Record<string, number | undefined> = {
+const TYPE_TO_MAX_STACK_MAP: Record<InventoryItemType, number | undefined> = {
   [InventoryItemType.Chicken]: 1,
   [InventoryItemType.Egg]: 9,
+  [InventoryItemType.WheatSeeds]: 9,
+  [InventoryItemType.TomatoSeeds]: 9,
 };
 
 const DEFAULT_MAX_STACK = 1;
 
-const TYPE_TO_SPRITE_MAP: Record<string, any> = {
+const TYPE_TO_SPRITE_MAP: Record<InventoryItemType, any> = {
   [InventoryItemType.Chicken]: { tileset: 'tileset_chicken', spriteX: 0, spriteY: 0, },
   [InventoryItemType.Egg]: { tileset: 'tileset_egg', spriteX: 0, spriteY: 0, },
+  [InventoryItemType.WheatSeeds]: { tileset: 'tileset_plants', spriteX: 0, spriteY: 0, },
+  [InventoryItemType.TomatoSeeds]: { tileset: 'tileset_plants', spriteX: 0, spriteY: 1, },
 };
 
 const DEFAULT_SPRITE = { tileset: 'tileset_ui', spriteX: 15, spriteY: 5, };
 
 interface Config extends SceneObjectBaseConfig {
-  type: string;
+  type: InventoryItemType;
   currentStackSize?: number;
 }
 
 export class InventoryItemObject extends SceneObject {
-  type: string; // TODO(smg): better typing for this, but am struggling with passing around Class types
+  type: InventoryItemType;
   currentStackSize: number;
   maxStackSize: number;
   sprite: { tileset: string; spriteX: number; spriteY: number; };
@@ -44,17 +42,6 @@ export class InventoryItemObject extends SceneObject {
       this.currentStackSize = config.currentStackSize > this.maxStackSize ? this.maxStackSize : config.currentStackSize;
     } else {
       this.currentStackSize = 1;
-    }
-  }
-
-  get objectClass(): typeof SceneObject {
-    switch (this.type) {
-      case InventoryItemType.Chicken:
-        return ChickenObject;
-      case InventoryItemType.Egg:
-        return EggObject;
-      default:
-        return SceneObject;
     }
   }
 }

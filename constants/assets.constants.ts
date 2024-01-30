@@ -19,6 +19,7 @@ export const ASSETS: Assets = {
     tileset_ui: '/assets/sample/Sprite sheet for Basic Pack.png',
     tileset_wood_bridge: '/assets/sample/Objects/Wood_Bridge.png',
     tileset_chest: '/assets/sample/Objects/Chest.png',
+    tileset_plants: '/assets/sample/Objects/Basic_Plants.png',
   },
   audio: {},
 };
