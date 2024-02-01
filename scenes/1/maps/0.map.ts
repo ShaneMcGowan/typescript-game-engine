@@ -115,9 +115,10 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 12, type: FenceType.BottomRight, }));
 
     // load test
-    // for(let i = 0; i < 5000; i++){
-    //   this.objects.push(new ChickenObject(scene, { positionX: 1, positionY: 1 }, this.objects[0] as PlayerObject));
+    // for (let i = 0; i < 20000; i++) {
+    //   this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 10, follows: player, }));
     // }
+
     // camera
     this.objects.push(new CameraObject(scene, { object: player, }));
 

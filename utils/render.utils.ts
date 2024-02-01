@@ -44,7 +44,7 @@ export class RenderUtils {
     );
   }
 
-  static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number): void {
+  static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number, options: { colour?: string; } = {}): void {
     context.beginPath();
     context.arc(
       (positionX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
@@ -54,7 +54,7 @@ export class RenderUtils {
       2 * Math.PI
     );
     context.stroke();
-    context.fillStyle = 'saddlebrown';
+    context.fillStyle = options.colour || 'saddlebrown';
     context.fill();
   }
 

@@ -5,7 +5,7 @@ import { FenceObject, FenceType } from './fence.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
-import { getInventoryItemClass, getInventoryItemType, isInventoryItem } from '../models/inventory-item.model';
+import { InventoryItemType, getInventoryItemClass, getInventoryItemType, isInventoryItem } from '../models/inventory-item.model';
 
 enum Direction {
   UP = 'w',
@@ -542,7 +542,10 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateInteractDefault(position: { x: number; y: number; }): void {
-    if (this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)) {
+    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+
+    if (object instanceof DirtObject) {
+      object.interact();
       return;
     }
 
@@ -552,11 +555,16 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let objectClass = getInventoryItemClass(item.type);
+    if (this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)) {
+      return;
+    }
 
-    let newObject: SceneObject = Reflect.construct(objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
-    this.scene.addObject(newObject);
-    this.scene.removeFromInventory(index);
+    if (item.type === InventoryItemType.Chicken || item.type === InventoryItemType.Egg) {
+      let objectClass = getInventoryItemClass(item.type);
+      let newObject: SceneObject = Reflect.construct(objectClass, [this.scene, { positionX: position.x, positionY: position.y, }]);
+      this.scene.addObject(newObject);
+      this.scene.removeFromInventory(index);
+    }
   }
 
   updatePickupObject(): void {

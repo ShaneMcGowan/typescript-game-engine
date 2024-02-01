@@ -37,6 +37,10 @@ export class SceneObject {
   protected mainContext: CanvasRenderingContext2D;
   protected assets: Record<string, any>;
 
+  // flags
+  flaggedForRender: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
+  flaggedForUpdate: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
+
   constructor(
     protected scene: Scene,
     protected config: SceneObjectBaseConfig

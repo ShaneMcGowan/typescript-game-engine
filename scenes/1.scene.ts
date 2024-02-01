@@ -103,4 +103,8 @@ export class SAMPLE_SCENE_1 extends Scene {
       this.globals.inventory[index] = undefined;
     }
   }
+
+  get selectedInventoryItem(): InventoryItemObject | undefined {
+    return this.globals.inventory[this.globals.hotbar_selected_index];
+  }
 }
