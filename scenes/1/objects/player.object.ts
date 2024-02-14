@@ -1,7 +1,6 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
-import { FenceObject, FenceType } from './fence.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
@@ -37,11 +36,7 @@ export class PlayerObject extends SceneObject {
     [Direction.LEFT]: false,
     [Direction.UP]: false,
     [Direction.DOWN]: false,
-    ['remove_fence']: false,
-    ['place_fence']: false,
-    ['toggle_follow']: false,
     ['interact']: false,
-    ['pick_up_object']: false,
     ['hotbar_left']: false,
     ['hotbar_right']: false,
     ['toggle_inventory']: false,
@@ -235,18 +230,6 @@ export class PlayerObject extends SceneObject {
     }
 
     switch (event.key.toLocaleLowerCase()) {
-      case 'j':
-        this.controls.remove_fence = true;
-        break;
-      case 'k':
-        this.controls.place_fence = true;
-        break;
-      case ' ':
-        this.controls.toggle_follow = true;
-        break;
-      case 'q':
-        this.controls['pick_up_object'] = true;
-        break;
       case 'l':
         this.controls['hotbar_left'] = true;
         break;
@@ -266,18 +249,6 @@ export class PlayerObject extends SceneObject {
     }
 
     switch (event.key.toLocaleLowerCase()) {
-      case 'j':
-        this.controls.remove_fence = false;
-        break;
-      case 'k':
-        this.controls.place_fence = false;
-        break;
-      case ' ':
-        this.controls.toggle_follow = false;
-        break;
-      case 'q':
-        this.controls['pick_up_object'] = false;
-        break;
       case 'l':
         this.controls['hotbar_left'] = false;
         break;
@@ -323,7 +294,7 @@ export class PlayerObject extends SceneObject {
     }
 
     switch (event.key.toLocaleLowerCase()) {
-      case 'e':
+      case ' ':
         this.controls['interact'] = true;
         break;
     }
@@ -336,7 +307,7 @@ export class PlayerObject extends SceneObject {
     }
 
     switch (event.key.toLocaleLowerCase()) {
-      case 'e':
+      case ' ':
         this.controls['interact'] = false;
         break;
     }
@@ -344,9 +315,6 @@ export class PlayerObject extends SceneObject {
 
   update(delta: number): void {
     this.updateMovement(delta);
-    this.updateRemoveFence();
-    this.updatePlaceFence();
-    this.updateToggleFollow();
     this.updateInteract();
     this.updatePickupObject();
     this.updateHotbar();
@@ -364,21 +332,6 @@ export class PlayerObject extends SceneObject {
       this.positionX,
       this.positionY
     );
-  }
-
-  updateRemoveFence(): void {
-    if (!this.controls.remove_fence) {
-      return;
-    }
-
-    let position = this.getPositionFacing();
-    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
-
-    if (object instanceof FenceObject) {
-      this.scene.removeObject(object);
-    }
-
-    this.controls.remove_fence = false;
   }
 
   updateMovement(delta: number): void {
@@ -485,39 +438,6 @@ export class PlayerObject extends SceneObject {
     }
   }
 
-  updatePlaceFence(): void {
-    if (!this.controls['place_fence']) {
-      return;
-    }
-
-    let position = this.getPositionFacing();
-    if (this.scene.hasOrWillHaveCollisionAtPosition(position.x, position.y)) {
-      return;
-    }
-
-    let fence = new FenceObject(
-      this.scene,
-      {
-        positionX: position.x,
-        positionY: position.y,
-        type: FenceType.FencePost,
-      }
-    );
-    this.scene.addObject(fence);
-
-    this.controls['place_fence'] = false;
-  }
-
-  updateToggleFollow(): void {
-    if (!this.controls.toggle_follow) {
-      return;
-    }
-
-    this.scene.globals.chickens_follow_player = !this.scene.globals.chickens_follow_player;
-
-    this.controls.toggle_follow = false;
-  }
-
   private updateInteract(): void {
     if (!this.controls['interact']) {
       return;
@@ -564,24 +484,10 @@ export class PlayerObject extends SceneObject {
     }
   }
 
+  // TODO(smg): log here should be moved to individual object interactions using Interactable
   updatePickupObject(): void {
-    if (!this.controls['pick_up_object']) {
-      return;
-    }
 
-    // no free inventory space
-    if (this.scene.firstFreeInventorySpaceIndex === undefined) {
-      return;
-    }
-
-    let position = this.getPositionFacing();
-
-    // TODO(smg): see how getObjectAtPosition works with rendering layers etc
-    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
-    if (object === undefined) {
-      return;
-    }
-
+    /*
     // prevent picking up certain objects
     if (!isInventoryItem(object)) {
       return;
@@ -593,8 +499,7 @@ export class PlayerObject extends SceneObject {
     if (type !== undefined) {
       this.scene.addToInventory(type);
     }
-
-    this.controls['pick_up_object'] = false;
+    */
   }
 
   destroy(): void {

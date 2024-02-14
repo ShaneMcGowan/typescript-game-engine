@@ -11,6 +11,7 @@ export class FenceType {
   static MiddleHorizontal = { x: 2, y: 3, };
   static MiddleVertical = { x: 0, y: 1, };
   static FencePost = { x: 0, y: 3, };
+  static Open = { x: 0.5, y: 3, };
 }
 
 const TILE_SET = 'tileset_fence';
@@ -26,6 +27,7 @@ export class FenceObject extends SceneObject implements Interactable {
   height = 1;
 
   private readonly type: { x: number; y: number; } = FenceType.FencePost;
+  private open = false;
 
   constructor(
     protected scene: Scene,
@@ -42,14 +44,20 @@ export class FenceObject extends SceneObject implements Interactable {
     RenderUtils.renderSprite(
       context,
       this.assets.images[TILE_SET],
-      this.type.x,
-      this.type.y,
+      this.open ? FenceType.Open.x : this.type.x,
+      this.open ? FenceType.Open.y : this.type.y,
       this.positionX,
       this.positionY
     );
   }
 
   interact(): void {
-    this.hasCollision = !this.hasCollision;
+    if (this.open) {
+      this.open = false;
+      this.hasCollision = true;
+    } else {
+      this.open = true;
+      this.hasCollision = false;
+    }
   }
 }
