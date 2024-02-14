@@ -4,6 +4,7 @@ import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
 import { EggObject } from './egg.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
+import { type Interactable } from '../models/is-interactable.model';
 
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
@@ -13,7 +14,7 @@ interface Config extends SceneObjectBaseConfig {
   canLayEggs?: boolean;
 }
 
-export class ChickenObject extends SceneObject {
+export class ChickenObject extends SceneObject implements Interactable {
   isRenderable = true;
   hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
@@ -191,4 +192,8 @@ export class ChickenObject extends SceneObject {
 
     this.eggTimer = 0;
   }
+
+  interact(): void {
+    console.log('[ChickenObject#interact] TODO(smg): pick up chicken');
+  };
 }

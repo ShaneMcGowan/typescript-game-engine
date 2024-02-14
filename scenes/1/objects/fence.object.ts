@@ -1,6 +1,7 @@
 import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
+import { type Interactable } from '../models/is-interactable.model';
 
 export class FenceType {
   static TopLeft = { x: 1, y: 0, };
@@ -18,7 +19,7 @@ interface Config extends SceneObjectBaseConfig {
   type?: { x: number; y: number; };
 }
 
-export class FenceObject extends SceneObject {
+export class FenceObject extends SceneObject implements Interactable {
   isRenderable = true;
   hasCollision = true;
   width = 1;
@@ -46,5 +47,9 @@ export class FenceObject extends SceneObject {
       this.positionX,
       this.positionY
     );
+  }
+
+  interact(): void {
+    this.hasCollision = !this.hasCollision;
   }
 }

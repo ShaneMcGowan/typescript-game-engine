@@ -6,6 +6,7 @@ import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
 import { InventoryItemType, getInventoryItemClass, getInventoryItemType, isInventoryItem } from '../models/inventory-item.model';
+import { isInteractable } from '../models/is-interactable.model';
 
 enum Direction {
   UP = 'w',
@@ -529,6 +530,9 @@ export class PlayerObject extends SceneObject {
       case object instanceof ChestObject:
         this.updateInteractChest(object);
         break;
+      case object && isInteractable(object):
+        object.interact();
+        break;
       default:
         this.updateInteractDefault(position);
         break;
@@ -542,13 +546,6 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateInteractDefault(position: { x: number; y: number; }): void {
-    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
-
-    if (object instanceof DirtObject) {
-      object.interact();
-      return;
-    }
-
     let index = this.scene.globals['hotbar_selected_index'];
     let item = this.scene.globals['inventory'][index];
     if (item === undefined) {

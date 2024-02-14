@@ -3,6 +3,7 @@ import { RenderUtils } from '@utils/render.utils';
 import { ChickenObject } from './chicken.object';
 import { PlayerObject } from './player.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
+import { type Interactable } from '../models/is-interactable.model';
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
 const DEFAULT_RENDER_LAYER: number = 7;
@@ -11,7 +12,7 @@ interface Config extends SceneObjectBaseConfig {
 
 }
 
-export class EggObject extends SceneObject {
+export class EggObject extends SceneObject implements Interactable {
   isRenderable = true;
   hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
@@ -73,5 +74,9 @@ export class EggObject extends SceneObject {
 
     this.scene.removeObject(this);
     this.scene.addObject(chicken);
+  }
+
+  interact(): void {
+    console.log('[EggObject#interact] TODO(smg): pick up egg');
   }
 }

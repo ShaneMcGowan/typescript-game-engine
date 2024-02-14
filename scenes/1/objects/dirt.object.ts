@@ -2,6 +2,7 @@ import { SceneObject, type SceneObjectBaseConfig } from '@model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { RenderUtils } from '@utils/render.utils';
 import { InventoryItemType } from '../models/inventory-item.model';
+import { type Interactable } from '../models/is-interactable.model';
 
 const DIRT = { x: 3, y: 3, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
@@ -19,7 +20,7 @@ interface Config extends SceneObjectBaseConfig {
 
 }
 
-export class DirtObject extends SceneObject {
+export class DirtObject extends SceneObject implements Interactable {
   hasCollision = false;
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
