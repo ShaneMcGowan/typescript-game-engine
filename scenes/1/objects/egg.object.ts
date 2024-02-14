@@ -3,7 +3,7 @@ import { RenderUtils } from '@utils/render.utils';
 import { ChickenObject } from './chicken.object';
 import { PlayerObject } from './player.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
-import { type Interactable } from '../models/is-interactable.model';
+import { type Interactable } from '../models/interactable.model';
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
 const DEFAULT_RENDER_LAYER: number = 7;

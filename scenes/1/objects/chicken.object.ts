@@ -4,7 +4,7 @@ import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
 import { EggObject } from './egg.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
-import { type Interactable } from '../models/is-interactable.model';
+import { type Interactable } from '../models/interactable.model';
 
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;

@@ -6,7 +6,7 @@ import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
 import { InventoryItemType, getInventoryItemClass, getInventoryItemType, isInventoryItem } from '../models/inventory-item.model';
-import { isInteractable } from '../models/is-interactable.model';
+import { isInteractable } from '../models/interactable.model';
 
 enum Direction {
   UP = 'w',
