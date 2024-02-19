@@ -1,9 +1,10 @@
 import { CanvasConstants } from '../constants/canvas.constants';
 
 export class RenderUtils {
-  static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number): void {
+  static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number, options: { scale?: number; } = { }): void {
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
+    let scale = options.scale ? options.scale : 1; // use to scale the output
 
     context.drawImage(
       spriteSheet,
@@ -13,8 +14,8 @@ export class RenderUtils {
       height,
       Math.floor(positionX * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
       Math.floor(positionY * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
-      width,
-      height
+      width * scale,
+      height * scale
     );
   }
 
@@ -58,9 +59,16 @@ export class RenderUtils {
     context.fill();
   }
 
-  static fillRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, colour?: string): void {
-    context.strokeStyle = colour || 'black';
-    context.fillStyle = colour || 'black';
+  static fillRectangle(
+    context: CanvasRenderingContext2D,
+    positionX: number,
+    positionY: number,
+    width: number,
+    height: number,
+    options: { colour: string; } = { colour: 'black', }
+  ): void {
+    context.strokeStyle = options.colour;
+    context.fillStyle = options.colour;
     context.beginPath();
     context.rect(
       positionX * CanvasConstants.TILE_SIZE,
@@ -88,7 +96,6 @@ export class RenderUtils {
     const canvas = document.createElement('canvas');
 
     // configure canvas
-    canvas.getContext('2d').imageSmoothingEnabled = false;
     canvas.width = width ? width * CanvasConstants.TILE_SIZE : CanvasConstants.CANVAS_WIDTH;
     canvas.height = height ? height * CanvasConstants.TILE_SIZE : CanvasConstants.CANVAS_HEIGHT;
 
@@ -99,13 +106,63 @@ export class RenderUtils {
     return position * CanvasConstants.TILE_SIZE;
   }
 
-  static renderText(context: CanvasRenderingContext2D, text: string, positionX: number, positionY: number, config?: { size: number; colour: string; }): void {
-    context.font = `${config?.size ?? 16}px Helvetica`;
-    context.fillStyle = `${config?.colour ?? 'black'}`;
+  static renderText(
+    context: CanvasRenderingContext2D,
+    text: string,
+    positionX: number,
+    positionY: number,
+    options: { size?: number; colour?: string; } = {}
+  ): void {
+    let size = options.size ? options.size : 16;
+    let colour = options.colour ? options.colour : 'black';
+
+    context.font = `${size}px Helvetica`;
+    context.fillStyle = `${colour}`;
     context.fillText(
       text,
       positionX * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
       positionY * CanvasConstants.TILE_SIZE // translate sprite position to pixel position
     );
+  }
+
+  static textToArray(
+    text: string,
+    width: number,
+    options: { size?: number; colour?: string; } = {}
+  ): string[] {
+    // defaults
+    let size = options.size ? options.size : 16;
+    let colour = options.colour ? options.colour : 'black';
+
+    // configure context
+    let context = document.createElement('canvas').getContext('2d');
+    context.font = `${size}px Helvetica`;
+    context.fillStyle = `${colour}`;
+
+    // split words then create new line once exceeding width
+    let words = text.split(' ');
+    let currentLine = '';
+    let output = [];
+
+    for (let i = 0; i < words.length; i++) {
+      let updatedLine = `${currentLine} ${words[i]}`;
+
+      // width exceeded, end line
+      if (context.measureText(updatedLine).width >= width) {
+        output.push(updatedLine);
+        currentLine = '';
+        continue;
+      }
+
+      // final word, end line
+      if (words.length - 1 === i) {
+        output.push(updatedLine);
+        continue;
+      }
+
+      // no exit condition, store new line
+      currentLine = updatedLine;
+    }
+    return output;
   }
 }

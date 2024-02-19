@@ -4,7 +4,7 @@ import { RenderUtils } from '@utils/render.utils';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
-import { InventoryItemType, getInventoryItemClass, getInventoryItemType, isInventoryItem } from '../models/inventory-item.model';
+import { InventoryItemType, getInventoryItemClass } from '../models/inventory-item.model';
 import { isInteractable } from '../models/interactable.model';
 
 enum Direction {
@@ -85,6 +85,8 @@ export class PlayerObject extends SceneObject {
     this.eventListeners.onInventoryClosed = this.onInventoryClosed.bind(this);
     this.eventListeners.onChestOpened = this.onChestOpened.bind(this);
     this.eventListeners.onChestClosed = this.onChestClosed.bind(this);
+    this.eventListeners.onTextBoxOpen = this.onTextBoxOpen.bind(this);
+    this.eventListeners.onTextBoxClose = this.onTextBoxClose.bind(this);
 
     // add control listeners
     this.enableMovementKeys();
@@ -145,28 +147,44 @@ export class PlayerObject extends SceneObject {
     this.scene.addEventListener(this.scene.eventTypes.INVENTORY_CLOSED, this.eventListeners.onInventoryClosed);
     this.scene.addEventListener(this.scene.eventTypes.CHEST_OPENED, this.eventListeners.onChestOpened);
     this.scene.addEventListener(this.scene.eventTypes.CHEST_CLOSED, this.eventListeners.onChestClosed);
+    this.scene.addEventListener(this.scene.eventTypes.TEXTBOX_OPENED, this.eventListeners.onTextBoxOpen);
+    this.scene.addEventListener(this.scene.eventTypes.TEXTBOX_CLOSED, this.eventListeners.onTextBoxClose);
   }
 
   private onInventoryOpened(event: CustomEvent): void {
-    this.disableMovementKeys();
-    this.disableInteractKeys();
-    this.disableOtherKeys();
+    this.disableAll();
   }
 
   private onInventoryClosed(event: CustomEvent): void {
-    this.enableMovementKeys();
-    this.enableInteractKeys();
-    this.enableOtherKeys();
+    this.enableAll();
   }
 
   private onChestOpened(event: CustomEvent): void {
+    this.disableAll();
+  }
+
+  private onChestClosed(event: CustomEvent): void {
+    this.enableAll();
+  }
+
+  private onTextBoxOpen(event: CustomEvent): void {
+    this.disableAll();
+  }
+
+  private onTextBoxClose(event: CustomEvent): void {
+    this.enableAll();
+  }
+
+  private disableAll(): void {
     this.disableMovementKeys();
+    this.disableInteractKeys();
     this.disableInventoryKeys();
     this.disableOtherKeys();
   }
 
-  private onChestClosed(event: CustomEvent): void {
+  private enableAll(): void {
     this.enableMovementKeys();
+    this.enableInteractKeys();
     this.enableInventoryKeys();
     this.enableOtherKeys();
   }
@@ -484,7 +502,7 @@ export class PlayerObject extends SceneObject {
     }
   }
 
-  // TODO(smg): log here should be moved to individual object interactions using Interactable
+  // TODO(smg): logic here should be moved to individual object interactions using Interactable
   updatePickupObject(): void {
 
     /*

@@ -20,6 +20,7 @@ export const ASSETS: Assets = {
     tileset_wood_bridge: '/assets/sample/Objects/Wood_Bridge.png',
     tileset_chest: '/assets/sample/Objects/Chest.png',
     tileset_plants: '/assets/sample/Objects/Basic_Plants.png',
+    tileset_dialogue_box: '/assets/sample/Dialouge UI/dialog box.png',
   },
   audio: {},
 };

@@ -79,6 +79,7 @@ export class Client {
     // initialise canvas
     this.canvas = this.createCanvas();
     this.context = this.canvas.getContext('2d');
+    this.context.imageSmoothingEnabled = false;
 
     // attach canvas to ui
     container.append(this.canvas);
@@ -184,7 +185,7 @@ export class Client {
 
   private renderGrid(): void {
     if (this.debug.ui.grid.lines || this.debug.ui.grid.numbers) {
-      RenderUtils.fillRectangle(this.context, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, 'rgba(0, 0, 0, 0.25)');
+      RenderUtils.fillRectangle(this.context, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, { colour: 'rgba(0, 0, 0, 0.25)', });
     }
 
     if (this.debug.ui.grid.lines) {

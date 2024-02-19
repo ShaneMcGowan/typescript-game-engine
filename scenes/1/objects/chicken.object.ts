@@ -5,6 +5,7 @@ import { RenderUtils } from '@utils/render.utils';
 import { EggObject } from './egg.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { type Interactable } from '../models/interactable.model';
+import { TextboxObject } from './textbox.object';
 
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
@@ -195,5 +196,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   interact(): void {
     console.log('[ChickenObject#interact] TODO(smg): pick up chicken');
+    let textbox = new TextboxObject(this.scene, { text: 'bock bock... can i help you? ... cluck cluck ...', });
+    this.scene.addObject(textbox);
   };
 }

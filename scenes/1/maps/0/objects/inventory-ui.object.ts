@@ -212,7 +212,7 @@ export class InventoryUiObject extends SceneObject {
       positionY,
       width,
       height,
-      'saddlebrown'
+      { colour: 'saddlebrown', }
     );
     RenderUtils.renderText(
       context,
@@ -232,7 +232,8 @@ export class InventoryUiObject extends SceneObject {
       positionY,
       width,
       height,
-      'saddlebrown'
+      { colour: 'saddlebrown', }
+
     );
     RenderUtils.renderText(
       context,
@@ -252,7 +253,8 @@ export class InventoryUiObject extends SceneObject {
       positionY,
       width,
       height,
-      'saddlebrown'
+      { colour: 'saddlebrown', }
+
     );
   }
 

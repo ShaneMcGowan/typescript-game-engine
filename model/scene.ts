@@ -352,9 +352,11 @@ export class Scene {
 
     for (let i = 0; i < this.backgroundLayers.length; i++) {
       this.renderingContext.background[i] = this.createCanvas().getContext('2d');
+      this.renderingContext.background[i].imageSmoothingEnabled = false;
     }
     for (let i = 0; i < CanvasConstants.OBJECT_RENDERING_LAYERS; i++) {
       this.renderingContext.objects[i] = this.createCanvas().getContext('2d');
+      this.renderingContext.objects[i].imageSmoothingEnabled = false;
     }
   }
 

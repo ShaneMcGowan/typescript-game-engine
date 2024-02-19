@@ -14,6 +14,8 @@ const EVENT_TYPES: Record<string, string> = {
   CHEST_CLOSED: 'CHEST_CLOSED',
   DIRT_PLACED: 'DIRT_PLACED',
   DIRT_REMOVED: 'DIRT_REMOVED',
+  TEXTBOX_OPENED: 'TEXTBOX_OPENED',
+  TEXTBOX_CLOSED: 'TEXTBOX_CLOSED',
 };
 
 interface Globals extends SceneGlobalsBaseConfig {
