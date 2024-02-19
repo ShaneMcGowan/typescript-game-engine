@@ -26,6 +26,14 @@ export class TextboxObject extends SceneObject {
   private textSegments: string[] = [];
   private textIndex: number = 0;
 
+  // portrait animation - copied from ChickenObject
+  animations = {
+    idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
+  };
+
+  animationTimer = 0;
+  animationIndex = 0;
+
   private readonly controls = {
     confirm: false,
   };
@@ -62,11 +70,12 @@ export class TextboxObject extends SceneObject {
 
   initText(): void {
     // generate text segments
-    this.textSegments = RenderUtils.textToArray(this.text, this.textboxWidth * CanvasConstants.TILE_SIZE, { size: this.textSize, });
+    this.textSegments = RenderUtils.textToArray(this.text, (this.textboxWidth - 4) * CanvasConstants.TILE_SIZE, { size: this.textSize, });
   }
 
-  update(): void {
+  update(delta: number): void {
     this.updateConfirm();
+    this.updatePortraitAnimation(delta);
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -248,16 +257,23 @@ export class TextboxObject extends SceneObject {
     RenderUtils.renderSprite(
       context,
       this.assets.images[tileset],
-      0,
-      0,
-      // this.animations.idle[this.animationIndex].x, // sprite x
-      // this.animations.idle[this.animationIndex].y, // sprite y
+      this.animations.idle[this.animationIndex].x,
+      this.animations.idle[this.animationIndex].y,
       3,
       9,
       undefined,
       undefined,
       { scale: 8, }
     );
+  }
+
+  private updatePortraitAnimation(delta: number): void {
+    this.animationTimer = (this.animationTimer + delta) % 4;
+    if (this.animationTimer < 3.5) {
+      this.animationIndex = 0;
+    } else {
+      this.animationIndex = 1;
+    }
   }
 
   private onConfirmKeyDown(event: KeyboardEvent): void {

@@ -10,6 +10,9 @@ import { TextboxObject } from './textbox.object';
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
 
+const TEXT_STANDARD: string = 'bock bock... can i help you? ... cluck cluck ...';
+const TEXT_EDGY: string = 'GET OUT OF ROOM MOM! GODDDD!!!!';
+
 interface Config extends SceneObjectBaseConfig {
   follows: SceneObject; // object to follow
   canLayEggs?: boolean;
@@ -44,12 +47,16 @@ export class ChickenObject extends SceneObject implements Interactable {
   // additional flags
   isMovingThisFrame = false;
 
+  // personality
+  isEdgyTeen = false;
+
   constructor(
     protected scene: SAMPLE_SCENE_1,
     protected config: Config
   ) {
     super(scene, config);
     this.eggEnabled = this.config.canLayEggs ?? true;
+    this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
   }
 
   update(delta: number): void {
@@ -196,7 +203,10 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   interact(): void {
     console.log('[ChickenObject#interact] TODO(smg): pick up chicken');
-    let textbox = new TextboxObject(this.scene, { text: 'bock bock... can i help you? ... cluck cluck ...', });
+    let textbox = new TextboxObject(
+      this.scene,
+      { text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD, }
+    );
     this.scene.addObject(textbox);
   };
 }
