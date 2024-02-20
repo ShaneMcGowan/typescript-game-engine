@@ -2,6 +2,7 @@ import { SceneObject, type SceneObjectBaseConfig } from '@model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { type InventoryItemObject } from './inventory-item.object';
+import { type Interactable } from '../models/interactable.model';
 
 const TILE_SET: string = 'tileset_chest';
 const DEFAULT_RENDER_LAYER = 8;
@@ -10,7 +11,7 @@ interface Config extends SceneObjectBaseConfig {
 
 }
 
-export class ChestObject extends SceneObject {
+export class ChestObject extends SceneObject implements Interactable {
   hasCollision = true;
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
@@ -79,6 +80,14 @@ export class ChestObject extends SceneObject {
         1,
         2
       );
+    }
+  }
+
+  interact(): void {
+    if (this.isOpen) {
+      this.closeChest();
+    } else {
+      this.openChest();
     }
   }
 }

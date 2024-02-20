@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
-import { ChestObject } from './chest.object';
+import { type ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
 import { InventoryItemType, getInventoryItemClass } from '../models/inventory-item.model';
 import { isInteractable } from '../models/interactable.model';
@@ -152,19 +152,27 @@ export class PlayerObject extends SceneObject {
   }
 
   private onInventoryOpened(event: CustomEvent): void {
-    this.disableAll();
+    this.disableMovementKeys();
+    this.disableInteractKeys();
+    this.disableOtherKeys();
   }
 
   private onInventoryClosed(event: CustomEvent): void {
-    this.enableAll();
+    this.enableMovementKeys();
+    this.enableInteractKeys();
+    this.enableOtherKeys();
   }
 
   private onChestOpened(event: CustomEvent): void {
-    this.disableAll();
+    this.disableMovementKeys();
+    this.disableInventoryKeys();
+    this.disableOtherKeys();
   }
 
   private onChestClosed(event: CustomEvent): void {
-    this.enableAll();
+    this.enableMovementKeys();
+    this.enableInventoryKeys();
+    this.enableOtherKeys();
   }
 
   private onTextBoxOpen(event: CustomEvent): void {
@@ -465,9 +473,6 @@ export class PlayerObject extends SceneObject {
     let object = this.scene.getObjectAtPosition(position.x, position.y, null);
 
     switch (true) {
-      case object instanceof ChestObject:
-        this.updateInteractChest(object);
-        break;
       case object && isInteractable(object):
         object.interact();
         break;

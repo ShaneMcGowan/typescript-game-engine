@@ -205,7 +205,7 @@ export class ChickenObject extends SceneObject implements Interactable {
     console.log('[ChickenObject#interact] TODO(smg): pick up chicken');
     let textbox = new TextboxObject(
       this.scene,
-      { text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD, }
+      { text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD, portrait: true, }
     );
     this.scene.addObject(textbox);
   };

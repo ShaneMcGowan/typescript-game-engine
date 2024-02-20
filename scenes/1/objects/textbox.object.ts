@@ -9,6 +9,7 @@ const SAMPLE_TEXT: string = 'The CanvasRenderingContext2D method fillText(), par
 
 interface Config extends SceneObjectBaseConfig {
   text?: string;
+  portrait?: boolean;
 }
 
 export class TextboxObject extends SceneObject {
@@ -26,6 +27,7 @@ export class TextboxObject extends SceneObject {
   private textSegments: string[] = [];
   private textIndex: number = 0;
 
+  private readonly hasPortrait: boolean = false;
   // portrait animation - copied from ChickenObject
   animations = {
     idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
@@ -57,6 +59,10 @@ export class TextboxObject extends SceneObject {
       this.text = config.text;
     }
 
+    if (config.portrait) {
+      this.hasPortrait = true;
+    }
+
     // define listeners
     this.keyListeners.onConfirmKeyDown = this.onConfirmKeyDown.bind(this);
 
@@ -80,7 +86,9 @@ export class TextboxObject extends SceneObject {
 
   render(context: CanvasRenderingContext2D): void {
     this.renderOverlay(context);
-    this.renderPortrait(context);
+    if (this.hasPortrait) {
+      this.renderPortrait(context);
+    }
     this.generateTextbox(context);
     this.renderText(context);
   }
