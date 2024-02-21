@@ -1,7 +1,8 @@
-import { type Scene } from '@model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
 import { PlayerObject } from './player.object';
+import { TransitionObject } from './transition.object';
+import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -14,7 +15,7 @@ export class HoleObject extends SceneObject {
   consumptionTimerMax = 5; // how often the hole can consume
 
   constructor(
-    protected scene: Scene,
+    protected scene: SAMPLE_SCENE_1,
     protected config: Config
   ) {
     super(scene, config);
@@ -40,6 +41,7 @@ export class HoleObject extends SceneObject {
 
       // if player, change map
       if (o instanceof PlayerObject) {
+        this.scene.addObject(new TransitionObject(this.scene, { animationDirection: 'out', }));
         this.scene.changeMap(1);
         return;
       }

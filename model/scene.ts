@@ -370,6 +370,7 @@ export class Scene {
     return canvas;
   }
 
+  // TODO(smg): allow this to have a timer set for it
   changeMap(index: number): void {
     // clean up map
     if (this.map !== undefined) {

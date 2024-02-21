@@ -7,6 +7,7 @@ import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background'
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './1/backgrounds/1.background';
 import { InventoryUiObject } from './0/objects/inventory-ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
+import { TransitionObject } from '../objects/transition.object';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   height = 40;
@@ -25,6 +26,9 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
 
     let player = new PlayerObject(scene, { positionX: 1, positionY: 4, });
     this.objects.push(player);
+
+    // scene init
+    this.objects.push(new TransitionObject(scene, { animationLength: 2, }));
 
     // chickens
     this.objects.push(new ChickenObject(scene, { positionX: 8, positionY: 4, canLayEggs: false, follows: player, }));

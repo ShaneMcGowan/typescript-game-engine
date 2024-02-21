@@ -13,6 +13,7 @@ import { InventoryUiObject } from './0/objects/inventory-ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { MouseUtils } from '@utils/mouse.utils';
 import { ChestObject } from '../objects/chest.object';
+import { TransitionObject } from '../objects/transition.object';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   height = 100;
@@ -121,6 +122,9 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
     // camera
     this.objects.push(new CameraObject(scene, { object: player, }));
+
+    // fade in
+    this.objects.push(new TransitionObject(scene, { animationLength: 1, }));
 
     // this.objects.push(new GenericSpriteObject(scene, { positionX: 5, positionY: 4, spriteX: 0, spriteY: 0, tileset: 'tileset_sample', }));
   }

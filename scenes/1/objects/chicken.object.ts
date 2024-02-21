@@ -11,7 +11,7 @@ const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
 
 const TEXT_STANDARD: string = 'bock bock... can i help you? ... cluck cluck ...';
-const TEXT_EDGY: string = 'GET OUT OF ROOM MOM! GODDDD!!!!';
+const TEXT_EDGY: string = 'GET OUT OF MY ROOM MOM! GODDDD!!!!';
 
 interface Config extends SceneObjectBaseConfig {
   follows: SceneObject; // object to follow
