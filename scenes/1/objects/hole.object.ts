@@ -41,7 +41,12 @@ export class HoleObject extends SceneObject {
 
       // if player, change map
       if (o instanceof PlayerObject) {
-        this.scene.addObject(new TransitionObject(this.scene, { animationDirection: 'out', }));
+        this.scene.addObject(new TransitionObject(this.scene, {
+          animationType: 'circle',
+          animationDirection: 'out',
+          animationCenterX: this.positionX, // TODO(smg): this is not relative to the camera position
+          animationCenterY: this.positionY, // TODO(smg): this is not relative to the camera position
+        }));
         this.scene.changeMap(1);
         return;
       }

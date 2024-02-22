@@ -9,21 +9,27 @@ type AnimationDirection = 'in' | 'out';
 const DEFAULT_ANIMATION_TYPE: AnimationType = 'block';
 const DEFAULT_ANIMATION_DIRECTION: AnimationDirection = 'in';
 const DEFAULT_ANIMATION_LENGTH = 1; // 1 second
+const DEFAULT_ANIMATION_CENTER_X = CanvasConstants.CANVAS_TILE_WIDTH / 2;
+const DEFAULT_ANIMATION_CENTER_Y = CanvasConstants.CANVAS_TILE_HEIGHT / 2;
 
 interface Config extends SceneObjectBaseConfig {
   animationType?: AnimationType;
   animationDirection?: AnimationDirection;
   animationLength?: number;
+  animationCenterX?: number;
+  animationCenterY?: number;
 }
 
 export class TransitionObject extends SceneObject {
   isRenderable: boolean = true;
+  readonly renderLayer = CanvasConstants.UI_RENDER_LAYER;
 
   private animationTimer = 0;
   private readonly animationType: AnimationType;
   private readonly animationDirection: AnimationDirection;
   private readonly animationLength: number;
-  readonly renderLayer = CanvasConstants.UI_RENDER_LAYER;
+  private readonly animationCenterX: number;
+  private readonly animationCenterY: number;
 
   constructor(
     protected scene: SAMPLE_SCENE_1,
@@ -34,12 +40,14 @@ export class TransitionObject extends SceneObject {
     this.animationType = config.animationType ? config.animationType : DEFAULT_ANIMATION_TYPE;
     this.animationDirection = config.animationDirection ? config.animationDirection : DEFAULT_ANIMATION_DIRECTION;
     this.animationLength = config.animationLength ? config.animationLength : DEFAULT_ANIMATION_LENGTH;
+    this.animationCenterX = config.animationCenterX ? config.animationCenterX : DEFAULT_ANIMATION_CENTER_X;
+    this.animationCenterY = config.animationCenterY ? config.animationCenterY : DEFAULT_ANIMATION_CENTER_Y;
   }
 
   update(delta: number): void {
     this.animationTimer += delta;
     if (this.animationTimer > this.animationLength) {
-      // this.scene.removeObject(this);
+      this.scene.removeObject(this);
     }
   }
 
@@ -78,8 +86,8 @@ export class TransitionObject extends SceneObject {
     context.fillStyle = 'black';
     context.beginPath();
     context.arc(
-      CanvasConstants.CANVAS_WIDTH / 2,
-      CanvasConstants.CANVAS_HEIGHT / 2,
+      (this.animationCenterX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      (this.animationCenterY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
       CanvasConstants.CANVAS_WIDTH * radiusModifier,
       0,
       2 * Math.PI
