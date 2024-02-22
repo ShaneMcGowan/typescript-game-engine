@@ -28,7 +28,7 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
     this.objects.push(player);
 
     // scene init
-    this.objects.push(new TransitionObject(scene, { animationLength: 2, }));
+    this.objects.push(new TransitionObject(scene, { animationType: 'block', animationLength: 2, }));
 
     // chickens
     this.objects.push(new ChickenObject(scene, { positionX: 8, positionY: 4, canLayEggs: false, follows: player, }));

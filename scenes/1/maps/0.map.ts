@@ -124,7 +124,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     this.objects.push(new CameraObject(scene, { object: player, }));
 
     // fade in
-    this.objects.push(new TransitionObject(scene, { animationLength: 1, }));
+    this.objects.push(new TransitionObject(scene, { animationType: 'circle', animationLength: 1, }));
 
     // this.objects.push(new GenericSpriteObject(scene, { positionX: 5, positionY: 4, spriteX: 0, spriteY: 0, tileset: 'tileset_sample', }));
   }
