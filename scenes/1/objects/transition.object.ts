@@ -1,6 +1,6 @@
 import { CanvasConstants } from '@constants/canvas.constants';
+import { type Scene } from '@model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { RenderUtils } from '@utils/render.utils';
 
 type AnimationType = 'block' | 'circle';
@@ -32,7 +32,7 @@ export class TransitionObject extends SceneObject {
   private readonly animationCenterY: number;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: Scene,
     protected config: Config
   ) {
     super(scene, config);

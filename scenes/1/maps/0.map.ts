@@ -14,6 +14,8 @@ import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { MouseUtils } from '@utils/mouse.utils';
 import { ChestObject } from '../objects/chest.object';
 import { TransitionObject } from '../objects/transition.object';
+import { IntervalObject } from '../objects/interval.object';
+import { TimerObject } from '../objects/timer.object';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   height = 100;
@@ -129,6 +131,29 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
       animationCenterY: player.positionY,
       animationType: 'circle',
       animationLength: 1,
+    }));
+
+    // interval tests
+    this.objects.push(new IntervalObject(scene, {
+      duration: 1,
+      onInterval: () => {
+        console.log('test interval - max 5');
+      },
+      maxIntervals: 5,
+    }));
+
+    this.objects.push(new IntervalObject(scene, {
+      duration: 1,
+      onInterval: () => {
+        console.log('test interval - no max');
+      },
+    }));
+
+    this.objects.push(new TimerObject(scene, {
+      duration: 1,
+      onComplete: () => {
+        console.log('test timer');
+      },
     }));
 
     // this.objects.push(new GenericSpriteObject(scene, { positionX: 5, positionY: 4, spriteX: 0, spriteY: 0, tileset: 'tileset_sample', }));

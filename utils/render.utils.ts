@@ -71,8 +71,8 @@ export class RenderUtils {
     context.fillStyle = options.colour;
     context.beginPath();
     context.rect(
-      positionX * CanvasConstants.TILE_SIZE,
-      positionY * CanvasConstants.TILE_SIZE,
+      Math.floor(positionX * CanvasConstants.TILE_SIZE) + 0.5, // 0.5 to prevent blurring
+      Math.floor(positionY * CanvasConstants.TILE_SIZE) + 0.5, // 0.5 to prevent blurring
       width,
       height
     );

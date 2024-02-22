@@ -43,36 +43,36 @@ export class SceneObject {
 
   constructor(
     protected scene: Scene,
-    protected config: SceneObjectBaseConfig
+    config: SceneObjectBaseConfig
   ) {
     this.mainContext = this.scene.context;
     this.assets = this.scene.assets;
 
     // position default
-    if (this.config.positionX !== undefined) {
-      this.positionX = this.config.positionX;
-      if (this.config.targetX === undefined) {
+    if (config.positionX !== undefined) {
+      this.positionX = config.positionX;
+      if (config.targetX === undefined) {
         this.targetX = this.positionX;
       }
     }
 
-    if (this.config.positionY !== undefined) {
-      this.positionY = this.config.positionY;
-      if (this.config.targetY === undefined) {
+    if (config.positionY !== undefined) {
+      this.positionY = config.positionY;
+      if (config.targetY === undefined) {
         this.targetY = this.positionY;
       }
     }
 
-    if (this.config.targetX !== undefined) {
-      this.targetX = this.config.targetX;
+    if (config.targetX !== undefined) {
+      this.targetX = config.targetX;
     }
 
-    if (this.config.targetY !== undefined) {
-      this.targetY = this.config.targetY;
+    if (config.targetY !== undefined) {
+      this.targetY = config.targetY;
     }
 
-    this.renderLayer = this.config.renderLayer ?? DEFAULT_RENDER_LAYER;
-    this.collisionLayer = this.config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
+    this.renderLayer = config.renderLayer ?? DEFAULT_RENDER_LAYER;
+    this.collisionLayer = config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
   }
 
   update?(delta: number): void;
@@ -92,5 +92,13 @@ export class SceneObject {
       Math.floor(this.height * CanvasConstants.TILE_SIZE),
       'red'
     );
+  }
+
+  get cameraRelativePositionX(): number {
+    return this.positionX + this.scene.globals.cameraPosition.startX;
+  }
+
+  get cameraRelativePositionY(): number {
+    return this.positionY + this.scene.globals.cameraPosition.startY;
   }
 }
