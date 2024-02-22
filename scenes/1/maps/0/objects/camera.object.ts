@@ -55,6 +55,13 @@ export class CameraObject extends SceneObject {
       startY = endY - CanvasConstants.CANVAS_TILE_HEIGHT;
     }
 
+    // set camera positions
+    this.scene.globals.cameraPosition.startX = startX;
+    this.scene.globals.cameraPosition.startY = startY;
+    this.scene.globals.cameraPosition.endX = endX;
+    this.scene.globals.cameraPosition.endY = endY;
+
+    // render
     renderingContext.background.forEach((context) => {
       RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
     });

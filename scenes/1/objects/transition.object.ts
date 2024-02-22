@@ -81,13 +81,16 @@ export class TransitionObject extends SceneObject {
   private renderAnimationCircle(context: CanvasRenderingContext2D): void {
     let radiusModifier = this.animationDirection === 'in' ? this.animationPercentage : 1 - this.animationPercentage;
 
+    let animationCenterX = this.animationCenterX - this.scene.globals.cameraPosition.startX;
+    let animationCenterY = this.animationCenterY - this.scene.globals.cameraPosition.startY;
+
     // draw arc clockwise then draw rect counter clockwise to have rect with circle cut out of it
     // https://stackoverflow.com/a/11770000
     context.fillStyle = 'black';
     context.beginPath();
     context.arc(
-      (this.animationCenterX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
-      (this.animationCenterY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      (animationCenterX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      (animationCenterY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
       CanvasConstants.CANVAS_WIDTH * radiusModifier,
       0,
       2 * Math.PI

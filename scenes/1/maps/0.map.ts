@@ -125,8 +125,8 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
     // fade in
     this.objects.push(new TransitionObject(scene, {
-      positionX: player.positionX,
-      positionY: player.positionY,
+      animationCenterX: player.positionX,
+      animationCenterY: player.positionY,
       animationType: 'circle',
       animationLength: 1,
     }));

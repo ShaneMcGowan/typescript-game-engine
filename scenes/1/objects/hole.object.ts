@@ -44,8 +44,8 @@ export class HoleObject extends SceneObject {
         this.scene.addObject(new TransitionObject(this.scene, {
           animationType: 'circle',
           animationDirection: 'out',
-          animationCenterX: this.positionX, // TODO(smg): this is not relative to the camera position
-          animationCenterY: this.positionY, // TODO(smg): this is not relative to the camera position
+          animationCenterX: this.positionX,
+          animationCenterY: this.positionY,
         }));
         this.scene.changeMap(1);
         return;
