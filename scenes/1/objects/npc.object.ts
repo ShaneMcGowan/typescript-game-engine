@@ -2,27 +2,23 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { MathUtils } from '@utils/math.utils';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
-import { EggObject } from './egg.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { type Interactable } from '../models/interactable.model';
 import { TextboxObject } from './textbox.object';
+import { SpriteAnimation } from '@core/model/sprite-animation';
 
-const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
-
-const DEFAULT_CAN_LAY_EGGS: boolean = false;
 const DEFAULT_CAN_MOVE: boolean = false;
-
-const TEXT_STANDARD: string = 'bock bock... can i help you? ... cluck cluck ...';
-const TEXT_EDGY: string = 'GET OUT OF MY ROOM MOM! GODDDD!!!!';
 
 interface Config extends SceneObjectBaseConfig {
   follows?: SceneObject; // object to follow
-  canLayEggs?: boolean;
   canMove?: boolean;
+  dialogue?: string;
 }
 
-export class ChickenObject extends SceneObject implements Interactable {
+export class NpcObject extends SceneObject implements Interactable {
+  state: 'idle' | 'moving' = 'idle';
+
   isRenderable = true;
   hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
@@ -30,12 +26,18 @@ export class ChickenObject extends SceneObject implements Interactable {
   height = 1;
 
   // animation
-  animations = {
-    idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
+  animation = {
+    index: 0,
+    timer: 0, // TODO(smg): enable adding random start with MathUtils.randomStartingDelta(4),
   };
 
-  animationTimer = MathUtils.randomStartingDelta(4);
-  animationIndex = 0;
+  // TODO(smg): this is hardcoded
+  animations: Record<string, SpriteAnimation> = {
+    idle: new SpriteAnimation('tileset_chicken', [
+      { spriteX: 0, spriteY: 0, duration: 3.5, },
+      { spriteX: 1, spriteY: 0, duration: 0.5, }
+    ]),
+  };
 
   // movement
   canMove: boolean;
@@ -44,60 +46,45 @@ export class ChickenObject extends SceneObject implements Interactable {
   movementTimer = MathUtils.randomStartingDelta(2);
   movementDelay = 2; // seconds until next movement
 
-  // egg
-  canLayEggs: boolean;
-  eggTimer = MathUtils.randomStartingDelta(2); ;
-  eggTimerMax = 7; // seconds until next egg
-  eggMax = 200; // max total chickens + eggs allowed at one time
-
-  // additional flags
-  isMovingThisFrame = false;
-
-  // personality
-  isEdgyTeen = false;
+  // interaction
+  dialogue: string | undefined;
 
   constructor(
     protected scene: SAMPLE_SCENE_1,
     config: Config
   ) {
-    console.log('[ChickenObject] created');
     super(scene, config);
-    this.canLayEggs = config.canLayEggs ? config.canLayEggs : DEFAULT_CAN_LAY_EGGS;
-    this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
+
     this.canMove = config.canMove ? config.canMove : DEFAULT_CAN_MOVE;
     this.following = config.follows ? config.follows : undefined;
+    this.dialogue = config.dialogue ? config.dialogue : undefined;
   }
 
   update(delta: number): void {
-    this.isMovingThisFrame = false;
-
     this.updateMovement(delta);
-    this.updateAnimation(delta);
-    this.updateEgg(delta);
+    this.updateAnimationTimer(delta);
   }
 
   render(context: CanvasRenderingContext2D): void {
+    let frame = this.animations.idle.currentFrame(this.animation.timer);
+
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
-      this.animations.idle[this.animationIndex].x, // sprite x
-      this.animations.idle[this.animationIndex].y, // sprite y
+      this.assets.images[this.animations.idle.tileset],
+      frame.spriteX,
+      frame.spriteY,
       this.positionX,
       this.positionY
     );
   }
 
   destroy(): void {
-    console.log('[ChickenObject] destroyed');
+    console.log('[NpcObject#destroy]');
   }
 
-  private updateAnimation(delta: number): void {
-    this.animationTimer = (this.animationTimer + delta) % 4;
-    if (this.animationTimer < 3.5) {
-      this.animationIndex = 0;
-    } else {
-      this.animationIndex = 1;
-    }
+  private updateAnimationTimer(delta: number): void {
+    // TODO(smg): this is hard coded and should be either moved to config or make another class extend NpcObject and make NpcObject abstract
+    this.animation.timer = (this.animation.timer + delta) % this.animations.idle.duration;
   }
 
   private updateMovement(delta: number): void {
@@ -121,8 +108,9 @@ export class ChickenObject extends SceneObject implements Interactable {
 
     let movement: Movement;
     if (this.following) {
-      // move towards player
+      // move towards object
       // TODO(smg): add some randomness to movement, can be done later
+      // TODO(smg): this logic is dumb and can get stuck if no clear path
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
           this.positionX,
@@ -173,54 +161,22 @@ export class ChickenObject extends SceneObject implements Interactable {
 
       this.positionX = updatedMovement.positionX;
       this.positionY = updatedMovement.positionY;
-
-      // set flag
-      this.isMovingThisFrame = true;
     }
-  }
-
-  private updateEgg(delta: number): void {
-    if (!this.canLayEggs) {
-      return;
-    }
-
-    this.eggTimer += delta;
-
-    if (this.eggTimer < this.eggTimerMax) {
-      return;
-    }
-
-    // only lay egg if moving
-    if (!this.isMovingThisFrame) {
-      return;
-    }
-
-    // only lay egg if there are less than 10 chickens
-    let totalChickens = this.scene.getObjectsByType(ChickenObject).length;
-    let totalEggs = this.scene.getObjectsByType(EggObject).length;
-    if ((totalChickens + totalEggs) > this.eggMax) {
-      return;
-    }
-
-    // check direction travelling to ensure that egg is always beneath chicken as they walk away
-    let roundDirection;
-    if (this.positionX > this.targetX || this.positionY > this.targetY) {
-      roundDirection = Math.ceil;
-    } else {
-      roundDirection = Math.floor;
-    }
-    this.scene.addObject(
-      new EggObject(this.scene, { positionX: roundDirection(this.positionX), positionY: roundDirection(this.positionY), })
-    );
-
-    this.eggTimer = 0;
   }
 
   interact(): void {
-    console.log('[ChickenObject#interact] TODO(smg): pick up chicken');
+    console.log('[NpcObject#interact]');
+
+    if (this.dialogue === undefined) {
+      return;
+    }
+
     let textbox = new TextboxObject(
       this.scene,
-      { text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD, portrait: true, }
+      {
+        text: this.dialogue,
+        portrait: true,
+      }
     );
     this.scene.addObject(textbox);
   };

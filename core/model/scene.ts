@@ -53,7 +53,7 @@ export type CustomRendererSignature = (renderingContext: SceneRenderingContext) 
 
 */
 
-export class Scene {
+export abstract class Scene {
   // background
   backgroundLayers: BackgroundLayer[];
   backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations

@@ -10,6 +10,8 @@ import { TransitionObject } from '../../../core/objects/transition.object';
 import { CollisionObject } from '../objects/collision.object';
 import { WarpObject } from '../objects/warp.object';
 import { GenericSpriteObject } from '../objects/generic-sprite.object';
+import { NpcObject } from '../objects/npc.object';
+import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from './1/constants/map-text.constants';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   height = 40;
@@ -24,8 +26,6 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   constructor(protected scene: SAMPLE_SCENE_1) {
     super(scene);
 
-    // this.objects.push(new InventoryUiObject(scene, { positionX: 6, positionY: 15, }));
-
     let player = new PlayerObject(scene, { positionX: 14, positionY: 8, });
     this.objects.push(player);
 
@@ -33,7 +33,10 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
     this.objects.push(new TransitionObject(scene, { animationType: 'block', animationLength: 2, }));
 
     // chickens
-    this.objects.push(new ChickenObject(scene, { positionX: 14, positionY: 9, canLayEggs: false, follows: player, }));
+    this.objects.push(new NpcObject(scene, { positionX: 14, positionY: 7, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_4, }));
+    this.objects.push(new NpcObject(scene, { positionX: 13, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_2, }));
+    this.objects.push(new NpcObject(scene, { positionX: 15, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_3, }));
+    this.objects.push(new NpcObject(scene, { positionX: 14, positionY: 9, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_1, }));
 
     // wall
     this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 4, }));

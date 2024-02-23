@@ -14,7 +14,7 @@ export interface SceneObjectBaseConfig {
 const DEFAULT_RENDER_LAYER = 0;
 const DEFAULT_COLLISION_LAYER = 0;
 
-export class SceneObject {
+export abstract class SceneObject {
   id: string = crypto.randomUUID();
 
   isRenderable: boolean = false;

@@ -20,6 +20,9 @@ interface Config extends SceneObjectBaseConfig {
   animationCenterY?: number;
 }
 
+/**
+ * An object that performs a transition animation
+ */
 export class TransitionObject extends SceneObject {
   isRenderable: boolean = true;
   readonly renderLayer = CanvasConstants.UI_RENDER_LAYER;

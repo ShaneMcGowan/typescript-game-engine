@@ -5,12 +5,15 @@ const DEFAULT_DURATION = 1;
 const DEFAULT_ON_INTERVAL = (): void => {};
 
 export interface IntervalObjectConfig extends SceneObjectBaseConfig {
-  duration?: number;
-  onInterval?: () => void;
-  onDestroy?: () => void;
-  maxIntervals?: number;
+  duration?: number; // duration of each interval in seconds (e.g. 1 = 1 second)
+  onInterval?: () => void; // function to call on each interval
+  onDestroy?: () => void; // function to call when the object is destroyed
+  maxIntervals?: number; // maximum number of intervals to run before destroying the object
 }
 
+/**
+ * An object that runs a function at regular intervals
+ */
 export class IntervalObject extends SceneObject {
   private timer = 0;
   private intervalsComplete = 0;

@@ -9,6 +9,9 @@ interface Config extends SceneObjectBaseConfig {
   onComplete?: () => void;
 }
 
+/**
+ * An object that runs a function after a set duration a single time
+ */
 export class TimerObject extends SceneObject {
   private timer = 0;
   private readonly duration: number;
