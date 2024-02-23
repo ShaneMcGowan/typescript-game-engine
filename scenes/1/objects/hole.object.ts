@@ -1,4 +1,4 @@
-import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
 import { PlayerObject } from './player.object';
 import { TransitionObject } from '../../../core/objects/transition.object';

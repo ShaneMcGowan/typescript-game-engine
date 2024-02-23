@@ -12,6 +12,7 @@
     "baseUrl" : "./",
     "paths": {
       "@core/objects/*": ["./core/objects/*"],
+      "@core/model/*": ["./core/model/*"],
       "@constants/*": ["./constants/*"],
       "@model/*": ["./model/*"],
       "@scenes/*": ["./scenes/*"],

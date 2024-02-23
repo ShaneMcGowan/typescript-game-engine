@@ -1,5 +1,5 @@
-import { type Scene } from '@model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '@model/scene-object';
+import { type Scene } from '@core/model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 
 const DEFAULT_DURATION = 1;
 const DEFAULT_ON_COMPLETE = (): void => {};

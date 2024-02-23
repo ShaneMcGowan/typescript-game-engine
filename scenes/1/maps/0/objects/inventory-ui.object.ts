@@ -1,5 +1,5 @@
 import { CanvasConstants } from '@constants/canvas.constants';
-import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { type ChestObject } from '@scenes/1/objects/chest.object';
 import { type InventoryItemObject } from '@scenes/1/objects/inventory-item.object';

@@ -1,6 +1,6 @@
 import { CanvasConstants } from '@constants/canvas.constants';
-import { type Scene } from '@model/scene';
-import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type Scene } from '@core/model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { type MousePosition, MouseUtils } from '@utils/mouse.utils';
 import { RenderUtils } from '@utils/render.utils';

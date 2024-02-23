@@ -1,5 +1,5 @@
-import { type Scene } from '@model/scene';
-import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type Scene } from '@core/model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
 import { type Interactable } from '../models/interactable.model';
 

@@ -1,5 +1,5 @@
-import { type BackgroundLayer } from '@model/background-layer';
-import { type BackgroundTile } from '@model/background-tile';
+import { type BackgroundLayer } from '@core/model/background-layer';
+import { type BackgroundTile } from '@core/model/background-tile';
 
 const GRASS_TILE: BackgroundTile = {
   tileset: 'tileset_grass',

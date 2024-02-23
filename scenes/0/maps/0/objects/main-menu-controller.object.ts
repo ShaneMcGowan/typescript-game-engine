@@ -1,6 +1,6 @@
 import { CanvasConstants } from '@constants/canvas.constants';
-import { type Scene } from '@model/scene';
-import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type Scene } from '@core/model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { GenericSpriteObject } from '@scenes/1/objects/generic-sprite.object';
 import { MathUtils } from '@utils/math.utils';
 

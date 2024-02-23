@@ -1,4 +1,4 @@
-import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
 import { ChickenObject } from './chicken.object';
 import { PlayerObject } from './player.object';

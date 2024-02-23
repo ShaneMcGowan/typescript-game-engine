@@ -1,4 +1,4 @@
-import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { MathUtils } from '@utils/math.utils';
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';

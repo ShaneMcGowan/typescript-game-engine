@@ -1,4 +1,4 @@
-import { SceneObject, type SceneObjectBaseConfig } from '@model/scene-object';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { RenderUtils } from '@utils/render.utils';
 
