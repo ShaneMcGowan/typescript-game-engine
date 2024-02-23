@@ -16,7 +16,7 @@ export class MainMenuControllerObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    protected config: Config
+    config: Config
   ) {
     super(scene, config);
   }

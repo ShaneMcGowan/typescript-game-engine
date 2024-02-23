@@ -17,7 +17,7 @@ export class SeedsObject extends SceneObject {
   spriteX: number = 0;
   spriteY: number = 0;
 
-  constructor(protected scene: SAMPLE_SCENE_1, protected config: Config) {
+  constructor(protected scene: SAMPLE_SCENE_1, config: Config) {
     super(scene, config);
   }
 

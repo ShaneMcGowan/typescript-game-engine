@@ -10,12 +10,16 @@ import { TextboxObject } from './textbox.object';
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
 
+const DEFAULT_CAN_LAY_EGGS: boolean = false;
+const DEFAULT_CAN_MOVE: boolean = false;
+
 const TEXT_STANDARD: string = 'bock bock... can i help you? ... cluck cluck ...';
 const TEXT_EDGY: string = 'GET OUT OF MY ROOM MOM! GODDDD!!!!';
 
 interface Config extends SceneObjectBaseConfig {
-  follows: SceneObject; // object to follow
+  follows?: SceneObject; // object to follow
   canLayEggs?: boolean;
+  canMove?: boolean;
 }
 
 export class ChickenObject extends SceneObject implements Interactable {
@@ -34,12 +38,14 @@ export class ChickenObject extends SceneObject implements Interactable {
   animationIndex = 0;
 
   // movement
+  canMove: boolean;
+  following: SceneObject | undefined;
   movementSpeed = 2; // tiles per second
   movementTimer = MathUtils.randomStartingDelta(2);
   movementDelay = 2; // seconds until next movement
 
   // egg
-  eggEnabled: boolean;
+  canLayEggs: boolean;
   eggTimer = MathUtils.randomStartingDelta(2); ;
   eggTimerMax = 7; // seconds until next egg
   eggMax = 200; // max total chickens + eggs allowed at one time
@@ -50,14 +56,18 @@ export class ChickenObject extends SceneObject implements Interactable {
   // personality
   isEdgyTeen = false;
 
+  // interaction
+
   constructor(
     protected scene: SAMPLE_SCENE_1,
-    protected config: Config
+    config: Config
   ) {
     console.log('[ChickenObject] created');
     super(scene, config);
-    this.eggEnabled = this.config.canLayEggs ?? true;
+    this.canLayEggs = config.canLayEggs ? config.canLayEggs : DEFAULT_CAN_LAY_EGGS;
     this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
+    this.canMove = config.canMove ? config.canMove : DEFAULT_CAN_MOVE;
+    this.following = config.follows ? config.follows : undefined;
   }
 
   update(delta: number): void {
@@ -93,6 +103,10 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   private updateMovement(delta: number): void {
+    if (!this.canMove) {
+      return;
+    }
+
     this.movementTimer += delta;
 
     // determine next movement
@@ -108,7 +122,7 @@ export class ChickenObject extends SceneObject implements Interactable {
     this.movementTimer = 0;
 
     let movement: Movement;
-    if (this.scene.globals.chickens_follow_player) {
+    if (this.following) {
       // move towards player
       // TODO(smg): add some randomness to movement, can be done later
       movement = MovementUtils.moveTowardsOtherEntity(
@@ -119,10 +133,10 @@ export class ChickenObject extends SceneObject implements Interactable {
           this.targetY
         ),
         new Movement(
-          this.config.follows.positionX,
-          this.config.follows.positionY,
-          this.config.follows.targetX,
-          this.config.follows.targetY
+          this.following.positionX,
+          this.following.positionY,
+          this.following.targetX,
+          this.following.targetY
         )
       );
     } else {
@@ -168,7 +182,7 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   private updateEgg(delta: number): void {
-    if (!this.eggEnabled) {
+    if (!this.canLayEggs) {
       return;
     }
 

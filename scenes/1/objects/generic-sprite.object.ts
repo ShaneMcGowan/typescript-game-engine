@@ -3,6 +3,9 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { Movement, MovementUtils } from '@utils/movement.utils';
 import { RenderUtils } from '@utils/render.utils';
 
+const DEFAULT_DESTROYED_AT_TARGET = false;
+const DEFAULT_MOVEMENT_SPEED = 0.5;
+
 interface Config extends SceneObjectBaseConfig {
   tileset: string;
   spriteX: number;
@@ -17,8 +20,6 @@ interface Config extends SceneObjectBaseConfig {
 /**
  * A generic sprite object that can be used to render a sprite from a tileset.
  */
-const DEFAULT_MOVEMENT_SPEED = 0.5;
-
 export class GenericSpriteObject extends SceneObject {
   isRenderable = true;
   width = 1;
@@ -27,25 +28,28 @@ export class GenericSpriteObject extends SceneObject {
   tileset: string;
   spriteX: number;
   spriteY: number;
+  spriteWidth: number;
+  spriteHeight: number;
+  destroyAtTarget: boolean;
 
   movementSpeed: number = DEFAULT_MOVEMENT_SPEED;
 
   constructor(
     protected scene: Scene,
-    protected config: Config
+    config: Config
   ) {
     super(scene, config);
 
-    if (this.config.isRenderable !== undefined) {
-      this.isRenderable = this.config.isRenderable;
+    if (config.isRenderable !== undefined) {
+      this.isRenderable = config.isRenderable;
     }
-    this.tileset = this.config.tileset;
-    this.spriteX = this.config.spriteX;
-    this.spriteY = this.config.spriteY;
-
-    if (this.config.movementSpeed !== undefined) {
-      this.movementSpeed = this.config.movementSpeed;
-    }
+    this.tileset = config.tileset;
+    this.spriteX = config.spriteX;
+    this.spriteY = config.spriteY;
+    this.spriteHeight = config.spriteHeight ? config.spriteHeight : undefined;
+    this.spriteWidth = config.spriteWidth ? config.spriteWidth : undefined;
+    this.destroyAtTarget = config.destroyAtTarget ? config.destroyAtTarget : DEFAULT_DESTROYED_AT_TARGET;
+    this.movementSpeed = config.movementSpeed ? config.movementSpeed : DEFAULT_MOVEMENT_SPEED;
   }
 
   update(delta: number): void {
@@ -54,7 +58,7 @@ export class GenericSpriteObject extends SceneObject {
 
   private updatePosition(delta: number): void {
     if (this.positionX === this.targetX && this.positionY === this.targetY) {
-      if (this.config.destroyAtTarget) {
+      if (this.destroyAtTarget) {
         this.scene.removeObject(this);
       }
       return;
@@ -76,8 +80,8 @@ export class GenericSpriteObject extends SceneObject {
       this.spriteY,
       this.positionX,
       this.positionY,
-      this.config.spriteWidth,
-      this.config.spriteWidth
+      this.spriteWidth,
+      this.spriteWidth
     );
   }
 }

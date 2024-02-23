@@ -101,7 +101,7 @@ export class InventoryUiObject extends SceneObject {
 
   constructor(
     protected scene: SAMPLE_SCENE_1,
-    protected config: Config
+    config: Config
   ) {
     super(scene, config);
 

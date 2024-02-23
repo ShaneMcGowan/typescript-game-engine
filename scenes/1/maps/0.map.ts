@@ -51,7 +51,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     this.objects.push(new ChestObject(scene, { positionX: 5, positionY: 3, }));
 
     // chickens
-    this.objects.push(new ChickenObject(scene, { positionX: 17, positionY: 11, follows: player, }));
+    this.objects.push(new ChickenObject(scene, { positionX: 17, positionY: 11, follows: player, canLayEggs: true, canMove: true, }));
 
     // fences
     this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 2, type: FenceType.TopLeft, }));

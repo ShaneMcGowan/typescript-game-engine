@@ -31,7 +31,7 @@ export class InventoryItemObject extends SceneObject {
   maxStackSize: number;
   sprite: { tileset: string; spriteX: number; spriteY: number; };
 
-  constructor(protected scene: SAMPLE_SCENE_1, protected config: Config) {
+  constructor(protected scene: SAMPLE_SCENE_1, config: Config) {
     super(scene, config);
 
     this.type = config.type;

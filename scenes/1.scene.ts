@@ -19,7 +19,6 @@ const EVENT_TYPES: Record<string, string> = {
 };
 
 interface Globals extends SceneGlobalsBaseConfig {
-  chickens_follow_player: boolean;
   inventory: InventoryItemObject[];
   inventory_size: number;
   hotbar_size: number;
@@ -29,7 +28,6 @@ interface Globals extends SceneGlobalsBaseConfig {
 export class SAMPLE_SCENE_1 extends Scene {
   globals: Globals = {
     ...this.globals,
-    chickens_follow_player: false,
     inventory: [
       new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
       new InventoryItemObject(this, { type: InventoryItemType.Egg, }),

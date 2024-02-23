@@ -21,7 +21,7 @@ export class ChestObject extends SceneObject implements Interactable {
   private isOpen: boolean = false;
   inventory: InventoryItemObject[] = [];
 
-  constructor(protected scene: SAMPLE_SCENE_1, protected config: Config) {
+  constructor(protected scene: SAMPLE_SCENE_1, config: Config) {
     super(scene, config);
 
     // register

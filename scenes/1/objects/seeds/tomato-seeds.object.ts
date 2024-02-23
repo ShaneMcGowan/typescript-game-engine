@@ -10,7 +10,7 @@ export class TomatoSeedsObject extends SeedsObject {
   spriteX = 0;
   spriteY = 1;
 
-  constructor(protected scene: SAMPLE_SCENE_1, protected config: Config) {
+  constructor(protected scene: SAMPLE_SCENE_1, config: Config) {
     super(scene, config);
   }
 }

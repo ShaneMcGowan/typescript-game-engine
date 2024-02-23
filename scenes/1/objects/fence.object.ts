@@ -31,12 +31,12 @@ export class FenceObject extends SceneObject implements Interactable {
 
   constructor(
     protected scene: Scene,
-    protected config: Config
+    config: Config
   ) {
     super(scene, config);
 
-    if (this.config.type) {
-      this.type = this.config.type;
+    if (config.type) {
+      this.type = config.type;
     }
   }
 

@@ -10,12 +10,13 @@ interface Config extends SceneObjectBaseConfig {
 
 // TODO(smg): this object is generic enough to be included at the engine level
 export class CameraObject extends SceneObject {
-  public readonly cameraOffsetX: number;
-  public readonly cameraOffsetY: number;
+  private readonly cameraOffsetX: number;
+  private readonly cameraOffsetY: number;
+  private readonly object: SceneObject;
 
   constructor(
     protected scene: Scene,
-    protected config: Config
+    config: Config
   ) {
     super(scene, config);
 
@@ -25,18 +26,19 @@ export class CameraObject extends SceneObject {
     let cameraOffsetY = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.5;
 
     // TODO(smg): zoom is broken and not sure why
-    this.cameraOffsetX = this.config.zoom ? cameraOffsetX / this.config.zoom : cameraOffsetX;
-    this.cameraOffsetY = this.config.zoom ? cameraOffsetY / this.config.zoom : cameraOffsetY;
+    this.cameraOffsetX = config.zoom ? cameraOffsetX / config.zoom : cameraOffsetX;
+    this.cameraOffsetY = config.zoom ? cameraOffsetY / config.zoom : cameraOffsetY;
+    this.object = config.object;
 
     this.scene.setCustomRenderer(this.customerRenderer);
   }
 
   customerRenderer: CustomRendererSignature = (renderingContext: SceneRenderingContext) => {
     // follow scene object
-    let startX = this.config.object.positionX - this.cameraOffsetX;
-    let startY = this.config.object.positionY - this.cameraOffsetY;
-    let endX = this.config.object.positionX + (this.cameraOffsetX + 1);
-    let endY = this.config.object.positionY + (this.cameraOffsetY + 1);
+    let startX = this.object.positionX - this.cameraOffsetX;
+    let startY = this.object.positionY - this.cameraOffsetY;
+    let endX = this.object.positionX + (this.cameraOffsetX + 1);
+    let endY = this.object.positionY + (this.cameraOffsetY + 1);
 
     // if the camera is at the edge of the map, don't render outside of the map
     if (startX < 0) {

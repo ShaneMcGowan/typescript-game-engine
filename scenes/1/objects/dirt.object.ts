@@ -36,7 +36,7 @@ export class DirtObject extends SceneObject implements Interactable {
   isFullyGrown: boolean = false;
   isSpoiled: boolean = false;
 
-  constructor(protected scene: SAMPLE_SCENE_1, protected config: Config) {
+  constructor(protected scene: SAMPLE_SCENE_1, config: Config) {
     super(scene, config);
 
     this.scene.addEventListener(this.scene.eventTypes.DIRT_PLACED, this.onDirtPlaced.bind(this));

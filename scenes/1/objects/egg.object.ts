@@ -33,7 +33,7 @@ export class EggObject extends SceneObject implements Interactable {
 
   constructor(
     protected scene: SAMPLE_SCENE_1,
-    protected config: Config
+    config: Config
   ) {
     super(scene, config);
   }

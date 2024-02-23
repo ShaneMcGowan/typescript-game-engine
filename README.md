@@ -31,7 +31,7 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class MyObject extends SceneObject {
-  constructor(protected scene: Scene, protected config: Config) {
+  constructor(protected scene: Scene, config: Config) {
     super(scene, config);
   }
 }

@@ -33,7 +33,7 @@ export class TransitionObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
-    protected config: Config
+    config: Config
   ) {
     super(scene, config);
 
