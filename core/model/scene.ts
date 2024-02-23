@@ -18,15 +18,16 @@ export interface SceneGlobalsBaseConfig {
       middle: boolean;
       right: boolean;
     };
+    position: {
+      x: number;
+      y: number;
+      exactX: number; // not rounded to tile
+      exactY: number; // not rounded to tile
+    };
   };
-  mousePosition: {
-    x: number;
-    y: number;
-    exactX: number; // not rounded to tile
-    exactY: number; // not rounded to tile
-  };
+
   // TODO(smg): cameraPosition is referring to customRenderer, perhaps rename customRenderer to camera?
-  cameraPosition: {
+  camera: {
     startX: number;
     startY: number;
     endX: number;
@@ -69,14 +70,14 @@ export class Scene {
         middle: false,
         right: false,
       },
+      position: {
+        x: 0,
+        y: 0,
+        exactX: 0,
+        exactY: 0,
+      },
     },
-    mousePosition: {
-      x: 0,
-      y: 0,
-      exactX: 0,
-      exactY: 0,
-    },
-    cameraPosition: {
+    camera: {
       startX: 0,
       startY: 0,
       endX: 0,
@@ -114,7 +115,7 @@ export class Scene {
 
     // set up mouse listener
     client.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-      this.globals.mousePosition = MouseUtils.getMousePosition(client.canvas, event);
+      this.globals.mouse.position = MouseUtils.getMousePosition(client.canvas, event);
       this.globals.latestMouseEvent = event;
     });
 
@@ -282,10 +283,10 @@ export class Scene {
 
   defaultRenderer(): void {
     // set camera positions
-    this.globals.cameraPosition.startX = 0;
-    this.globals.cameraPosition.startY = 0;
-    this.globals.cameraPosition.endX = 0;
-    this.globals.cameraPosition.endY = 0;
+    this.globals.camera.startX = 0;
+    this.globals.camera.startY = 0;
+    this.globals.camera.endX = 0;
+    this.globals.camera.endY = 0;
 
     // render
     this.renderingContext.background.forEach((context) => {

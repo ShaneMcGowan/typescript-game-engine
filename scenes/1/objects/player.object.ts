@@ -595,8 +595,8 @@ export class PlayerObject extends SceneObject {
     }
 
     this.scene.globals.mouse.click.left = false;
-    let x = Math.ceil(this.scene.globals.mousePosition.x + this.scene.globals.cameraPosition.startX);
-    let y = Math.ceil(this.scene.globals.mousePosition.y + this.scene.globals.cameraPosition.startY);
+    let x = Math.ceil(this.scene.globals.mouse.position.x + this.scene.globals.camera.startX);
+    let y = Math.ceil(this.scene.globals.mouse.position.y + this.scene.globals.camera.startY);
     console.log('click', x, y);
   }
 }

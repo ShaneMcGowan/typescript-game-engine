@@ -56,10 +56,10 @@ export class CameraObject extends SceneObject {
     }
 
     // set camera positions
-    this.scene.globals.cameraPosition.startX = startX;
-    this.scene.globals.cameraPosition.startY = startY;
-    this.scene.globals.cameraPosition.endX = endX;
-    this.scene.globals.cameraPosition.endY = endY;
+    this.scene.globals.camera.startX = startX;
+    this.scene.globals.camera.startY = startY;
+    this.scene.globals.camera.endX = endX;
+    this.scene.globals.camera.endY = endY;
 
     // render
     renderingContext.background.forEach((context) => {

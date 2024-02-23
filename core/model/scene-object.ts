@@ -97,10 +97,10 @@ export class SceneObject {
   }
 
   get cameraRelativePositionX(): number {
-    return this.positionX + this.scene.globals.cameraPosition.startX;
+    return this.positionX + this.scene.globals.camera.startX;
   }
 
   get cameraRelativePositionY(): number {
-    return this.positionY + this.scene.globals.cameraPosition.startY;
+    return this.positionY + this.scene.globals.camera.startY;
   }
 }

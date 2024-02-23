@@ -305,8 +305,8 @@ export class InventoryUiObject extends SceneObject {
       item.currentStackSize,
       item.sprite.spriteX,
       item.sprite.spriteY,
-      this.scene.globals.mousePosition.exactX - 0.5,
-      this.scene.globals.mousePosition.exactY - 0.5
+      this.scene.globals.mouse.position.exactX - 0.5,
+      this.scene.globals.mouse.position.exactY - 0.5
     );
   }
 
