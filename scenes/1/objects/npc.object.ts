@@ -8,16 +8,33 @@ import { TextboxObject } from './textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 
 const DEFAULT_RENDER_LAYER: number = 8;
-const DEFAULT_CAN_MOVE: boolean = false;
+const DEFAULT_CAN_MOVE: boolean = true;
+const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
+  idle: new SpriteAnimation('tileset_chicken', [
+    { spriteX: 0, spriteY: 0, duration: 3.5, },
+    { spriteX: 1, spriteY: 0, duration: 0.5, }
+  ]),
+  moving: new SpriteAnimation('tileset_chicken', [
+    { spriteX: 0, spriteY: 0, duration: 3.5, },
+    { spriteX: 1, spriteY: 0, duration: 0.5, }
+  ]),
+};
+const DEFAULT_MOVEMENT_SPEED: number = 2;
+const DEFAULT_MOVEMENT_DELAY: number | undefined = undefined;
+
+type NpcState = 'idle' | 'moving';
 
 interface Config extends SceneObjectBaseConfig {
   follows?: SceneObject; // object to follow
   canMove?: boolean;
   dialogue?: string;
+  animations?: Record<NpcState, SpriteAnimation>;
+  movementSpeed?: number;
+  movementDelay?: number;
 }
 
 export class NpcObject extends SceneObject implements Interactable {
-  state: 'idle' | 'moving' = 'idle';
+  state: NpcState = 'idle';
 
   isRenderable = true;
   hasCollision = true;
@@ -31,20 +48,14 @@ export class NpcObject extends SceneObject implements Interactable {
     timer: 0, // TODO(smg): enable adding random start with MathUtils.randomStartingDelta(4),
   };
 
-  // TODO(smg): this is hardcoded
-  animations: Record<string, SpriteAnimation> = {
-    idle: new SpriteAnimation('tileset_chicken', [
-      { spriteX: 0, spriteY: 0, duration: 3.5, },
-      { spriteX: 1, spriteY: 0, duration: 0.5, }
-    ]),
-  };
+  animations: Record<string, SpriteAnimation>;
 
   // movement
   canMove: boolean;
   following: SceneObject | undefined;
-  movementSpeed = 2; // tiles per second
+  movementSpeed: number; // tiles per second
+  movementDelay: number | undefined; // seconds until next move
   movementTimer = MathUtils.randomStartingDelta(2);
-  movementDelay = 2; // seconds until next movement
 
   // interaction
   dialogue: string | undefined;
@@ -58,6 +69,9 @@ export class NpcObject extends SceneObject implements Interactable {
     this.canMove = config.canMove ? config.canMove : DEFAULT_CAN_MOVE;
     this.following = config.follows ? config.follows : undefined;
     this.dialogue = config.dialogue ? config.dialogue : undefined;
+    this.animations = config.animations ? config.animations : DEFAULT_ANIMATIONS;
+    this.movementSpeed = config.movementSpeed ? config.movementSpeed : DEFAULT_MOVEMENT_SPEED;
+    this.movementDelay = config.movementDelay ? config.movementDelay : DEFAULT_MOVEMENT_DELAY;
   }
 
   update(delta: number): void {
@@ -66,11 +80,12 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   render(context: CanvasRenderingContext2D): void {
-    let frame = this.animations.idle.currentFrame(this.animation.timer);
+    let animation = this.animations[this.state];
+    let frame = animation.currentFrame(this.animation.timer);
 
     RenderUtils.renderSprite(
       context,
-      this.assets.images[this.animations.idle.tileset],
+      this.assets.images[animation.tileset],
       frame.spriteX,
       frame.spriteY,
       this.positionX,
@@ -83,8 +98,7 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   private updateAnimationTimer(delta: number): void {
-    // TODO(smg): this is hard coded and should be either moved to config or make another class extend NpcObject and make NpcObject abstract
-    this.animation.timer = (this.animation.timer + delta) % this.animations.idle.duration;
+    this.animation.timer = (this.animation.timer + delta) % this.animations[this.state].duration;
   }
 
   private updateMovement(delta: number): void {
@@ -95,7 +109,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.movementTimer += delta;
 
     // determine next movement
-    if (this.movementTimer > this.movementDelay) {
+    if ((this.movementDelay === undefined && this.movementTimer > this.movementSpeed) || this.movementTimer > this.movementDelay) {
       this.determineNextMovement(delta);
     }
 
