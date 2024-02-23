@@ -12,6 +12,13 @@ export interface SceneRenderingContext {
 }
 
 export interface SceneGlobalsBaseConfig {
+  mouse: {
+    click: {
+      left: boolean;
+      middle: boolean;
+      right: boolean;
+    };
+  };
   mousePosition: {
     x: number;
     y: number;
@@ -56,6 +63,13 @@ export class Scene {
 
   // a place to store flags for the scene
   globals: SceneGlobalsBaseConfig = {
+    mouse: {
+      click: {
+        left: false,
+        middle: false,
+        right: false,
+      },
+    },
     mousePosition: {
       x: 0,
       y: 0,
@@ -102,6 +116,36 @@ export class Scene {
     client.canvas.addEventListener('mousemove', (event: MouseEvent) => {
       this.globals.mousePosition = MouseUtils.getMousePosition(client.canvas, event);
       this.globals.latestMouseEvent = event;
+    });
+
+    client.canvas.addEventListener('mousedown', (event: MouseEvent) => {
+      console.log('[mousedown]', event);
+      switch (event.button) {
+        case 0:
+          this.globals.mouse.click.left = true;
+          break;
+        case 1:
+          this.globals.mouse.click.middle = true;
+          break;
+        case 2:
+          this.globals.mouse.click.right = true;
+          break;
+      }
+    });
+
+    client.canvas.addEventListener('mouseup', (event: MouseEvent) => {
+      console.log('[mouseup]', event);
+      switch (event.button) {
+        case 0:
+          this.globals.mouse.click.left = false;
+          break;
+        case 1:
+          this.globals.mouse.click.middle = false;
+          break;
+        case 2:
+          this.globals.mouse.click.right = false;
+          break;
+      }
     });
   }
 

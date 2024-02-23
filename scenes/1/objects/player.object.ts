@@ -41,6 +41,7 @@ export class PlayerObject extends SceneObject {
     ['hotbar_right']: false,
     ['toggle_inventory']: false,
     ['dig']: false,
+    ['click']: false,
   };
 
   animations = {
@@ -346,6 +347,7 @@ export class PlayerObject extends SceneObject {
     this.updateHotbar();
     this.updateToggleInventory();
     this.updateDig();
+    this.updateClick();
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -585,5 +587,16 @@ export class PlayerObject extends SceneObject {
     this.scene.dispatchEvent(this.scene.eventTypes.DIRT_PLACED, { x: position.x, y: position.y, });
 
     this.controls['dig'] = false;
+  }
+
+  private updateClick(): void {
+    if (!this.scene.globals.mouse.click.left) {
+      return;
+    }
+
+    this.scene.globals.mouse.click.left = false;
+    let x = Math.ceil(this.scene.globals.mousePosition.x + this.scene.globals.cameraPosition.startX);
+    let y = Math.ceil(this.scene.globals.mousePosition.y + this.scene.globals.cameraPosition.startY);
+    console.log('click', x, y);
   }
 }
