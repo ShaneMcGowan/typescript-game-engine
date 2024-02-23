@@ -31,7 +31,7 @@ export class WarpObject extends SceneObject {
 
     this.isWarping = true;
 
-    let duration = 2;
+    let duration = 1.5;
     this.scene.addObject(
       new TimerObject(this.scene, {
         duration,

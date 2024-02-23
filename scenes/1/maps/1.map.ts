@@ -9,6 +9,7 @@ import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { TransitionObject } from '../../../core/objects/transition.object';
 import { CollisionObject } from '../objects/collision.object';
 import { WarpObject } from '../objects/warp.object';
+import { GenericSpriteObject } from '../objects/generic-sprite.object';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   height = 40;
@@ -76,12 +77,19 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
 
     this.objects.push(new CollisionObject(scene, { positionX: 13, positionY: 1, }));
     this.objects.push(new WarpObject(scene, { player, positionX: 14, positionY: 1, }));
+    this.objects.push(new GenericSpriteObject(scene, { tileset: 'tileset_wood_bridge', spriteX: 0, spriteY: 0, positionX: 14, positionY: 1, }));
     this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 1, }));
 
     this.objects.push(new CollisionObject(scene, { positionX: 13, positionY: 2, }));
+    this.objects.push(new GenericSpriteObject(scene, { tileset: 'tileset_wood_bridge', spriteX: 0, spriteY: 1, positionX: 14, positionY: 2, }));
     this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 2, }));
 
     this.objects.push(new CollisionObject(scene, { positionX: 13, positionY: 3, }));
+    this.objects.push(new GenericSpriteObject(scene, { tileset: 'tileset_wood_bridge', spriteX: 0, spriteY: 1, positionX: 14, positionY: 3, }));
     this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 3, }));
+
+    this.objects.push(new GenericSpriteObject(scene, { tileset: 'tileset_wood_bridge', spriteX: 0, spriteY: 1, positionX: 14, positionY: 4, }));
+
+    this.objects.push(new GenericSpriteObject(scene, { tileset: 'tileset_wood_bridge', spriteX: 0, spriteY: 2, positionX: 14, positionY: 5, }));
   }
 }

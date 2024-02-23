@@ -20,7 +20,6 @@ interface Config extends SceneObjectBaseConfig {
 const DEFAULT_MOVEMENT_SPEED = 0.5;
 
 export class GenericSpriteObject extends SceneObject {
-  hasCollision = true;
   isRenderable = true;
   width = 1;
   height = 1;
