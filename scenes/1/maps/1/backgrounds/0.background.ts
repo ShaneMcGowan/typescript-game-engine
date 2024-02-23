@@ -74,7 +74,23 @@ const BOTTOM_RIGHT: BackgroundTile = {
 export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
   index: 0,
   tiles: [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
     [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       TOP_LEFT,
       LEFT,
       LEFT,
@@ -84,6 +100,11 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
       BOTTOM_LEFT
     ],
     [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       TOP,
       CENTER,
       CENTER,
@@ -93,6 +114,11 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
       BOTTOM
     ],
     [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       TOP,
       CENTER,
       CENTER,
@@ -102,6 +128,11 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
       BOTTOM
     ],
     [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       TOP,
       CENTER,
       CENTER,
@@ -111,6 +142,11 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
       BOTTOM
     ],
     [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       TOP,
       CENTER,
       CENTER,
@@ -120,6 +156,11 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
       BOTTOM
     ],
     [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       TOP,
       CENTER,
       CENTER,
@@ -129,6 +170,11 @@ export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
       BOTTOM
     ],
     [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       TOP_RIGHT,
       RIGHT,
       RIGHT,
