@@ -8,7 +8,7 @@ import { TextboxObject } from './textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 
 const DEFAULT_RENDER_LAYER: number = 8;
-const DEFAULT_CAN_MOVE: boolean = true;
+const DEFAULT_CAN_MOVE: boolean = false;
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_chicken', [
     { spriteX: 0, spriteY: 0, duration: 3.5, },
@@ -21,16 +21,18 @@ const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
 };
 const DEFAULT_MOVEMENT_SPEED: number = 2;
 const DEFAULT_MOVEMENT_DELAY: number | undefined = undefined;
+const DEFAULT_NAME: string = '???';
 
 type NpcState = 'idle' | 'moving';
 
-interface Config extends SceneObjectBaseConfig {
+export interface NpcObjectConfig extends SceneObjectBaseConfig {
   follows?: SceneObject; // object to follow
   canMove?: boolean;
   dialogue?: string;
   animations?: Record<NpcState, SpriteAnimation>;
   movementSpeed?: number;
   movementDelay?: number;
+  name?: string;
 }
 
 export class NpcObject extends SceneObject implements Interactable {
@@ -48,6 +50,8 @@ export class NpcObject extends SceneObject implements Interactable {
     timer: 0, // TODO(smg): enable adding random start with MathUtils.randomStartingDelta(4),
   };
 
+  name: string;
+
   animations: Record<string, SpriteAnimation>;
 
   // movement
@@ -62,7 +66,7 @@ export class NpcObject extends SceneObject implements Interactable {
 
   constructor(
     protected scene: SAMPLE_SCENE_1,
-    config: Config
+    config: NpcObjectConfig
   ) {
     super(scene, config);
 
@@ -72,6 +76,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.animations = config.animations ? config.animations : DEFAULT_ANIMATIONS;
     this.movementSpeed = config.movementSpeed ? config.movementSpeed : DEFAULT_MOVEMENT_SPEED;
     this.movementDelay = config.movementDelay ? config.movementDelay : DEFAULT_MOVEMENT_DELAY;
+    this.name = config.name ? config.name : DEFAULT_NAME;
   }
 
   update(delta: number): void {
@@ -94,7 +99,7 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   destroy(): void {
-    console.log('[NpcObject#destroy]');
+    console.log('[NpcObject#destroy]', this);
   }
 
   private updateAnimationTimer(delta: number): void {
@@ -189,7 +194,8 @@ export class NpcObject extends SceneObject implements Interactable {
       this.scene,
       {
         text: this.dialogue,
-        portrait: true,
+        portrait: this.name, // TODO(smg): new to implement proper portrait system
+        name: this.name,
       }
     );
     this.scene.addObject(textbox);

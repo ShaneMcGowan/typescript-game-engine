@@ -308,6 +308,16 @@ export abstract class Scene {
     this.objects.splice(this.objects.indexOf(sceneObject), 1);
   }
 
+  // TODO(smg): this prevents weird issues caused by calling removeObject multiple times directly for the same object but it is inefficient
+  // review this at a later stage
+  removeObjectById(sceneObjectId: string): void {
+    let object = this.objects.find(o => o.id === sceneObjectId);
+    if (object === undefined) {
+      return;
+    }
+    this.removeObject(object);
+  }
+
   /**
    * Returns all instances of the provided class
    * @param type

@@ -4,12 +4,14 @@ import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { RenderUtils } from '@utils/render.utils';
 
 const TILE_SET: string = 'tileset_dialogue_box';
-
-const SAMPLE_TEXT: string = 'The CanvasRenderingContext2D method fillText(), part of the Canvas 2D API, draws a text string at the specified coordinates, filling the string\'s characters with the current fillStyle. An optional parameter allows specifying a maximum width for the rendered text, which the user agent will achieve by condensing the text or by using a lower font size.';
+const DEFAULT_TEXT: string = '...';
+const DEFAULT_ON_COMPLETE = (): void => { };
 
 interface Config extends SceneObjectBaseConfig {
   text?: string;
-  portrait?: boolean;
+  portrait?: string;
+  name?: string;
+  onComplete?: () => void;
 }
 
 export class TextboxObject extends SceneObject {
@@ -27,7 +29,9 @@ export class TextboxObject extends SceneObject {
   private textSegments: string[] = [];
   private textIndex: number = 0;
 
-  private readonly hasPortrait: boolean = false;
+  private readonly portrait: string | undefined;
+  private readonly name: string | undefined;
+
   // portrait animation - copied from ChickenObject
   animations = {
     idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
@@ -35,6 +39,9 @@ export class TextboxObject extends SceneObject {
 
   animationTimer = 0;
   animationIndex = 0;
+
+  // callback
+  private readonly onComplete: (() => void);
 
   private readonly controls = {
     confirm: false,
@@ -53,15 +60,10 @@ export class TextboxObject extends SceneObject {
       this.positionY = CanvasConstants.CANVAS_TILE_HEIGHT - this.height; // bottom of canvas
     }
 
-    if (config.text === undefined) {
-      this.text = SAMPLE_TEXT;
-    } else {
-      this.text = config.text;
-    }
-
-    if (config.portrait) {
-      this.hasPortrait = true;
-    }
+    this.text = config.text ? config.text : DEFAULT_TEXT;
+    this.onComplete = config.onComplete ? config.onComplete : DEFAULT_ON_COMPLETE;
+    this.portrait = config.portrait;
+    this.name = config.name;
 
     // define listeners
     this.keyListeners.onConfirmKeyDown = this.onConfirmKeyDown.bind(this);
@@ -90,6 +92,9 @@ export class TextboxObject extends SceneObject {
       this.renderPortrait(context);
     }
     this.generateTextbox(context);
+    if (this.hasNamePlate) {
+      this.renderNamePlate(context);
+    }
     this.renderText(context);
   }
 
@@ -107,6 +112,9 @@ export class TextboxObject extends SceneObject {
 
     // destroy self as no more text
     if (this.textSegments.length <= this.textIndex) {
+      if (this.onComplete) {
+        this.onComplete();
+      }
       this.scene.removeObject(this);
     }
 
@@ -275,6 +283,25 @@ export class TextboxObject extends SceneObject {
     );
   }
 
+  private renderNamePlate(context: CanvasRenderingContext2D): void {
+    RenderUtils.fillRectangle(
+      context,
+      ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1,
+      CanvasConstants.CANVAS_TILE_HEIGHT - 4,
+      6 * CanvasConstants.TILE_SIZE,
+      1 * CanvasConstants.TILE_SIZE,
+      { colour: '#e8cfa6', }
+    );
+
+    RenderUtils.renderText(
+      context,
+      this.name,
+      ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
+      CanvasConstants.CANVAS_TILE_HEIGHT - 3 - 0.25,
+      { size: this.textSize, }
+    );
+  }
+
   private updatePortraitAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 4;
     if (this.animationTimer < 3.5) {
@@ -295,5 +322,13 @@ export class TextboxObject extends SceneObject {
         this.controls.confirm = true;
         break;
     }
+  }
+
+  get hasPortrait(): boolean {
+    return this.portrait !== undefined;
+  }
+
+  get hasNamePlate(): boolean {
+    return this.name !== undefined;
   }
 }

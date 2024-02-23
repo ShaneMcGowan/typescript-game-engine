@@ -8,19 +8,16 @@ export interface SceneObjectBaseConfig {
   targetX?: number;
   targetY?: number;
   renderLayer?: number;
+  renderOpacity?: number;
   collisionLayer?: number;
 }
 
-const DEFAULT_RENDER_LAYER = 0;
 const DEFAULT_COLLISION_LAYER = 0;
+const DEFAULT_RENDER_LAYER = 0;
+const DEFAULT_RENDER_OPACITY = 1;
 
 export abstract class SceneObject {
   id: string = crypto.randomUUID();
-
-  isRenderable: boolean = false;
-  hasCollision: boolean = false;
-  renderLayer: number;
-  collisionLayer: number;
 
   // position
   positionX: number = -1;
@@ -32,6 +29,15 @@ export abstract class SceneObject {
   width: number = 1;
   height: number = 1;
 
+  // collision
+  hasCollision: boolean = false;
+  collisionLayer: number;
+
+  // rendering
+  renderLayer: number;
+  isRenderable: boolean = false;
+  renderOpacity: number; // the opacity of the object when rendered (value between 0 and 1)
+
   // TODO(smg): I'm not convinced of this but I will go with it for now
   keyListeners: Record<string, (event: KeyboardEvent) => void> = {}; // for keyboard events
   eventListeners: Record<string, (event: CustomEvent) => void> = {}; // for scene events
@@ -42,6 +48,7 @@ export abstract class SceneObject {
   // flags
   flaggedForRender: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
   flaggedForUpdate: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
+  flaggedForDestroy: boolean = false; // TODO(smg): implement this. used to remove object from scene on next update rather than mid update etc
 
   constructor(
     protected scene: Scene,
@@ -73,8 +80,9 @@ export abstract class SceneObject {
       this.targetY = config.targetY;
     }
 
-    this.renderLayer = config.renderLayer ?? DEFAULT_RENDER_LAYER;
-    this.collisionLayer = config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
+    this.renderLayer = config.renderLayer ? config.renderLayer : DEFAULT_RENDER_LAYER;
+    this.renderOpacity = config.renderOpacity ? config.renderOpacity : DEFAULT_RENDER_OPACITY;
+    this.collisionLayer = config.collisionLayer ? config.collisionLayer : DEFAULT_COLLISION_LAYER;
   }
 
   update?(delta: number): void;

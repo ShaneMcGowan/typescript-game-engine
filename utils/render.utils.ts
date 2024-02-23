@@ -1,10 +1,18 @@
 import { CanvasConstants } from '../constants/canvas.constants';
 
 export class RenderUtils {
-  static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number, options: { scale?: number; } = { }): void {
+  static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number, options: { scale?: number; opacity?: number; } = { }): void {
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let scale = options.scale ? options.scale : 1; // use to scale the output
+
+    // save the current context if we need to apply opacity, then restore it after
+    // we don't do this for all renders as it is a performance hit
+    let shouldSave = (options.opacity && options.opacity < 1);
+    if (shouldSave) {
+      context.globalAlpha = options.opacity;
+      context.save();
+    }
 
     context.drawImage(
       spriteSheet,
@@ -17,6 +25,10 @@ export class RenderUtils {
       width * scale,
       height * scale
     );
+
+    if (shouldSave) {
+      context.restore();
+    }
   }
 
   static renderSubsection(
@@ -59,16 +71,17 @@ export class RenderUtils {
     context.fill();
   }
 
+  // TODO(smg): this is using a mixture of pixel and tile coordinates, need to standardize
   static fillRectangle(
     context: CanvasRenderingContext2D,
     positionX: number,
     positionY: number,
     width: number,
     height: number,
-    options: { colour: string; } = { colour: 'black', }
+    options: { colour?: string; type?: 'pixel' | 'tile'; } = { }
   ): void {
-    context.strokeStyle = options.colour;
-    context.fillStyle = options.colour;
+    context.strokeStyle = options.colour ? options.colour : 'black';
+    context.fillStyle = options.colour ? options.colour : 'black';
     context.beginPath();
     context.rect(
       Math.floor(positionX * CanvasConstants.TILE_SIZE) + 0.5, // 0.5 to prevent blurring
@@ -161,7 +174,7 @@ export class RenderUtils {
       }
 
       // no exit condition, store new line
-      currentLine = updatedLine;
+      currentLine = updatedLine.trim();
     }
     return output;
   }

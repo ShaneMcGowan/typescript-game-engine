@@ -119,7 +119,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
     // load test
     // for (let i = 0; i < 20000; i++) {
-    //   this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 10, follows: player, }));
+    //   this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 10, canMove: true, follows: player, }));
     // }
 
     // camera

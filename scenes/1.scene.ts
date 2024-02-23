@@ -48,7 +48,7 @@ export class SAMPLE_SCENE_1 extends Scene {
 
   constructor(client: Client) {
     super(client);
-    this.changeMap(1); // should this be the default?
+    this.changeMap(0); // should this be the default?
   }
 
   get firstFreeInventorySpaceIndex(): number | undefined {
