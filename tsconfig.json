@@ -11,6 +11,7 @@
     "strictNullChecks": false,
     "baseUrl" : "./",
     "paths": {
+      "@core/objects/*": ["./core/objects/*"],
       "@constants/*": ["./constants/*"],
       "@model/*": ["./model/*"],
       "@scenes/*": ["./scenes/*"],

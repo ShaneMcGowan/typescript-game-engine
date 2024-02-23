@@ -72,6 +72,7 @@ export class Scene {
   };
 
   // maps
+  flaggedForMapChange: number | undefined = undefined; // if this is set, the scene will change to the map at the provided index on the next frame
   maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap
   map: SceneMap; // the current map
 
@@ -390,6 +391,10 @@ export class Scene {
     return canvas;
   }
 
+  flagForMapChange(index: number): void {
+    this.flaggedForMapChange = index;
+  }
+
   // TODO(smg): allow this to have a timer set for it
   changeMap(index: number): void {
     // clean up map
@@ -403,6 +408,7 @@ export class Scene {
     this.removeAllBackgroundLayers();
 
     // set up new map
+    console.log('[Scene] changing map to', index);
     this.map = Reflect.construct(this.maps[index], [this, this.context, this.assets]);
     this.backgroundLayers.push(...this.map.backgroundLayers);
     this.objects.push(...this.map.objects);
@@ -410,6 +416,9 @@ export class Scene {
     // set up rendering contexts
     // custom renderers in objects for maps require this
     this.setUpRenderingContexts();
+
+    // remove flag
+    this.flaggedForMapChange = undefined;
   }
 
   changeScene(sceneClass: any): void {

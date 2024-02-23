@@ -15,6 +15,8 @@ const DEFAULT_RENDER_LAYER = 0;
 const DEFAULT_COLLISION_LAYER = 0;
 
 export class SceneObject {
+  id: string;
+
   isRenderable: boolean = false;
   hasCollision: boolean = false;
   renderLayer: number;
@@ -45,6 +47,7 @@ export class SceneObject {
     protected scene: Scene,
     config: SceneObjectBaseConfig
   ) {
+    this.id = crypto.randomUUID();
     this.mainContext = this.scene.context;
     this.assets = this.scene.assets;
 

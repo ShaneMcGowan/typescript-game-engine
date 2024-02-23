@@ -7,6 +7,7 @@ const DEFAULT_ON_INTERVAL = (): void => {};
 export interface IntervalObjectConfig extends SceneObjectBaseConfig {
   duration?: number;
   onInterval?: () => void;
+  onDestroy?: () => void;
   maxIntervals?: number;
 }
 
@@ -16,6 +17,7 @@ export class IntervalObject extends SceneObject {
   private readonly maxIntervals: number | undefined;
   private readonly duration: number;
   private readonly onInterval: () => void;
+  private readonly onDestroy?: () => void;
 
   constructor(
     protected scene: Scene,
@@ -25,6 +27,7 @@ export class IntervalObject extends SceneObject {
 
     this.duration = config.duration ? config.duration : DEFAULT_DURATION;
     this.onInterval = config.onInterval ? config.onInterval : DEFAULT_ON_INTERVAL;
+    this.onDestroy = config.onDestroy ? config.onDestroy : undefined;
     this.maxIntervals = config.maxIntervals;
   }
 
@@ -44,6 +47,9 @@ export class IntervalObject extends SceneObject {
   }
 
   destroy(): void {
+    if (this.onDestroy) {
+      this.onDestroy();
+    }
     console.log('[IntervalObject] destroyed');
   }
 }

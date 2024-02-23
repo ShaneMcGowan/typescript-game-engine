@@ -7,7 +7,7 @@ import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background'
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './1/backgrounds/1.background';
 import { InventoryUiObject } from './0/objects/inventory-ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
-import { TransitionObject } from '../objects/transition.object';
+import { TransitionObject } from '../../../core/objects/transition.object';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   height = 40;

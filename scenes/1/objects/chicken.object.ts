@@ -54,6 +54,7 @@ export class ChickenObject extends SceneObject implements Interactable {
     protected scene: SAMPLE_SCENE_1,
     protected config: Config
   ) {
+    console.log('[ChickenObject] created');
     super(scene, config);
     this.eggEnabled = this.config.canLayEggs ?? true;
     this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
@@ -78,7 +79,9 @@ export class ChickenObject extends SceneObject implements Interactable {
     );
   }
 
-  destroy?(): void {}
+  destroy(): void {
+    console.log('[ChickenObject] destroyed');
+  }
 
   private updateAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 4;

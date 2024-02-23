@@ -163,6 +163,11 @@ export class Client {
     // debug grid
     this.renderGrid();
 
+    // check for map change
+    if (this.currentScene.flaggedForMapChange) {
+      this.currentScene.changeMap(this.currentScene.flaggedForMapChange);
+    }
+
     // Call next frame
     // (we set `this` context for when using window.requestAnimationFrame)
     window.requestAnimationFrame(this.frame.bind(this));

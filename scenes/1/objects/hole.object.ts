@@ -1,9 +1,9 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@model/scene-object';
 import { RenderUtils } from '@utils/render.utils';
 import { PlayerObject } from './player.object';
-import { TransitionObject } from './transition.object';
+import { TransitionObject } from '../../../core/objects/transition.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
-import { TimerObject } from './timer.object';
+import { TimerObject } from '@core/objects/timer.object';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -43,7 +43,7 @@ export class HoleObject extends SceneObject {
         this.scene.addObject(new TimerObject(this.scene, {
           duration,
           onComplete: () => {
-            this.scene.changeMap(1);
+            this.scene.flagForMapChange(1);
           },
         }));
 

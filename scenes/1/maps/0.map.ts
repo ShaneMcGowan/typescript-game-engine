@@ -13,9 +13,9 @@ import { InventoryUiObject } from './0/objects/inventory-ui.object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { MouseUtils } from '@utils/mouse.utils';
 import { ChestObject } from '../objects/chest.object';
-import { TransitionObject } from '../objects/transition.object';
-import { IntervalObject } from '../objects/interval.object';
-import { TimerObject } from '../objects/timer.object';
+import { IntervalObject } from '@core/objects/interval.object';
+import { TimerObject } from '@core/objects/timer.object';
+import { TransitionObject } from '@core/objects/transition.object';
 
 export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   height = 100;
@@ -137,7 +137,10 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     this.objects.push(new IntervalObject(scene, {
       duration: 1,
       onInterval: () => {
-        console.log('test interval - max 5');
+        // console.log('[onInterval] test interval - max 5');
+      },
+      onDestroy: () => {
+        // console.log('[onDestroy] test interval - max 5');
       },
       maxIntervals: 5,
     }));
@@ -145,14 +148,17 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
     this.objects.push(new IntervalObject(scene, {
       duration: 1,
       onInterval: () => {
-        console.log('test interval - no max');
+        // console.log('[onInterval] test interval - no max');
+      },
+      onDestroy: () => {
+        // console.log('[onDestroy] test interval - no max');
       },
     }));
 
     this.objects.push(new TimerObject(scene, {
       duration: 1,
       onComplete: () => {
-        console.log('test timer');
+        // console.log('test timer');
       },
     }));
 

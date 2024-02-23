@@ -17,6 +17,7 @@ module.exports = {
   },
   resolve: {
     alias: {
+      '@core/objects': path.resolve(__dirname, 'core/objects/'),
       '@constants': path.resolve(__dirname, 'constants/'),
       '@model': path.resolve(__dirname, 'model/'),
       '@scenes': path.resolve(__dirname, 'scenes/'),
