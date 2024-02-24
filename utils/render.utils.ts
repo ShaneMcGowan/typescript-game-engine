@@ -1,7 +1,17 @@
 import { CanvasConstants } from '../constants/canvas.constants';
 
 export class RenderUtils {
-  static renderSprite(context: CanvasRenderingContext2D, spriteSheet: HTMLImageElement, spriteX: number, spriteY: number, positionX: number, positionY: number, spriteWidth?: number, spriteHeight?: number, options: { scale?: number; opacity?: number; } = { }): void {
+  static renderSprite(
+    context: CanvasRenderingContext2D,
+    spriteSheet: HTMLImageElement,
+    spriteX: number,
+    spriteY: number,
+    positionX: number,
+    positionY: number,
+    spriteWidth?: number,
+    spriteHeight?: number,
+    options: { scale?: number; opacity?: number; } = { }
+  ): void {
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let scale = options.scale ? options.scale : 1; // use to scale the output
@@ -10,8 +20,8 @@ export class RenderUtils {
     // we don't do this for all renders as it is a performance hit
     let shouldSave = (options.opacity && options.opacity < 1);
     if (shouldSave) {
-      context.globalAlpha = options.opacity;
       context.save();
+      context.globalAlpha = Math.max(0, options.opacity);
     }
 
     context.drawImage(
@@ -144,8 +154,8 @@ export class RenderUtils {
     options: { size?: number; colour?: string; } = {}
   ): string[] {
     // defaults
-    let size = options.size ? options.size : 16;
-    let colour = options.colour ? options.colour : 'black';
+    let size = options.size ?? 16;
+    let colour = options.colour ?? 'black';
 
     // configure context
     let context = document.createElement('canvas').getContext('2d');

@@ -23,8 +23,8 @@ export class TimerObject extends SceneObject {
   ) {
     super(scene, config);
 
-    this.duration = config.duration ? config.duration : DEFAULT_DURATION;
-    this.onComplete = config.onComplete ? config.onComplete : DEFAULT_ON_COMPLETE;
+    this.duration = config.duration ?? DEFAULT_DURATION;
+    this.onComplete = config.onComplete ?? DEFAULT_ON_COMPLETE;
   }
 
   update(delta: number): void {

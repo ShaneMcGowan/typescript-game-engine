@@ -70,13 +70,13 @@ export class NpcObject extends SceneObject implements Interactable {
   ) {
     super(scene, config);
 
-    this.canMove = config.canMove ? config.canMove : DEFAULT_CAN_MOVE;
-    this.following = config.follows ? config.follows : undefined;
-    this.dialogue = config.dialogue ? config.dialogue : undefined;
-    this.animations = config.animations ? config.animations : DEFAULT_ANIMATIONS;
-    this.movementSpeed = config.movementSpeed ? config.movementSpeed : DEFAULT_MOVEMENT_SPEED;
-    this.movementDelay = config.movementDelay ? config.movementDelay : DEFAULT_MOVEMENT_DELAY;
-    this.name = config.name ? config.name : DEFAULT_NAME;
+    this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
+    this.following = config.follows;
+    this.dialogue = config.dialogue;
+    this.animations = config.animations ?? DEFAULT_ANIMATIONS;
+    this.movementSpeed = config.movementSpeed ?? DEFAULT_MOVEMENT_SPEED;
+    this.movementDelay = config.movementDelay ?? DEFAULT_MOVEMENT_DELAY;
+    this.name = config.name ?? DEFAULT_NAME;
   }
 
   update(delta: number): void {
@@ -94,7 +94,13 @@ export class NpcObject extends SceneObject implements Interactable {
       frame.spriteX,
       frame.spriteY,
       this.positionX,
-      this.positionY
+      this.positionY,
+      undefined,
+      undefined,
+      {
+        opacity: this.renderOpacity,
+        scale: this.renderScale,
+      }
     );
   }
 

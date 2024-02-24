@@ -9,12 +9,14 @@ export interface SceneObjectBaseConfig {
   targetY?: number;
   renderLayer?: number;
   renderOpacity?: number;
+  renderScale?: number;
   collisionLayer?: number;
 }
 
-const DEFAULT_COLLISION_LAYER = 0;
-const DEFAULT_RENDER_LAYER = 0;
-const DEFAULT_RENDER_OPACITY = 1;
+const DEFAULT_COLLISION_LAYER: number = 0;
+const DEFAULT_RENDER_LAYER: number = 0;
+const DEFAULT_RENDER_OPACITY: number = 1;
+const DEFAULT_RENDER_SCALE: number = 1;
 
 export abstract class SceneObject {
   id: string = crypto.randomUUID();
@@ -37,6 +39,7 @@ export abstract class SceneObject {
   renderLayer: number;
   isRenderable: boolean = false;
   renderOpacity: number; // the opacity of the object when rendered (value between 0 and 1)
+  renderScale: number; // the scale of the object when rendered
 
   // TODO(smg): I'm not convinced of this but I will go with it for now
   keyListeners: Record<string, (event: KeyboardEvent) => void> = {}; // for keyboard events
@@ -80,9 +83,10 @@ export abstract class SceneObject {
       this.targetY = config.targetY;
     }
 
-    this.renderLayer = config.renderLayer ? config.renderLayer : DEFAULT_RENDER_LAYER;
-    this.renderOpacity = config.renderOpacity ? config.renderOpacity : DEFAULT_RENDER_OPACITY;
-    this.collisionLayer = config.collisionLayer ? config.collisionLayer : DEFAULT_COLLISION_LAYER;
+    this.renderLayer = config.renderLayer ?? DEFAULT_RENDER_LAYER;
+    this.renderOpacity = config.renderOpacity ?? DEFAULT_RENDER_OPACITY;
+    this.collisionLayer = config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
+    this.renderScale = config.renderScale ?? DEFAULT_RENDER_SCALE;
   }
 
   update?(delta: number): void;

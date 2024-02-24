@@ -4,10 +4,12 @@ import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { RenderUtils } from '@utils/render.utils';
 
 const TILE_SET: string = 'tileset_dialogue_box';
+const DEFAULT_OVERLAY: boolean = true;
 const DEFAULT_TEXT: string = '...';
 const DEFAULT_ON_COMPLETE = (): void => { };
 
 interface Config extends SceneObjectBaseConfig {
+  showOverlay?: boolean;
   text?: string;
   portrait?: string;
   name?: string;
@@ -29,6 +31,7 @@ export class TextboxObject extends SceneObject {
   private textSegments: string[] = [];
   private textIndex: number = 0;
 
+  private readonly showOverlay: boolean;
   private readonly portrait: string | undefined;
   private readonly name: string | undefined;
 
@@ -60,8 +63,9 @@ export class TextboxObject extends SceneObject {
       this.positionY = CanvasConstants.CANVAS_TILE_HEIGHT - this.height; // bottom of canvas
     }
 
-    this.text = config.text ? config.text : DEFAULT_TEXT;
-    this.onComplete = config.onComplete ? config.onComplete : DEFAULT_ON_COMPLETE;
+    this.showOverlay = config.showOverlay ?? DEFAULT_OVERLAY;
+    this.text = config.text ?? DEFAULT_TEXT;
+    this.onComplete = config.onComplete ?? DEFAULT_ON_COMPLETE;
     this.portrait = config.portrait;
     this.name = config.name;
 
@@ -87,14 +91,20 @@ export class TextboxObject extends SceneObject {
   }
 
   render(context: CanvasRenderingContext2D): void {
-    this.renderOverlay(context);
+    if (this.showOverlay) {
+      this.renderOverlay(context);
+    }
+
     if (this.hasPortrait) {
       this.renderPortrait(context);
     }
+
     this.generateTextbox(context);
+
     if (this.hasNamePlate) {
       this.renderNamePlate(context);
     }
+
     this.renderText(context);
   }
 

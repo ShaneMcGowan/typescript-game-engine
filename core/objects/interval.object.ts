@@ -28,9 +28,9 @@ export class IntervalObject extends SceneObject {
   ) {
     super(scene, config);
 
-    this.duration = config.duration ? config.duration : DEFAULT_DURATION;
-    this.onInterval = config.onInterval ? config.onInterval : DEFAULT_ON_INTERVAL;
-    this.onDestroy = config.onDestroy ? config.onDestroy : undefined;
+    this.duration = config.duration ?? DEFAULT_DURATION;
+    this.onInterval = config.onInterval ?? DEFAULT_ON_INTERVAL;
+    this.onDestroy = config.onDestroy ?? undefined;
     this.maxIntervals = config.maxIntervals;
   }
 

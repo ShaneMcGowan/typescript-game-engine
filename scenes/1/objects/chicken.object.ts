@@ -62,10 +62,10 @@ export class ChickenObject extends SceneObject implements Interactable {
   ) {
     console.log('[ChickenObject] created');
     super(scene, config);
-    this.canLayEggs = config.canLayEggs ? config.canLayEggs : DEFAULT_CAN_LAY_EGGS;
+    this.canLayEggs = config.canLayEggs ?? DEFAULT_CAN_LAY_EGGS;
     this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
-    this.canMove = config.canMove ? config.canMove : DEFAULT_CAN_MOVE;
-    this.following = config.follows ? config.follows : undefined;
+    this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
+    this.following = config.follows;
   }
 
   update(delta: number): void {

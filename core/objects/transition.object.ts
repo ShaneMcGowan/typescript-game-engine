@@ -40,11 +40,11 @@ export class TransitionObject extends SceneObject {
   ) {
     super(scene, config);
 
-    this.animationType = config.animationType ? config.animationType : DEFAULT_ANIMATION_TYPE;
-    this.animationDirection = config.animationDirection ? config.animationDirection : DEFAULT_ANIMATION_DIRECTION;
-    this.animationLength = config.animationLength ? config.animationLength : DEFAULT_ANIMATION_LENGTH;
-    this.animationCenterX = config.animationCenterX ? config.animationCenterX : DEFAULT_ANIMATION_CENTER_X;
-    this.animationCenterY = config.animationCenterY ? config.animationCenterY : DEFAULT_ANIMATION_CENTER_Y;
+    this.animationType = config.animationType ?? DEFAULT_ANIMATION_TYPE;
+    this.animationDirection = config.animationDirection ?? DEFAULT_ANIMATION_DIRECTION;
+    this.animationLength = config.animationLength ?? DEFAULT_ANIMATION_LENGTH;
+    this.animationCenterX = config.animationCenterX ?? DEFAULT_ANIMATION_CENTER_X;
+    this.animationCenterY = config.animationCenterY ?? DEFAULT_ANIMATION_CENTER_Y;
   }
 
   update(delta: number): void {

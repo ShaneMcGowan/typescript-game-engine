@@ -301,6 +301,9 @@ export abstract class Scene {
     this.objects.push(sceneObject);
   }
 
+  // TODO(smg): I am rethinking the concept of removing the object from the scene during another object's update.
+  // I think it would be better to have a flag that is checked during the scene's update loop to rmove the obejct before it's next update
+  // perhaps using flaggedForDestroy
   removeObject(sceneObject: SceneObject): void {
     if (sceneObject.destroy) {
       sceneObject.destroy();

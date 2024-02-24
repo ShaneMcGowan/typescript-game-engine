@@ -34,7 +34,7 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
     this.objects.push(new TransitionObject(scene, { animationType: 'block', animationLength: 2, }));
 
     // chickens
-    this.objects.push(new GregNpcObject(scene, { positionX: 14, positionY: 7, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_4, name: 'Greg', }));
+    this.objects.push(new GregNpcObject(scene, { positionX: 14, positionY: 7, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_4, name: 'Greg', isGreg: true, }));
     this.objects.push(new GregNpcObject(scene, { positionX: 13, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_2, }));
     this.objects.push(new GregNpcObject(scene, { positionX: 15, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_3, }));
     this.objects.push(new GregNpcObject(scene, { positionX: 14, positionY: 9, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_1, }));

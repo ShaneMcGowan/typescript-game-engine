@@ -46,10 +46,10 @@ export class GenericSpriteObject extends SceneObject {
     this.tileset = config.tileset;
     this.spriteX = config.spriteX;
     this.spriteY = config.spriteY;
-    this.spriteHeight = config.spriteHeight ? config.spriteHeight : undefined;
-    this.spriteWidth = config.spriteWidth ? config.spriteWidth : undefined;
-    this.destroyAtTarget = config.destroyAtTarget ? config.destroyAtTarget : DEFAULT_DESTROYED_AT_TARGET;
-    this.movementSpeed = config.movementSpeed ? config.movementSpeed : DEFAULT_MOVEMENT_SPEED;
+    this.spriteHeight = config.spriteHeight;
+    this.spriteWidth = config.spriteWidth;
+    this.destroyAtTarget = config.destroyAtTarget ?? DEFAULT_DESTROYED_AT_TARGET;
+    this.movementSpeed = config.movementSpeed ?? DEFAULT_MOVEMENT_SPEED;
   }
 
   update(delta: number): void {
