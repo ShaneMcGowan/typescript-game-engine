@@ -1,4 +1,4 @@
-import { type Client } from '../client';
+import { type Client } from '@core/client';
 import { Scene, type SceneGlobalsBaseConfig } from '../core/model/scene';
 import { SAMPLE_SCENE_1_MAP_0 } from './1/maps/0.map';
 import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';

@@ -1,8 +1,8 @@
-import { ASSETS } from './constants/assets.constants';
-import { CanvasConstants } from './constants/canvas.constants';
-import { SCENES } from './constants/scene.constants';
-import { type Scene } from './core/model/scene';
-import { RenderUtils } from './utils/render.utils';
+import { ASSETS } from '../constants/assets.constants';
+import { CanvasConstants } from '../constants/canvas.constants';
+import { SCENES } from '../constants/scene.constants';
+import { type Scene } from './model/scene';
+import { RenderUtils } from '../utils/render.utils';
 
 export class Client {
   // Constants
