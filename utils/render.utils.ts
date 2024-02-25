@@ -1,6 +1,6 @@
 import { CanvasConstants } from '../constants/canvas.constants';
 
-export class RenderUtils {
+export abstract class RenderUtils {
   static renderSprite(
     context: CanvasRenderingContext2D,
     spriteSheet: HTMLImageElement,

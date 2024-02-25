@@ -8,7 +8,7 @@ export class Movement {
     public targetY: number
   ) { }
 }
-export class MovementUtils {
+export abstract class MovementUtils {
   /**
    * will translate current position based on velocity, in a single direction with priority of right, left, down, up
    * @param movement

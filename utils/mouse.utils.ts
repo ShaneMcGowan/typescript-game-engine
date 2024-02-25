@@ -7,7 +7,7 @@ export interface MousePosition {
   exactY: number;
 }
 
-export class MouseUtils {
+export abstract class MouseUtils {
   /**
    * Gets the current mouse position relative to the canvas, taking into account fullscreen mode
    * Fullscreen mode adjusts the height if landscape, or width if portrait, of the canvas element, but not the pixel size of the canvas, so we need to adjust the mouse position accordingly

@@ -1,4 +1,4 @@
-export class MathUtils {
+export abstract class MathUtils {
   // including min and max
   static randomIntFromRange(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min);
