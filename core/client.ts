@@ -1,5 +1,5 @@
 import { CanvasConstants } from '../constants/canvas.constants';
-import { type Scene } from './model/scene';
+import { type SceneConstructorSignature, type Scene } from './model/scene';
 import { RenderUtils } from '../utils/render.utils';
 import { type AssetsConfig, type Assets } from './model/assets';
 
@@ -15,7 +15,7 @@ export class Client {
   private lastRenderTimestamp: number = 0;
 
   // Data
-  private readonly scenes: any[];
+  private readonly scenes: SceneConstructorSignature[];
   private currentScene: Scene;
 
   // Assets
@@ -56,7 +56,11 @@ export class Client {
   // controllers
   gamepad: Gamepad | undefined = undefined;
 
-  constructor(public container: HTMLElement, scenes: any[], assets: AssetsConfig) {
+  constructor(
+    public container: HTMLElement,
+    scenes: SceneConstructorSignature[],
+    assets: AssetsConfig
+  ) {
     // scenes
     this.scenes = [...scenes];
 
@@ -122,7 +126,7 @@ export class Client {
   }
 
   // TODO(smg): need some sort of scene class list type
-  changeScene(sceneClass: any): void {
+  changeScene(sceneClass: SceneConstructorSignature): void {
     this.currentScene = Reflect.construct(sceneClass, [this]);
   }
 
