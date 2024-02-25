@@ -82,18 +82,21 @@ export class GregNpcObject extends NpcObject {
           text: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.greg.line_2,
           portrait: this.name,
           name: this.name,
-          completionDuration: this.stageByeDuration,
+          onComplete: () => {
+            this.startStageBye();
+          },
+          // completionDuration: this.stageByeDuration,
         }
       )
     );
   }
 
   private updateStagePause(delta: number): void {
-    this.stagePauseTimer += delta;
+    // this.stagePauseTimer += delta;
 
-    if (this.stagePauseTimer >= this.stagePauseDuration) {
-      this.startStageBye();
-    }
+    // if (this.stagePauseTimer >= this.stagePauseDuration) {
+    //   this.startStageBye();
+    // }
   }
 
   private startStageBye(): void {

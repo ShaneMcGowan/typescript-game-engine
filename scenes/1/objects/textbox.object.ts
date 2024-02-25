@@ -7,6 +7,8 @@ const TILE_SET: string = 'tileset_dialogue_box';
 const DEFAULT_OVERLAY: boolean = true;
 const DEFAULT_TEXT: string = '...';
 const DEFAULT_ON_COMPLETE = (): void => { };
+const DEFAULT_SCROLL_TEXT: boolean = true;
+const DEFAULT_SCROLL_SPEED: number = 48;
 
 interface Config extends SceneObjectBaseConfig {
   showOverlay?: boolean;
@@ -15,6 +17,8 @@ interface Config extends SceneObjectBaseConfig {
   name?: string;
   onComplete?: () => void;
   completionDuration?: number;
+  scrollText?: boolean;
+  scrollSpeed?: number;
 }
 
 export class TextboxObject extends SceneObject {
@@ -30,7 +34,12 @@ export class TextboxObject extends SceneObject {
   private readonly textSize: number = 10;
   private readonly text: string;
   private textSegments: string[] = [];
-  private textIndex: number = 0;
+  private textIndex: number = 0; // index of textSegments
+  private characterIndex: number = 0; // index of character of current text
+
+  // text scroll
+  private readonly scrollText: boolean;
+  private readonly scrollSpeed: number;
 
   private readonly showOverlay: boolean;
   private readonly portrait: string | undefined;
@@ -75,6 +84,8 @@ export class TextboxObject extends SceneObject {
     this.portrait = config.portrait;
     this.name = config.name;
     this.completionDuration = config.completionDuration;
+    this.scrollText = config.scrollText ?? DEFAULT_SCROLL_TEXT;
+    this.scrollSpeed = config.scrollSpeed ?? DEFAULT_SCROLL_SPEED;
 
     // define listeners
     this.keyListeners.onConfirmKeyDown = this.onConfirmKeyDown.bind(this);
@@ -97,6 +108,10 @@ export class TextboxObject extends SceneObject {
       this.updateTimer(delta);
     } else {
       this.updateConfirm();
+    }
+
+    if (this.scrollText) {
+      this.updateScrollText(delta);
     }
 
     this.updatePortraitAnimation(delta);
@@ -136,12 +151,29 @@ export class TextboxObject extends SceneObject {
     }
   }
 
+  private updateScrollText(delta: number): void {
+    if (this.currentText.length > this.characterIndex) {
+      this.characterIndex += this.scrollSpeed * delta;
+    }
+  }
+
   private updateConfirm(): void {
     if (!this.controls.confirm) {
       return;
     }
 
+    // if text is scrolling, scroll to end but don't go to next segment
+    if (this.scrollText) {
+      if (this.currentText.length > this.characterIndex) {
+        this.characterIndex = this.currentText.length;
+        this.controls.confirm = false;
+        return;
+      }
+    }
+
     this.textIndex += 2;
+
+    this.characterIndex = 0;
 
     // destroy self as no more text
     if (this.textSegments.length <= this.textIndex) {
@@ -275,24 +307,24 @@ export class TextboxObject extends SceneObject {
   }
 
   private renderText(context: CanvasRenderingContext2D): void {
-    // line 1
-    let line1Text = this.textSegments[this.textIndex];
-    let line2Text = this.textSegments[this.textIndex + 1];
+    if (this.textLine1) {
+      let text = this.scrollText ? this.textLine1.substring(0, this.characterIndex) : this.textLine1;
 
-    if (line1Text) {
       RenderUtils.renderText(
         context,
-        line1Text,
+        text,
         ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
         CanvasConstants.CANVAS_TILE_HEIGHT - 2 - 0.25,
         { size: this.textSize, }
       );
     }
 
-    if (line2Text) {
+    if (this.textLine2) {
+      let text = this.scrollText ? this.textLine2.substring(0, this.characterIndex - this.textLine1.length) : this.textLine2;
+
       RenderUtils.renderText(
         context,
-        line2Text,
+        text,
         ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
         CanvasConstants.CANVAS_TILE_HEIGHT - 1 - 0.25,
         { size: this.textSize, }
@@ -363,5 +395,27 @@ export class TextboxObject extends SceneObject {
 
   get hasNamePlate(): boolean {
     return this.name !== undefined;
+  }
+
+  get textLine1(): string | undefined {
+    return this.textSegments[this.textIndex];
+  }
+
+  get textLine2(): string | undefined {
+    return this.textSegments[this.textIndex + 1];
+  }
+
+  get currentText(): string {
+    let text = '';
+
+    if (this.textLine1) {
+      text += this.textLine1;
+    }
+
+    if (this.textLine2) {
+      text += this.textLine2;
+    }
+
+    return text;
   }
 }
