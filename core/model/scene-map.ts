@@ -2,7 +2,7 @@ import { type BackgroundLayer } from './background-layer';
 import { type Scene } from './scene';
 import { type SceneObject } from './scene-object';
 
-export class SceneMap {
+export abstract class SceneMap {
   width: number;
   height: number;
   backgroundLayers: BackgroundLayer[];

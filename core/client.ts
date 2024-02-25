@@ -1,8 +1,7 @@
-import { ASSETS } from '../constants/assets.constants';
 import { CanvasConstants } from '../constants/canvas.constants';
-import { SCENES } from '../constants/scene.constants';
 import { type Scene } from './model/scene';
 import { RenderUtils } from '../utils/render.utils';
+import { type Assets } from './model/assets';
 
 export class Client {
   // Constants
@@ -16,7 +15,7 @@ export class Client {
   private lastRenderTimestamp: number = 0;
 
   // Data
-  private readonly scenes = [...SCENES];
+  private readonly scenes: any[];
   private currentScene: Scene;
 
   // Assets
@@ -60,15 +59,18 @@ export class Client {
   // controllers
   gamepad: Gamepad | undefined = undefined;
 
-  constructor(public container: HTMLElement) {
+  constructor(public container: HTMLElement, scenes: any[], assets: Assets) {
+    // scenes
+    this.scenes = [...scenes];
+
     // load assets
     // TODO(smg): some sort of loading screen / rendering delay until assets are loaded
-    Object.keys(ASSETS.images).forEach((key) => {
+    Object.keys(assets.images).forEach((key) => {
       this.assets.images[key] = new Image();
-      this.assets.images[key].src = ASSETS.images[key];
+      this.assets.images[key].src = assets.images[key];
     });
-    Object.keys(ASSETS.audio).forEach((key) => {
-      this.assets.audio[key] = new Audio(ASSETS.audio[key]);
+    Object.keys(assets.audio).forEach((key) => {
+      this.assets.audio[key] = new Audio(assets.audio[key]);
     });
 
     // initialise debug controls
