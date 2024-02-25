@@ -1,4 +1,4 @@
-import { CanvasConstants } from '../../constants/canvas.constants';
+import { CanvasConstants } from '../constants/canvas.constants';
 
 export interface MousePosition {
   x: number;

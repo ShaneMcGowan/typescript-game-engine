@@ -1,4 +1,4 @@
-import { CanvasConstants } from '@constants/canvas.constants';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { type ChestObject } from '@scenes/1/objects/chest.object';

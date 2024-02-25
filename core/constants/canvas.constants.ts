@@ -3,7 +3,7 @@
  * This means "resolution" will still be low but we can fill the full monitor, we also need to set canvas.width along with this value. should be done on initialisation and also window resizing
  * Leave as hardcoded value for now
 */
-export class CanvasConstants {
+export abstract class CanvasConstants {
   // 18 / 30
   static readonly CANVAS_TILE_HEIGHT = 18; // total height in tiles
   static readonly CANVAS_TILE_WIDTH = 30; // total width in tiles

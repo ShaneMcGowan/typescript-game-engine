@@ -1,4 +1,4 @@
-import { CanvasConstants } from '@constants/canvas.constants';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 import { RenderUtils } from '@utils/render.utils';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';

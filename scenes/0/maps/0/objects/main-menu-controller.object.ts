@@ -1,4 +1,4 @@
-import { CanvasConstants } from '@constants/canvas.constants';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { GenericSpriteObject } from '@scenes/1/objects/generic-sprite.object';

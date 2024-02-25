@@ -1,4 +1,4 @@
-import { CanvasConstants } from '../constants/canvas.constants';
+import { CanvasConstants } from '../core/constants/canvas.constants';
 
 export abstract class RenderUtils {
   static renderSprite(

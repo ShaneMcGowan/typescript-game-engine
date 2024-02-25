@@ -1,4 +1,4 @@
-import { CanvasConstants } from '@constants/canvas.constants';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type BackgroundLayer } from '@core/model/background-layer';
 import { type Scene } from '@core/model/scene';
 import { SceneMap } from '@core/model/scene-map';
