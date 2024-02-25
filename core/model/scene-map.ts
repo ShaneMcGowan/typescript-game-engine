@@ -3,6 +3,8 @@ import { type BackgroundLayer } from './background-layer';
 import { type Scene } from './scene';
 import { type SceneObject } from './scene-object';
 
+export type SceneMapConstructorSignature = new (client: Scene) => SceneMap;
+
 export abstract class SceneMap {
   width: number;
   height: number;

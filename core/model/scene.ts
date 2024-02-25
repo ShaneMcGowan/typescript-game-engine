@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@constants/canvas.constants';
 import { RenderUtils } from '@utils/render.utils';
 import { type BackgroundLayer } from './background-layer';
-import { type SceneMap } from './scene-map';
+import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObject } from './scene-object';
 import { MouseUtils } from '@utils/mouse.utils';
 import { type Client } from '@core/client';
@@ -91,7 +91,7 @@ export abstract class Scene {
 
   // maps
   flaggedForMapChange: number | undefined = undefined; // if this is set, the scene will change to the map at the provided index on the next frame
-  maps: any[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap
+  maps: SceneMapConstructorSignature[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap
   map: SceneMap; // the current map
 
   // rendering contexts
