@@ -3,7 +3,7 @@ import { type BackgroundLayer } from '@core/model/background-layer';
 import { type Scene } from '@core/model/scene';
 import { SceneMap } from '@core/model/scene-map';
 import { type SceneObject } from '@core/model/scene-object';
-import { MouseUtils } from '@utils/mouse.utils';
+import { MouseUtils } from '@core/utils/mouse.utils';
 import { SAMPLE_SCENE_0_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background';
 import { MainMenuControllerObject } from './0/objects/main-menu-controller.object';
 import { StartButtonObject } from './0/objects/start-button.object';

@@ -3,7 +3,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { type SAMPLE_SCENE_1 } from '@scenes/1.scene';
 import { type ChestObject } from '@scenes/1/objects/chest.object';
 import { type InventoryItemObject } from '@scenes/1/objects/inventory-item.object';
-import { MouseUtils } from '@utils/mouse.utils';
+import { MouseUtils } from '@core/utils/mouse.utils';
 import { RenderUtils } from '@utils/render.utils';
 
 const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;

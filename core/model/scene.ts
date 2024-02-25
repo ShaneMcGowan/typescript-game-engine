@@ -3,7 +3,7 @@ import { RenderUtils } from '@utils/render.utils';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObject } from './scene-object';
-import { MouseUtils } from '@utils/mouse.utils';
+import { MouseUtils } from '@core/utils/mouse.utils';
 import { type Client } from '@core/client';
 import { type Assets } from './assets';
 
