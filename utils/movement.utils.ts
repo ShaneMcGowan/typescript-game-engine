@@ -1,4 +1,4 @@
-import { MathUtils } from './math.utils';
+import { MathUtils } from '../core/utils/math.utils';
 
 export class Movement {
   constructor(

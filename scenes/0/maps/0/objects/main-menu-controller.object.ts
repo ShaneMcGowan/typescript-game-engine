@@ -2,7 +2,7 @@ import { CanvasConstants } from '@constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { GenericSpriteObject } from '@scenes/1/objects/generic-sprite.object';
-import { MathUtils } from '@utils/math.utils';
+import { MathUtils } from '@core/utils/math.utils';
 
 const MAX_ITEMS = 15; // max objects allowed on screen at once
 const NEW_ITEM_DELAY = 3; // seconds unil new item is generated (if there is room)
