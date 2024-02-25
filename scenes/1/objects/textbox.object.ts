@@ -14,6 +14,7 @@ interface Config extends SceneObjectBaseConfig {
   portrait?: string;
   name?: string;
   onComplete?: () => void;
+  completionDuration?: number;
 }
 
 export class TextboxObject extends SceneObject {
@@ -36,15 +37,20 @@ export class TextboxObject extends SceneObject {
   private readonly name: string | undefined;
 
   // portrait animation - copied from ChickenObject
-  animations = {
+  // TODO(smg): this is hard coded, update it
+  private readonly animations = {
     idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
   };
 
-  animationTimer = 0;
-  animationIndex = 0;
+  private animationTimer: number = 0;
+  private animationIndex: number = 0;
 
   // callback
   private readonly onComplete: (() => void);
+
+  // completion
+  private completionTimer: number = 0;
+  private readonly completionDuration: number | undefined;
 
   private readonly controls = {
     confirm: false,
@@ -68,6 +74,7 @@ export class TextboxObject extends SceneObject {
     this.onComplete = config.onComplete ?? DEFAULT_ON_COMPLETE;
     this.portrait = config.portrait;
     this.name = config.name;
+    this.completionDuration = config.completionDuration;
 
     // define listeners
     this.keyListeners.onConfirmKeyDown = this.onConfirmKeyDown.bind(this);
@@ -86,7 +93,12 @@ export class TextboxObject extends SceneObject {
   }
 
   update(delta: number): void {
-    this.updateConfirm();
+    if (this.completionDuration !== undefined) {
+      this.updateTimer(delta);
+    } else {
+      this.updateConfirm();
+    }
+
     this.updatePortraitAnimation(delta);
   }
 
@@ -111,6 +123,17 @@ export class TextboxObject extends SceneObject {
   destroy(): void {
     document.removeEventListener('keydown', this.keyListeners.onConfirmKeyDown);
     this.scene.dispatchEvent(this.scene.eventTypes.TEXTBOX_CLOSED);
+  }
+
+  private updateTimer(delta: number): void {
+    this.completionTimer += delta;
+
+    if (this.completionTimer >= this.completionDuration) {
+      if (this.onComplete) {
+        this.onComplete();
+      }
+      this.scene.removeObject(this);
+    }
   }
 
   private updateConfirm(): void {

@@ -1,7 +1,6 @@
 import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { type SceneObject } from '@core/model/scene-object';
-import { ChickenObject } from '../objects/chicken.object';
 import { PlayerObject } from '../objects/player.object';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './1/backgrounds/1.background';
@@ -10,9 +9,9 @@ import { TransitionObject } from '../../../core/objects/transition.object';
 import { CollisionObject } from '../objects/collision.object';
 import { WarpObject } from '../objects/warp.object';
 import { GenericSpriteObject } from '../objects/generic-sprite.object';
-import { NpcObject } from '../objects/npc.object';
 import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from './1/constants/map-text.constants';
 import { GregNpcObject } from './1/objects/npcs/greg.npc';
+import { UnknownNpcObject } from './1/objects/npcs/unknown.npc';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   height = 40;
@@ -34,10 +33,10 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
     this.objects.push(new TransitionObject(scene, { animationType: 'block', animationLength: 2, }));
 
     // chickens
-    this.objects.push(new GregNpcObject(scene, { positionX: 14, positionY: 7, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_4, name: 'Greg', isGreg: true, }));
-    this.objects.push(new GregNpcObject(scene, { positionX: 13, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_2, }));
-    this.objects.push(new GregNpcObject(scene, { positionX: 15, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_3, }));
-    this.objects.push(new GregNpcObject(scene, { positionX: 14, positionY: 9, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_intro_1, }));
+    this.objects.push(new GregNpcObject(scene, { positionX: 14, positionY: 7, name: 'Greg', }));
+    this.objects.push(new UnknownNpcObject(scene, { positionX: 13, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.unknown_npc_1, }));
+    this.objects.push(new UnknownNpcObject(scene, { positionX: 15, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.unknown_npc_2, }));
+    this.objects.push(new UnknownNpcObject(scene, { positionX: 14, positionY: 9, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.unknown_npc_3, }));
 
     // wall
     this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 4, }));
