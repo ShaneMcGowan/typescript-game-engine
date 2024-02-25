@@ -1,3 +1,4 @@
+import { type Assets } from './assets';
 import { type BackgroundLayer } from './background-layer';
 import { type Scene } from './scene';
 import { type SceneObject } from './scene-object';
@@ -10,7 +11,7 @@ export abstract class SceneMap {
   globals: Record<string, any> = {};
 
   protected context: CanvasRenderingContext2D;
-  protected assets: Record<string, any>;
+  protected assets: Assets;
 
   constructor(
     protected scene: Scene

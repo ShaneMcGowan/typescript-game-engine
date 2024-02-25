@@ -1,7 +1,7 @@
 import { CanvasConstants } from '../constants/canvas.constants';
 import { type Scene } from './model/scene';
 import { RenderUtils } from '../utils/render.utils';
-import { type Assets } from './model/assets';
+import { type AssetsConfig, type Assets } from './model/assets';
 
 export class Client {
   // Constants
@@ -19,13 +19,10 @@ export class Client {
   private currentScene: Scene;
 
   // Assets
-  assets: {
-    images: Record<string, HTMLImageElement>;
-    audio: Record<string, HTMLAudioElement>;
-  } = {
-      images: {},
-      audio: {},
-    };
+  assets: Assets = {
+    images: {},
+    audio: {},
+  };
 
   // Debug
   debug = {
@@ -59,7 +56,7 @@ export class Client {
   // controllers
   gamepad: Gamepad | undefined = undefined;
 
-  constructor(public container: HTMLElement, scenes: any[], assets: Assets) {
+  constructor(public container: HTMLElement, scenes: any[], assets: AssetsConfig) {
     // scenes
     this.scenes = [...scenes];
 

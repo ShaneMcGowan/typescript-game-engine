@@ -5,6 +5,9 @@ import { type SceneMap } from './scene-map';
 import { type SceneObject } from './scene-object';
 import { MouseUtils } from '@utils/mouse.utils';
 import { type Client } from '@core/client';
+import { type Assets } from './assets';
+
+export type SceneConstructorSignature = new (client: Client) => Scene;
 
 export interface SceneRenderingContext {
   background: CanvasRenderingContext2D[];
@@ -105,7 +108,7 @@ export abstract class Scene {
 
   // from client
   context: CanvasRenderingContext2D;
-  assets: Record<string, any>;
+  assets: Assets;
 
   constructor(
     protected client: Client

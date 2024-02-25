@@ -1,6 +1,7 @@
 import { RenderUtils } from '@utils/render.utils';
 import { type Scene } from './scene';
 import { CanvasConstants } from '@constants/canvas.constants';
+import { type Assets } from './assets';
 
 export interface SceneObjectBaseConfig {
   positionX?: number;
@@ -46,7 +47,7 @@ export abstract class SceneObject {
   eventListeners: Record<string, (event: CustomEvent) => void> = {}; // for scene events
 
   protected mainContext: CanvasRenderingContext2D;
-  protected assets: Record<string, any>;
+  protected assets: Assets;
 
   // flags
   flaggedForRender: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
