@@ -6,6 +6,11 @@ import { SAMPLE_SCENE_1 } from '@scenes/1.scene';
 
 (function() {
   /**
+   * Declare your canvas constants here
+   */
+  // e.g. CanvasConstants.CANVAS_TILE_HEIGHT = 18;
+
+  /**
   * Add your scenes here, the first scene will be loaded on startup
   */
   const scenes: SceneConstructorSignature[] = [

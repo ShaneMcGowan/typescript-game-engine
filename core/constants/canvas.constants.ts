@@ -5,11 +5,11 @@
 */
 export abstract class CanvasConstants {
   // 18 / 30
-  static readonly CANVAS_TILE_HEIGHT = 18; // total height in tiles
-  static readonly CANVAS_TILE_WIDTH = 30; // total width in tiles
-  static readonly TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
-  static readonly OBJECT_RENDERING_LAYERS: number = 16; // number of layers to render objects on. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
-  static readonly OBJECT_COLLISION_LAYERS: number = 16; // number of layers on which objects can collide. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
+  static CANVAS_TILE_HEIGHT = 18; // total height in tiles
+  static CANVAS_TILE_WIDTH = 30; // total width in tiles
+  static TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
+  static OBJECT_RENDERING_LAYERS: number = 16; // number of layers to render objects on. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
+  static OBJECT_COLLISION_LAYERS: number = 16; // number of layers on which objects can collide. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
 
   /**
    * Keep an eye on this and any getters, don't run it on hot code paths
