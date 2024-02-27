@@ -16,6 +16,7 @@
       "@model/*": ["./model/*"],
       "@scenes/*": ["./scenes/*"],
       "@utils/*": ["./utils/*"],
+      "@flappy-bird/*": ["./samples/flappy-bird/*"]
     }
   },
   "include": [

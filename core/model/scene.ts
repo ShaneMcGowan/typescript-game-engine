@@ -29,6 +29,8 @@ export interface SceneGlobalsBaseConfig {
     };
   };
 
+  keyboard: Record<string, boolean>;
+
   // TODO(smg): cameraPosition is referring to customRenderer, perhaps rename customRenderer to camera?
   camera: {
     startX: number;
@@ -66,7 +68,7 @@ export abstract class Scene {
   // TODO(smg): how do we access types for this from the scene object?
 
   // a place to store flags for the scene
-  globals: SceneGlobalsBaseConfig = {
+  readonly globals: SceneGlobalsBaseConfig = {
     mouse: {
       click: {
         left: false,
@@ -86,10 +88,12 @@ export abstract class Scene {
       endX: 0,
       endY: 0,
     },
+    keyboard: {},
     latestMouseEvent: new MouseEvent(''),
   };
 
   // maps
+  // TODO(smg): change this so you can pass in a map class directly and the type uses SceneMapConstructorSignature | undefined
   flaggedForMapChange: number | undefined = undefined; // if this is set, the scene will change to the map at the provided index on the next frame
   maps: SceneMapConstructorSignature[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap
   map: SceneMap; // the current map
@@ -150,6 +154,16 @@ export abstract class Scene {
           this.globals.mouse.click.right = false;
           break;
       }
+    });
+
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      console.log('[keydown]', event);
+      this.globals.keyboard[event.key.toLocaleLowerCase()] = true;
+    });
+
+    document.addEventListener('keyup', (event: KeyboardEvent) => {
+      console.log('[keyup]', event);
+      this.globals.keyboard[event.key.toLocaleLowerCase()] = false;
     });
   }
 
@@ -266,6 +280,12 @@ export abstract class Scene {
 
     // render objects
     this.objects.forEach((object) => {
+      if (this.client.debug.object.renderBackground) {
+        object.debuggerRenderBackground(
+          this.renderingContext.objects[object.renderLayer]
+        );
+      }
+
       if (object.render && object.isRenderable) {
         object.render(
           this.renderingContext.objects[object.renderLayer]

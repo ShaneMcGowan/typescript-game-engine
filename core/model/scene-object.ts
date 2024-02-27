@@ -109,11 +109,48 @@ export abstract class SceneObject {
     );
   }
 
+  /**
+   * Used for debugging
+   * @param context
+   */
+  debuggerRenderBackground(context: CanvasRenderingContext2D): void {
+    RenderUtils.fillRectangle(
+      context,
+      this.positionX,
+      this.positionY,
+      Math.floor(this.width * CanvasConstants.TILE_SIZE),
+      Math.floor(this.height * CanvasConstants.TILE_SIZE),
+      { colour: 'red', }
+    );
+  }
+
   get cameraRelativePositionX(): number {
     return this.positionX + this.scene.globals.camera.startX;
   }
 
   get cameraRelativePositionY(): number {
     return this.positionY + this.scene.globals.camera.startY;
+  }
+
+  get pixelWidth(): number {
+    return this.width * CanvasConstants.TILE_SIZE;
+  }
+
+  get pixelHeight(): number {
+    return this.height * CanvasConstants.TILE_SIZE;
+  }
+
+  /**
+   * TODO(smg): this only checks a single point of collision on the object and is not based on the object's width and height
+   * @param object
+   * @returns
+   */
+  isCollidingWith(object: SceneObject): boolean {
+    return (
+      object.positionX >= this.positionX &&
+      object.positionX <= this.positionX + this.width &&
+      object.positionY >= this.positionY &&
+      object.positionY <= this.positionY + this.height
+    );
   }
 }
