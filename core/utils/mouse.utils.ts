@@ -71,4 +71,13 @@ export abstract class MouseUtils {
   private static get isFullscreen(): boolean {
     return document.fullscreenElement !== null;
   }
+
+  static isClickWithin(mousePosition: MousePosition, x: number, y: number, width: number, height: number): boolean {
+    return (
+      mousePosition.exactX >= x &&
+      mousePosition.exactX <= x + width &&
+      mousePosition.exactY >= y &&
+      mousePosition.exactY <= y + height
+    );
+  }
 }

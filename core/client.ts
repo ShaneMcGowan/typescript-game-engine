@@ -50,6 +50,7 @@ export class Client {
     },
     object: {
       renderBoundary: false,
+      renderBackground: false,
     },
   };
 
@@ -89,7 +90,7 @@ export class Client {
 
     // go fullscreen
     this.canvas.addEventListener('click', () => {
-      // this.canvas.requestFullscreen();
+      this.canvas.requestFullscreen();
     });
 
     // handle tabbed out state
@@ -107,7 +108,7 @@ export class Client {
     this.intialiseGamepadListeners();
 
     // load first scene
-    this.changeScene(this.scenes[1]);
+    this.changeScene(this.scenes[0]);
 
     // Run game logic
     this.frame(0);

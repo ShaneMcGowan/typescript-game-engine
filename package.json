@@ -25,6 +25,7 @@
   },
   "scripts": {
     "dev": "webpack --watch --progress",
+    "dev-flappy-bird": "cd ./samples/flappy-bird && webpack --watch --progress",
     "lint": "eslint --fix --ext .ts ."
   },
   "author": "Shane McGowan",
