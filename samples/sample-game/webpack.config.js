@@ -17,7 +17,7 @@ module.exports = {
   resolve: {
     alias: {
       '@core': path.resolve(__dirname, '../../core/'),
-      '@flappy-bird': path.resolve(__dirname, './'),
+      '@sample-game': path.resolve(__dirname, './'),
     },
     extensions: ['.ts', '.js'],
   },

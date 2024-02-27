@@ -12,10 +12,7 @@
     "baseUrl" : "./",
     "paths": {
       "@core/*": ["./core/*"],
-      "@constants/*": ["./constants/*"],
-      "@model/*": ["./model/*"],
-      "@scenes/*": ["./scenes/*"],
-      "@utils/*": ["./utils/*"],
+      "@sample-game/*": ["./samples/sample-game/*"],
       "@flappy-bird/*": ["./samples/flappy-bird/*"]
     }
   },

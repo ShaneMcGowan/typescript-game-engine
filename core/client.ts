@@ -1,6 +1,6 @@
 import { CanvasConstants } from './constants/canvas.constants';
 import { type SceneConstructorSignature, type Scene } from './model/scene';
-import { RenderUtils } from '../utils/render.utils';
+import { RenderUtils } from './utils/render.utils';
 import { type AssetsConfig, type Assets } from './model/assets';
 
 export class Client {

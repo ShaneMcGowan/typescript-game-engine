@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { RenderUtils } from '@utils/render.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 import { type PlayerObject } from './player.object';
 import { type ControllerObject } from './controller.object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';

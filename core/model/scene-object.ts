@@ -1,4 +1,4 @@
-import { RenderUtils } from '@utils/render.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 import { type Scene } from './scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Assets } from './assets';

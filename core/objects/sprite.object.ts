@@ -1,6 +1,6 @@
 import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { RenderUtils } from '@utils/render.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
   positionX: number;

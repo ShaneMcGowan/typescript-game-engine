@@ -1,5 +1,5 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { RenderUtils } from '@utils/render.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObject } from './scene-object';

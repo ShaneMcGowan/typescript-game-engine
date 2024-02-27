@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
-import { RenderUtils } from '@utils/render.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 
 const SPRITES: Record<string, any> = {
   ['0']: { spriteX: 30.875, spriteY: 3.75, },

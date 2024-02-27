@@ -24,7 +24,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
-    "dev": "webpack --watch --progress",
+    "dev-sample-game": "cd ./samples/sample-game && webpack --watch --progress",
     "dev-flappy-bird": "cd ./samples/flappy-bird && webpack --watch --progress",
     "lint": "eslint --fix --ext .ts ."
   },
