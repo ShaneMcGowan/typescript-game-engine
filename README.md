@@ -57,8 +57,5 @@ TODO(smg): description of MovementUtils
 ### RenderUtils
 TODO(smg): description of RenderUtils
 
-## Sample Texture pack
-Sprout Lands texture pack used in sample game courtesy of https://cupnooble.itch.io/
-
 ## Known Issues
 Nothing specific at the minute to highlight

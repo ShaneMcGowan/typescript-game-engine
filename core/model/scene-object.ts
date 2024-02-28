@@ -8,16 +8,23 @@ export interface SceneObjectBaseConfig {
   positionY?: number;
   targetX?: number;
   targetY?: number;
+
+  isRenderable?: boolean;
   renderLayer?: number;
   renderOpacity?: number;
   renderScale?: number;
+
+  hasCollision?: boolean;
   collisionLayer?: number;
 }
 
-const DEFAULT_COLLISION_LAYER: number = 0;
+const DEFAULT_IS_RENDERABLE: boolean = false;
 const DEFAULT_RENDER_LAYER: number = 0;
 const DEFAULT_RENDER_OPACITY: number = 1;
 const DEFAULT_RENDER_SCALE: number = 1;
+
+const DEFAULT_HAS_COLLISION: boolean = false;
+const DEFAULT_COLLISION_LAYER: number = 0;
 
 export abstract class SceneObject {
   id: string = crypto.randomUUID();
@@ -33,12 +40,12 @@ export abstract class SceneObject {
   height: number = 1;
 
   // collision
-  hasCollision: boolean = false;
+  hasCollision: boolean;
   collisionLayer: number;
 
   // rendering
+  isRenderable: boolean;
   renderLayer: number;
-  isRenderable: boolean = false;
   renderOpacity: number; // the opacity of the object when rendered (value between 0 and 1)
   renderScale: number; // the scale of the object when rendered
 
@@ -84,8 +91,11 @@ export abstract class SceneObject {
       this.targetY = config.targetY;
     }
 
+    this.isRenderable = config.isRenderable ?? DEFAULT_IS_RENDERABLE;
     this.renderLayer = config.renderLayer ?? DEFAULT_RENDER_LAYER;
     this.renderOpacity = config.renderOpacity ?? DEFAULT_RENDER_OPACITY;
+
+    this.hasCollision = config.hasCollision ?? DEFAULT_HAS_COLLISION;
     this.collisionLayer = config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
     this.renderScale = config.renderScale ?? DEFAULT_RENDER_SCALE;
   }

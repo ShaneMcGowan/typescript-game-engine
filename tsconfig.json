@@ -12,8 +12,8 @@
     "baseUrl" : "./",
     "paths": {
       "@core/*": ["./core/*"],
-      "@sample-game/*": ["./samples/sample-game/*"],
-      "@flappy-bird/*": ["./samples/flappy-bird/*"]
+      "@flappy-bird/*": ["./samples/flappy-bird/*"],
+      "@sample-game/*": ["./samples/sample-game/*"]
     }
   },
   "include": [

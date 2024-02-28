@@ -90,7 +90,7 @@ export class Client {
 
     // go fullscreen
     this.canvas.addEventListener('click', () => {
-      this.canvas.requestFullscreen();
+      // this.canvas.requestFullscreen();
     });
 
     // handle tabbed out state

@@ -1,8 +1,8 @@
 import { Client } from '@core/client';
 import { type AssetsConfig } from '@core/model/assets';
 import { type SceneConstructorSignature } from '@core/model/scene';
-import { SAMPLE_SCENE_0 } from './scenes/0.scene';
-import { SAMPLE_SCENE_1 } from './scenes/1.scene';
+import { SAMPLE_SCENE_0 } from '@sample-game/scenes/0.scene';
+import { SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 
 (function() {
   /**
