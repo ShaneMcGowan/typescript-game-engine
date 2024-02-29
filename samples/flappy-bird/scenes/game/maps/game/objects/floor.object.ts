@@ -3,13 +3,12 @@ import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type PlayerObject } from './player.object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type ControllerObject } from './controller.object';
+import { GameEvents } from '../constants/events.constants';
 
 const DEFAULT_RENDER_LAYER = 10;
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
-  controller: ControllerObject;
 }
 
 export class FloorObject extends SceneObject {
@@ -17,24 +16,29 @@ export class FloorObject extends SceneObject {
   renderLayer = DEFAULT_RENDER_LAYER;
 
   player: PlayerObject;
-  controller: ControllerObject;
+
+  checkCollision: boolean = true;
 
   constructor(protected scene: Scene, config: Config) {
     super(scene, config);
 
     // config
     this.player = config.player;
-    this.controller = config.controller;
 
     // setup
     this.height = 2;
     this.width = CanvasConstants.CANVAS_TILE_WIDTH;
     this.positionX = 0;
     this.positionY = CanvasConstants.CANVAS_TILE_HEIGHT - this.height;
+
+    this.scene.addEventListener(GameEvents.GameStart, this.onGameStart.bind(this));
+    this.scene.addEventListener(GameEvents.GameEnd, this.onGameOver.bind(this));
   }
 
   update(delta: number): void {
-    this.updateCheckIfPlayerAboveGround(delta);
+    if (this.checkCollision) {
+      this.updateCheckIfPlayerAboveGround(delta);
+    }
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -46,7 +50,7 @@ export class FloorObject extends SceneObject {
       return;
     }
 
-    this.controller.endGame();
+    this.scene.dispatchEvent(GameEvents.GameEnd);
   }
 
   private renderFloor(context: CanvasRenderingContext2D): void {
@@ -63,5 +67,13 @@ export class FloorObject extends SceneObject {
         this.height
       );
     }
+  }
+
+  private onGameStart(): void {
+    this.checkCollision = true;
+  }
+
+  private onGameOver(): void {
+    this.checkCollision = false;
   }
 }

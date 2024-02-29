@@ -44,43 +44,9 @@ export class GAME_MAP extends SceneMap {
     let player = new PlayerObject(this.scene, {});
     this.objects.push(player);
 
-    let controller = new ControllerObject(this.scene, { player, });
-    this.objects.push(controller);
-
-    this.objects.push(new IntervalObject(this.scene, {
-      duration: 3,
-      onInterval: () => {
-        let region = 8; // only ever move within X tiles
-        let gap = 4; // gap between pipes
-        let min = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - (region / 2);
-        let max = min + (region / 2);
-
-        let height = MathUtils.randomNumberFromRange(min, max);
-
-        // Pipes
-        this.scene.addObject(new PipeObject(this.scene, {
-          player,
-          controller,
-          type: 'top',
-          height,
-        }));
-
-        this.scene.addObject(new PipeObject(this.scene, {
-          player,
-          controller,
-          type: 'bottom',
-          height: CanvasConstants.CANVAS_TILE_HEIGHT - height - gap,
-        }));
-
-        // point
-        this.scene.addObject(new PointObject(this.scene, {
-          player,
-        }));
-      },
-    })
-    );
+    this.objects.push(new ControllerObject(this.scene, { player, }));
 
     this.objects.push(new ScoreObject(this.scene, {}));
-    this.objects.push(new FloorObject(this.scene, { player, controller, }));
+    this.objects.push(new FloorObject(this.scene, { player, }));
   }
 }

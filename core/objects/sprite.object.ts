@@ -10,6 +10,7 @@ interface Config extends SceneObjectBaseConfig {
   tileset: string;
   spriteY: number;
   spriteX: number;
+  renderLayer?: number;
 }
 
 export class SpriteObject extends SceneObject {
@@ -28,6 +29,7 @@ export class SpriteObject extends SceneObject {
     this.tileset = config.tileset;
     this.spriteX = config.spriteX;
     this.spriteY = config.spriteY;
+    this.renderLayer = config.renderLayer ?? 0;
   }
 
   render(context: CanvasRenderingContext2D): void {

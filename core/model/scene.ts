@@ -157,11 +157,18 @@ export abstract class Scene {
     });
 
     document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.repeat) {
+        return;
+      }
       console.log('[keydown]', event);
       this.globals.keyboard[event.key.toLocaleLowerCase()] = true;
     });
 
     document.addEventListener('keyup', (event: KeyboardEvent) => {
+      if (event.repeat) {
+        return;
+      }
+
       console.log('[keyup]', event);
       this.globals.keyboard[event.key.toLocaleLowerCase()] = false;
     });

@@ -4,13 +4,6 @@ import { type Client } from '@core/client';
 
 interface Globals extends SceneGlobalsBaseConfig {
   score: number;
-  player: {
-    gravity: number;
-    acceleration: number;
-  };
-  pipe: {
-    speed: number;
-  };
 }
 
 export class GAME_SCENE extends Scene {
@@ -24,13 +17,6 @@ export class GAME_SCENE extends Scene {
     super(client);
 
     this.globals.score = 0;
-    this.globals.player = {
-      gravity: 0,
-      acceleration: 0,
-    };
-    this.globals.pipe = {
-      speed: 0,
-    };
 
     this.changeMap(0);
   }

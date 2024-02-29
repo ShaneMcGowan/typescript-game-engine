@@ -1,10 +1,10 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type PlayerObject } from './player.object';
-import { type ControllerObject } from './controller.object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
+import { DEFAULT_PIPE_SPEED } from '../constants/defaults.constants';
+import { GameEvents } from '../constants/events.constants';
 
 const SPRITES = {
   TopExit: {
@@ -34,7 +34,6 @@ type PipeType = 'top' | 'bottom';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
-  controller: ControllerObject;
   type: PipeType;
   height: number;
 }
@@ -45,23 +44,28 @@ export class PipeObject extends SceneObject {
   type: PipeType;
 
   player: PlayerObject;
-  controller: ControllerObject;
+
+  canMove: boolean = true;
 
   constructor(protected scene: GAME_SCENE, config: Config) {
     super(scene, config);
 
     this.player = config.player;
-    this.controller = config.controller;
     this.type = config.type;
     this.height = config.height;
 
     this.positionY = this.type === 'top' ? 0 : CanvasConstants.CANVAS_TILE_HEIGHT - this.height;
     this.positionX = CanvasConstants.CANVAS_TILE_WIDTH + 1;
+
+    this.scene.addEventListener(GameEvents.GameIdle, this.onGameIdle.bind(this));
+    this.scene.addEventListener(GameEvents.GameEnd, this.onGameEnd.bind(this));
   }
 
   update(delta: number): void {
-    this.updatePosition(delta);
-    this.updateCollidingWithPlayer(delta);
+    if (this.canMove) {
+      this.updatePosition(delta);
+      this.updateCollidingWithPlayer(delta);
+    }
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -77,7 +81,7 @@ export class PipeObject extends SceneObject {
 
   private updatePosition(delta: number): void {
     // move from left of screen to the right
-    this.positionX -= (this.scene.globals.pipe.speed * delta);
+    this.positionX -= (DEFAULT_PIPE_SPEED * delta);
 
     // when off screen, remove pipe
     if (this.positionX < -3) {
@@ -90,7 +94,7 @@ export class PipeObject extends SceneObject {
       return;
     }
 
-    this.controller.endGame();
+    this.scene.dispatchEvent(GameEvents.GameEnd);
   }
 
   private renderTopPipe(context: CanvasRenderingContext2D): void {
@@ -145,5 +149,13 @@ export class PipeObject extends SceneObject {
         SPRITES.Pipe.height
       );
     }
+  }
+
+  private onGameIdle(): void {
+    this.scene.removeObjectById(this.id);
+  }
+
+  private onGameEnd(): void {
+    this.canMove = false;
   }
 }

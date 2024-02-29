@@ -2,10 +2,13 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type PlayerObject } from './player.object';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
+import { GameEvents } from '../constants/events.constants';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
 }
+
+const DEFAULT_PIPE_SPEED: number = 3;
 
 export class PointObject extends SceneObject {
   isRenderable = true;
@@ -19,7 +22,9 @@ export class PointObject extends SceneObject {
     super(scene, config);
 
     this.player = config.player;
-    this.positionX = CanvasConstants.CANVAS_TILE_WIDTH + 1;
+    this.positionX = CanvasConstants.CANVAS_TILE_WIDTH + 2;
+
+    this.scene.addEventListener(GameEvents.GameEnd, this.onGameOver.bind(this));
   }
 
   update(delta: number): void {
@@ -33,10 +38,10 @@ export class PointObject extends SceneObject {
 
   private updatePosition(delta: number): void {
     // move from left of screen to the right
-    this.positionX -= (this.scene.globals.pipe.speed * delta);
+    this.positionX -= (DEFAULT_PIPE_SPEED * delta);
 
     // when off screen, remove pipe
-    if (this.positionX < -3) {
+    if (this.positionX < -3) { // 3 is arbitrary here, could be a better value
       this.scene.removeObject(this);
     }
   }
@@ -46,5 +51,9 @@ export class PointObject extends SceneObject {
       this.scene.globals.score++;
       this.scene.removeObject(this);
     }
+  }
+
+  private onGameOver(): void {
+    this.scene.removeObjectById(this.id);
   }
 }

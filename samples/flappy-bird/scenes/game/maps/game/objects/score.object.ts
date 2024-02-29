@@ -5,7 +5,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 
 const SPRITES: Record<string, any> = {
   ['0']: { spriteX: 30.875, spriteY: 3.75, },
-  ['1']: { spriteX: 8.25, spriteY: 28.45, }, // TODO(smg): 1 is a bit off center in the sprite sheet
+  ['1']: { spriteX: 8.35, spriteY: 28.45, },
   ['2']: { spriteX: 18.125, spriteY: 10, },
   ['3']: { spriteX: 19, spriteY: 10, },
   ['4']: { spriteX: 19.875, spriteY: 10, },
@@ -30,12 +30,14 @@ export class ScoreObject extends SceneObject {
     let score = this.scene.globals.score.toString().split('');
 
     score.forEach((digit, index) => {
+      let offset = digit === '1' ? 0.16 : 0; // the 1 sprite in the sheet is a bit off so manually adjusting it rather than altering the sprite sheet
+
       RenderUtils.renderSprite(
         context,
         this.assets.images.sprites,
         SPRITES[digit].spriteX,
         SPRITES[digit].spriteY,
-        (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (score.length / 2) + index,
+        (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (score.length / 2) + index + offset,
         CanvasConstants.CANVAS_TILE_HEIGHT / 8,
         undefined,
         1.125
