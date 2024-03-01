@@ -150,17 +150,59 @@ export abstract class SceneObject {
     return this.height * CanvasConstants.TILE_SIZE;
   }
 
-  /**
-   * TODO(smg): this only checks a single point of collision on the object and is not based on the object's width and height
-   * @param object
-   * @returns
-   */
+  get boundingX(): number {
+    return this.positionX + this.width;
+  }
+
+  get boundingY(): number {
+    return this.positionY + this.height;
+  }
+
   isCollidingWith(object: SceneObject): boolean {
-    return (
-      object.positionX >= this.positionX &&
-      object.positionX <= this.positionX + this.width &&
-      object.positionY >= this.positionY &&
-      object.positionY <= this.positionY + this.height
-    );
+    return this.isWithinHorizontalBounds(object) && this.isWithinVerticalBounds(object);
+  }
+
+  isWithinHorizontalBounds(object: SceneObject): boolean {
+    console.log(this.id);
+
+    console.log({
+      objectPositionX: object.positionX,
+      objectBoundingX: object.boundingX,
+      objectPositionY: object.positionY,
+      objectBoundingY: object.boundingY,
+    });
+
+    console.log({
+      objectPositionX: this.positionX,
+      objectBoundingX: this.boundingX,
+      objectPositionY: this.positionY,
+      objectBoundingY: this.boundingY,
+    });
+
+    if (object.positionX >= this.positionX && object.positionX <= this.boundingX) {
+      console.log('horizontal - position');
+      return true;
+    }
+
+    if (object.boundingX >= this.positionX && object.boundingX <= this.boundingX) {
+      console.log('horizontal - bounding');
+      return true;
+    }
+
+    return false;
+  }
+
+  isWithinVerticalBounds(object: SceneObject): boolean {
+    if (object.positionY >= this.positionY && object.positionY <= this.boundingY) {
+      console.log('vertical - position');
+      return true;
+    }
+
+    if (object.boundingY >= this.positionY && object.boundingY <= this.boundingY) {
+      console.log('vertical - bounding');
+      return true;
+    }
+
+    return false;
   }
 }

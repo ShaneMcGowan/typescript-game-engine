@@ -90,11 +90,15 @@ export class PipeObject extends SceneObject {
   }
 
   private updateCollidingWithPlayer(delta: number): void {
-    if (!this.isCollidingWith(this.player)) {
-      return;
+    // if player collides with pipe
+    if (this.isCollidingWith(this.player)) {
+      this.scene.dispatchEvent(GameEvents.GameEnd);
     }
 
-    this.scene.dispatchEvent(GameEvents.GameEnd);
+    // if player is off top of screen passes over pipe
+    if (this.player.positionY < 0 && this.isWithinHorizontalBounds(this.player)) {
+      this.scene.dispatchEvent(GameEvents.GameEnd);
+    }
   }
 
   private renderTopPipe(context: CanvasRenderingContext2D): void {

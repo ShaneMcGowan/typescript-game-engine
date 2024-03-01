@@ -50,7 +50,7 @@ export class Client {
     },
     object: {
       renderBoundary: false,
-      renderBackground: false,
+      renderBackground: true,
     },
   };
 
