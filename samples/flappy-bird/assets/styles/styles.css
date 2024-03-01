@@ -18,12 +18,12 @@
 html, body {
   height: 100%;
   width: 100%;
+  overflow: hidden; /* preventing 1px appearing below canvas */
 }
 
 #render-area {
   height: 100%;
   width: 100%;
-  padding: 16px;
 }
 
 #render-area canvas {
