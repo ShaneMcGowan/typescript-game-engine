@@ -4,8 +4,10 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type PlayerObject } from './player.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { GameEvents } from '../constants/events.constants';
+import { DEFAULT_PIPE_SPEED } from '../constants/defaults.constants';
 
 const DEFAULT_RENDER_LAYER = 10;
+const SEGMENT_WIDTH = 2.25; // width of the floor segment
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
@@ -15,9 +17,12 @@ export class FloorObject extends SceneObject {
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
+  offset: number = 0;
+
   player: PlayerObject;
 
   checkCollision: boolean = true;
+  movingFloor: boolean = false;
 
   constructor(protected scene: Scene, config: Config) {
     super(scene, config);
@@ -39,6 +44,11 @@ export class FloorObject extends SceneObject {
     if (this.checkCollision) {
       this.updateCheckIfPlayerAboveGround(delta);
     }
+
+    if (this.movingFloor) {
+      this.offset += delta * DEFAULT_PIPE_SPEED;
+      this.offset %= SEGMENT_WIDTH;
+    }
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -54,16 +64,15 @@ export class FloorObject extends SceneObject {
   }
 
   private renderFloor(context: CanvasRenderingContext2D): void {
-    let segmentWidth: number = 2.25;
-    for (let i = 0; i < CanvasConstants.CANVAS_TILE_WIDTH; i += segmentWidth) {
+    for (let i = 0; i < CanvasConstants.CANVAS_TILE_WIDTH + SEGMENT_WIDTH; i += SEGMENT_WIDTH) {
       RenderUtils.renderSprite(
         context,
         this.assets.images.sprites,
         19,
         0,
-        this.positionX + i,
+        this.positionX + i - this.offset,
         this.positionY,
-        segmentWidth,
+        SEGMENT_WIDTH,
         this.height
       );
     }
@@ -71,9 +80,11 @@ export class FloorObject extends SceneObject {
 
   private onGameStart(): void {
     this.checkCollision = true;
+    this.movingFloor = true;
   }
 
   private onGameOver(): void {
     this.checkCollision = false;
+    this.movingFloor = false;
   }
 }
