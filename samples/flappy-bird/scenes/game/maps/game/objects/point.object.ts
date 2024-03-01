@@ -3,26 +3,25 @@ import { type PlayerObject } from './player.object';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
 import { GameEvents } from '../constants/events.constants';
+import { DEFAULT_PIPE_SPEED } from '../constants/defaults.constants';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
 }
-
-const DEFAULT_PIPE_SPEED: number = 3;
 
 export class PointObject extends SceneObject {
   isRenderable = true;
 
   player: PlayerObject;
 
-  width: number = 1;
+  width: number = 0.0625;
   height: number = CanvasConstants.CANVAS_TILE_HEIGHT;
 
   constructor(protected scene: GAME_SCENE, config: Config) {
     super(scene, config);
 
     this.player = config.player;
-    this.positionX = CanvasConstants.CANVAS_TILE_WIDTH + 2;
+    this.positionX = CanvasConstants.CANVAS_TILE_WIDTH + 2.625;
 
     this.scene.addEventListener(GameEvents.GameEnd, this.onGameOver.bind(this));
   }

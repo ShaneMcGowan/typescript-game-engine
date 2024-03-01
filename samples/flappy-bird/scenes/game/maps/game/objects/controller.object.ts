@@ -65,8 +65,8 @@ export class ControllerObject extends SceneObject {
     let spriteWidth = 3.675;
     let spriteHeight = 3.5;
     this.idleSprite = new SpriteObject(this.scene, {
-      positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (spriteWidth / 2),
-      positionY: (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.75,
+      positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (spriteWidth / 2) + 0.05,
+      positionY: (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.8,
       width: spriteWidth,
       height: spriteHeight,
       tileset: 'sprites',
@@ -116,7 +116,6 @@ export class ControllerObject extends SceneObject {
         }));
       },
     });
-
     this.scene.addObject(this.interval);
   }
 

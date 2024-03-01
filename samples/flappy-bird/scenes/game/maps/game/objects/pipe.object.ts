@@ -41,6 +41,7 @@ interface Config extends SceneObjectBaseConfig {
 export class PipeObject extends SceneObject {
   isRenderable = true;
 
+  width = 1.625;
   type: PipeType;
 
   player: PlayerObject;

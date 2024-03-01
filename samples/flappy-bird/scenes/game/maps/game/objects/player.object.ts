@@ -8,10 +8,10 @@ import { GameEvents } from '../constants/events.constants';
 
 const DEFAULT_ANIMATIONS: Record<string, SpriteAnimation> = {
   default: new SpriteAnimation('sprites', [
-    { spriteX: 0, spriteY: 30.5, duration: 0.0625, },
-    { spriteX: 1.75, spriteY: 30.5, duration: 0.0625, },
-    { spriteX: 3.5, spriteY: 30.5, duration: 0.0625, },
-    { spriteX: 1.75, spriteY: 30.5, duration: 0.0625, }
+    { spriteX: 0.1875, spriteY: 30.6875, duration: 0.0625, }, // 0
+    { spriteX: 1.9375, spriteY: 30.6875, duration: 0.0625, }, // 1
+    { spriteX: 3.6875, spriteY: 30.6875, duration: 0.0625, }, // 2
+    { spriteX: 1.9375, spriteY: 30.6875, duration: 0.0625, } // 1
   ]),
 };
 
@@ -27,8 +27,8 @@ export class PlayerObject extends SceneObject {
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
-  width = 1.5;
-  height = 1;
+  width = 1.0625; // 17px
+  height = 0.75; // 12px
 
   state: state;
 
