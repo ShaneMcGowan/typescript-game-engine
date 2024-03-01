@@ -2,19 +2,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
 import { RenderUtils } from '@core/utils/render.utils';
-
-const SPRITES: Record<string, any> = {
-  ['0']: { spriteX: 30.875, spriteY: 3.75, },
-  ['1']: { spriteX: 8.35, spriteY: 28.45, },
-  ['2']: { spriteX: 18.125, spriteY: 10, },
-  ['3']: { spriteX: 19, spriteY: 10, },
-  ['4']: { spriteX: 19.875, spriteY: 10, },
-  ['5']: { spriteX: 20.75, spriteY: 10, },
-  ['6']: { spriteX: 18.125, spriteY: 11.5, },
-  ['7']: { spriteX: 19, spriteY: 11.5, },
-  ['8']: { spriteX: 19.875, spriteY: 11.5, },
-  ['9']: { spriteX: 20.75, spriteY: 11.5, },
-};
+import { NUMBER_SPRITES_LARGE } from '../constants/sprite.constants';
 
 interface Config extends SceneObjectBaseConfig {}
 
@@ -35,8 +23,8 @@ export class ScoreObject extends SceneObject {
       RenderUtils.renderSprite(
         context,
         this.assets.images.sprites,
-        SPRITES[digit].spriteX,
-        SPRITES[digit].spriteY,
+        NUMBER_SPRITES_LARGE[digit].spriteX,
+        NUMBER_SPRITES_LARGE[digit].spriteY,
         (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (score.length / 2) + index + offset,
         CanvasConstants.CANVAS_TILE_HEIGHT / 8,
         undefined,

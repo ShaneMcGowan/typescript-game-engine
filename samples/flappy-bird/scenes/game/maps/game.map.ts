@@ -4,12 +4,8 @@ import { SceneMap } from '@core/model/scene-map';
 import { type SceneObject } from '@core/model/scene-object';
 import { type GAME_SCENE } from '../game.scene';
 import { SpriteObject } from '@core/objects/sprite.object';
-import { PipeObject } from './game/objects/pipe.object';
 import { PlayerObject } from './game/objects/player.object';
-import { PointObject } from './game/objects/point.object';
 import { ScoreObject } from './game/objects/score.object';
-import { IntervalObject } from '@core/objects/interval.object';
-import { MathUtils } from '@core/utils/math.utils';
 import { FloorObject } from './game/objects/floor.object';
 import { ControllerObject } from './game/objects/controller.object';
 

@@ -8,6 +8,8 @@ import { PointObject } from './point.object';
 import { type PlayerObject } from './player.object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
 import { SpriteObject } from '@core/objects/sprite.object';
+import { ScoreCardObject } from './score-card.object';
+import { DEFAULT_PIPE_GAP, DEFAULT_PIPE_REGION } from '../constants/defaults.constants';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
@@ -23,6 +25,7 @@ export class ControllerObject extends SceneObject {
   // object references
   interval: IntervalObject;
   idleSprite: SpriteObject;
+  scorecard: ScoreCardObject;
 
   constructor(protected scene: GAME_SCENE, config: Config) {
     super(scene, config);
@@ -51,6 +54,9 @@ export class ControllerObject extends SceneObject {
     if (this.state === 'idle') {
       return;
     }
+
+    this.cleanupGameEnd();
+
     this.state = 'idle';
 
     this.scene.globals.score = 0;
@@ -84,8 +90,8 @@ export class ControllerObject extends SceneObject {
     this.interval = new IntervalObject(this.scene, {
       duration: 2,
       onInterval: () => {
-        let region = 8; // only ever move within X tiles
-        let gap = 3; // gap between pipes
+        let region = DEFAULT_PIPE_REGION;
+        let gap = DEFAULT_PIPE_GAP;
         let min = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - (region / 2);
         let max = min + (region / 2);
 
@@ -120,8 +126,25 @@ export class ControllerObject extends SceneObject {
     }
     this.state = 'game-over';
 
+    // TODO(smg): move cleanup of previous state to it's own function
     if (this.interval) {
       this.scene.removeObjectById(this.interval.id);
+    }
+
+    // scorecard
+    this.scorecard = new ScoreCardObject(this.scene, {});
+    this.scene.addObject(this.scorecard);
+
+    // set highscore
+    if (this.scene.globals.score > this.scene.globals.highscore) {
+      this.scene.globals.highscore = this.scene.globals.score;
+      localStorage.setItem('highscore', this.scene.globals.score.toString());
+    }
+  }
+
+  private cleanupGameEnd(): void {
+    if (this.scorecard) {
+      this.scene.removeObjectById(this.scorecard.id);
     }
   }
 

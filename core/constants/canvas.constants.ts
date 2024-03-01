@@ -22,14 +22,6 @@ export abstract class CanvasConstants {
     return CanvasConstants.TILE_SIZE * CanvasConstants.CANVAS_TILE_WIDTH;
   }
 
-  static get CANVAS_CENTER_TILE_Y(): number {
-    return Math.floor(this.CANVAS_TILE_HEIGHT / 2);
-  }
-
-  static get CANVAS_CENTER_TILE_X(): number {
-    return Math.floor(this.CANVAS_TILE_WIDTH / 2);
-  }
-
   static get ASPECT_RATIO(): number {
     return CanvasConstants.CANVAS_TILE_HEIGHT / CanvasConstants.CANVAS_TILE_WIDTH;
   }
@@ -46,5 +38,21 @@ export abstract class CanvasConstants {
    */
   static get UI_COLLISION_LAYER(): number {
     return CanvasConstants.OBJECT_COLLISION_LAYERS - 1;
+  }
+
+  static get CANVAS_CENTER_TILE_Y(): number {
+    return this.CANVAS_TILE_HEIGHT / 2;
+  }
+
+  static get CANVAS_CENTER_TILE_X(): number {
+    return this.CANVAS_TILE_WIDTH / 2;
+  }
+
+  static get CANVAS_CENTER_PIXEL_X(): number {
+    return CanvasConstants.CANVAS_WIDTH / 2;
+  }
+
+  static get CANVAS_CENTER_PIXEL_Y(): number {
+    return CanvasConstants.CANVAS_HEIGHT / 2;
   }
 }

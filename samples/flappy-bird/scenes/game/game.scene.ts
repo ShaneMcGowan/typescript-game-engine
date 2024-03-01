@@ -4,6 +4,7 @@ import { type Client } from '@core/client';
 
 interface Globals extends SceneGlobalsBaseConfig {
   score: number;
+  highscore: number;
 }
 
 export class GAME_SCENE extends Scene {
@@ -16,7 +17,8 @@ export class GAME_SCENE extends Scene {
   constructor(protected client: Client) {
     super(client);
 
-    this.globals.score = 0;
+    this.globals.score = 50;
+    this.globals.highscore = localStorage.getItem('highscore') === null ? 0 : Number(localStorage.getItem('highscore'));
 
     this.changeMap(0);
   }
