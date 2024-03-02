@@ -82,8 +82,7 @@ export class Client {
 
     // initialise canvas
     this.canvas = this.createCanvas();
-    this.context = this.canvas.getContext('2d');
-    this.context.imageSmoothingEnabled = false;
+    this.context = RenderUtils.getContext(this.canvas);
 
     // attach canvas to ui
     container.append(this.canvas);

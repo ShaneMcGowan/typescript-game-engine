@@ -1,15 +1,10 @@
-/**
- * For landscape devices (the only ones I am willing to suppport for now), we should calculate device aspect ratio then set CANVIS_TILE_WIDTH based off that + CANVIS_TILE_HEIGHT
- * This means "resolution" will still be low but we can fill the full monitor, we also need to set canvas.width along with this value. should be done on initialisation and also window resizing
- * Leave as hardcoded value for now
-*/
 export abstract class CanvasConstants {
-  // 18 / 30
   static CANVAS_TILE_HEIGHT = 18; // total height in tiles
   static CANVAS_TILE_WIDTH = 30; // total width in tiles
   static TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
   static OBJECT_RENDERING_LAYERS: number = 16; // number of layers to render objects on. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
   static OBJECT_COLLISION_LAYERS: number = 16; // number of layers on which objects can collide. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
+  static CONTEXT_IMAGE_SMOOTHING_ENABLED: boolean = false; // whether to enable image smoothing on the canvas context
 
   /**
    * Keep an eye on this and any getters, don't run it on hot code paths

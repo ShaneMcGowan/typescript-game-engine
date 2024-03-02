@@ -138,6 +138,13 @@ export abstract class RenderUtils {
     return canvas;
   }
 
+  static getContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+    let context = canvas.getContext('2d');
+    context.imageSmoothingEnabled = CanvasConstants.CONTEXT_IMAGE_SMOOTHING_ENABLED;
+
+    return context;
+  }
+
   static positionToPixelPosition(position: number): number {
     return position * CanvasConstants.TILE_SIZE;
   }

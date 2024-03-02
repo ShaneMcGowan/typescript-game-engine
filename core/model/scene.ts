@@ -472,12 +472,12 @@ export abstract class Scene {
     };
 
     for (let i = 0; i < this.backgroundLayers.length; i++) {
-      this.renderingContext.background[i] = this.createCanvas().getContext('2d');
-      this.renderingContext.background[i].imageSmoothingEnabled = false;
+      let canvas = this.createCanvas();
+      this.renderingContext.background[i] = RenderUtils.getContext(canvas);
     }
     for (let i = 0; i < CanvasConstants.OBJECT_RENDERING_LAYERS; i++) {
-      this.renderingContext.objects[i] = this.createCanvas().getContext('2d');
-      this.renderingContext.objects[i].imageSmoothingEnabled = false;
+      let canvas = this.createCanvas();
+      this.renderingContext.objects[i] = RenderUtils.getContext(canvas);
     }
   }
 
