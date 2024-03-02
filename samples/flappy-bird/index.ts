@@ -17,8 +17,8 @@ import { GAME_SCENE } from './scenes/game/game.scene';
   * Add your scenes here, the first scene will be loaded on startup
   */
   const scenes: SceneConstructorSignature[] = [
-    GAME_SCENE,
-    MAIN_MENU_SCENE
+    MAIN_MENU_SCENE,
+    GAME_SCENE
   ];
 
   const assets: AssetsConfig = {
