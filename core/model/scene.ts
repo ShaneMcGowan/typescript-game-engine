@@ -126,6 +126,7 @@ export abstract class Scene {
       this.globals.latestMouseEvent = event;
     });
 
+    // mouse
     client.canvas.addEventListener('mousedown', (event: MouseEvent) => {
       console.log('[mousedown]', event);
       switch (event.button) {
@@ -154,6 +155,17 @@ export abstract class Scene {
           this.globals.mouse.click.right = false;
           break;
       }
+    });
+
+    // touch
+    client.canvas.addEventListener('touchstart', (event: TouchEvent) => {
+      console.log('[touchstart]', event);
+      this.globals.mouse.click.left = true;
+    });
+
+    client.canvas.addEventListener('touchend', (event: TouchEvent) => {
+      console.log('[touchend]', event);
+      this.globals.mouse.click.left = false;
     });
 
     document.addEventListener('keydown', (event: KeyboardEvent) => {
