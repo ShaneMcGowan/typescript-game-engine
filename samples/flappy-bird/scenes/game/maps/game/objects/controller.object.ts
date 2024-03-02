@@ -27,6 +27,10 @@ export class ControllerObject extends SceneObject {
   idleSprite: SpriteObject;
   scorecard: ScoreCardObject;
 
+  // game end
+  continueTimer: number = 0;
+  continueDuration: number = 0.5; // seconds before can continue
+
   constructor(protected scene: GAME_SCENE, config: Config) {
     super(scene, config);
 
@@ -45,7 +49,7 @@ export class ControllerObject extends SceneObject {
         this.updateGameIdle();
         break;
       case 'game-over':
-        this.updateGameEnd();
+        this.updateGameEnd(delta);
         break;
     }
   }
@@ -139,6 +143,8 @@ export class ControllerObject extends SceneObject {
       this.scene.globals.highscore = this.scene.globals.score;
       localStorage.setItem('highscore', this.scene.globals.score.toString());
     }
+
+    this.continueTimer = 0;
   }
 
   private cleanupGameEnd(): void {
@@ -147,7 +153,14 @@ export class ControllerObject extends SceneObject {
     }
   }
 
-  updateGameEnd(): void {
+  updateGameEnd(delta: number): void {
+    this.continueTimer += delta;
+    console.log(this.continueTimer);
+
+    if (this.continueTimer < this.continueDuration) {
+      return;
+    }
+
     if (!this.scene.globals.keyboard[' '] && !this.scene.globals.mouse.click.left) {
       return;
     }
