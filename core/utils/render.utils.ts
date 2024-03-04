@@ -15,7 +15,7 @@ export abstract class RenderUtils {
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let scale = options.scale ?? 1; // use to scale the output
-    let rotation = options.rotation ?? 0; // use to rotate the output
+    let rotation = options.rotation ?? 0; // degrees to rotate the sprite by
 
     // save the current context if we need to apply opacity, then restore it after
     // we don't do this for all renders as it is a performance hit
@@ -31,9 +31,14 @@ export abstract class RenderUtils {
       }
 
       if (updateRotation) {
-        // TODO(smg): completely busted, will figure out later
-        context.translate(positionX, positionY);
-        context.rotate((45 * Math.PI) / 180);
+        // translate to the center of the sprite, rotate, then translate back
+        let xTranslation = Math.floor((positionX + (spriteWidth / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
+        let yTranslation = Math.floor((positionY + (spriteHeight / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
+
+        context.translate(xTranslation, yTranslation);
+        // TODO(smg): any angle that isn't 90, 180, 270, etc will cause blurring / weird sprite interoplation. This is a known issue with canvas and will need to see if this can be worked around
+        context.rotate((rotation * Math.PI) / 180);
+        context.translate(-xTranslation, -yTranslation);
       }
     }
 

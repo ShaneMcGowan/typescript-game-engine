@@ -132,11 +132,7 @@ export class PlayerObject extends SceneObject {
       this.positionX,
       this.positionY,
       this.width,
-      undefined,
-      {
-        opacity: this.renderOpacity,
-        scale: this.renderScale,
-      }
+      this.height
     );
   }
 
