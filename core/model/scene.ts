@@ -277,7 +277,7 @@ export abstract class Scene {
     }
 
     this.objects.forEach((object) => {
-      if (object.update) {
+      if (object.update && !this.client.debug.object.disableUpdate) {
         object.update(delta);
       }
     });
@@ -299,15 +299,31 @@ export abstract class Scene {
 
     // render objects
     this.objects.forEach((object) => {
-      if (this.client.debug.object.renderBackground) {
+      if (this.client.debug.object.enableDebugBackground) {
         object.debuggerRenderBackground(
+          this.renderingContext.objects[object.renderLayer]
+        );
+        object.debuggerRenderBackground2(
           this.renderingContext.objects[object.renderLayer]
         );
       }
 
-      if (object.render && object.isRenderable) {
+      if (object.render && object.isRenderable && !this.client.debug.object.disableRender) {
         object.render(
           this.renderingContext.objects[object.renderLayer]
+        );
+
+        // for objects that have been migrated to use their own internal canvas for rendering
+        this.renderingContext.objects[object.renderLayer].drawImage(
+          object.renderCanvas,
+          0,
+          0,
+          object.width * CanvasConstants.TILE_SIZE,
+          object.height * CanvasConstants.TILE_SIZE,
+          object.positionX * CanvasConstants.TILE_SIZE,
+          object.positionY * CanvasConstants.TILE_SIZE,
+          object.width * CanvasConstants.TILE_SIZE,
+          object.height * CanvasConstants.TILE_SIZE
         );
       }
 
@@ -347,7 +363,7 @@ export abstract class Scene {
   // I think it would be better to have a flag that is checked during the scene's update loop to rmove the obejct before it's next update
   // perhaps using flaggedForDestroy
   removeObject(sceneObject: SceneObject): void {
-    if (sceneObject.destroy) {
+    if (sceneObject.destroy && !this.client.debug.object.disableDestroy) {
       sceneObject.destroy();
     }
     this.objects.splice(this.objects.indexOf(sceneObject), 1);

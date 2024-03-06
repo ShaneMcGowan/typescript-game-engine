@@ -1,3 +1,4 @@
+import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
@@ -24,22 +25,20 @@ export class SpriteObject extends SceneObject {
   constructor(protected scene: Scene, config: Config) {
     super(scene, config);
 
-    this.width = config.width;
-    this.height = config.height;
     this.tileset = config.tileset;
     this.spriteX = config.spriteX;
     this.spriteY = config.spriteY;
     this.renderLayer = config.renderLayer ?? 0;
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  render(): void {
     RenderUtils.renderSprite(
-      context,
+      this.renderContext,
       this.assets.images['sprites'],
       this.spriteX,
       this.spriteY,
-      this.positionX,
-      this.positionY,
+      0,
+      0,
       this.width,
       this.height
     );

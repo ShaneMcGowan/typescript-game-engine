@@ -49,8 +49,11 @@ export class Client {
       canvasLayers: false,
     },
     object: {
+      disableRender: false,
+      disableUpdate: false,
+      disableDestroy: false,
       renderBoundary: false,
-      renderBackground: false,
+      enableDebugBackground: true,
     },
   };
 
