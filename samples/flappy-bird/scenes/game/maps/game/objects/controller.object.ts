@@ -9,7 +9,7 @@ import { type PlayerObject } from './player.object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
 import { SpriteObject } from '@core/objects/sprite.object';
 import { ScoreCardObject } from './score-card.object';
-import { DEFAULT_PIPE_GAP, DEFAULT_PIPE_REGION } from '../constants/defaults.constants';
+import { DEFAULT_PIPE_GAP, DEFAULT_PIPE_REGION, DefaultsConstants } from '../constants/defaults.constants';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
@@ -95,7 +95,7 @@ export class ControllerObject extends SceneObject {
       duration: 2,
       onInterval: () => {
         let region = DEFAULT_PIPE_REGION;
-        let gap = DEFAULT_PIPE_GAP;
+        let gap = DefaultsConstants.DEFAULT_PIPE_GAP;
         let min = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - (region / 2);
         let max = min + (region / 2);
 
