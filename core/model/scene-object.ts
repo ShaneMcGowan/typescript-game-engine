@@ -61,6 +61,42 @@ export abstract class SceneObject {
   flaggedForUpdate: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
   flaggedForDestroy: boolean = false; // TODO(smg): implement this. used to remove object from scene on next update rather than mid update etc
 
+  // TODO(smg): Currently we are using positionX and positionY as the top left corner of the object
+  // boundingX and boundingY are the bottom right corner of the object
+  // I want to change this so that positionX and positionY are the center of the object (or whatever the user wants it to be)
+  // I at least want it to be configurable.
+  // boundingBox should then be used for all collisions and be based off of positionX and positionY and width and height
+  // e.g. positionX = 5 and position Y = 10, width and height = 2 would mean the bounding box is
+  // top: 9, (10 - (2 / 2) = 9)
+  // right: 6, (5 + (2 / 2) = 6)
+  // bottom: 11, (10 + (2 / 2) = 11
+  // left: 4 (5 - (2 / 2) = 4
+
+  // TODO(smg): this being a getter probably is quite slow if it's used a lot but it's fine for now
+  get boundingBox(): {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+  } {
+    let xOffset = this.width / 2; // TODO(smg): this should be calculated based off of how the user wants the position to be calculated
+    let yOffset = this.height / 2; // TODO(smg): same as above
+
+    // return {
+    //   top: this.positionY - yOffset,
+    //   right: this.positionX + xOffset,
+    //   bottom: this.positionY + yOffset,
+    //   left: this.positionX - xOffset,
+    // };
+
+    return {
+      top: this.positionY,
+      right: this.positionX + this.width,
+      bottom: this.positionY + this.height,
+      left: this.positionX,
+    };
+  }
+
   constructor(
     protected scene: Scene,
     config: SceneObjectBaseConfig
@@ -111,8 +147,8 @@ export abstract class SceneObject {
   debuggerRenderBoundary(context: CanvasRenderingContext2D): void {
     RenderUtils.strokeRectangle(
       context,
-      Math.floor(this.positionX * CanvasConstants.TILE_SIZE),
-      Math.floor(this.positionY * CanvasConstants.TILE_SIZE),
+      Math.floor(this.boundingBox.left * CanvasConstants.TILE_SIZE),
+      Math.floor(this.boundingBox.top * CanvasConstants.TILE_SIZE),
       Math.floor(this.width * CanvasConstants.TILE_SIZE),
       Math.floor(this.height * CanvasConstants.TILE_SIZE),
       'red'
@@ -126,8 +162,8 @@ export abstract class SceneObject {
   debuggerRenderBackground(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.positionX,
-      this.positionY,
+      this.boundingBox.left,
+      this.boundingBox.top,
       Math.floor(this.width * CanvasConstants.TILE_SIZE),
       Math.floor(this.height * CanvasConstants.TILE_SIZE),
       { colour: 'red', }
@@ -150,24 +186,16 @@ export abstract class SceneObject {
     return this.height * CanvasConstants.TILE_SIZE;
   }
 
-  get boundingX(): number {
-    return this.positionX + this.width;
-  }
-
-  get boundingY(): number {
-    return this.positionY + this.height;
-  }
-
   isCollidingWith(object: SceneObject): boolean {
     return this.isWithinHorizontalBounds(object) && this.isWithinVerticalBounds(object);
   }
 
   isWithinHorizontalBounds(object: SceneObject): boolean {
-    if (object.positionX >= this.positionX && object.positionX <= this.boundingX) {
+    if (object.boundingBox.left >= this.boundingBox.left && object.boundingBox.left <= this.boundingBox.right) {
       return true;
     }
 
-    if (object.boundingX >= this.positionX && object.boundingX <= this.boundingX) {
+    if (object.boundingBox.right >= this.boundingBox.left && object.boundingBox.right <= this.boundingBox.right) {
       return true;
     }
 
@@ -175,11 +203,11 @@ export abstract class SceneObject {
   }
 
   isWithinVerticalBounds(object: SceneObject): boolean {
-    if (object.positionY >= this.positionY && object.positionY <= this.boundingY) {
+    if (object.boundingBox.top >= this.boundingBox.top && object.boundingBox.top <= this.boundingBox.bottom) {
       return true;
     }
 
-    if (object.boundingY >= this.positionY && object.boundingY <= this.boundingY) {
+    if (object.boundingBox.bottom >= this.boundingBox.top && object.boundingBox.bottom <= this.boundingBox.bottom) {
       return true;
     }
 
