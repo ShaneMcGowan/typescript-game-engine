@@ -82,18 +82,11 @@ export abstract class SceneObject {
     let xOffset = this.width / 2; // TODO(smg): this should be calculated based off of how the user wants the position to be calculated
     let yOffset = this.height / 2; // TODO(smg): same as above
 
-    // return {
-    //   top: this.positionY - yOffset,
-    //   right: this.positionX + xOffset,
-    //   bottom: this.positionY + yOffset,
-    //   left: this.positionX - xOffset,
-    // };
-
     return {
-      top: this.positionY,
-      right: this.positionX + this.width,
-      bottom: this.positionY + this.height,
-      left: this.positionX,
+      top: this.positionY - yOffset,
+      right: this.positionX + xOffset,
+      bottom: this.positionY + yOffset,
+      left: this.positionX - xOffset,
     };
   }
 

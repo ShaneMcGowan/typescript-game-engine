@@ -9,7 +9,9 @@ import { type PlayerObject } from './player.object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
 import { SpriteObject } from '@core/objects/sprite.object';
 import { ScoreCardObject } from './score-card.object';
-import { DEFAULT_PIPE_GAP, DEFAULT_PIPE_REGION, DefaultsConstants } from '../constants/defaults.constants';
+import { DEFAULT_PIPE_REGION, DefaultsConstants } from '../constants/defaults.constants';
+import { BRONZE_MEDAL_THRESHOLD, GOLD_MEDAL_THRESHOLD, type MedalType, PLATINUM_MEDAL_THRESHOLD, SILVER_MEDAL_THRESHOLD, MEDAL_SPRITES } from '../constants/medal.constants';
+import { TextObject } from './text.object';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
@@ -25,7 +27,12 @@ export class ControllerObject extends SceneObject {
   // object references
   interval: IntervalObject;
   idleSprite: SpriteObject;
+  // score card
+  scoreCardBackground: SpriteObject;
   scorecard: ScoreCardObject;
+  medal: SpriteObject;
+  score: TextObject;
+  highscore: TextObject;
 
   // game end
   continueTimer: number = 0;
@@ -63,14 +70,14 @@ export class ControllerObject extends SceneObject {
 
     this.state = 'idle';
 
-    this.scene.globals.score = 0;
+    this.scene.globals.score = 987654321;
 
     // values here are awkwardly hardcoded
     let spriteWidth = 3.675;
     let spriteHeight = 3.5;
     this.idleSprite = new SpriteObject(this.scene, {
-      positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (spriteWidth / 2) + 0.05,
-      positionY: (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.8,
+      positionX: CanvasConstants.CANVAS_CENTER_TILE_X,
+      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y + 1,
       width: spriteWidth,
       height: spriteHeight,
       tileset: 'sprites',
@@ -138,11 +145,42 @@ export class ControllerObject extends SceneObject {
     this.scorecard = new ScoreCardObject(this.scene, {});
     this.scene.addObject(this.scorecard);
 
+    // medal
+    if (this.medalType !== 'none') {
+      this.medal = new SpriteObject(this.scene, {
+        positionX: CanvasConstants.CANVAS_CENTER_TILE_X - 2.5,
+        positionY: CanvasConstants.CANVAS_CENTER_TILE_Y,
+        width: 1.5,
+        height: 1.5,
+        tileset: 'sprites',
+        spriteX: MEDAL_SPRITES[this.medalType].spriteX,
+        spriteY: MEDAL_SPRITES[this.medalType].spriteY,
+        renderLayer: CanvasConstants.UI_COLLISION_LAYER,
+      });
+      this.scene.addObject(this.medal);
+    }
+
+    // text - score
+    this.score = new TextObject(this.scene, {
+      positionX: CanvasConstants.CANVAS_CENTER_TILE_X + 2.5,
+      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y - 0.5,
+      score: this.scene.globals.score,
+    });
+    this.scene.addObject(this.score);
+
     // set highscore
     if (this.scene.globals.score > this.scene.globals.highscore) {
       this.scene.globals.highscore = this.scene.globals.score;
       localStorage.setItem('highscore', this.scene.globals.score.toString());
     }
+
+    // text - highscore
+    this.highscore = new TextObject(this.scene, {
+      positionX: CanvasConstants.CANVAS_CENTER_TILE_X + 2.5,
+      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y + 1,
+      score: this.scene.globals.highscore,
+    });
+    this.scene.addObject(this.highscore);
 
     this.continueTimer = 0;
   }
@@ -151,11 +189,19 @@ export class ControllerObject extends SceneObject {
     if (this.scorecard) {
       this.scene.removeObjectById(this.scorecard.id);
     }
+    if (this.medal) {
+      this.scene.removeObjectById(this.medal.id);
+    }
+    if (this.score) {
+      this.scene.removeObjectById(this.score.id);
+    }
+    if (this.highscore) {
+      this.scene.removeObjectById(this.highscore.id);
+    }
   }
 
   updateGameEnd(delta: number): void {
     this.continueTimer += delta;
-    console.log(this.continueTimer);
 
     if (this.continueTimer < this.continueDuration) {
       return;
@@ -180,5 +226,25 @@ export class ControllerObject extends SceneObject {
     this.scene.globals.mouse.click.left = false;
 
     this.scene.dispatchEvent(GameEvents.GameStart);
+  }
+
+  get medalType(): MedalType {
+    if (this.scene.globals.score >= PLATINUM_MEDAL_THRESHOLD) {
+      return 'platinum';
+    }
+
+    if (this.scene.globals.score >= GOLD_MEDAL_THRESHOLD) {
+      return 'gold';
+    }
+
+    if (this.scene.globals.score >= SILVER_MEDAL_THRESHOLD) {
+      return 'silver';
+    }
+
+    if (this.scene.globals.score >= BRONZE_MEDAL_THRESHOLD) {
+      return 'bronze';
+    }
+
+    return 'none';
   }
 }

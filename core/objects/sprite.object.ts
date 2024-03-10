@@ -41,7 +41,8 @@ export class SpriteObject extends SceneObject {
       this.positionX,
       this.positionY,
       this.width,
-      this.height
+      this.height,
+      { centered: true, }
     );
   }
 }

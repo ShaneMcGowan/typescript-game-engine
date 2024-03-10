@@ -33,8 +33,9 @@ export class FloorObject extends SceneObject {
     // setup
     this.height = 2;
     this.width = CanvasConstants.CANVAS_TILE_WIDTH;
-    this.positionX = 0;
-    this.positionY = CanvasConstants.CANVAS_TILE_HEIGHT - this.height;
+
+    this.positionX = CanvasConstants.CANVAS_CENTER_TILE_X;
+    this.positionY = CanvasConstants.CANVAS_TILE_HEIGHT - this.height / 2;
 
     this.scene.addEventListener(GameEvents.GameStart, this.onGameStart.bind(this));
     this.scene.addEventListener(GameEvents.GameEnd, this.onGameOver.bind(this));
@@ -56,7 +57,7 @@ export class FloorObject extends SceneObject {
   }
 
   private updateCheckIfPlayerAboveGround(delta: number): void {
-    if (this.player.positionY + this.player.height < this.positionY) {
+    if (!this.isWithinVerticalBounds(this.player)) {
       return;
     }
 
@@ -64,16 +65,17 @@ export class FloorObject extends SceneObject {
   }
 
   private renderFloor(context: CanvasRenderingContext2D): void {
-    for (let i = 0; i < CanvasConstants.CANVAS_TILE_WIDTH + SEGMENT_WIDTH; i += SEGMENT_WIDTH) {
+    for (let i = 0; i < this.width + (SEGMENT_WIDTH * 2); i += SEGMENT_WIDTH) {
       RenderUtils.renderSprite(
         context,
         this.assets.images.sprites,
         19,
         0,
-        this.positionX + i - this.offset,
+        this.boundingBox.left + i - this.offset,
         this.positionY,
         SEGMENT_WIDTH,
-        this.height
+        this.height,
+        { centered: true, }
       );
     }
   }

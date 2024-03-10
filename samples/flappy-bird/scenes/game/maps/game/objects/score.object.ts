@@ -12,6 +12,11 @@ export class ScoreObject extends SceneObject {
 
   constructor(protected scene: GAME_SCENE, config: Config) {
     super(scene, config);
+
+    this.positionX = CanvasConstants.CANVAS_CENTER_TILE_X;
+    this.positionY = 2;
+    this.width = CanvasConstants.CANVAS_TILE_WIDTH;
+    this.height = 1.125;
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -25,10 +30,11 @@ export class ScoreObject extends SceneObject {
         this.assets.images.sprites,
         NUMBER_SPRITES_LARGE[digit].spriteX,
         NUMBER_SPRITES_LARGE[digit].spriteY,
-        (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (score.length / 2) + index + offset,
-        CanvasConstants.CANVAS_TILE_HEIGHT / 8,
+        this.positionX - ((score.length - 1) / 2) + index + offset, // center text v
+        this.positionY,
         undefined,
-        1.125
+        this.height,
+        { centered: true, }
       );
     });
   }

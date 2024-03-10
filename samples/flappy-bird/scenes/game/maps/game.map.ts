@@ -27,8 +27,8 @@ export class GAME_MAP extends SceneMap {
 
     // Sprite Background (as object)
     this.objects.push(new SpriteObject(this.scene, {
-      positionX: 0,
-      positionY: 0,
+      positionX: CanvasConstants.CANVAS_CENTER_TILE_X,
+      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y,
       width: CanvasConstants.CANVAS_TILE_WIDTH,
       height: CanvasConstants.CANVAS_TILE_HEIGHT,
       tileset: 'sprites',

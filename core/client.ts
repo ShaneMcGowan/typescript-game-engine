@@ -49,7 +49,7 @@ export class Client {
       canvasLayers: false,
     },
     object: {
-      renderBoundary: false,
+      renderBoundary: true,
       renderBackground: false,
     },
   };
