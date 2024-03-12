@@ -23,11 +23,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: '../../core/templates/client.html',
+      template: '../../core/client/index.html',
       filename: './index.html',
     }),
     new CopyWebpackPlugin({
       patterns: [
+        { from: '../../core/client/index.css', to: 'assets/index.css', },
         { from: './assets', to: 'assets', }
       ],
     })
