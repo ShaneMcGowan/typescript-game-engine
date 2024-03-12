@@ -23,7 +23,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: '../../core/templates/engine.html',
       filename: './index.html',
     }),
     new CopyWebpackPlugin({

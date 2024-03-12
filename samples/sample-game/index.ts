@@ -40,9 +40,36 @@ import { SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
     audio: {},
   };
 
-  window.engine = new Client(
-    document.getElementById('render-area'),
+  let defaultParams = {
+    container: document.getElementById('render-area'),
     scenes,
-    assets
+    assets,
+  };
+
+  let debugParams = {
+    engineObjectList: document.getElementById('object-list'),
+    engineObjectDetails: document.getElementById('object-details'),
+    engineControls: {
+      gridLines: document.getElementById('btnGridLines'),
+      gridNumbers: document.getElementById('btnGridNumbers'),
+      breakpoint: document.getElementById('btnBreakpoint'),
+      fps: document.getElementById('btnFps'),
+      objectCount: document.getElementById('btnObjectCount'),
+      timingFrame: document.getElementById('btnTimingFrame'),
+      timingFrameBackground: document.getElementById('btnTimingFrameBackground'),
+      timingFrameRender: document.getElementById('btnTimingFrameRender'),
+      timingFrameUpdate: document.getElementById('btnTimingFrameUpdate'),
+      canvasLayers: document.getElementById('btnCanvasLayers'),
+      fullscreen: document.getElementById('btnFullscreen'),
+    },
+  };
+
+  window.engine = new Client(
+    defaultParams.container,
+    defaultParams.scenes,
+    defaultParams.assets,
+    debugParams.engineObjectList,
+    debugParams.engineObjectDetails,
+    debugParams.engineControls
   );
 })();

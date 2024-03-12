@@ -41,6 +41,9 @@ import { DefaultsConstants } from './scenes/game/maps/game/constants/defaults.co
   window.engine = new Client(
     document.getElementById('render-area'),
     scenes,
-    assets
+    assets,
+    null,
+    null,
+    undefined
   );
 })();

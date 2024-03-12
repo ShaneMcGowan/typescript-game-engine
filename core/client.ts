@@ -3,6 +3,20 @@ import { type SceneConstructorSignature, type Scene } from './model/scene';
 import { RenderUtils } from './utils/render.utils';
 import { type AssetsConfig, type Assets } from './model/assets';
 
+interface DebugButtons {
+  gridLines?: HTMLElement;
+  gridNumbers?: HTMLElement;
+  breakpoint?: HTMLElement;
+  fps?: HTMLElement;
+  objectCount?: HTMLElement;
+  timingFrame?: HTMLElement;
+  timingFrameBackground?: HTMLElement;
+  timingFrameRender?: HTMLElement;
+  timingFrameUpdate?: HTMLElement;
+  canvasLayers?: HTMLElement;
+  fullscreen?: HTMLElement;
+}
+
 export class Client {
   // Constants
   private readonly CANVAS_HEIGHT: number = CanvasConstants.CANVAS_HEIGHT;
@@ -57,10 +71,17 @@ export class Client {
   // controllers
   gamepad: Gamepad | undefined = undefined;
 
+  // engine
+  engineSelectedObjectId: string | undefined;
+  engineTimer: number = 0; // how often to refresh
+
   constructor(
     public container: HTMLElement,
     scenes: SceneConstructorSignature[],
-    assets: AssetsConfig
+    assets: AssetsConfig,
+    public engineObjectList: HTMLElement | null,
+    public engineObjectDetails: HTMLElement | null,
+    private readonly engineControls?: DebugButtons
   ) {
     // scenes
     this.scenes = [...scenes];
@@ -86,11 +107,6 @@ export class Client {
 
     // attach canvas to ui
     container.append(this.canvas);
-
-    // go fullscreen
-    this.canvas.addEventListener('click', () => {
-      // this.canvas.requestFullscreen();
-    });
 
     // handle tabbed out state
     document.addEventListener('visibilitychange', (event) => {
@@ -171,6 +187,13 @@ export class Client {
       this.currentScene.changeMap(this.currentScene.flaggedForMapChange);
     }
 
+    // update engine
+    this.engineTimer += this.delta;
+    if (this.engineTimer > 1) {
+      this.engine();
+      this.engineTimer = 0;
+    }
+
     // Call next frame
     // (we set `this` context for when using window.requestAnimationFrame)
     window.requestAnimationFrame(this.frame.bind(this));
@@ -217,46 +240,57 @@ export class Client {
   }
 
   private initialiseDebuggerListeners(): void {
-    document.addEventListener('keyup', (event) => {
-      switch (event.key) {
-        case '1':
-          this.debug.ui.grid.lines = !this.debug.ui.grid.lines;
-          break;
-        case '2':
-          this.debug.ui.grid.numbers = !this.debug.ui.grid.numbers;
-          break;
-        case '3':
-          this.debug.breakpoint.frame = !this.debug.breakpoint.frame;
-          break;
-        case '4':
-          this.debug.stats.fps = !this.debug.stats.fps;
-          break;
-        case '5':
-          this.debug.stats.objectCount = !this.debug.stats.objectCount;
-          break;
-        case '6':
-          this.debug.timing.frame = !this.debug.timing.frame;
-          break;
-        case '7':
-          this.debug.timing.frameBackground = !this.debug.timing.frameBackground;
-          break;
-        case '8':
-          this.debug.timing.frameRender = !this.debug.timing.frameRender;
-          break;
-        case '9':
-          this.debug.timing.frameUpdate = !this.debug.timing.frameUpdate;
-          break;
-        case '0':
-          this.debug.ui.canvasLayers = !this.debug.ui.canvasLayers;
-          break;
-        case '+':
-          // nothing yet
-          break;
-        case '-':
-          // nothing yet
-          break;
-      }
-    });
+    if (this.engineControls === undefined) {
+      return;
+    }
+
+    if (this.engineControls.gridLines) {
+      this.engineControls.gridLines.addEventListener('click', () => { this.debug.ui.grid.lines = !this.debug.ui.grid.lines; });
+    }
+
+    if (this.engineControls.gridNumbers) {
+      this.engineControls.gridNumbers.addEventListener('click', () => { this.debug.ui.grid.numbers = !this.debug.ui.grid.numbers; });
+    }
+
+    if (this.engineControls.breakpoint) {
+      this.engineControls.breakpoint.addEventListener('click', () => { this.debug.breakpoint.frame = !this.debug.breakpoint.frame; });
+    }
+
+    if (this.engineControls.fps) {
+      this.engineControls.fps.addEventListener('click', () => { this.debug.stats.fps = !this.debug.stats.fps; });
+    }
+
+    if (this.engineControls.objectCount) {
+      this.engineControls.objectCount.addEventListener('click', () => { this.debug.stats.objectCount = !this.debug.stats.objectCount; });
+    }
+
+    if (this.engineControls.timingFrame) {
+      this.engineControls.timingFrame.addEventListener('click', () => { this.debug.timing.frame = !this.debug.timing.frame; });
+    }
+
+    if (this.engineControls.timingFrameBackground) {
+      this.engineControls.timingFrameBackground.addEventListener('click', () => { this.debug.timing.frameBackground = !this.debug.timing.frameBackground; });
+    }
+
+    if (this.engineControls.timingFrameRender) {
+      this.engineControls.timingFrameRender.addEventListener('click', () => { this.debug.timing.frameRender = !this.debug.timing.frameRender; });
+    }
+
+    if (this.engineControls.timingFrameUpdate) {
+      this.engineControls.timingFrameUpdate.addEventListener('click', () => { this.debug.timing.frameUpdate = !this.debug.timing.frameUpdate; });
+    }
+
+    if (this.engineControls.canvasLayers) {
+      this.engineControls.canvasLayers.addEventListener('click', () => { this.debug.ui.canvasLayers = !this.debug.ui.canvasLayers; });
+    }
+
+    if (this.engineControls.fullscreen) {
+      this.engineControls.fullscreen.addEventListener('click', () => {
+        this.canvas.requestFullscreen().catch((error) => {
+          throw new Error(error);
+        });
+      });
+    }
   }
 
   private intialiseGamepadListeners(): void {
@@ -272,6 +306,60 @@ export class Client {
     });
     window.addEventListener('gamepaddisconnected', (event: GamepadEvent) => {
       this.gamepad = undefined;
+    });
+  }
+
+  /**
+   * Update the engine information
+   */
+  private engine(): void {
+    if (this.engineObjectList === null) {
+      return;
+    }
+
+    // update object list
+    let list = document.createElement('ul');
+    this.engineObjectList.innerHTML = '';
+    this.engineObjectList.appendChild(list);
+
+    this.currentScene.objects.forEach((object) => {
+      let item = document.createElement('li');
+      item.innerHTML = object.constructor.name;
+      list.appendChild(item);
+
+      item.addEventListener('click', () => {
+        this.engineSelectedObjectId = object.id;
+        this.updateEngineObjectDetails();
+      });
+    });
+  }
+
+  private updateEngineObjectDetails(): void {
+    if (this.engineSelectedObjectId === undefined) {
+      return;
+    }
+
+    if (this.engineObjectDetails === null) {
+      return;
+    }
+
+    let object = this.currentScene.objects.find((object) => object.id === this.engineSelectedObjectId);
+    if (object === undefined) {
+      return;
+    }
+
+    // clear
+    this.engineObjectDetails.innerHTML = '';
+
+    // details
+    this.engineObjectDetails.innerHTML += `<h3>${object.constructor.name}</h3>`;
+    Object.keys(object).forEach((key) => {
+      let html = '';
+      html += '<div style="display:flex; padding: 0.25rem 0;">';
+      html += `<span style="margin-right: auto;">${key}</span>`;
+      html += `<input value="${(object as any)[key]}"`;
+      html += '</div>';
+      this.engineObjectDetails.innerHTML += html;
     });
   }
 }
