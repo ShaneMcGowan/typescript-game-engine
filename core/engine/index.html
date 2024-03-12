@@ -53,5 +53,35 @@
 
 
 </body>
+<script>
+  (function(){
+    function resize() {
+      let container = document.getElementById('render-area');
+      if(container === null){
+        return;
+      }
+      
+      let canvas = container.children[0];
+      if(canvas === undefined){
+        return;
+      }
+      
+      // resize canvas while maintaining aspect ratio
+      let aspectRatio = canvas.width / canvas.height;
+      
+      let width = container.offsetWidth;
+      let height = container.offsetHeight - (16 * aspectRatio); // remove height of buttons at the top of the page, this can be removed later once page is fixed
+      
+      canvas.style.width = Math.floor(width) + 'px';
+      canvas.style.width = Math.floor(height * aspectRatio) + 'px';
+    }
+
+    window.onresize = function(){
+      resize();
+    }
+
+    resize();
+  })();
+</script>
 
 </html>

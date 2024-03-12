@@ -26,6 +26,10 @@ module.exports = () => {
       new HtmlWebpackPlugin({
         template: '../../core/client/index.html',
         filename: './index.html',
+        metadata: {
+          title: 'Sample Game',
+          description: 'Sample Game built in TypeScript',
+        },
       }),
       new CopyWebpackPlugin({
         patterns: [

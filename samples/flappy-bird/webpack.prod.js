@@ -4,7 +4,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './index.ts',
-  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -23,11 +22,16 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: '../../core/client/index.html',
       filename: './index.html',
+      metadata: {
+        title: 'Flappy Bird',
+        description: 'Flappy Bird built in TypeScript',
+      },
     }),
     new CopyWebpackPlugin({
       patterns: [
+        { from: '../../core/client/index.css', to: 'assets/index.css', },
         { from: './assets', to: 'assets', }
       ],
     })
@@ -36,5 +40,5 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '../../dist/flappy-bird/'),
   },
-  mode: 'development',
+  mode: 'production',
 };
