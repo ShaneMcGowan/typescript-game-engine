@@ -24,8 +24,13 @@
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
-    "dev-sample-game": "cd ./samples/sample-game && webpack --watch --progress",
-    "dev-flappy-bird": "cd ./samples/flappy-bird && webpack --watch --progress",
+    "dev-sample-game": "cd ./samples/sample-game && webpack serve --open --config webpack.dev.js",
+    "build-sample-game": "cd ./samples/sample-game && webpack --config webpack.prod.js",
+    "build-watch-sample-game": "cd ./samples/sample-game && webpack serve --open --config webpack.prod.js",
+    "dev-flappy-bird": "cd ./samples/flappy-bird && webpack serve --open --config webpack.dev.js",
+    "build-flappy-bird": "cd ./samples/flappy-bird && webpack --config webpack.prod.js",
+    "build-watch-flappy-bird": "cd ./samples/flappy-bird && webpack serve --open --config webpack.prod.js",
+
     "lint": "eslint --fix --ext .ts ."
   },
   "author": "Shane McGowan",

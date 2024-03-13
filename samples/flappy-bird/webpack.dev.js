@@ -17,24 +17,25 @@ module.exports = {
   resolve: {
     alias: {
       '@core': path.resolve(__dirname, '../../core/'),
-      '@sample-game': path.resolve(__dirname, './'),
+      '@flappy-bird': path.resolve(__dirname, './'),
     },
     extensions: ['.ts', '.js'],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: '../../core/engine/index.html',
       filename: './index.html',
     }),
     new CopyWebpackPlugin({
       patterns: [
+        { from: '../../core/engine/index.css', to: 'assets/index.css', },
         { from: './assets', to: 'assets', }
       ],
     })
   ],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '../../dist/sample-game/'),
+    path: path.resolve(__dirname, '../../dist/flappy-bird/'),
   },
   mode: 'development',
 };

@@ -5,6 +5,7 @@ import { MAIN_MENU_SCENE } from './scenes/main-menu/main-menu.scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { GAME_SCENE } from './scenes/game/game.scene';
 import { DefaultsConstants } from './scenes/game/maps/game/constants/defaults.constants';
+import { EngineUtils } from '@core/engine/engine.utils';
 
 (function() {
   /**
@@ -41,6 +42,9 @@ import { DefaultsConstants } from './scenes/game/maps/game/constants/defaults.co
   window.engine = new Client(
     document.getElementById('render-area'),
     scenes,
-    assets
+    assets,
+    EngineUtils.engineObjectList,
+    EngineUtils.engineObjectDetails,
+    EngineUtils.engineControls
   );
 })();
