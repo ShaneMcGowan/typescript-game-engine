@@ -101,18 +101,18 @@ export class DirtObject extends SceneObject implements Interactable {
   private harvest(): void {
     if (!this.isFullyGrown) {
       console.log(`harvesting growing ${this.currentlyGrowing}`);
-      this.scene.removeObject(this);
+      this.scene.removeObjectById(this.id);
       return;
     }
 
     if (!this.isSpoiled) {
       console.log(`harvesting fully grown ${this.currentlyGrowing}`);
-      this.scene.removeObject(this);
+      this.scene.removeObjectById(this.id);
       return;
     }
 
     console.log(`harvesting spoiled ${this.currentlyGrowing}`);
-    this.scene.removeObject(this);
+    this.scene.removeObjectById(this.id);
   }
 
   private get isEmpty(): boolean {
@@ -132,7 +132,7 @@ export class DirtObject extends SceneObject implements Interactable {
 
     if (this.isEmpty && this.counterDry > DRY_COUNTER_MAX) {
       // dirt dried out
-      this.scene.removeObject(this);
+      this.scene.removeObjectById(this.id);
     } else if (!this.isFullyGrown && this.counterGrow > GROW_COUNTER_MAX) {
       // plant fully grown
       this.isFullyGrown = true;

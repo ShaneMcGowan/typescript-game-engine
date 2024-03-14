@@ -86,7 +86,7 @@ export class PipeObject extends SceneObject {
 
     // when off screen, remove pipe
     if (this.positionX < -3) {
-      this.scene.removeObject(this);
+      this.flaggedForDestroy = true;
     }
   }
 

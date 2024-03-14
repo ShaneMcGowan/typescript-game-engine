@@ -60,7 +60,7 @@ export class HoleObject extends SceneObject {
       }
 
       // otherwise remove object from scene
-      this.scene.removeObject(o);
+      this.scene.removeObjectById(o.id);
     });
   }
 

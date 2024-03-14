@@ -191,6 +191,7 @@ export abstract class Scene {
   // TODO(smg): move client rendering code into here
   frame(delta: number): void {
     this.renderBackground(delta);
+    console.log(this.objects.length);
     this.updateObjects(delta);
     this.renderObjects(delta);
 
@@ -199,6 +200,8 @@ export abstract class Scene {
     } else {
       this.defaultRenderer();
     }
+
+    this.destroyObjects(delta);
   }
 
   renderBackground(delta: number): void {
@@ -323,6 +326,22 @@ export abstract class Scene {
     }
   }
 
+  destroyObjects(delta: number): void {
+    if (this.client.debug.timing.frameDestroy) {
+      console.time('[frame] destroy');
+    }
+
+    this.objects.forEach((object) => {
+      if (object.flaggedForDestroy) {
+        this.removeObjectById(object.id);
+      }
+    });
+
+    if (this.client.debug.timing.frameDestroy) {
+      console.timeEnd('[frame] destroy');
+    }
+  }
+
   defaultRenderer(): void {
     // set camera positions
     this.globals.camera.startX = 0;
@@ -346,21 +365,17 @@ export abstract class Scene {
   // TODO(smg): I am rethinking the concept of removing the object from the scene during another object's update.
   // I think it would be better to have a flag that is checked during the scene's update loop to rmove the obejct before it's next update
   // perhaps using flaggedForDestroy
-  removeObject(sceneObject: SceneObject): void {
-    if (sceneObject.destroy) {
-      sceneObject.destroy();
-    }
-    this.objects.splice(this.objects.indexOf(sceneObject), 1);
-  }
-
-  // TODO(smg): this prevents weird issues caused by calling removeObject multiple times directly for the same object but it is inefficient
-  // review this at a later stage
   removeObjectById(sceneObjectId: string): void {
+    // TODO(smg): review this later, loops are inefficient
     let object = this.objects.find(o => o.id === sceneObjectId);
     if (object === undefined) {
       return;
     }
-    this.removeObject(object);
+
+    if (object.destroy) {
+      object.destroy();
+    }
+    this.objects.splice(this.objects.indexOf(object), 1);
   }
 
   /**
@@ -456,7 +471,7 @@ export abstract class Scene {
 
   private removeAllObjects(): void {
     while (this.objects.length > 0) {
-      this.removeObject(this.objects[0]);
+      this.removeObjectById(this.objects[0].id);
     }
     // this.objects = [];
   }

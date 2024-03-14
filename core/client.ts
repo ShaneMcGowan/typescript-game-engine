@@ -54,6 +54,7 @@ export class Client {
       frameBackground: false,
       frameUpdate: false,
       frameRender: false,
+      frameDestroy: false,
     },
     ui: {
       grid: {
