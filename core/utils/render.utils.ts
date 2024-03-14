@@ -42,8 +42,11 @@ export abstract class RenderUtils {
       }
     }
 
+    let translateX = Math.floor(width / 2);
+    let translateY = Math.floor(height / 2);
+
     if (options.centered) {
-      context.translate(-(width / 2), -(height / 2));
+      context.translate(-translateX, -translateY);
     }
 
     context.drawImage(
@@ -59,7 +62,7 @@ export abstract class RenderUtils {
     );
 
     if (options.centered) {
-      context.translate(width / 2, height / 2);
+      context.translate(translateX, translateY);
     }
 
     if (shouldSave) {

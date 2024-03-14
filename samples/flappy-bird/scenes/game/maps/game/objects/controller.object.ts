@@ -70,14 +70,14 @@ export class ControllerObject extends SceneObject {
 
     this.state = 'idle';
 
-    this.scene.globals.score = 987654321;
+    this.scene.globals.score = 0;
 
     // values here are awkwardly hardcoded
     let spriteWidth = 3.675;
     let spriteHeight = 3.5;
     this.idleSprite = new SpriteObject(this.scene, {
-      positionX: CanvasConstants.CANVAS_CENTER_TILE_X,
-      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y + 1,
+      positionX: 4.5625,
+      positionY: 8.9375,
       width: spriteWidth,
       height: spriteHeight,
       tileset: 'sprites',
@@ -96,7 +96,6 @@ export class ControllerObject extends SceneObject {
 
     if (this.idleSprite) {
       this.idleSprite.flaggedForDestroy = true;
-      // this.scene.removeObjectById(this.idleSprite.id);
     }
 
     this.interval = new IntervalObject(this.scene, {
@@ -140,7 +139,6 @@ export class ControllerObject extends SceneObject {
     // TODO(smg): move cleanup of previous state to it's own function
     if (this.interval) {
       this.interval.flaggedForDestroy = true;
-      // this.scene.removeObjectById(this.interval.id);
     }
 
     // scorecard
@@ -150,8 +148,8 @@ export class ControllerObject extends SceneObject {
     // medal
     if (this.medalType !== 'none') {
       this.medal = new SpriteObject(this.scene, {
-        positionX: CanvasConstants.CANVAS_CENTER_TILE_X - 2.5,
-        positionY: CanvasConstants.CANVAS_CENTER_TILE_Y,
+        positionX: 2.45,
+        positionY: 8.125,
         width: 1.5,
         height: 1.5,
         tileset: 'sprites',
@@ -164,8 +162,8 @@ export class ControllerObject extends SceneObject {
 
     // text - score
     this.score = new TextObject(this.scene, {
-      positionX: CanvasConstants.CANVAS_CENTER_TILE_X + 2.5,
-      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y - 0.5,
+      positionX: 7.125,
+      positionY: 7.5,
       score: this.scene.globals.score,
     });
     this.scene.addObject(this.score);
@@ -178,8 +176,8 @@ export class ControllerObject extends SceneObject {
 
     // text - highscore
     this.highscore = new TextObject(this.scene, {
-      positionX: CanvasConstants.CANVAS_CENTER_TILE_X + 2.5,
-      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y + 1,
+      positionX: 7.125,
+      positionY: 9,
       score: this.scene.globals.highscore,
     });
     this.scene.addObject(this.highscore);
@@ -190,19 +188,15 @@ export class ControllerObject extends SceneObject {
   private cleanupGameEnd(): void {
     if (this.scorecard) {
       this.scorecard.flaggedForDestroy = true;
-      // this.scene.removeObjectById(this.scorecard.id);
     }
     if (this.medal) {
       this.medal.flaggedForDestroy = true;
-      // this.scene.removeObjectById(this.medal.id);
     }
     if (this.score) {
       this.score.flaggedForDestroy = true;
-      // this.scene.removeObjectById(this.score.id);
     }
     if (this.highscore) {
       this.highscore.flaggedForDestroy = true;
-      // this.scene.removeObjectById(this.highscore.id);
     }
   }
 

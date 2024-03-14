@@ -22,4 +22,8 @@ export class EngineUtils {
       fullscreen: document.getElementById('btnFullscreen'),
     };
   }
+
+  static initHelpers(): void {
+    window.o = (id: string) => { return window.engine.currentScene.objects.find(o => o.id === id); };
+  }
 }

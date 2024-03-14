@@ -30,7 +30,7 @@ export class Client {
 
   // Data
   private readonly scenes: SceneConstructorSignature[];
-  private currentScene: Scene;
+  currentScene: Scene;
 
   // Assets
   assets: Assets = {
@@ -64,7 +64,7 @@ export class Client {
       canvasLayers: false,
     },
     object: {
-      renderBoundary: true,
+      renderBoundary: false,
       renderBackground: false,
     },
   };

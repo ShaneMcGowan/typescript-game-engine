@@ -43,7 +43,6 @@ export class PointObject extends SceneObject {
     // when off screen, remove pipe
     if (this.positionX < -3) { // 3 is arbitrary here, could be a better value
       this.flaggedForDestroy = true;
-      // this.scene.removeObjectById(this.id);
     }
   }
 
@@ -54,11 +53,9 @@ export class PointObject extends SceneObject {
 
     this.scene.globals.score++;
     this.flaggedForDestroy = true;
-    // this.scene.removeObjectById(this.id);
   }
 
   private onGameOver(): void {
     this.flaggedForDestroy = true;
-    // this.scene.removeObjectById(this.id);
   }
 }
