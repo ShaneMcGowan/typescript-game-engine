@@ -95,7 +95,8 @@ export class ControllerObject extends SceneObject {
     this.state = 'playing';
 
     if (this.idleSprite) {
-      this.scene.removeObjectById(this.idleSprite.id);
+      this.idleSprite.flaggedForDestroy = true;
+      // this.scene.removeObjectById(this.idleSprite.id);
     }
 
     this.interval = new IntervalObject(this.scene, {
@@ -138,7 +139,8 @@ export class ControllerObject extends SceneObject {
 
     // TODO(smg): move cleanup of previous state to it's own function
     if (this.interval) {
-      this.scene.removeObjectById(this.interval.id);
+      this.interval.flaggedForDestroy = true;
+      // this.scene.removeObjectById(this.interval.id);
     }
 
     // scorecard
@@ -187,16 +189,20 @@ export class ControllerObject extends SceneObject {
 
   private cleanupGameEnd(): void {
     if (this.scorecard) {
-      this.scene.removeObjectById(this.scorecard.id);
+      this.scorecard.flaggedForDestroy = true;
+      // this.scene.removeObjectById(this.scorecard.id);
     }
     if (this.medal) {
-      this.scene.removeObjectById(this.medal.id);
+      this.medal.flaggedForDestroy = true;
+      // this.scene.removeObjectById(this.medal.id);
     }
     if (this.score) {
-      this.scene.removeObjectById(this.score.id);
+      this.score.flaggedForDestroy = true;
+      // this.scene.removeObjectById(this.score.id);
     }
     if (this.highscore) {
-      this.scene.removeObjectById(this.highscore.id);
+      this.highscore.flaggedForDestroy = true;
+      // this.scene.removeObjectById(this.highscore.id);
     }
   }
 

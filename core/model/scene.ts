@@ -191,7 +191,6 @@ export abstract class Scene {
   // TODO(smg): move client rendering code into here
   frame(delta: number): void {
     this.renderBackground(delta);
-    console.log(this.objects.length);
     this.updateObjects(delta);
     this.renderObjects(delta);
 

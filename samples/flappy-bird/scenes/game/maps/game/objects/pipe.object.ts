@@ -167,7 +167,8 @@ export class PipeObject extends SceneObject {
   }
 
   private onGameIdle(): void {
-    this.scene.removeObjectById(this.id);
+    this.flaggedForDestroy = true;
+    // this.scene.removeObjectById(this.id);
   }
 
   private onGameEnd(): void {
