@@ -47,4 +47,5 @@ import { EngineUtils } from '@core/engine/engine.utils';
     EngineUtils.engineObjectDetails,
     EngineUtils.engineControls
   );
+  EngineUtils.initHelpers();
 })();

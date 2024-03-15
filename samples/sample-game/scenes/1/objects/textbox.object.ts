@@ -147,7 +147,7 @@ export class TextboxObject extends SceneObject {
       if (this.onComplete) {
         this.onComplete();
       }
-      this.scene.removeObject(this);
+      this.scene.removeObjectById(this.id);
     }
   }
 
@@ -180,7 +180,7 @@ export class TextboxObject extends SceneObject {
       if (this.onComplete) {
         this.onComplete();
       }
-      this.scene.removeObject(this);
+      this.scene.removeObjectById(this.id);
     }
 
     this.controls.confirm = false;

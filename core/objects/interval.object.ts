@@ -44,7 +44,7 @@ export class IntervalObject extends SceneObject {
       this.intervalsComplete++;
 
       if (this.maxIntervals && this.intervalsComplete >= this.maxIntervals) {
-        this.scene.removeObject(this);
+        this.scene.removeObjectById(this.id);
       }
     }
   }

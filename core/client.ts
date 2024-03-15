@@ -30,7 +30,7 @@ export class Client {
 
   // Data
   private readonly scenes: SceneConstructorSignature[];
-  private currentScene: Scene;
+  currentScene: Scene;
 
   // Assets
   assets: Assets = {
@@ -54,6 +54,7 @@ export class Client {
       frameBackground: false,
       frameUpdate: false,
       frameRender: false,
+      frameDestroy: false,
     },
     ui: {
       grid: {

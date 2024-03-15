@@ -17,8 +17,8 @@ export class StartButtonObject extends SceneObject {
 
     this.width = 3.5;
     this.height = 2;
-    this.positionX = (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (this.width / 2);
-    this.positionY = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - (this.height / 2);
+    this.positionX = CanvasConstants.CANVAS_TILE_WIDTH / 2;
+    this.positionY = CanvasConstants.CANVAS_TILE_HEIGHT / 2;
   }
 
   update(delta: number): void {
@@ -28,7 +28,7 @@ export class StartButtonObject extends SceneObject {
 
     this.scene.globals.mouse.click.left = false;
 
-    let clicked = MouseUtils.isClickWithin(this.scene.globals.mouse.position, this.positionX, this.positionY, this.width, this.height);
+    let clicked = MouseUtils.isClickWithin(this.scene.globals.mouse.position, this.boundingBox.left, this.boundingBox.top, this.width, this.height);
     if (!clicked) {
       return;
     }
@@ -45,7 +45,8 @@ export class StartButtonObject extends SceneObject {
       this.positionX,
       this.positionY,
       this.width,
-      this.height
+      this.height,
+      { centered: true, }
     );
   }
 }

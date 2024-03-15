@@ -14,14 +14,15 @@ export class PointObject extends SceneObject {
 
   player: PlayerObject;
 
-  width: number = 0.0625;
+  width: number = 1;
   height: number = CanvasConstants.CANVAS_TILE_HEIGHT;
 
   constructor(protected scene: GAME_SCENE, config: Config) {
     super(scene, config);
 
     this.player = config.player;
-    this.positionX = CanvasConstants.CANVAS_TILE_WIDTH + 2.625;
+    this.positionX = CanvasConstants.CANVAS_TILE_WIDTH + 3.25;
+    this.positionY = CanvasConstants.CANVAS_CENTER_TILE_Y;
 
     this.scene.addEventListener(GameEvents.GameEnd, this.onGameOver.bind(this));
   }
@@ -41,18 +42,20 @@ export class PointObject extends SceneObject {
 
     // when off screen, remove pipe
     if (this.positionX < -3) { // 3 is arbitrary here, could be a better value
-      this.scene.removeObject(this);
+      this.flaggedForDestroy = true;
     }
   }
 
   private updatePoints(delta: number): void {
-    if (this.positionX < this.player.positionX) {
-      this.scene.globals.score++;
-      this.scene.removeObject(this);
+    if (!this.isWithinHorizontalBounds(this.player)) {
+      return;
     }
+
+    this.scene.globals.score++;
+    this.flaggedForDestroy = true;
   }
 
   private onGameOver(): void {
-    this.scene.removeObjectById(this.id);
+    this.flaggedForDestroy = true;
   }
 }

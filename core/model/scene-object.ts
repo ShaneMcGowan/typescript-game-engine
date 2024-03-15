@@ -59,7 +59,7 @@ export abstract class SceneObject {
   // flags
   flaggedForRender: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
   flaggedForUpdate: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
-  flaggedForDestroy: boolean = false; // TODO(smg): implement this. used to remove object from scene on next update rather than mid update etc
+  flaggedForDestroy: boolean = false; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
 
   // TODO(smg): Currently we are using positionX and positionY as the top left corner of the object
   // boundingX and boundingY are the bottom right corner of the object
@@ -82,18 +82,11 @@ export abstract class SceneObject {
     let xOffset = this.width / 2; // TODO(smg): this should be calculated based off of how the user wants the position to be calculated
     let yOffset = this.height / 2; // TODO(smg): same as above
 
-    // return {
-    //   top: this.positionY - yOffset,
-    //   right: this.positionX + xOffset,
-    //   bottom: this.positionY + yOffset,
-    //   left: this.positionX - xOffset,
-    // };
-
     return {
-      top: this.positionY,
-      right: this.positionX + this.width,
-      bottom: this.positionY + this.height,
-      left: this.positionX,
+      top: this.positionY - yOffset,
+      right: this.positionX + xOffset,
+      bottom: this.positionY + yOffset,
+      left: this.positionX - xOffset,
     };
   }
 

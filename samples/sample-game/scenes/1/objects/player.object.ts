@@ -518,7 +518,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    this.scene.removeObject(object);
+    this.scene.removeObjectById(object.id);
 
     let type = getInventoryItemType(object);
     if (type !== undefined) {

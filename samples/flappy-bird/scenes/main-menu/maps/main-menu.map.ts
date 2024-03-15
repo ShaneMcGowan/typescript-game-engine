@@ -29,7 +29,7 @@ export class MAIN_MENU_MAP extends SceneMap {
     let logoWidth = 6;
     let logoHeight = 1.8;
     this.objects.push(new SpriteObject(this.scene, {
-      positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (logoWidth / 2),
+      positionX: CanvasConstants.CANVAS_TILE_WIDTH / 2,
       positionY: 3,
       width: logoWidth,
       height: logoHeight,

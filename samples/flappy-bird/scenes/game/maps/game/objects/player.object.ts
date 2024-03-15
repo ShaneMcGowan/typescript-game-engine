@@ -132,7 +132,8 @@ export class PlayerObject extends SceneObject {
       this.positionX,
       this.positionY,
       this.width,
-      this.height
+      this.height,
+      { centered: true, }
     );
   }
 
@@ -154,10 +155,10 @@ export class PlayerObject extends SceneObject {
   }
 
   get startingX(): number {
-    return (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (this.width / 2);
+    return CanvasConstants.CANVAS_TILE_WIDTH / 2;
   }
 
   get startingY(): number {
-    return (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - (this.height / 2);
+    return CanvasConstants.CANVAS_TILE_HEIGHT / 2;
   }
 }

@@ -10,7 +10,7 @@ export abstract class RenderUtils {
     positionY: number,
     spriteWidth?: number,
     spriteHeight?: number,
-    options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; } = { } // TODO(smg): implement tile vs pixel
+    options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; centered?: boolean; } = { } // TODO(smg): implement tile vs pixel
   ): void {
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
@@ -42,6 +42,13 @@ export abstract class RenderUtils {
       }
     }
 
+    let translateX = Math.floor(width / 2);
+    let translateY = Math.floor(height / 2);
+
+    if (options.centered) {
+      context.translate(-translateX, -translateY);
+    }
+
     context.drawImage(
       spriteSheet,
       spriteX * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
@@ -53,6 +60,10 @@ export abstract class RenderUtils {
       width * scale,
       height * scale
     );
+
+    if (options.centered) {
+      context.translate(translateX, translateY);
+    }
 
     if (shouldSave) {
       context.restore();
