@@ -107,19 +107,19 @@ export class PipeObject extends SceneObject {
     let endY = this.boundingBox.bottom - (SPRITES.BottomExit.height / 2);
 
     // repeat pipe until off screen
-    // for (let i = startingY; i < endY; i += (SPRITES.Pipe.height - 0.0625)) {
-    //   RenderUtils.renderSprite(
-    //     context,
-    //     this.assets.images['sprites'],
-    //     SPRITES.Pipe.spriteX,
-    //     SPRITES.Pipe.spriteY,
-    //     this.positionX,
-    //     startingY + i,
-    //     SPRITES.Pipe.width,
-    //     SPRITES.Pipe.height,
-    //     { centered: true, }
-    //   );
-    // }
+    for (let i = startingY; i < endY; i += SPRITES.Pipe.height) {
+      RenderUtils.renderSprite(
+        context,
+        this.assets.images['sprites'],
+        SPRITES.Pipe.spriteX,
+        SPRITES.Pipe.spriteY,
+        this.positionX,
+        i,
+        SPRITES.Pipe.width,
+        SPRITES.Pipe.height,
+        { centered: true, }
+      );
+    }
 
     RenderUtils.renderSprite(
       context,
@@ -136,6 +136,22 @@ export class PipeObject extends SceneObject {
 
   private renderBottomPipe(context: CanvasRenderingContext2D): void {
     let startingY = this.boundingBox.top + (SPRITES.TopExit.height / 2);
+    let endY = this.boundingBox.bottom - (SPRITES.BottomExit.height / 2);
+
+    // repeat pipe until off screen
+    for (let i = startingY; i < endY; i += SPRITES.Pipe.height) {
+      RenderUtils.renderSprite(
+        context,
+        this.assets.images['sprites'],
+        SPRITES.Pipe.spriteX,
+        SPRITES.Pipe.spriteY,
+        this.positionX,
+        i,
+        SPRITES.Pipe.width,
+        SPRITES.Pipe.height,
+        { centered: true, }
+      );
+    }
 
     // pipe exit
     RenderUtils.renderSprite(
@@ -149,21 +165,6 @@ export class PipeObject extends SceneObject {
       SPRITES.TopExit.height,
       { centered: true, }
     );
-
-    // repeat pipe until off screen
-    // for (let i = SPRITES.Pipe.height + startingY; i < this.boundingBox.bottom; i += (SPRITES.Pipe.height - 0.0625)) {
-    //   RenderUtils.renderSprite(
-    //     context,
-    //     this.assets.images['sprites'],
-    //     SPRITES.Pipe.spriteX,
-    //     SPRITES.Pipe.spriteY,
-    //     this.positionX,
-    //     startingY + i,
-    //     SPRITES.Pipe.width,
-    //     SPRITES.Pipe.height,
-    //     { centered: true, }
-    //   );
-    // }
   }
 
   private onGameIdle(): void {
