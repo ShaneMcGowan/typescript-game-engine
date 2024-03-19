@@ -20,6 +20,8 @@ export class EngineUtils {
       timingFrameUpdate: document.getElementById('btnTimingFrameUpdate'),
       canvasLayers: document.getElementById('btnCanvasLayers'),
       fullscreen: document.getElementById('btnFullscreen'),
+      renderBoundary: document.getElementById('btnRenderBoundary'),
+      renderBackground: document.getElementById('btnRenderBackground'),
     };
   }
 

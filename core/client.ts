@@ -15,6 +15,8 @@ interface DebugButtons {
   timingFrameUpdate?: HTMLElement;
   canvasLayers?: HTMLElement;
   fullscreen?: HTMLElement;
+  renderBoundary?: HTMLElement;
+  renderBackground?: HTMLElement;
 }
 
 export class Client {
@@ -283,6 +285,14 @@ export class Client {
 
     if (this.engineControls.canvasLayers) {
       this.engineControls.canvasLayers.addEventListener('click', () => { this.debug.ui.canvasLayers = !this.debug.ui.canvasLayers; });
+    }
+
+    if (this.engineControls.renderBoundary) {
+      this.engineControls.renderBoundary.addEventListener('click', () => { this.debug.object.renderBoundary = !this.debug.object.renderBoundary; });
+    }
+
+    if (this.engineControls.renderBackground) {
+      this.engineControls.renderBackground.addEventListener('click', () => { this.debug.object.renderBackground = !this.debug.object.renderBackground; });
     }
 
     if (this.engineControls.fullscreen) {
