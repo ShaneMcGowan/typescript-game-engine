@@ -1,7 +1,9 @@
 {
   "name": "typescript-game-engine",
   "version": "1.0.0",
-  "description": "",
+  "description": "A game engine written in TypeScript",
+  "author": "Shane McGowan <hi@shanemcgowan.com> (https://shanemcgowan.com)",
+  "license": "ISC",
   "main": "index.js",
   "dependencies": {
     "ts-node": "^9.0.0"
@@ -30,9 +32,6 @@
     "dev-flappy-bird": "cd ./samples/flappy-bird && webpack serve --open --config webpack.dev.js",
     "build-flappy-bird": "cd ./samples/flappy-bird && webpack --config webpack.prod.js",
     "build-watch-flappy-bird": "cd ./samples/flappy-bird && webpack serve --open --config webpack.prod.js",
-
     "lint": "eslint --fix --ext .ts ."
-  },
-  "author": "Shane McGowan",
-  "license": "ISC"
+  }
 }
