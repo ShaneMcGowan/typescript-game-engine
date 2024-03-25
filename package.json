@@ -11,6 +11,10 @@
   "files": [
     "core"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShaneMcGowan/typescript-game-engine.git"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "clean-webpack-plugin": "^3.0.0",
