@@ -1,3 +1,5 @@
+import { type Scene } from '@core/model/scene';
+import { type SceneObject } from '@core/model/scene-object';
 import { CanvasConstants } from '../constants/canvas.constants';
 
 export interface MousePosition {
@@ -79,5 +81,23 @@ export abstract class MouseUtils {
       mousePosition.exactY >= y &&
       mousePosition.exactY <= y + height
     );
+  }
+
+  /**
+   * returns true if object was clicked
+   * @param object
+   * @param scene
+   * @returns
+   */
+  static wasClicked(object: SceneObject, scene: Scene): boolean {
+    if (!scene.globals.mouse.click.left) {
+      return false;
+    }
+
+    if (!this.isClickWithin(scene.globals.mouse.position, object.boundingBox.left, object.boundingBox.top, object.width, object.height)) {
+      return false;
+    }
+
+    return true;
   }
 }

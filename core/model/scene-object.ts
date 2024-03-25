@@ -8,6 +8,8 @@ export interface SceneObjectBaseConfig {
   positionY?: number;
   targetX?: number;
   targetY?: number;
+  width?: number;
+  height?: number;
 
   isRenderable?: boolean;
   renderLayer?: number;
@@ -118,6 +120,14 @@ export abstract class SceneObject {
 
     if (config.targetY !== undefined) {
       this.targetY = config.targetY;
+    }
+
+    if (config.width !== undefined) {
+      this.width = config.width;
+    }
+
+    if (config.height !== undefined) {
+      this.height = config.height;
     }
 
     this.isRenderable = config.isRenderable ?? DEFAULT_IS_RENDERABLE;
