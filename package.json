@@ -1,6 +1,6 @@
 {
   "name": "typescript-game-engine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A game engine written in TypeScript",
   "author": "Shane McGowan <hi@shanemcgowan.com> (https://shanemcgowan.com)",
   "license": "ISC",
