@@ -93,9 +93,7 @@ export abstract class Scene {
   };
 
   // maps
-  // TODO(smg): change this so you can pass in a map class directly and the type uses SceneMapConstructorSignature | undefined
-  flaggedForMapChange: number | undefined = undefined; // if this is set, the scene will change to the map at the provided index on the next frame
-  maps: SceneMapConstructorSignature[] = []; // TODO(smg): some sort of better typing for this, it is a list of uninstanciated classes that extend SceneMap
+  flaggedForMapChange: SceneMapConstructorSignature | undefined = undefined; // if this is set, the scene will change to the map of the provided class on the next frame
   map: SceneMap; // the current map
 
   // rendering contexts
@@ -505,12 +503,11 @@ export abstract class Scene {
     return canvas;
   }
 
-  flagForMapChange(index: number): void {
-    this.flaggedForMapChange = index;
+  flagForMapChange(mapClass: SceneMapConstructorSignature): void {
+    this.flaggedForMapChange = mapClass;
   }
 
-  // TODO(smg): allow this to have a timer set for it
-  changeMap(index: number): void {
+  changeMap(mapClass: SceneMapConstructorSignature): void {
     // clean up map
     if (this.map !== undefined) {
       this.map.destroy();
@@ -522,8 +519,8 @@ export abstract class Scene {
     this.removeAllBackgroundLayers();
 
     // set up new map
-    console.log('[Scene] changing map to', index);
-    this.map = Reflect.construct(this.maps[index], [this, this.context, this.assets]);
+    console.log('[Scene] changing map to', mapClass);
+    this.map = Reflect.construct(mapClass, [this]);
     this.backgroundLayers.push(...this.map.backgroundLayers);
     this.objects.push(...this.map.objects);
 

@@ -39,16 +39,11 @@ export class SAMPLE_SCENE_1 extends Scene {
     hotbar_selected_index: 0,
   };
 
-  maps = [
-    SAMPLE_SCENE_1_MAP_0,
-    SAMPLE_SCENE_1_MAP_1
-  ];
-
   eventTypes = EVENT_TYPES;
 
   constructor(client: Client) {
     super(client);
-    this.changeMap(1); // should this be the default?
+    this.changeMap(SAMPLE_SCENE_1_MAP_1);
   }
 
   get firstFreeInventorySpaceIndex(): number | undefined {

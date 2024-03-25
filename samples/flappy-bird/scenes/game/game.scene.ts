@@ -8,10 +8,6 @@ interface Globals extends SceneGlobalsBaseConfig {
 }
 
 export class GAME_SCENE extends Scene {
-  maps = [
-    GAME_MAP
-  ];
-
   globals: Globals;
 
   constructor(protected client: Client) {
@@ -20,6 +16,6 @@ export class GAME_SCENE extends Scene {
     this.globals.score = 0;
     this.globals.highscore = localStorage.getItem('highscore') === null ? 0 : Number(localStorage.getItem('highscore'));
 
-    this.changeMap(0);
+    this.changeMap(GAME_MAP);
   }
 }

@@ -4,6 +4,7 @@ import { PlayerObject } from './player.object';
 import { TransitionObject } from '../../../../../core/objects/transition.object';
 import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 import { TimerObject } from '@core/objects/timer.object';
+import { SAMPLE_SCENE_1_MAP_1 } from '../maps/1.map';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -43,7 +44,7 @@ export class HoleObject extends SceneObject {
         this.scene.addObject(new TimerObject(this.scene, {
           duration,
           onComplete: () => {
-            this.scene.flagForMapChange(1);
+            this.scene.flagForMapChange(SAMPLE_SCENE_1_MAP_1);
           },
         }));
 
