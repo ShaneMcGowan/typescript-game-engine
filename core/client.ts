@@ -297,7 +297,7 @@ export class Client {
 
     if (this.engineControls.fullscreen) {
       this.engineControls.fullscreen.addEventListener('click', () => {
-        this.canvas.requestFullscreen().catch((error) => {
+        this.canvas.parentElement.requestFullscreen().catch((error) => {
           throw new Error(error);
         });
       });
