@@ -1,6 +1,6 @@
-import { type SceneObjectBaseConfig, SceneObject } from '@core/src/model/scene-object';
-import { Movement, MovementUtils } from '@core/src/utils/movement.utils';
-import { RenderUtils } from '@core/src/utils/render.utils';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
+import { Movement, MovementUtils } from '@core/utils/movement.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 import { type ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';

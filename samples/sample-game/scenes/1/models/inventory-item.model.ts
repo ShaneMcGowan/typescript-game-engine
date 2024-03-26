@@ -1,4 +1,4 @@
-import { type SceneObject } from '@core/src/model/scene-object';
+import { type SceneObject } from '@core/model/scene-object';
 import { ChickenObject } from '../objects/chicken.object';
 import { EggObject } from '../objects/egg.object';
 import { TomatoSeedsObject } from '../objects/seeds/tomato-seeds.object';

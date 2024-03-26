@@ -1,7 +1,7 @@
-import { type SceneObjectBaseConfig, SceneObject } from '@core/src/model/scene-object';
-import { MathUtils } from '@core/src/utils/math.utils';
-import { Movement, MovementUtils } from '@core/src/utils/movement.utils';
-import { RenderUtils } from '@core/src/utils/render.utils';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
+import { MathUtils } from '@core/utils/math.utils';
+import { Movement, MovementUtils } from '@core/utils/movement.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from './egg.object';
 import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 import { type Interactable } from '../models/interactable.model';

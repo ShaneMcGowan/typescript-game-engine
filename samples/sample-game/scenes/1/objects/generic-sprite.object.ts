@@ -1,7 +1,7 @@
-import { type Scene } from '@core/src/model/scene';
-import { type SceneObjectBaseConfig, SceneObject } from '@core/src/model/scene-object';
-import { Movement, MovementUtils } from '@core/src/utils/movement.utils';
-import { RenderUtils } from '@core/src/utils/render.utils';
+import { type Scene } from '@core/model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
+import { Movement, MovementUtils } from '@core/utils/movement.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 
 const DEFAULT_DESTROYED_AT_TARGET = false;
 const DEFAULT_MOVEMENT_SPEED = 0.5;

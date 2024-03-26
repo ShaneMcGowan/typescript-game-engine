@@ -1,6 +1,6 @@
-import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
-import { RenderUtils } from '@core/src/utils/render.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 
 const TILESET = 'tileset_plants';
 const DEFAULT_RENDER_LAYER = 7;

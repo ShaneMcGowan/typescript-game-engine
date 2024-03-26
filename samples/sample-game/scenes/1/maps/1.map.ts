@@ -1,6 +1,6 @@
-import { type BackgroundLayer } from '@core/src/model/background-layer';
-import { SceneMap } from '@core/src/model/scene-map';
-import { type SceneObject } from '@core/src/model/scene-object';
+import { type BackgroundLayer } from '@core/model/background-layer';
+import { SceneMap } from '@core/model/scene-map';
+import { type SceneObject } from '@core/model/scene-object';
 import { PlayerObject } from '../objects/player.object';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './1/backgrounds/1.background';

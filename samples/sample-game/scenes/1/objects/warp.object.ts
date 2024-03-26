@@ -1,8 +1,8 @@
-import { type Scene } from '@core/src/model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
+import { type Scene } from '@core/model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type PlayerObject } from './player.object';
-import { TimerObject } from '@core/src/objects/timer.object';
-import { TransitionObject } from '@core/src/objects/transition.object';
+import { TimerObject } from '@core/objects/timer.object';
+import { TransitionObject } from '@core/objects/transition.object';
 import { SAMPLE_SCENE_1_MAP_0 } from '../maps/0.map';
 
 interface Config extends SceneObjectBaseConfig {

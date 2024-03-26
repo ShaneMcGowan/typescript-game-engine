@@ -1,4 +1,4 @@
-import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 import { InventoryItemType } from '../models/inventory-item.model';
 

@@ -1,7 +1,7 @@
-import { Client } from '@core/src/client';
-import { EngineUtils } from '@core/src/engine/engine.utils';
-import { type AssetsConfig } from '@core/src/model/assets';
-import { type SceneConstructorSignature } from '@core/src/model/scene';
+import { Client } from '@core/client';
+import { EngineUtils } from '@core/engine/engine.utils';
+import { type AssetsConfig } from '@core/model/assets';
+import { type SceneConstructorSignature } from '@core/model/scene';
 import { SAMPLE_SCENE_0 } from '@sample-game/scenes/0.scene';
 import { SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 
