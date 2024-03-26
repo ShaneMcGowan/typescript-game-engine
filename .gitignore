@@ -1,3 +1,4 @@
 /node_modules/
 /dist/sample-game
+/dist/core
 .DS_Store

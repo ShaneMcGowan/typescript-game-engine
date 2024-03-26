@@ -19,7 +19,7 @@
   },
   "include": [
     "./**/*",
-    "./.eslintrc.js"
+    "core/.eslintrc.js"
   ]
 }
 
