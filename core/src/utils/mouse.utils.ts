@@ -1,6 +1,6 @@
-import { type Scene } from '@core/src/model/scene';
-import { type SceneObject } from '@core/src/model/scene-object';
 import { CanvasConstants } from '../constants/canvas.constants';
+import { type Scene } from '../model/scene';
+import { type SceneObject } from '../model/scene-object';
 
 export interface MousePosition {
   x: number;

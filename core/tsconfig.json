@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES5",
+    "declaration": true,
+    "outDir": "../dist/core",
+    "allowJs": false,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": false,
+    "paths": {
+      "@core/*": ["./src/*"],
+    }
+  },
+  "include": [
+    "./**/*",
+    "./.eslintrc.js"
+  ]
+}
+
+// {
+//   "compilerOptions": {
+//     "module": "commonjs",
+//     "target": "es2019",
+//     "declaration": true,
+//     "outDir": "./dist"
+//   },
+//   "include": [
+//     "src/**/*"
+//   ]
+// }
