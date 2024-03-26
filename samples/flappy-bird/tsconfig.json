@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "target": "ES2019",
+    "target": "ES5",
     "declaration": true,
     "outDir": "./dist",
     "allowJs": false,
@@ -10,12 +10,15 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": false,
+    "baseUrl" : "./",
     "paths": {
-      "@core/*": ["./src/*"],
+      "@core/*": ["./core/*"],
+      "@flappy-bird/*": ["./samples/flappy-bird/*"],
+      "@sample-game/*": ["./samples/sample-game/*"]
     }
   },
   "include": [
     "./**/*",
-    "./.eslintrc.js"
+    "core/.eslintrc.js"
   ]
 }

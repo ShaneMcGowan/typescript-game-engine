@@ -1,7 +1,7 @@
 {
-  "name": "typescript-game-engine",
+  "name": "typescript-game-engine_sample-game",
   "version": "1.0.4",
-  "description": "A game engine written in TypeScript",
+  "description": "A sample game using the typescript-game-engine",
   "author": "Shane McGowan <hi@shanemcgowan.com> (https://shanemcgowan.com)",
   "license": "ISC",
   "main": "index.js",
@@ -32,12 +32,10 @@
     "webpack-dev-server": "^3.11.2",
     "webpack-node-externals": "^2.5.2"
   },
-  "overrides": {
-    "minimatch": "5.1.2", // fix for minimatch depencency somewhere throwing errors at me due to an issue in @types/glob/index.d.ts
-    "glob": "8.1.0"
-  },
   "scripts": {
-    "dev": "tsc",
+    "dev": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "build-watch": "webpack serve --open --config webpack.prod.js",
     "lint": "eslint --fix --ext .ts ."
   }
 }
