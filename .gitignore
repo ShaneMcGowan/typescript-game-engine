@@ -1,5 +1,4 @@
 **/node_modules/
-/dist/sample-game
 /dist/core
 /core/*.tgz
 /core/dist

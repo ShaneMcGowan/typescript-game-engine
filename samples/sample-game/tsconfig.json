@@ -2,7 +2,6 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ES2019",
-    "declaration": true,
     "outDir": "./dist",
     "allowJs": false,
     "noImplicitAny": true,
