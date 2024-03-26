@@ -1,7 +1,7 @@
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type Scene, type CustomRendererSignature, type SceneRenderingContext } from '@core/model/scene';
-import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { RenderUtils } from '@core/utils/render.utils';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { type Scene, type CustomRendererSignature, type SceneRenderingContext } from '@core/src/model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/src/model/scene-object';
+import { RenderUtils } from '@core/src/utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
   object: SceneObject;

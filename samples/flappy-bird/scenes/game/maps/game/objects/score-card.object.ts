@@ -1,7 +1,7 @@
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
-import { RenderUtils } from '@core/utils/render.utils';
+import { RenderUtils } from '@core/src/utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {}
 

@@ -1,8 +1,8 @@
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type Scene } from '@core/model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { type Scene } from '@core/src/model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
 import { type PlayerObject } from './player.object';
-import { RenderUtils } from '@core/utils/render.utils';
+import { RenderUtils } from '@core/src/utils/render.utils';
 import { GameEvents } from '../constants/events.constants';
 import { DEFAULT_PIPE_SPEED } from '../constants/defaults.constants';
 

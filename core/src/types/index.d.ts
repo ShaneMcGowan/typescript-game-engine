@@ -1,5 +1,5 @@
-import { type Client } from '@core/client';
-import { type SceneObject } from '@core/model/scene-object';
+import { type Client } from '@core/src/client';
+import { type SceneObject } from '@core/src/model/scene-object';
 
 export {};
 

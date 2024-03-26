@@ -1,10 +1,10 @@
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/src/model/scene-object';
 import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 import { type ChestObject } from '@sample-game/scenes/1/objects/chest.object';
 import { type InventoryItemObject } from '@sample-game/scenes/1/objects/inventory-item.object';
-import { MouseUtils } from '@core/utils/mouse.utils';
-import { RenderUtils } from '@core/utils/render.utils';
+import { MouseUtils } from '@core/src/utils/mouse.utils';
+import { RenderUtils } from '@core/src/utils/render.utils';
 
 const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;

@@ -1,10 +1,10 @@
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { RenderUtils } from '@core/utils/render.utils';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { RenderUtils } from '@core/src/utils/render.utils';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObject } from './scene-object';
-import { MouseUtils } from '@core/utils/mouse.utils';
-import { type Client } from '@core/client';
+import { MouseUtils } from '@core/src/utils/mouse.utils';
+import { type Client } from '@core/src/client';
 import { type Assets } from './assets';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;

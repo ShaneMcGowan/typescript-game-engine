@@ -1,6 +1,6 @@
-import { RenderUtils } from '@core/utils/render.utils';
+import { RenderUtils } from '@core/src/utils/render.utils';
 import { type Scene } from './scene';
-import { CanvasConstants } from '@core/constants/canvas.constants';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
 import { type Assets } from './assets';
 
 export interface SceneObjectBaseConfig {

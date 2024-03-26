@@ -24,12 +24,12 @@ module.exports = () => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: '../../core/engine/index.html',
+        template: '../../core/src/engine/index.html',
         filename: './index.html',
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { from: '../../core/engine/index.css', to: 'assets/index.css', },
+          { from: '../../core/src/engine/index.css', to: 'assets/index.css', },
           { from: './assets', to: 'assets', }
         ],
       })

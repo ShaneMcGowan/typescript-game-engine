@@ -1,11 +1,11 @@
-import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { MathUtils } from '@core/utils/math.utils';
-import { Movement, MovementUtils } from '@core/utils/movement.utils';
-import { RenderUtils } from '@core/utils/render.utils';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/src/model/scene-object';
+import { MathUtils } from '@core/src/utils/math.utils';
+import { Movement, MovementUtils } from '@core/src/utils/movement.utils';
+import { RenderUtils } from '@core/src/utils/render.utils';
 import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 import { type Interactable } from '../models/interactable.model';
 import { TextboxObject } from './textbox.object';
-import { SpriteAnimation } from '@core/model/sprite-animation';
+import { SpriteAnimation } from '@core/src/model/sprite-animation';
 
 const DEFAULT_RENDER_LAYER: number = 8;
 const DEFAULT_CAN_MOVE: boolean = false;

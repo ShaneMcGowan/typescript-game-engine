@@ -1,5 +1,5 @@
-import { type Client } from '@core/client';
-import { Scene } from '@core/model/scene';
+import { type Client } from '@core/src/client';
+import { Scene } from '@core/src/model/scene';
 import { MAIN_MENU_MAP } from './maps/main-menu.map';
 
 export class MAIN_MENU_SCENE extends Scene {

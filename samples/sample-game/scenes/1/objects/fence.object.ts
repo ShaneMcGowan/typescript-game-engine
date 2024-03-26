@@ -1,6 +1,6 @@
-import { type Scene } from '@core/model/scene';
-import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { RenderUtils } from '@core/utils/render.utils';
+import { type Scene } from '@core/src/model/scene';
+import { type SceneObjectBaseConfig, SceneObject } from '@core/src/model/scene-object';
+import { RenderUtils } from '@core/src/utils/render.utils';
 import { type Interactable } from '../models/interactable.model';
 
 export class FenceType {

@@ -1,9 +1,9 @@
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type BackgroundLayer } from '@core/model/background-layer';
-import { SceneMap } from '@core/model/scene-map';
-import { type SceneObject } from '@core/model/scene-object';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { type BackgroundLayer } from '@core/src/model/background-layer';
+import { SceneMap } from '@core/src/model/scene-map';
+import { type SceneObject } from '@core/src/model/scene-object';
 import { type GAME_SCENE } from '../game.scene';
-import { SpriteObject } from '@core/objects/sprite.object';
+import { SpriteObject } from '@core/src/objects/sprite.object';
 import { PlayerObject } from './game/objects/player.object';
 import { ScoreObject } from './game/objects/score.object';
 import { FloorObject } from './game/objects/floor.object';

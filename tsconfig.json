@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES5",
+    "declaration": true,
     "outDir": "./dist",
-    "allowJs": true,
-    "module": "es6",
-    "target": "es5",
+    "allowJs": false,
     "noImplicitAny": true,
     "sourceMap": true,
     "moduleResolution": "node",
@@ -21,3 +22,15 @@
     "./.eslintrc.js"
   ]
 }
+
+// {
+//   "compilerOptions": {
+//     "module": "commonjs",
+//     "target": "es2019",
+//     "declaration": true,
+//     "outDir": "./dist"
+//   },
+//   "include": [
+//     "src/**/*"
+//   ]
+// }

@@ -24,7 +24,7 @@ module.exports = () => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: '../../core/client/index.html',
+        template: '../../core/src/client/index.html',
         filename: './index.html',
         metadata: {
           title: 'Sample Game',
@@ -33,7 +33,7 @@ module.exports = () => {
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { from: '../../core/client/index.css', to: 'assets/index.css', },
+          { from: '../../core/src/client/index.css', to: 'assets/index.css', },
           { from: './assets', to: 'assets', }
         ],
       })

@@ -1,7 +1,7 @@
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type Scene } from '@core/model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { RenderUtils } from '@core/utils/render.utils';
+import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { type Scene } from '@core/src/model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
+import { RenderUtils } from '@core/src/utils/render.utils';
 
 type AnimationType = 'block' | 'circle';
 type AnimationDirection = 'in' | 'out';

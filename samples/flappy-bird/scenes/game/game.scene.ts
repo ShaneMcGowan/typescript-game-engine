@@ -1,6 +1,6 @@
-import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
+import { Scene, type SceneGlobalsBaseConfig } from '@core/src/model/scene';
 import { GAME_MAP } from './maps/game.map';
-import { type Client } from '@core/client';
+import { type Client } from '@core/src/client';
 
 interface Globals extends SceneGlobalsBaseConfig {
   score: number;

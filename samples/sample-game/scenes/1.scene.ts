@@ -1,9 +1,9 @@
-import { type Client } from '@core/client';
+import { type Client } from '@core/src/client';
 import { SAMPLE_SCENE_1_MAP_0 } from './1/maps/0.map';
 import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';
 import { InventoryItemType } from './1/models/inventory-item.model';
 import { InventoryItemObject } from './1/objects/inventory-item.object';
-import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
+import { Scene, type SceneGlobalsBaseConfig } from '@core/src/model/scene';
 
 const EVENT_TYPES: Record<string, string> = {
   TOGGLE_INVENTORY: 'TOGGLE_INVENTORY',
