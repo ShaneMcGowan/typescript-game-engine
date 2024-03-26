@@ -6,7 +6,8 @@
   "license": "ISC",
   "main": "index.js",
   "dependencies": {
-    "ts-node": "^9.0.0"
+    "ts-node": "^9.0.0",
+    "typescript-game-engine": "file:../../core/typescript-game-engine-1.0.5.tgz"
   },
   "files": [
     "core"

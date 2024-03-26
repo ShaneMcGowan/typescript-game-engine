@@ -1,11 +1,11 @@
-import { CanvasConstants } from '@core/src/constants/canvas.constants';
-import { type BackgroundLayer } from '@core/src/model/background-layer';
-import { SceneMap } from '@core/src/model/scene-map';
-import { type SceneObject } from '@core/src/model/scene-object';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { type BackgroundLayer } from '@core/model/background-layer';
+import { SceneMap } from '@core/model/scene-map';
+import { type SceneObject } from '@core/model/scene-object';
 import { MAIN_MENU_BACKGROUND_LAYER_1 } from './main-menu/backgrounds/layer.1';
 import { StartButtonObject } from './main-menu/objects/start-button.object';
 import { type MAIN_MENU_SCENE } from '../main-menu.scene';
-import { SpriteObject } from '@core/src/objects/sprite.object';
+import { SpriteObject } from '@core/objects/sprite.object';
 
 const MAP_HEIGHT: number = CanvasConstants.CANVAS_TILE_HEIGHT;
 const MAP_WIDTH: number = CanvasConstants.CANVAS_TILE_WIDTH;

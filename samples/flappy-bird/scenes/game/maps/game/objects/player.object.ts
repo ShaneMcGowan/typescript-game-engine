@@ -1,8 +1,8 @@
-import { CanvasConstants } from '@core/src/constants/canvas.constants';
-import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
-import { SpriteAnimation } from '@core/src/model/sprite-animation';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { SpriteAnimation } from '@core/model/sprite-animation';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
-import { RenderUtils } from '@core/src/utils/render.utils';
+import { RenderUtils } from '@core/utils/render.utils';
 import { DEFAULT_PLAYER_GRAVITY, DEFAULT_PLAYER_ACCELERATION } from '../constants/defaults.constants';
 import { GameEvents } from '../constants/events.constants';
 

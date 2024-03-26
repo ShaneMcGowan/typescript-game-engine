@@ -1,11 +1,11 @@
-import { Client } from '@core/src/client';
-import { type AssetsConfig } from '@core/src/model/assets';
-import { type SceneConstructorSignature } from '@core/src/model/scene';
+import { Client } from '@core/client';
+import { type AssetsConfig } from '@core/model/assets';
+import { type SceneConstructorSignature } from '@core/model/scene';
 import { MAIN_MENU_SCENE } from './scenes/main-menu/main-menu.scene';
-import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 import { GAME_SCENE } from './scenes/game/game.scene';
+import { EngineUtils } from '@core/engine/engine.utils';
 import { DefaultsConstants } from './scenes/game/maps/game/constants/defaults.constants';
-import { EngineUtils } from '@core/src/engine/engine.utils';
 
 (function() {
   /**

@@ -1,6 +1,6 @@
 {
   "name": "typescript-game-engine",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A game engine written in TypeScript",
   "author": "Shane McGowan <hi@shanemcgowan.com> (https://shanemcgowan.com)",
   "license": "ISC",
@@ -9,7 +9,7 @@
     "ts-node": "^9.0.0"
   },
   "files": [
-    "core"
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "overrides": {
-    "minimatch": "5.1.2", // fix for minimatch depencency somewhere throwing errors at me due to an issue in @types/glob/index.d.ts
+    "minimatch": "5.1.2", 
     "glob": "8.1.0"
   },
   "scripts": {

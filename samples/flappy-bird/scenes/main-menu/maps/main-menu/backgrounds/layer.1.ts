@@ -1,5 +1,5 @@
-import { type BackgroundLayer } from '@core/src/model/background-layer';
-import { type BackgroundTile } from '@core/src/model/background-tile';
+import { type BackgroundLayer } from '@core/model/background-layer';
+import { type BackgroundTile } from '@core/model/background-tile';
 
 const BASE_TILE: BackgroundTile = {
   tileset: 'sprites',

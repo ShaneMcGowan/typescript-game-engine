@@ -1,13 +1,13 @@
-import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { GameEvents } from '../constants/events.constants';
-import { CanvasConstants } from '@core/src/constants/canvas.constants';
-import { IntervalObject } from '@core/src/objects/interval.object';
-import { MathUtils } from '@core/src/utils/math.utils';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { IntervalObject } from '@core/objects/interval.object';
+import { MathUtils } from '@core/utils/math.utils';
 import { PipeObject } from './pipe.object';
 import { PointObject } from './point.object';
 import { type PlayerObject } from './player.object';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
-import { SpriteObject } from '@core/src/objects/sprite.object';
+import { SpriteObject } from '@core/objects/sprite.object';
 import { ScoreCardObject } from './score-card.object';
 import { DEFAULT_PIPE_REGION, DefaultsConstants } from '../constants/defaults.constants';
 import { BRONZE_MEDAL_THRESHOLD, GOLD_MEDAL_THRESHOLD, type MedalType, PLATINUM_MEDAL_THRESHOLD, SILVER_MEDAL_THRESHOLD, MEDAL_SPRITES } from '../constants/medal.constants';

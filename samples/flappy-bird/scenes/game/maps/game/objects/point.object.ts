@@ -1,6 +1,6 @@
-import { SceneObject, type SceneObjectBaseConfig } from '@core/src/model/scene-object';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type PlayerObject } from './player.object';
-import { CanvasConstants } from '@core/src/constants/canvas.constants';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type GAME_SCENE } from '@flappy-bird/scenes/game/game.scene';
 import { GameEvents } from '../constants/events.constants';
 import { DEFAULT_PIPE_SPEED } from '../constants/defaults.constants';
