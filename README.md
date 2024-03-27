@@ -3,8 +3,8 @@ A work in progress game engine, written in typescript.
 
 ## Sample Games
 Check out the samples folder for sample games.
-- Sample Game 2d
-- Flappy Bird clone https://shanemcgowan.com/typescript-game-engine/dist/flappy-bird/
+- Sample Game 2d https://shanemcgowan.com/typescript-game-engine/samples/sample-game/dist/
+- Flappy Bird clone https://shanemcgowan.com/typescript-game-engine/samples/flappy-bird/dist/
 
 ## Core Components
 A game will be comprised of the following core components
