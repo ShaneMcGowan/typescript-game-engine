@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2019",
     "outDir": "./dist",
-    "allowJs": true,
-    "module": "es6",
-    "target": "es5",
+    "allowJs": false,
     "noImplicitAny": true,
     "sourceMap": true,
     "moduleResolution": "node",
@@ -11,13 +11,14 @@
     "strictNullChecks": false,
     "baseUrl" : "./",
     "paths": {
-      "@core/*": ["./core/*"],
-      "@flappy-bird/*": ["./samples/flappy-bird/*"],
-      "@sample-game/*": ["./samples/sample-game/*"]
-    }
+      "@core/*": ["./node_modules/typescript-game-engine/src/*"],
+      "@sample-game/*": ["./*"],
+    },
+    "types": [
+      "./node_modules/typescript-game-engine/src/types/index.d.ts"
+    ]
   },
   "include": [
     "./**/*",
-    "./.eslintrc.js"
-  ]
+  ],
 }

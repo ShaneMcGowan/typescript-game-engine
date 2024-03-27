@@ -1,3 +1,5 @@
-/node_modules/
-/dist/sample-game
+**/node_modules/
+/dist/core
+/core/*.tgz
+/core/dist
 .DS_Store

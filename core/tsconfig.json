@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2019",
+    "declaration": true,
+    "outDir": "./dist",
+    "allowJs": false,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": false,
+    "paths": {
+      "@core/*": ["./src/*"],
+    }
+  },
+  "include": [
+    "./**/*",
+    "./.eslintrc.js"
+  ],
+}

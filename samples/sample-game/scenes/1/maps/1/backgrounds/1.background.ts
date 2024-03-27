@@ -1,4 +1,4 @@
-import { type BackgroundLayer } from '../../../../../../../core/model/background-layer';
+import { type BackgroundLayer } from '../../../../../../../core/src/model/background-layer';
 
 export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_1: BackgroundLayer = {
   index: 1,

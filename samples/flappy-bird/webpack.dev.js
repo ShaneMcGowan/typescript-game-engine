@@ -8,34 +8,34 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: 'ts-loader',
+        test: /\.ts?$/,
+        loader: 'ts-loader',
+        options: { allowTsInNodeModules: true }
       }
     ],
   },
   resolve: {
     alias: {
-      '@core': path.resolve(__dirname, '../../core/'),
+      '@core': path.resolve(__dirname, './node_modules/typescript-game-engine/src/'),
       '@flappy-bird': path.resolve(__dirname, './'),
     },
     extensions: ['.ts', '.js'],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: '../../core/engine/index.html',
+      template: './node_modules/typescript-game-engine/src/engine/index.html',
       filename: './index.html',
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: '../../core/engine/index.css', to: 'assets/index.css', },
+        { from: './node_modules/typescript-game-engine/src/engine/index.css', to: 'assets/index.css', },
         { from: './assets', to: 'assets', }
       ],
     })
   ],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '../../dist/flappy-bird/'),
+    path: path.resolve(__dirname, './dist/'),
   },
   mode: 'development',
 };

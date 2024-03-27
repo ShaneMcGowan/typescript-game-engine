@@ -1,7 +1,7 @@
-import { CanvasConstants } from './constants/canvas.constants';
 import { type SceneConstructorSignature, type Scene } from './model/scene';
 import { RenderUtils } from './utils/render.utils';
 import { type AssetsConfig, type Assets } from './model/assets';
+import { CanvasConstants } from './constants/canvas.constants';
 
 interface DebugButtons {
   gridLines?: HTMLElement;
@@ -155,6 +155,7 @@ export class Client {
    */
   private frame(timestamp: number): void {
     if (this.debug.breakpoint.frame) {
+      // eslint-disable-next-line no-debugger
       debugger;
     }
 
