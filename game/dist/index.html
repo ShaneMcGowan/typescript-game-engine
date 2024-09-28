@@ -1,1 +1,28 @@
-<!doctype html><html lang="en"><head><title>Sample Game</title><meta name="description" content="Sample Game built in TypeScript"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"><link rel="stylesheet" href="./assets/index.css"></head><body><div id="render-area"></div><script src="bundle.js"></script></body></html>
+<!doctype html><html lang="en"><head><title>TypeScript Game Engine</title><meta name="description" content="Game Engine built with TypeScript"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"><link rel="stylesheet" href="./assets/index.css"></head><body><div class="flex flex-column w-100 h-100"><div class="flex w-100 p-1 border-bottom justify-content-center"><button id="btnGridLines" class="m-r-1 p-1">grid lines</button> <button id="btnGridNumbers" class="m-r-1 p-1">grid numbers</button> <button id="btnBreakpoint" class="m-r-1 p-1">breakpoint</button> <button id="btnFps" class="m-r-1 p-1">fps</button> <button id="btnObjectCount" class="m-r-1 p-1">object count</button> <button id="btnTimingFrame" class="m-r-1 p-1">timing - frame</button> <button id="btnTimingFrameBackground" class="m-r-1 p-1">timing - frame background</button> <button id="btnTimingFrameRender" class="m-r-1 p-1">timing - frame render</button> <button id="btnTimingFrameUpdate" class="m-r-1 p-1">timing - frame update</button> <button id="btnCanvasLayers" class="m-r-1 p-1">canvas layers</button> <button id="btnFullscreen" class="m-r-1 p-1">fullscreen</button> <button id="btnRenderBoundary" class="m-r-1 p-1">render boundary</button> <button id="btnRenderBackground" class="m-r-1 p-1">render background</button></div><div class="flex h-100"><div class="engine-container"><div class="w-100 border-right border-bottom p-1"><button>Objects</button></div><div id="tab-objects" class="object-tab-container"><div class="object-list-container" id="object-list"></div><div class="object-details-container" id="object-details"></div></div></div><div class="client-container"><div id="render-area"></div></div></div></div><script src="bundle.js"></script></body><script>(function(){
+    function resize() {
+      let container = document.getElementById('render-area');
+      if(container === null){
+        return;
+      }
+      
+      let canvas = container.children[0];
+      if(canvas === undefined){
+        return;
+      }
+      
+      // resize canvas while maintaining aspect ratio
+      let aspectRatio = canvas.width / canvas.height;
+      
+      let width = container.offsetWidth;
+      let height = container.offsetHeight - (16 * aspectRatio); // remove height of buttons at the top of the page, this can be removed later once page is fixed
+      
+      canvas.style.width = Math.floor(width) + 'px';
+      canvas.style.width = Math.floor(height * aspectRatio) + 'px';
+    }
+
+    window.onresize = function(){
+      resize();
+    }
+
+    resize();
+  })();</script></html>
