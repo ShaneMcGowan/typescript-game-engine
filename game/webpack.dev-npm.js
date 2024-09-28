@@ -1,43 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const config = require('./webpack.dev');
+
+const CORE_PATH = './node_modules/typescript-game-engine';
 
 module.exports = () => {
-  return {
-    entry: './index.ts',
-    devtool: 'inline-source-map',
-    module: {
-      rules: [
-        {
-          test: /\.ts?$/,
-          loader: 'ts-loader',
-          options: { allowTsInNodeModules: true }
-        }
-      ],
-    },
-    resolve: {
-      alias: {
-        '@core': path.resolve(__dirname, './node_modules/typescript-game-engine/src/'),
-        '@sample-game': path.resolve(__dirname, './'),
-      },
-      extensions: ['.ts', '.js'],
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: './node_modules/typescript-game-engine/src/editor/index.html',
-        filename: './index.html',
-      }),
-      new CopyWebpackPlugin({
-        patterns: [
-          { from: './node_modules/typescript-game-engine/src/editor/index.css', to: 'assets/index.css', },
-          { from: './assets', to: 'assets', }
-        ],
-      })
-    ],
-    output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, './dist/'),
-    },
-    mode: 'development',
-  }
+  return config.WEBPACK_CONFIG_BASE_DEVELOPMENT(CORE_PATH);
 };
