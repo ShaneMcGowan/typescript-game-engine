@@ -3,7 +3,7 @@ import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from './egg.object';
-import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
 import { type Interactable } from '../models/interactable.model';
 import { TextboxObject } from './textbox.object';
 
@@ -46,7 +46,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   // egg
   canLayEggs: boolean;
-  eggTimer = MathUtils.randomStartingDelta(2); ;
+  eggTimer = MathUtils.randomStartingDelta(2);;
   eggTimerMax = 7; // seconds until next egg
   eggMax = 200; // max total chickens + eggs allowed at one time
 

@@ -1,6 +1,6 @@
-import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
-import { NpcObject, type NpcObjectConfig } from '@sample-game/scenes/1/objects/npc.object';
-import { TextboxObject } from '@sample-game/scenes/1/objects/textbox.object';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
+import { NpcObject, type NpcObjectConfig } from '@game/scenes/1/objects/npc.object';
+import { TextboxObject } from '@game/scenes/1/objects/textbox.object';
 import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from '../../constants/map-text.constants';
 
 type Stage = 'idle' | 'hi' | 'pause' | 'bye';

@@ -17,7 +17,7 @@ const WEBPACK_CONFIG_BASE = (corePath, metadata) => {
     resolve: {
       alias: {
         '@core': path.resolve(__dirname, `${corePath}/src/`),
-        '@sample-game': path.resolve(__dirname, './'),
+        '@game': path.resolve(__dirname, './'),
       },
       extensions: ['.ts', '.js'],
     },

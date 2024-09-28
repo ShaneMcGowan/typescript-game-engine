@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { ChickenObject } from './chicken.object';
 import { PlayerObject } from './player.object';
-import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
 import { type Interactable } from '../models/interactable.model';
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
@@ -55,7 +55,7 @@ export class EggObject extends SceneObject implements Interactable {
   }
 
   // TODO(smg): what needs to be cleaned up here? are we sure the object is being properly released?
-  destroy(): void {}
+  destroy(): void { }
 
   private updateAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 1;

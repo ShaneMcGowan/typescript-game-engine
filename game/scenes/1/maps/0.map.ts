@@ -10,7 +10,7 @@ import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background'
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './0/backgrounds/2.background';
 import { CameraObject } from './0/objects/camera.object';
 import { InventoryUiObject } from './0/objects/inventory-ui.object';
-import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { ChestObject } from '../objects/chest.object';
 import { IntervalObject } from '@core/objects/interval.object';

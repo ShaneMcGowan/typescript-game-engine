@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { GenericSpriteObject } from '@sample-game/scenes/1/objects/generic-sprite.object';
+import { GenericSpriteObject } from '@game/scenes/1/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
 
 const MAX_ITEMS = 15; // max objects allowed on screen at once

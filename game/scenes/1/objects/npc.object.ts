@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
 import { type Interactable } from '../models/interactable.model';
 import { TextboxObject } from './textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';

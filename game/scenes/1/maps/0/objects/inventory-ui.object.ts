@@ -1,8 +1,8 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
-import { type ChestObject } from '@sample-game/scenes/1/objects/chest.object';
-import { type InventoryItemObject } from '@sample-game/scenes/1/objects/inventory-item.object';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
+import { type ChestObject } from '@game/scenes/1/objects/chest.object';
+import { type InventoryItemObject } from '@game/scenes/1/objects/inventory-item.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 
