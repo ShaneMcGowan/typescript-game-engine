@@ -3,8 +3,7 @@ A work in progress game engine, written in typescript.
 
 ## Sample Games
 Check out the samples folder for sample games.
-- Sample Game 2d https://shanemcgowan.com/typescript-game-engine/samples/sample-game/dist/
-- Flappy Bird clone https://shanemcgowan.com/typescript-game-engine/samples/flappy-bird/dist/
+- Sample Game 2d https://shanemcgowan.com/typescript-game-engine/game/dist/
 
 ## Core Components
 A game will be comprised of the following core components
@@ -13,6 +12,23 @@ A game will be comprised of the following core components
 - Background
 - Objects
 
+## Setting up this repo
+How to run the sample game locally and make changes to it.
+
+- Clone the repo
+- `cd core`
+- `npm install`
+- `npm pack` This will build the package locally which the game relies on
+- `cd ..`
+- `cd game`
+- `npm install`
+- `npm run dev`
+
+Your browser should now open on localhost:8080 with the game live in the editor.
+
+If you do not want the editor running, you can run `npm run build-watch` instead
+
+# ALL BELOW IS POTENTIALLY OUTDATED
 
 ### index.ts
 ```TypeScript
