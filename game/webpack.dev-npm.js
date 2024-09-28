@@ -17,19 +17,19 @@ module.exports = () => {
     },
     resolve: {
       alias: {
-        '@core': path.resolve(__dirname, '../core/src/'),
+        '@core': path.resolve(__dirname, './node_modules/typescript-game-engine/src/'),
         '@sample-game': path.resolve(__dirname, './'),
       },
       extensions: ['.ts', '.js'],
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: '../core/src/editor/index.html',
+        template: './node_modules/typescript-game-engine/src/editor/index.html',
         filename: './index.html',
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { from: '../core/src/editor/index.css', to: 'assets/index.css', },
+          { from: './node_modules/typescript-game-engine/src/editor/index.css', to: 'assets/index.css', },
           { from: './assets', to: 'assets', }
         ],
       })

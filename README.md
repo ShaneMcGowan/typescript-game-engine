@@ -13,7 +13,11 @@ A game will be comprised of the following core components
 - Objects
 
 ## Setting up this repo
-How to run the sample game locally and make changes to it.
+There are 2 ways to run this repo, `local` mode and `npm` mode.
+- `local` mode will pull directly from the `core` folder in the repo, meaning any changes you make in the `core` folder will update live with your game. This is for people who want full control over the engine.
+- `npm` mode is for people who don't care about altering the engine and will just use whatever version of the engine is in the `package.json` file. 
+
+NOTE: if you wish to use `npm` mode, you need to update the `tsconfig.json` so that your editor will have correct syntax highlighting etc. Check the `tsconfig.json` file for comments on how to do this.
 
 - Clone the repo
 - `cd core`

@@ -1,11 +1,11 @@
 import { Client } from '@core/client';
-import { EngineUtils } from '@core/engine/engine.utils';
+import { EditorUtils } from '@core/editor/editor.utils';
 import { type AssetsConfig } from '@core/model/assets';
 import { type SceneConstructorSignature } from '@core/model/scene';
 import { SAMPLE_SCENE_0 } from '@sample-game/scenes/0.scene';
 import { SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
 
-(function() {
+(function () {
   /**
    * Declare your canvas constants here
    */
@@ -45,8 +45,8 @@ import { SAMPLE_SCENE_1 } from '@sample-game/scenes/1.scene';
     document.getElementById('render-area'),
     scenes,
     assets,
-    EngineUtils.engineObjectList,
-    EngineUtils.engineObjectDetails,
-    EngineUtils.engineControls
+    EditorUtils.engineObjectList,
+    EditorUtils.engineObjectDetails,
+    EditorUtils.engineControls
   );
 })();

@@ -5,7 +5,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = () => {
   return {
     entry: './index.ts',
-    devtool: 'inline-source-map',
     module: {
       rules: [
         {
@@ -24,12 +23,16 @@ module.exports = () => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: '../core/src/editor/index.html',
+        template: '../core/src/client/index.html',
         filename: './index.html',
+        metadata: {
+          title: 'Sample Game',
+          description: 'Sample Game built in TypeScript',
+        },
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { from: '../core/src/editor/index.css', to: 'assets/index.css', },
+          { from: '../core/src/client/index.css', to: 'assets/index.css', },
           { from: './assets', to: 'assets', }
         ],
       })
@@ -38,6 +41,6 @@ module.exports = () => {
       filename: 'bundle.js',
       path: path.resolve(__dirname, './dist/'),
     },
-    mode: 'development',
+    mode: 'production',
   }
 };

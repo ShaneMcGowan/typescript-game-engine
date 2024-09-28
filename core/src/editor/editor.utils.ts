@@ -1,4 +1,4 @@
-export class EngineUtils {
+export class EditorUtils {
   static get engineObjectList(): any {
     return document.getElementById('object-list') || null;
   }

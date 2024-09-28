@@ -9,13 +9,17 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": false,
-    "baseUrl" : "./",
+    "baseUrl": "./",
     "paths": {
-      "@core/*": ["./node_modules/typescript-game-engine/src/*"],
-      "@sample-game/*": ["./*"],
+      "@core/*": [
+        "../core/src/*"
+      ], // replace '../core/src/*' with './node_modules/typescript-game-engine/src/*' if you are using npm mode rather than local mode 
+      "@sample-game/*": [
+        "./*"
+      ],
     },
     "types": [
-      "./node_modules/typescript-game-engine/src/types/index.d.ts"
+      "../core/src/types/index.d.ts" // replace '../core/src/types/index.d.ts' with './node_modules/typescript-game-engine/src/types/index.d.ts' if you are using npm mode rather than local mode
     ]
   },
   "include": [

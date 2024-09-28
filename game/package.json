@@ -7,7 +7,7 @@
   "main": "index.js",
   "dependencies": {
     "ts-node": "^9.0.0",
-    "typescript-game-engine": "file:../core/typescript-game-engine-1.0.5.tgz"
+    "typescript-game-engine": "^1.0.6"
   },
   "files": [
     "core"
@@ -34,9 +34,12 @@
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
-    "dev": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "build-watch": "webpack serve --open --config webpack.prod.js",
+    "dev-local": "webpack serve --open --config webpack.dev-local.js",
+    "dev-npm": "webpack serve --open --config webpack.dev-npm.js",
+    "build-local": "webpack --config webpack.prod-local.js",
+    "build-npm": "webpack --config webpack.prod-npm.js",
+    "build-local-watch": "webpack serve --open --config webpack.prod-local.js",
+    "build-npm-watch": "webpack serve --open --config webpack.prod-npm.js",
     "lint": "eslint --fix --ext .ts ."
   }
 }
