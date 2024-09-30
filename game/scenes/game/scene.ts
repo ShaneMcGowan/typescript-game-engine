@@ -1,6 +1,6 @@
 import { type Client } from '@core/client';
-import { SAMPLE_SCENE_1_MAP_0 } from './maps/world/map';
-import { SAMPLE_SCENE_1_MAP_1 } from './maps/underground/map';
+import { SCENE_GAME_MAP_WORLD } from './maps/world/map';
+import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { InventoryItemObject } from '@game/objects/inventory-item.object';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
@@ -25,7 +25,7 @@ interface Globals extends SceneGlobalsBaseConfig {
   hotbar_selected_index: number;
 }
 
-export class SAMPLE_SCENE_1 extends Scene {
+export class SCENE_GAME extends Scene {
   globals: Globals = {
     ...this.globals,
     inventory: [
@@ -43,7 +43,7 @@ export class SAMPLE_SCENE_1 extends Scene {
 
   constructor(client: Client) {
     super(client);
-    this.changeMap(SAMPLE_SCENE_1_MAP_1);
+    this.changeMap(SCENE_GAME_MAP_WORLD);
   }
 
   get firstFreeInventorySpaceIndex(): number | undefined {

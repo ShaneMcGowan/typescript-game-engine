@@ -1,5 +1,5 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { type Interactable } from '@game/models/interactable.model';
@@ -36,7 +36,7 @@ export class DirtObject extends SceneObject implements Interactable {
   isFullyGrown: boolean = false;
   isSpoiled: boolean = false;
 
-  constructor(protected scene: SAMPLE_SCENE_1, config: Config) {
+  constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
 
     this.scene.addEventListener(this.scene.eventTypes.DIRT_PLACED, this.onDirtPlaced.bind(this));

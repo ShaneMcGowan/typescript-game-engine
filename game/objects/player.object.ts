@@ -1,7 +1,7 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
 import { InventoryItemType, getInventoryItemClass } from '@game/models/inventory-item.model';
@@ -67,7 +67,7 @@ export class PlayerObject extends SceneObject {
   isIdle: boolean = true;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);

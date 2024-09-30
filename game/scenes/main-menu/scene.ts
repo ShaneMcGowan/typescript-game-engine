@@ -1,10 +1,10 @@
 import { type Client } from '@core/client';
-import { SAMPLE_SCENE_0_MAP_0 } from './maps/home/map';
+import { SCENE_MAIN_MENU_MAP_HOME } from './maps/home/map';
 import { Scene } from '@core/model/scene';
 
-export class SAMPLE_SCENE_0 extends Scene {
+export class SCENE_MAIN_MENU extends Scene {
   constructor(protected client: Client) {
     super(client);
-    this.changeMap(SAMPLE_SCENE_0_MAP_0);
+    this.changeMap(SCENE_MAIN_MENU_MAP_HOME);
   }
 }

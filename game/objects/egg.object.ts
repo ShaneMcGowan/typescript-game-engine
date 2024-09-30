@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { ChickenObject } from './chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 
 const TILE_SET = 'tileset_egg'; // TODO: some sort of enum for tilesets
@@ -32,7 +32,7 @@ export class EggObject extends SceneObject implements Interactable {
   hatchTimerMax = 7; // seconds to hatch
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);

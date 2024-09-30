@@ -1,4 +1,4 @@
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { TextboxObject } from '@game/objects/textbox.object';
 import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
@@ -20,7 +20,7 @@ export class GregNpcObject extends NpcObject {
   stageByeDuration: number = 3;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);

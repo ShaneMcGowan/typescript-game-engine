@@ -10,14 +10,14 @@ import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './backgrounds/1.background';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './backgrounds/2.background';
 import { CameraObject } from '@game/objects/camera.object';
 import { InventoryUiObject } from '@game/objects/inventory-ui.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { ChestObject } from '@game/objects/chest.object';
 import { IntervalObject } from '@core/objects/interval.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { TransitionObject } from '@core/objects/transition.object';
 
-export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
+export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
   width = 100;
 
@@ -29,7 +29,7 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
 
   objects: SceneObject[] = [];
 
-  constructor(protected scene: SAMPLE_SCENE_1) {
+  constructor(protected scene: SCENE_GAME) {
     super(scene);
 
     // TODO: remove this when no longer debugging as it will be set in start menu map

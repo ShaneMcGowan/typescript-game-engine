@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from './textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
@@ -65,7 +65,7 @@ export class NpcObject extends SceneObject implements Interactable {
   dialogue: string | undefined;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: NpcObjectConfig
   ) {
     super(scene, config);

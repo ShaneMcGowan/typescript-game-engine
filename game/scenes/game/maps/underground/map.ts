@@ -4,7 +4,7 @@ import { type SceneObject } from '@core/model/scene-object';
 import { PlayerObject } from '@game/objects/player.object';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './backgrounds/1.background';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { TransitionObject } from '@core/objects/transition.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { WarpObject } from '@game/objects/warp.object';
@@ -13,7 +13,7 @@ import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from './constants/map-text.constants';
 import { GregNpcObject } from '@game/objects/npcs/greg.npc';
 import { UnknownNpcObject } from '@game/objects/npcs/unknown.npc';
 
-export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
+export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
   height = 40;
   width = 40;
   backgroundLayers: BackgroundLayer[] = [
@@ -23,7 +23,7 @@ export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
 
   objects: SceneObject[] = [];
 
-  constructor(protected scene: SAMPLE_SCENE_1) {
+  constructor(protected scene: SCENE_GAME) {
     super(scene);
 
     let player = new PlayerObject(scene, { positionX: 14, positionY: 8, });

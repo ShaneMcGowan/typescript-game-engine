@@ -3,7 +3,7 @@ import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from './egg.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from './textbox.object';
 
@@ -57,7 +57,7 @@ export class ChickenObject extends SceneObject implements Interactable {
   isEdgyTeen = false;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     console.log('[ChickenObject] created');

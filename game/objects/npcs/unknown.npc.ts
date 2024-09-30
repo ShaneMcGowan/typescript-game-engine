@@ -1,4 +1,4 @@
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { TextboxObject } from '@game/objects/textbox.object';
 
@@ -15,7 +15,7 @@ export class UnknownNpcObject extends NpcObject {
   stageOutroDuration: number = 1;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);

@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { SCENE_GAME } from '@game/scenes/game/scene';
 import { type MousePosition, MouseUtils } from '@core/utils/mouse.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 
@@ -95,7 +95,7 @@ export class StartButtonObject extends SceneObject {
       return;
     }
 
-    this.scene.changeScene(SAMPLE_SCENE_1);
+    this.scene.changeScene(SCENE_GAME);
 
     this.controls.start = false;
   }

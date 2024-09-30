@@ -2,8 +2,8 @@ import { Client } from '@core/client';
 import { EditorUtils } from '@core/editor/editor.utils';
 import { type AssetsConfig } from '@core/model/assets';
 import { type SceneConstructorSignature } from '@core/model/scene';
-import { SAMPLE_SCENE_0 } from '@game/scenes/main-menu/scene';
-import { SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
+import { SCENE_GAME } from '@game/scenes/game/scene';
 
 (function () {
   /**
@@ -15,8 +15,8 @@ import { SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
   * Add your scenes here, the first scene will be loaded on startup
   */
   const scenes: SceneConstructorSignature[] = [
-    SAMPLE_SCENE_0,
-    SAMPLE_SCENE_1
+    SCENE_MAIN_MENU,
+    SCENE_GAME
   ];
 
   const assets: AssetsConfig = {

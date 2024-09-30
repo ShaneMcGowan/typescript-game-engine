@@ -1,6 +1,6 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 
 const TILE_SET: string = 'tileset_dialogue_box';
@@ -66,7 +66,7 @@ export class TextboxObject extends SceneObject {
   };
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);

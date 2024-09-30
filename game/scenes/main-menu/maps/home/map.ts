@@ -11,7 +11,7 @@ import { StartButtonObject } from '@game/objects/start-button.object';
 const MAP_HEIGHT: number = CanvasConstants.CANVAS_TILE_HEIGHT;
 const MAP_WIDTH: number = CanvasConstants.CANVAS_TILE_WIDTH;
 
-export class SAMPLE_SCENE_0_MAP_0 extends SceneMap {
+export class SCENE_MAIN_MENU_MAP_HOME extends SceneMap {
   height = MAP_HEIGHT;
   width = MAP_WIDTH;
   backgroundLayers: BackgroundLayer[] = [

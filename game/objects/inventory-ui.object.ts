@@ -1,6 +1,6 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type ChestObject } from '@game/objects/chest.object';
 import { type InventoryItemObject } from '@game/objects/inventory-item.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
@@ -101,7 +101,7 @@ export class InventoryUiObject extends SceneObject {
   private itemHolding: { location: 'inventory' | 'chest'; item: InventoryItemObject; index: number; } | undefined = undefined;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);

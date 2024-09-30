@@ -2,9 +2,9 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { PlayerObject } from './player.object';
 import { TransitionObject } from '@core/objects/transition.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { TimerObject } from '@core/objects/timer.object';
-import { SAMPLE_SCENE_1_MAP_1 } from '@game/scenes/game/maps/underground/map';
+import { SCENE_GAME_MAP_UNDERGROUND } from '@game/scenes/game/maps/underground/map';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -15,7 +15,7 @@ export class HoleObject extends SceneObject {
   private playerConsumed: boolean = false;
 
   constructor(
-    protected scene: SAMPLE_SCENE_1,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);
@@ -44,7 +44,7 @@ export class HoleObject extends SceneObject {
         this.scene.addObject(new TimerObject(this.scene, {
           duration,
           onComplete: () => {
-            this.scene.flagForMapChange(SAMPLE_SCENE_1_MAP_1);
+            this.scene.flagForMapChange(SCENE_GAME_MAP_UNDERGROUND);
           },
         }));
 

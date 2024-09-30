@@ -1,5 +1,5 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 
 const TYPE_TO_MAX_STACK_MAP: Record<InventoryItemType, number | undefined> = {
@@ -31,7 +31,7 @@ export class InventoryItemObject extends SceneObject {
   maxStackSize: number;
   sprite: { tileset: string; spriteX: number; spriteY: number; };
 
-  constructor(protected scene: SAMPLE_SCENE_1, config: Config) {
+  constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
 
     this.type = config.type;

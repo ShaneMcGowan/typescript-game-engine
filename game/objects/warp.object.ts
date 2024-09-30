@@ -3,7 +3,7 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type PlayerObject } from './player.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { TransitionObject } from '@core/objects/transition.object';
-import { SAMPLE_SCENE_1_MAP_0 } from '@game/scenes/game/maps/world/map';
+import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
@@ -37,7 +37,7 @@ export class WarpObject extends SceneObject {
       new TimerObject(this.scene, {
         duration,
         onComplete: () => {
-          this.scene.changeMap(SAMPLE_SCENE_1_MAP_0);
+          this.scene.changeMap(SCENE_GAME_MAP_WORLD);
         },
       })
     );
