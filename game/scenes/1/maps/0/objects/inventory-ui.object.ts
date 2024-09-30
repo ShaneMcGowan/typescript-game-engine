@@ -5,6 +5,7 @@ import { type ChestObject } from '@game/scenes/1/objects/chest.object';
 import { type InventoryItemObject } from '@game/scenes/1/objects/inventory-item.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { RenderUtils } from '@core/utils/render.utils';
+import { Input } from '@core/utils/input.utils';
 
 const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
@@ -305,8 +306,8 @@ export class InventoryUiObject extends SceneObject {
       item.currentStackSize,
       item.sprite.spriteX,
       item.sprite.spriteY,
-      this.scene.globals.mouse.position.exactX - 0.5,
-      this.scene.globals.mouse.position.exactY - 0.5
+      Input.mouse.position.exactX - 0.5,
+      Input.mouse.position.exactY - 0.5
     );
   }
 

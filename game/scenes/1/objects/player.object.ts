@@ -6,6 +6,7 @@ import { type ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
 import { InventoryItemType, getInventoryItemClass } from '../models/inventory-item.model';
 import { isInteractable } from '../models/interactable.model';
+import { Input, MouseKey } from '@core/utils/input.utils';
 
 enum Direction {
   UP = 'w',
@@ -590,13 +591,14 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateClick(): void {
-    if (!this.scene.globals.mouse.click.left) {
+    if (!Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
-    this.scene.globals.mouse.click.left = false;
-    let x = Math.ceil(this.scene.globals.mouse.position.x + this.scene.globals.camera.startX);
-    let y = Math.ceil(this.scene.globals.mouse.position.y + this.scene.globals.camera.startY);
+    Input.clearMousePressed(MouseKey.Left);
+
+    let x = Math.ceil(Input.mouse.position.x + this.scene.globals.camera.startX);
+    let y = Math.ceil(Input.mouse.position.y + this.scene.globals.camera.startY);
     console.log('click', x, y);
   }
 }

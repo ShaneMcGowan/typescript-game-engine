@@ -52,7 +52,7 @@ export abstract class MovementUtils {
    * @returns
    */
   static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: Movement): Movement {
-    // TODO(smg): add some randomness to this, potentially via MathUtils.randomIntFromRange(1, 4);
+    // TODO: add some randomness to this, potentially via MathUtils.randomIntFromRange(1, 4);
 
     if (targetMovement.positionX > currentMovement.positionX) {
       currentMovement.targetX += 1;

@@ -2,6 +2,8 @@ import { type SceneConstructorSignature, type Scene } from './model/scene';
 import { RenderUtils } from './utils/render.utils';
 import { type AssetsConfig, type Assets } from './model/assets';
 import { CanvasConstants } from './constants/canvas.constants';
+import { Input } from './utils/input.utils';
+import { MouseUtils } from './utils/mouse.utils';
 
 interface DebugButtons {
   gridLines?: HTMLElement;
@@ -90,7 +92,7 @@ export class Client {
     this.scenes = [...scenes];
 
     // load assets
-    // TODO(smg): some sort of loading screen / rendering delay until assets are loaded
+    // TODO: some sort of loading screen / rendering delay until assets are loaded
     Object.keys(assets.images).forEach((key) => {
       this.assets.images[key] = new Image();
       this.assets.images[key].src = assets.images[key];
@@ -114,13 +116,19 @@ export class Client {
     // handle tabbed out state
     document.addEventListener('visibilitychange', (event) => {
       if (document.visibilityState === 'visible') {
-        // TODO(smg): pause frame execution
+        // TODO: pause frame execution
         console.log('tab is active');
       } else {
-        // TODO(smg): continue frame execution
+        // TODO: continue frame execution
         console.log('tab is inactive');
       }
     });
+
+    // intialise mouse listeners
+    this.initialiseMouseListeners();
+
+    // initialise keyboard listeners
+    this.initialiseKeyboardListeners();
 
     // initialise gamepad listeners
     this.intialiseGamepadListeners();
@@ -144,7 +152,7 @@ export class Client {
     return canvas;
   }
 
-  // TODO(smg): need some sort of scene class list type
+  // TODO: need some sort of scene class list type
   changeScene(sceneClass: SceneConstructorSignature): void {
     this.currentScene = Reflect.construct(sceneClass, [this]);
   }
@@ -303,6 +311,83 @@ export class Client {
         });
       });
     }
+  }
+
+  private initialiseKeyboardListeners(): void {
+    console.log('[listener added] keydown');
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.repeat) {
+        return;
+      }
+
+      console.log('[keydown]', event);
+      let key = event.key.toLocaleLowerCase();
+      Input.setKeyPressed(key)
+    });
+
+    console.log('[listener added] keyup');
+    document.addEventListener('keyup', (event: KeyboardEvent) => {
+      if (event.repeat) {
+        return;
+      }
+
+      console.log('[keyup]', event);
+      let key = event.key.toLocaleLowerCase();
+      Input.clearKeyPressed(key)
+    });
+  }
+
+  private initialiseMouseListeners(): void {
+    console.log('[listener added] mousemove');
+    this.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+      Input.mouse.position = MouseUtils.getMousePosition(this.canvas, event);
+      Input.mouse.lastestEvent = event;
+    });
+
+    console.log('[listener added] mousedown');
+    this.canvas.addEventListener('mousedown', (event: MouseEvent) => {
+      console.log('[mousedown]', event);
+      switch (event.button) {
+        case 0:
+          Input.mouse.click.left = true;
+          break;
+        case 1:
+          Input.mouse.click.middle = true;
+          break;
+        case 2:
+          Input.mouse.click.right = true;
+          break;
+      }
+    });
+
+    console.log('[listener added] mouseup');
+    this.canvas.addEventListener('mouseup', (event: MouseEvent) => {
+      console.log('[mouseup]', event);
+      switch (event.button) {
+        case 0:
+          Input.mouse.click.left = false;
+          break;
+        case 1:
+          Input.mouse.click.middle = false;
+          break;
+        case 2:
+          Input.mouse.click.right = false;
+          break;
+      }
+    });
+
+    // touch
+    console.log('[listener added] touchstart');
+    this.canvas.addEventListener('touchstart', (event: TouchEvent) => {
+      console.log('[touchstart]', event);
+      Input.mouse.click.left = true;
+    });
+
+    console.log('[listener added] touchend');
+    this.canvas.addEventListener('touchend', (event: TouchEvent) => {
+      console.log('[touchend]', event);
+      Input.mouse.click.left = false;
+    });
   }
 
   private intialiseGamepadListeners(): void {

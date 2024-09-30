@@ -1,6 +1,6 @@
 import { CanvasConstants } from '../constants/canvas.constants';
-import { type Scene } from '../model/scene';
 import { type SceneObject } from '../model/scene-object';
+import { Input } from './input.utils';
 
 export interface MousePosition {
   x: number;
@@ -74,7 +74,7 @@ export abstract class MouseUtils {
     return document.fullscreenElement !== null;
   }
 
-  static isClickWithin(mousePosition: MousePosition, x: number, y: number, width: number, height: number): boolean {
+  private static isMouseWithinBoundary(mousePosition: MousePosition, x: number, y: number, width: number, height: number): boolean {
     return (
       mousePosition.exactX >= x &&
       mousePosition.exactX <= x + width &&
@@ -83,18 +83,26 @@ export abstract class MouseUtils {
     );
   }
 
+  static isMouseWithinObject(object: SceneObject): boolean {
+    if (!this.isMouseWithinBoundary(Input.mouse.position, object.boundingBox.left, object.boundingBox.top, object.width, object.height)) {
+      return false;
+    }
+
+    return true;
+  }
+
   /**
    * returns true if object was clicked
    * @param object
    * @param scene
    * @returns
    */
-  static wasClicked(object: SceneObject, scene: Scene): boolean {
-    if (!scene.globals.mouse.click.left) {
+  static wasObjectClicked(object: SceneObject): boolean {
+    if (!Input.mouse.click.left) {
       return false;
     }
 
-    if (!this.isClickWithin(scene.globals.mouse.position, object.boundingBox.left, object.boundingBox.top, object.width, object.height)) {
+    if (!this.isMouseWithinObject(object)) {
       return false;
     }
 

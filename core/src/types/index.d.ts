@@ -1,7 +1,7 @@
 import { type Client } from '@core/client';
 import { type SceneObject } from '@core/model/scene-object';
 
-export { };
+export {};
 
 declare global {
   interface Window {

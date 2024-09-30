@@ -6,6 +6,7 @@ import { type SceneObject } from './scene-object';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { type Client } from '@core/client';
 import { type Assets } from './assets';
+import { Input } from '@core/utils/input.utils';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
@@ -15,30 +16,13 @@ export interface SceneRenderingContext {
 }
 
 export interface SceneGlobalsBaseConfig {
-  mouse: {
-    click: {
-      left: boolean;
-      middle: boolean;
-      right: boolean;
-    };
-    position: {
-      x: number;
-      y: number;
-      exactX: number; // not rounded to tile
-      exactY: number; // not rounded to tile
-    };
-  };
-
-  keyboard: Record<string, boolean>;
-
-  // TODO(smg): cameraPosition is referring to customRenderer, perhaps rename customRenderer to camera?
+  // TODO: cameraPosition is referring to customRenderer, perhaps rename customRenderer to camera?
   camera: {
     startX: number;
     startY: number;
     endX: number;
     endY: number;
   };
-  latestMouseEvent: MouseEvent;
 }
 
 export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
@@ -65,31 +49,16 @@ export abstract class Scene {
 
   // objects
   objects: SceneObject[] = [];
-  // TODO(smg): how do we access types for this from the scene object?
+  // TODO: how do we access types for this from the scene object?
 
   // a place to store flags for the scene
   readonly globals: SceneGlobalsBaseConfig = {
-    mouse: {
-      click: {
-        left: false,
-        middle: false,
-        right: false,
-      },
-      position: {
-        x: 0,
-        y: 0,
-        exactX: 0,
-        exactY: 0,
-      },
-    },
     camera: {
       startX: 0,
       startY: 0,
       endX: 0,
       endY: 0,
     },
-    keyboard: {},
-    latestMouseEvent: new MouseEvent(''),
   };
 
   // maps
@@ -104,7 +73,7 @@ export abstract class Scene {
 
   // for firing events
   private readonly eventEmitter: Element = document.createElement('eventEmitter');
-  readonly eventTypes: Record<string, string> = {}; // TODO(smg): some way typing this so there is intellisense for event types for a scene
+  readonly eventTypes: Record<string, string> = {}; // TODO: some way typing this so there is intellisense for event types for a scene
 
   private customRenderer?: CustomRendererSignature;
 
@@ -117,76 +86,11 @@ export abstract class Scene {
   ) {
     this.context = this.client.context;
     this.assets = this.client.assets;
-
-    // set up mouse listener
-    client.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-      this.globals.mouse.position = MouseUtils.getMousePosition(client.canvas, event);
-      this.globals.latestMouseEvent = event;
-    });
-
-    // mouse
-    client.canvas.addEventListener('mousedown', (event: MouseEvent) => {
-      console.log('[mousedown]', event);
-      switch (event.button) {
-        case 0:
-          this.globals.mouse.click.left = true;
-          break;
-        case 1:
-          this.globals.mouse.click.middle = true;
-          break;
-        case 2:
-          this.globals.mouse.click.right = true;
-          break;
-      }
-    });
-
-    client.canvas.addEventListener('mouseup', (event: MouseEvent) => {
-      console.log('[mouseup]', event);
-      switch (event.button) {
-        case 0:
-          this.globals.mouse.click.left = false;
-          break;
-        case 1:
-          this.globals.mouse.click.middle = false;
-          break;
-        case 2:
-          this.globals.mouse.click.right = false;
-          break;
-      }
-    });
-
-    // touch
-    client.canvas.addEventListener('touchstart', (event: TouchEvent) => {
-      console.log('[touchstart]', event);
-      this.globals.mouse.click.left = true;
-    });
-
-    client.canvas.addEventListener('touchend', (event: TouchEvent) => {
-      console.log('[touchend]', event);
-      this.globals.mouse.click.left = false;
-    });
-
-    document.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.repeat) {
-        return;
-      }
-      console.log('[keydown]', event);
-      this.globals.keyboard[event.key.toLocaleLowerCase()] = true;
-    });
-
-    document.addEventListener('keyup', (event: KeyboardEvent) => {
-      if (event.repeat) {
-        return;
-      }
-
-      console.log('[keyup]', event);
-      this.globals.keyboard[event.key.toLocaleLowerCase()] = false;
-    });
   }
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
 
-  // TODO(smg): move client rendering code into here
+  // TODO: move client rendering code into here
   frame(delta: number): void {
     this.renderBackground(delta);
     this.updateObjects(delta);
@@ -359,11 +263,11 @@ export abstract class Scene {
     this.objects.push(sceneObject);
   }
 
-  // TODO(smg): I am rethinking the concept of removing the object from the scene during another object's update.
+  // TODO: I am rethinking the concept of removing the object from the scene during another object's update.
   // I think it would be better to have a flag that is checked during the scene's update loop to rmove the obejct before it's next update
   // perhaps using flaggedForDestroy
   removeObjectById(sceneObjectId: string): void {
-    // TODO(smg): review this later, loops are inefficient
+    // TODO: review this later, loops are inefficient
     let object = this.objects.find(o => o.id === sceneObjectId);
     if (object === undefined) {
       return;
@@ -381,7 +285,7 @@ export abstract class Scene {
    * @returns
    */
   getObjectsByType(type: any): SceneObject[] {
-    // TODO(smg): horribly underperformant, perhaps use a hash on object type instead?
+    // TODO: horribly underperformant, perhaps use a hash on object type instead?
     return this.objects.filter(o => o instanceof type);
   }
 
@@ -448,8 +352,8 @@ export abstract class Scene {
    * @returns
    */
   getObjectAtPosition(positionX: number, positionY: number, type?: any): SceneObject | undefined {
-    // TODO(smg): add optional type check
-    // TODO(smg): this is a very heavy operation
+    // TODO: add optional type check
+    // TODO: this is a very heavy operation
     return this.objects.find(o => o.positionX === positionX && o.positionY === positionY && o.collisionLayer !== CanvasConstants.UI_COLLISION_LAYER);
   }
 
@@ -461,8 +365,8 @@ export abstract class Scene {
    * @returns
    */
   getAllObjectsAtPosition(positionX: number, positionY: number, type?: any): SceneObject[] {
-    // TODO(smg): add optional type check
-    // TODO(smg): this is a very heavy operation
+    // TODO: add optional type check
+    // TODO: this is a very heavy operation
     return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY && o.collisionLayer !== CanvasConstants.UI_COLLISION_LAYER);
   }
 
@@ -514,7 +418,7 @@ export abstract class Scene {
     }
 
     // clean up scene
-    // TODO(smg): some sort of scene reset function
+    // TODO: some sort of scene reset function
     this.removeAllObjects();
     this.removeAllBackgroundLayers();
 
@@ -545,16 +449,14 @@ export abstract class Scene {
   }
 
   addEventListener(eventName: string, callback: any): void {
-    this.eventEmitter.addEventListener(eventName, callback);
+    console.log(`addEventListener is deprecated. refactor your code.`)
   }
 
   removeEventListener(eventName: string, callback: any): void {
-    this.eventEmitter.removeEventListener(eventName, callback);
+    console.log(`removeEventListener is deprecated. refactor your code.`)
   }
 
   dispatchEvent(eventName: string, detail?: any): void {
-    let event = new CustomEvent(eventName, { detail, });
-    console.log('[dispatchEvent]', event);
-    this.eventEmitter.dispatchEvent(event);
+    console.log(`dispatchEvent is deprecated. refactor your code.`)
   }
 }

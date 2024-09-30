@@ -10,7 +10,7 @@ export abstract class RenderUtils {
     positionY: number,
     spriteWidth?: number,
     spriteHeight?: number,
-    options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; centered?: boolean; } = { } // TODO(smg): implement tile vs pixel
+    options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; centered?: boolean; } = {} // TODO: implement tile vs pixel
   ): void {
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
@@ -36,7 +36,7 @@ export abstract class RenderUtils {
         let yTranslation = Math.floor((positionY + (spriteHeight / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
 
         context.translate(xTranslation, yTranslation);
-        // TODO(smg): any angle that isn't 90, 180, 270, etc will cause blurring / weird sprite interoplation. This is a known issue with canvas and will need to see if this can be worked around
+        // TODO: any angle that isn't 90, 180, 270, etc will cause blurring / weird sprite interoplation. This is a known issue with canvas and will need to see if this can be worked around
         context.rotate((rotation * Math.PI) / 180);
         context.translate(-xTranslation, -yTranslation);
       }
@@ -110,23 +110,23 @@ export abstract class RenderUtils {
     context.fill();
   }
 
-  // TODO(smg): this is using a mixture of pixel and tile coordinates, need to standardize
+  // TODO: this is using a mixture of pixel and tile coordinates, need to standardize
   static fillRectangle(
     context: CanvasRenderingContext2D,
     positionX: number,
     positionY: number,
     width: number,
     height: number,
-    options: { colour?: string; type?: 'pixel' | 'tile'; } = { }
+    options: { colour?: string; type?: 'pixel' | 'tile'; } = {}
   ): void {
     context.strokeStyle = options.colour ? options.colour : 'black';
     context.fillStyle = options.colour ? options.colour : 'black';
     context.beginPath();
     context.rect(
-      Math.floor(positionX * CanvasConstants.TILE_SIZE), // +0.5 to prevent blurring but that causes additional issues
-      Math.floor(positionY * CanvasConstants.TILE_SIZE), // +0.5 to prevent blurring but that causes additional issues
-      width,
-      height
+      Math.floor(positionX * CanvasConstants.TILE_SIZE) + 0.5, // +0.5 to prevent blurring but that causes additional issues
+      Math.floor(positionY * CanvasConstants.TILE_SIZE) + 0.5, // +0.5 to prevent blurring but that causes additional issues
+      (width * (options.type === 'tile' ? CanvasConstants.TILE_SIZE : 1)) - 1,
+      (height * (options.type === 'tile' ? CanvasConstants.TILE_SIZE : 1)) - 1
     );
     context.stroke();
     context.fill();

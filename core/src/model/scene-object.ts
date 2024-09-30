@@ -51,7 +51,7 @@ export abstract class SceneObject {
   renderOpacity: number; // the opacity of the object when rendered (value between 0 and 1)
   renderScale: number; // the scale of the object when rendered
 
-  // TODO(smg): I'm not convinced of this but I will go with it for now
+  // TODO: I'm not convinced of this but I will go with it for now
   keyListeners: Record<string, (event: KeyboardEvent) => void> = {}; // for keyboard events
   eventListeners: Record<string, (event: CustomEvent) => void> = {}; // for scene events
 
@@ -59,11 +59,11 @@ export abstract class SceneObject {
   protected assets: Assets;
 
   // flags
-  flaggedForRender: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
-  flaggedForUpdate: boolean = true; // TODO(smg): implement the usage of this flag to improve engine performance
+  flaggedForRender: boolean = true; // TODO: implement the usage of this flag to improve engine performance
+  flaggedForUpdate: boolean = true; // TODO: implement the usage of this flag to improve engine performance
   flaggedForDestroy: boolean = false; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
 
-  // TODO(smg): Currently we are using positionX and positionY as the top left corner of the object
+  // TODO: Currently we are using positionX and positionY as the top left corner of the object
   // boundingX and boundingY are the bottom right corner of the object
   // I want to change this so that positionX and positionY are the center of the object (or whatever the user wants it to be)
   // I at least want it to be configurable.
@@ -74,15 +74,15 @@ export abstract class SceneObject {
   // bottom: 11, (10 + (2 / 2) = 11
   // left: 4 (5 - (2 / 2) = 4
 
-  // TODO(smg): this being a getter probably is quite slow if it's used a lot but it's fine for now
+  // TODO: this being a getter probably is quite slow if it's used a lot but it's fine for now
   get boundingBox(): {
     top: number;
     right: number;
     bottom: number;
     left: number;
   } {
-    let xOffset = this.width / 2; // TODO(smg): this should be calculated based off of how the user wants the position to be calculated
-    let yOffset = this.height / 2; // TODO(smg): same as above
+    let xOffset = this.width / 2; // TODO: this should be calculated based off of how the user wants the position to be calculated
+    let yOffset = this.height / 2; // TODO: same as above
 
     return {
       top: this.positionY - yOffset,
