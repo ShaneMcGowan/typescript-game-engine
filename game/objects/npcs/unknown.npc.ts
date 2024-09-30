@@ -1,4 +1,4 @@
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { TextboxObject } from '@game/objects/textbox.object';
 
@@ -53,7 +53,7 @@ export class UnknownNpcObject extends NpcObject {
         this.scene,
         {
           text: this.dialogue,
-          portrait: this.name, // TODO(smg): new to implement proper portrait system
+          portrait: this.name, // TODO: new to implement proper portrait system
           name: this.name,
           onComplete: () => {
             this.startStageOutro();

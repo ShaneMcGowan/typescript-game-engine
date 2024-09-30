@@ -1,6 +1,6 @@
 import { type Client } from '@core/client';
-import { SAMPLE_SCENE_1_MAP_0 } from './maps/0.map';
-import { SAMPLE_SCENE_1_MAP_1 } from './maps/1.map';
+import { SAMPLE_SCENE_1_MAP_0 } from './maps/world/map';
+import { SAMPLE_SCENE_1_MAP_1 } from './maps/underground/map';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { InventoryItemObject } from '@game/objects/inventory-item.object';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
@@ -76,7 +76,7 @@ export class SAMPLE_SCENE_1 extends Scene {
     let index = this.firstFreeInventorySpaceIndex;
     // no free space
     if (index === undefined) {
-      // TODO(smg): this is techically an error state so should an error be thrown here instead of silently returning?
+      // TODO: this is techically an error state so should an error be thrown here instead of silently returning?
       return;
     }
 

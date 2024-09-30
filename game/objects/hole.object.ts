@@ -2,9 +2,9 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { PlayerObject } from './player.object';
 import { TransitionObject } from '@core/objects/transition.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { TimerObject } from '@core/objects/timer.object';
-import { SAMPLE_SCENE_1_MAP_1 } from '@game/scenes/1/maps/1.map';
+import { SAMPLE_SCENE_1_MAP_1 } from '@game/scenes/game/maps/underground/map';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -39,7 +39,7 @@ export class HoleObject extends SceneObject {
           return;
         }
 
-        // TODO(smg): disable player movement
+        // TODO: disable player movement
         let duration = 2;
         this.scene.addObject(new TimerObject(this.scene, {
           duration,

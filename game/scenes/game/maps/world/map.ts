@@ -5,12 +5,12 @@ import { ChickenObject } from '@game/objects/chicken.object';
 import { FenceObject, FenceType } from '@game/objects/fence.object';
 import { HoleObject } from '@game/objects/hole.object';
 import { PlayerObject } from '@game/objects/player.object';
-import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './0/backgrounds/0.background';
-import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './0/backgrounds/1.background';
-import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './0/backgrounds/2.background';
-import { CameraObject } from '../../../objects/camera.object';
-import { InventoryUiObject } from '../../../objects/inventory-ui.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './backgrounds/0.background';
+import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './backgrounds/1.background';
+import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './backgrounds/2.background';
+import { CameraObject } from '@game/objects/camera.object';
+import { InventoryUiObject } from '@game/objects/inventory-ui.object';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { ChestObject } from '@game/objects/chest.object';
 import { IntervalObject } from '@core/objects/interval.object';
@@ -32,12 +32,12 @@ export class SAMPLE_SCENE_1_MAP_0 extends SceneMap {
   constructor(protected scene: SAMPLE_SCENE_1) {
     super(scene);
 
-    // TODO(smg): remove this when no longer debugging as it will be set in start menu map
+    // TODO: remove this when no longer debugging as it will be set in start menu map
     MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
 
     this.objects.push(new InventoryUiObject(scene, { positionX: 0, positionY: 0, }));
 
-    // TODO(smg): allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index.
+    // TODO: allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index.
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
     this.objects.push(new HoleObject(scene, { positionX: 17, positionY: 3, }));
 

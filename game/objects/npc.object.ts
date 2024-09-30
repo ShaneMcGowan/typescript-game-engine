@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from './textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
@@ -47,7 +47,7 @@ export class NpcObject extends SceneObject implements Interactable {
   // animation
   animation = {
     index: 0,
-    timer: 0, // TODO(smg): enable adding random start with MathUtils.randomStartingDelta(4),
+    timer: 0, // TODO: enable adding random start with MathUtils.randomStartingDelta(4),
   };
 
   name: string;
@@ -134,8 +134,8 @@ export class NpcObject extends SceneObject implements Interactable {
     let movement: Movement;
     if (this.following) {
       // move towards object
-      // TODO(smg): add some randomness to movement, can be done later
-      // TODO(smg): this logic is dumb and can get stuck if no clear path
+      // TODO: add some randomness to movement, can be done later
+      // TODO: this logic is dumb and can get stuck if no clear path
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
           this.positionX,
@@ -200,7 +200,7 @@ export class NpcObject extends SceneObject implements Interactable {
       this.scene,
       {
         text: this.dialogue,
-        portrait: this.name, // TODO(smg): new to implement proper portrait system
+        portrait: this.name, // TODO: new to implement proper portrait system
         name: this.name,
       }
     );

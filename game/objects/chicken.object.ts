@@ -3,7 +3,7 @@ import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from './egg.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from './textbox.object';
 
@@ -122,7 +122,7 @@ export class ChickenObject extends SceneObject implements Interactable {
     let movement: Movement;
     if (this.following) {
       // move towards player
-      // TODO(smg): add some randomness to movement, can be done later
+      // TODO: add some randomness to movement, can be done later
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
           this.positionX,
@@ -217,7 +217,7 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    console.log('[ChickenObject#interact] TODO(smg): pick up chicken');
+    console.log('[ChickenObject#interact] TODO: pick up chicken');
     let textbox = new TextboxObject(
       this.scene,
       { text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD, portrait: 'Chicken', name: 'Chicken', }

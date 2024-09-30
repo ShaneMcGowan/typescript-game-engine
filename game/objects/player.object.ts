@@ -1,7 +1,7 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { type ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
 import { InventoryItemType, getInventoryItemClass } from '@game/models/inventory-item.model';
@@ -510,7 +510,7 @@ export class PlayerObject extends SceneObject {
     }
   }
 
-  // TODO(smg): logic here should be moved to individual object interactions using Interactable
+  // TODO: logic here should be moved to individual object interactions using Interactable
   updatePickupObject(): void {
 
     /*
@@ -529,12 +529,12 @@ export class PlayerObject extends SceneObject {
   }
 
   destroy(): void {
-    // TODO(smg): what needs to be cleaned up here? are we sure the object is being properly released?
+    // TODO: what needs to be cleaned up here? are we sure the object is being properly released?
   }
 
   /**
-   * TODO(smg): make 'Direction' a generic concept
-   * TODO(smg): this needs to be rounded down
+   * TODO: make 'Direction' a generic concept
+   * TODO: this needs to be rounded down
    * @returns
    */
   getPositionFacing(): { x: number; y: number; } {

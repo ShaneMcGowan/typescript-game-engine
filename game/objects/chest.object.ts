@@ -1,6 +1,6 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { type InventoryItemObject } from './inventory-item.object';
 import { type Interactable } from '@game/models/interactable.model';
 

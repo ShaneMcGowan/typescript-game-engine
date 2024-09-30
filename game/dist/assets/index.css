@@ -42,7 +42,7 @@ html, body {
 
 .object-tab-container {
   display: flex;
-  height: 96%; /* TODO(smg): need to fix the container */
+  height: 96%; /* TODO: need to fix the container */
 }
 
 .object-list-container {

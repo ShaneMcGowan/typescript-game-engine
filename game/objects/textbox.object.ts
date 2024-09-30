@@ -1,6 +1,6 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 
 const TILE_SET: string = 'tileset_dialogue_box';
@@ -46,7 +46,7 @@ export class TextboxObject extends SceneObject {
   private readonly name: string | undefined;
 
   // portrait animation - copied from ChickenObject
-  // TODO(smg): this is hard coded, update it
+  // TODO: this is hard coded, update it
   private readonly animations = {
     idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
   };

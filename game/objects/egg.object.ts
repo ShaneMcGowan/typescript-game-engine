@@ -2,10 +2,10 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { ChickenObject } from './chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 
-const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
+const TILE_SET = 'tileset_egg'; // TODO: some sort of enum for tilesets
 const DEFAULT_RENDER_LAYER: number = 7;
 
 interface Config extends SceneObjectBaseConfig {
@@ -54,7 +54,7 @@ export class EggObject extends SceneObject implements Interactable {
     );
   }
 
-  // TODO(smg): what needs to be cleaned up here? are we sure the object is being properly released?
+  // TODO: what needs to be cleaned up here? are we sure the object is being properly released?
   destroy(): void { }
 
   private updateAnimation(delta: number): void {
@@ -77,6 +77,6 @@ export class EggObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    console.log('[EggObject#interact] TODO(smg): pick up egg');
+    console.log('[EggObject#interact] TODO: pick up egg');
   }
 }

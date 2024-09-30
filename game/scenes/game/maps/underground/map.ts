@@ -2,16 +2,16 @@ import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { type SceneObject } from '@core/model/scene-object';
 import { PlayerObject } from '@game/objects/player.object';
-import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './1/backgrounds/0.background';
-import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './1/backgrounds/1.background';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './backgrounds/0.background';
+import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './backgrounds/1.background';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { TransitionObject } from '@core/objects/transition.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { WarpObject } from '@game/objects/warp.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
-import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from './1/constants/map-text.constants';
-import { GregNpcObject } from '../../../objects/npcs/greg.npc';
-import { UnknownNpcObject } from '../../../objects/npcs/unknown.npc';
+import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from './constants/map-text.constants';
+import { GregNpcObject } from '@game/objects/npcs/greg.npc';
+import { UnknownNpcObject } from '@game/objects/npcs/unknown.npc';
 
 export class SAMPLE_SCENE_1_MAP_1 extends SceneMap {
   height = 40;

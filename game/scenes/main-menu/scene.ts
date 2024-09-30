@@ -1,5 +1,5 @@
 import { type Client } from '@core/client';
-import { SAMPLE_SCENE_0_MAP_0 } from './maps/0.map';
+import { SAMPLE_SCENE_0_MAP_0 } from './maps/home/map';
 import { Scene } from '@core/model/scene';
 
 export class SAMPLE_SCENE_0 extends Scene {

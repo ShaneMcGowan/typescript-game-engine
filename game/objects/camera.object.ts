@@ -8,7 +8,7 @@ interface Config extends SceneObjectBaseConfig {
   zoom?: number;
 }
 
-// TODO(smg): this object is generic enough to be included at the engine level
+// TODO: this object is generic enough to be included at the engine level
 export class CameraObject extends SceneObject {
   private readonly cameraOffsetX: number;
   private readonly cameraOffsetY: number;
@@ -25,7 +25,7 @@ export class CameraObject extends SceneObject {
     let cameraOffsetX = (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 0.5;
     let cameraOffsetY = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.5;
 
-    // TODO(smg): zoom is broken and not sure why
+    // TODO: zoom is broken and not sure why
     this.cameraOffsetX = config.zoom ? cameraOffsetX / config.zoom : cameraOffsetX;
     this.cameraOffsetY = config.zoom ? cameraOffsetY / config.zoom : cameraOffsetY;
     this.object = config.object;

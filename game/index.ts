@@ -2,8 +2,8 @@ import { Client } from '@core/client';
 import { EditorUtils } from '@core/editor/editor.utils';
 import { type AssetsConfig } from '@core/model/assets';
 import { type SceneConstructorSignature } from '@core/model/scene';
-import { SAMPLE_SCENE_0 } from '@game/scenes/0/scene';
-import { SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { SAMPLE_SCENE_0 } from '@game/scenes/main-menu/scene';
+import { SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 
 (function () {
   /**

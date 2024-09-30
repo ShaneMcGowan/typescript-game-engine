@@ -1,7 +1,7 @@
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/game/scene';
 import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { TextboxObject } from '@game/objects/textbox.object';
-import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from '@game/scenes/1/maps/1/constants/map-text.constants';
+import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
 
 type Stage = 'idle' | 'hi' | 'pause' | 'bye';
 
@@ -61,7 +61,7 @@ export class GregNpcObject extends NpcObject {
         this.scene,
         {
           text: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.greg.line_1,
-          portrait: this.name, // TODO(smg): need to implement proper portrait system
+          portrait: this.name, // TODO: need to implement proper portrait system
           name: this.name,
           onComplete: () => {
             this.startStagePause();
