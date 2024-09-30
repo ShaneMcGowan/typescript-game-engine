@@ -1,8 +1,8 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
 import { RenderUtils } from '@core/utils/render.utils';
-import { InventoryItemType } from '../models/inventory-item.model';
-import { type Interactable } from '../models/interactable.model';
+import { InventoryItemType } from '@game/models/inventory-item.model';
+import { type Interactable } from '@game/models/interactable.model';
 
 const DIRT = { x: 3, y: 3, };
 const DIRT_LEFT = { x: 0.5, y: 3, };

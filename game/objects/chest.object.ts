@@ -1,8 +1,8 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
 import { type InventoryItemObject } from './inventory-item.object';
-import { type Interactable } from '../models/interactable.model';
+import { type Interactable } from '@game/models/interactable.model';
 
 const TILE_SET: string = 'tileset_chest';
 const DEFAULT_RENDER_LAYER = 8;

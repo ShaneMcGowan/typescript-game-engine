@@ -1,11 +1,11 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
 import { type ChestObject } from './chest.object';
 import { DirtObject } from './dirt.object';
-import { InventoryItemType, getInventoryItemClass } from '../models/inventory-item.model';
-import { isInteractable } from '../models/interactable.model';
+import { InventoryItemType, getInventoryItemClass } from '@game/models/inventory-item.model';
+import { isInteractable } from '@game/models/interactable.model';
 import { Input, MouseKey } from '@core/utils/input.utils';
 
 enum Direction {

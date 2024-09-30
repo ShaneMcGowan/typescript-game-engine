@@ -3,7 +3,7 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type PlayerObject } from './player.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { TransitionObject } from '@core/objects/transition.object';
-import { SAMPLE_SCENE_1_MAP_0 } from '../maps/0.map';
+import { SAMPLE_SCENE_1_MAP_0 } from '@game/scenes/1/maps/0.map';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;

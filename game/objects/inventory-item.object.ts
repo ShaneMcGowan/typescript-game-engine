@@ -1,6 +1,6 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
-import { InventoryItemType } from '../models/inventory-item.model';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { InventoryItemType } from '@game/models/inventory-item.model';
 
 const TYPE_TO_MAX_STACK_MAP: Record<InventoryItemType, number | undefined> = {
   [InventoryItemType.Chicken]: 1,

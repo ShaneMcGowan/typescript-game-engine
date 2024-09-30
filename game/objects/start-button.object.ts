@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
-import { SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
+import { SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
 import { type MousePosition, MouseUtils } from '@core/utils/mouse.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 

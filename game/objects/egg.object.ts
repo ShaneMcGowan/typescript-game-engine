@@ -1,9 +1,9 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { ChickenObject } from './chicken.object';
-import { PlayerObject } from './player.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
-import { type Interactable } from '../models/interactable.model';
+import { PlayerObject } from '@game/objects/player.object';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type Interactable } from '@game/models/interactable.model';
 
 const TILE_SET = 'tileset_egg'; // TODO(smg): some sort of enum for tilesets
 const DEFAULT_RENDER_LAYER: number = 7;

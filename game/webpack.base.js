@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const WEBPACK_CONFIG_BASE = (corePath, metadata) => {
+const WEBPACK_CONFIG_BASE = (corePath, clientDirectory, metadata) => {
   return {
     entry: './index.ts',
     module: {
@@ -23,7 +23,7 @@ const WEBPACK_CONFIG_BASE = (corePath, metadata) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: `${corePath}/src/editor/index.html`,
+        template: `${corePath}/src/${clientDirectory}/index.html`,
         filename: './index.html',
         metadata: {
           ...metadata
@@ -31,7 +31,7 @@ const WEBPACK_CONFIG_BASE = (corePath, metadata) => {
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { from: `${corePath}/src/editor/index.css`, to: 'assets/index.css', },
+          { from: `${corePath}/src/${clientDirectory}/index.css`, to: 'assets/index.css', },
           { from: './assets', to: 'assets', }
         ],
       })

@@ -1,8 +1,8 @@
 import { type Client } from '@core/client';
-import { SAMPLE_SCENE_1_MAP_0 } from './1/maps/0.map';
-import { SAMPLE_SCENE_1_MAP_1 } from './1/maps/1.map';
-import { InventoryItemType } from './1/models/inventory-item.model';
-import { InventoryItemObject } from './1/objects/inventory-item.object';
+import { SAMPLE_SCENE_1_MAP_0 } from './maps/0.map';
+import { SAMPLE_SCENE_1_MAP_1 } from './maps/1.map';
+import { InventoryItemType } from '@game/models/inventory-item.model';
+import { InventoryItemObject } from '@game/objects/inventory-item.object';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
 
 const EVENT_TYPES: Record<string, string> = {

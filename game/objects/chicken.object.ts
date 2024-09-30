@@ -3,8 +3,8 @@ import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from './egg.object';
-import { type SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
-import { type Interactable } from '../models/interactable.model';
+import { type SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
+import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from './textbox.object';
 
 const TILE_SET: string = 'tileset_chicken';

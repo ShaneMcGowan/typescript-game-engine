@@ -2,8 +2,8 @@ import { Client } from '@core/client';
 import { EditorUtils } from '@core/editor/editor.utils';
 import { type AssetsConfig } from '@core/model/assets';
 import { type SceneConstructorSignature } from '@core/model/scene';
-import { SAMPLE_SCENE_0 } from '@game/scenes/0.scene';
-import { SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
+import { SAMPLE_SCENE_0 } from '@game/scenes/0/scene';
+import { SAMPLE_SCENE_1 } from '@game/scenes/1/scene';
 
 (function () {
   /**
@@ -40,6 +40,8 @@ import { SAMPLE_SCENE_1 } from '@game/scenes/1.scene';
     },
     audio: {},
   };
+
+  EditorUtils.initHelpers()
 
   window.engine = new Client(
     document.getElementById('render-area'),
