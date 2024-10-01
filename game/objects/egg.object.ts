@@ -1,9 +1,10 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { ChickenObject } from './chicken.object';
+import { ChickenObject } from '@game/objects/chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
+import { InventoryItemType } from '@game/models/inventory-item.model';
 
 const TILE_SET = 'tileset_egg'; // TODO: some sort of enum for tilesets
 const DEFAULT_RENDER_LAYER: number = 7;
@@ -77,6 +78,7 @@ export class EggObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    console.log('[EggObject#interact] TODO: pick up egg');
+    this.scene.addToInventory(InventoryItemType.Egg);
+    this.scene.removeObjectById(this.id);
   }
 }

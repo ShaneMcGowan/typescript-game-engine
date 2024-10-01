@@ -6,19 +6,26 @@ const TYPE_TO_MAX_STACK_MAP: Record<InventoryItemType, number | undefined> = {
   [InventoryItemType.Chicken]: 1,
   [InventoryItemType.Egg]: 9,
   [InventoryItemType.WheatSeeds]: 9,
+  [InventoryItemType.Wheat]: 9,
   [InventoryItemType.TomatoSeeds]: 9,
+  [InventoryItemType.Tomato]: 9,
+  [InventoryItemType.Hoe]: 1,
+  [InventoryItemType.WateringCan]: 1
 };
 
 const DEFAULT_MAX_STACK = 1;
+const DEFAULT_SPRITE = { tileset: 'tileset_ui', spriteX: 15, spriteY: 5, };
 
 const TYPE_TO_SPRITE_MAP: Record<InventoryItemType, any> = {
   [InventoryItemType.Chicken]: { tileset: 'tileset_chicken', spriteX: 0, spriteY: 0, },
   [InventoryItemType.Egg]: { tileset: 'tileset_egg', spriteX: 0, spriteY: 0, },
   [InventoryItemType.WheatSeeds]: { tileset: 'tileset_plants', spriteX: 0, spriteY: 0, },
+  [InventoryItemType.Wheat]: { tileset: 'tileset_plants', spriteX: 5, spriteY: 0, },
   [InventoryItemType.TomatoSeeds]: { tileset: 'tileset_plants', spriteX: 0, spriteY: 1, },
+  [InventoryItemType.Tomato]: { tileset: 'tileset_plants', spriteX: 5, spriteY: 1, },
+  [InventoryItemType.Hoe]: { tileset: 'tileset_tools', spriteX: 2, spriteY: 0, },
+  [InventoryItemType.WateringCan]: { tileset: 'tileset_tools', spriteX: 0, spriteY: 0, },
 };
-
-const DEFAULT_SPRITE = { tileset: 'tileset_ui', spriteX: 15, spriteY: 5, };
 
 interface Config extends SceneObjectBaseConfig {
   type: InventoryItemType;

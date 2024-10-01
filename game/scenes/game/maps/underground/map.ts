@@ -2,14 +2,14 @@ import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { type SceneObject } from '@core/model/scene-object';
 import { PlayerObject } from '@game/objects/player.object';
-import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_0 } from './backgrounds/0.background';
-import { SAMPLE_SCENE_1_MAP_1_BACKGROUND_1 } from './backgrounds/1.background';
+import { SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_DIRT } from './backgrounds/dirt.background';
+import { SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_OTHER } from './backgrounds/other.background';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { TransitionObject } from '@core/objects/transition.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { WarpObject } from '@game/objects/warp.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
-import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from './constants/map-text.constants';
+import { SCENE_GAME_MAP_UNDERGROUND_TEXT } from './constants/map-text.constants';
 import { GregNpcObject } from '@game/objects/npcs/greg.npc';
 import { UnknownNpcObject } from '@game/objects/npcs/unknown.npc';
 
@@ -17,14 +17,15 @@ export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
   height = 40;
   width = 40;
   backgroundLayers: BackgroundLayer[] = [
-    SAMPLE_SCENE_1_MAP_1_BACKGROUND_0,
-    SAMPLE_SCENE_1_MAP_1_BACKGROUND_1
+    SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_DIRT,
+    SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_OTHER
   ];
 
   objects: SceneObject[] = [];
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);
+
 
     let player = new PlayerObject(scene, { positionX: 14, positionY: 8, });
     this.objects.push(player);
@@ -34,9 +35,9 @@ export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
 
     // chickens
     this.objects.push(new GregNpcObject(scene, { positionX: 14, positionY: 7, name: 'Greg', }));
-    this.objects.push(new UnknownNpcObject(scene, { positionX: 13, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.unknown_npc_1, }));
-    this.objects.push(new UnknownNpcObject(scene, { positionX: 15, positionY: 8, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.unknown_npc_2, }));
-    this.objects.push(new UnknownNpcObject(scene, { positionX: 14, positionY: 9, dialogue: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.unknown_npc_3, }));
+    this.objects.push(new UnknownNpcObject(scene, { positionX: 13, positionY: 8, dialogue: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.unknown_npc_1, }));
+    this.objects.push(new UnknownNpcObject(scene, { positionX: 15, positionY: 8, dialogue: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.unknown_npc_2, }));
+    this.objects.push(new UnknownNpcObject(scene, { positionX: 14, positionY: 9, dialogue: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.unknown_npc_3, }));
 
     // wall
     this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 4, }));

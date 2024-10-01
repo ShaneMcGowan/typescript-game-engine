@@ -3,18 +3,49 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { type Interactable } from '@game/models/interactable.model';
+import { TextboxObject } from '@game/objects/textbox.object';
 
-const DIRT = { x: 3, y: 3, };
+const DIRT = { x: 1, y: 1, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
 const DIRT_CENTER = { x: 1, y: 3, };
 const DIRT_RIGHT = { x: 1.5, y: 3, };
 
-const TILE_SET = 'tileset_dirt';
+const TILESET_SOIL = 'tileset_dirt';
+const TILESET_SOIL_DARKER = 'tileset_dirt';
+
 const DEFAULT_RENDER_LAYER = 6;
 const DRY_COUNTER_MAX = 15; // seconds until dirt dries up
 const GROW_COUNTER_MAX = 5; // seconds until plant grows
-const SPOIL_COUNTER_MAX = 15; // seconds until plant spoils
+const SPOIL_COUNTER_MAX = 60 * 60 * 24; // seconds until plant spoils
 const PLANTABLE = [InventoryItemType.TomatoSeeds, InventoryItemType.WheatSeeds];
+type PlantableType = InventoryItemType.TomatoSeeds | InventoryItemType.WheatSeeds
+
+enum CropStage {
+  Empty,
+  Watered,
+  Growing,
+  FullyGrown,
+  Spoiled,
+}
+
+type CropStageSprite = { tileset: string, spriteX: number, spriteY: number, };
+
+const TYPE_TO_SPRITE_MAP: Record<PlantableType, {
+  [CropStage.Growing]: CropStageSprite | undefined,
+  [CropStage.FullyGrown]: CropStageSprite | undefined,
+  [CropStage.Spoiled]: CropStageSprite | undefined,
+}> = {
+  [InventoryItemType.WheatSeeds]: {
+    [CropStage.Growing]: { tileset: 'tileset_plants', spriteX: 1, spriteY: 0, },
+    [CropStage.FullyGrown]: { tileset: 'tileset_plants', spriteX: 4, spriteY: 0, },
+    [CropStage.Spoiled]: undefined
+  },
+  [InventoryItemType.TomatoSeeds]: {
+    [CropStage.Growing]: { tileset: 'tileset_plants', spriteX: 1, spriteY: 1, },
+    [CropStage.FullyGrown]: { tileset: 'tileset_plants', spriteX: 4, spriteY: 1, },
+    [CropStage.Spoiled]: undefined
+  }
+};
 
 interface Config extends SceneObjectBaseConfig {
 
@@ -33,14 +64,13 @@ export class DirtObject extends SceneObject implements Interactable {
   counterSpoil: number = 0;
 
   currentlyGrowing: InventoryItemType | undefined = undefined;
-  isFullyGrown: boolean = false;
-  isSpoiled: boolean = false;
+
+  cropStage: CropStage;
+
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
-
-    this.scene.addEventListener(this.scene.eventTypes.DIRT_PLACED, this.onDirtPlaced.bind(this));
-    this.scene.addEventListener(this.scene.eventTypes.DIRT_REMOVED, this.onDirtPlaced.bind(this));
+    this.cropStage = CropStage.Empty;
   }
 
   private onDirtPlaced(event: CustomEvent): void {
@@ -51,68 +81,58 @@ export class DirtObject extends SceneObject implements Interactable {
     let hasLeft = left.filter(object => object instanceof DirtObject).length > 0;
     let hasRight = right.filter(object => object instanceof DirtObject).length > 0;
 
-    let tile;
-    if (hasLeft && hasRight) {
-      tile = DIRT_CENTER;
-    } else if (hasLeft && !hasRight) {
-      tile = DIRT_RIGHT;
-    } else if (!hasLeft && hasRight) {
-      tile = DIRT_LEFT;
-    } else {
-      tile = DIRT;
-    }
+    let tile = DIRT;
+    // TODO: fix this later
+    // if (hasLeft && hasRight) {
+    //   tile = DIRT_CENTER;
+    // } else if (hasLeft && !hasRight) {
+    //   tile = DIRT_RIGHT;
+    // } else if (!hasLeft && hasRight) {
+    //   tile = DIRT_LEFT;
+    // } else {
+    //   tile = DIRT;
+    // }
 
     this.spriteX = tile.x;
     this.spriteY = tile.y;
   }
 
   interact(): void {
-    if (this.isEmpty) {
-      this.plant();
-    } else {
-      this.harvest();
+    switch (this.cropStage) {
+      case CropStage.Empty:
+        this.interactStageEmpty();
+        return;
+      case CropStage.FullyGrown:
+        this.interactStageFullyGrown();
+        return;
     }
   }
 
-  /**
-   * returns false if could not plant
-   * @param type
-   * @returns
-   */
-  private plant(): void {
-    let item = this.scene.selectedInventoryItem;
-    if (item === undefined) {
-      console.log('no item selected');
-      return;
-    }
+  private interactStageEmpty(): void {
+    this.scene.globals.disable_player_inputs = true;
 
-    if (!PLANTABLE.includes(item.type)) {
-      console.log('item cannot be planted');
-      return;
-    }
-
-    console.log(`planting ${item.type}`);
-
-    this.currentlyGrowing = item.type;
-    this.hasCollision = true;
-    this.scene.removeFromInventory(this.scene.globals.hotbar_selected_index);
+    let textbox = new TextboxObject(
+      this.scene,
+      {
+        text: `It's a beautiful patch of dirt, brimming with potential.`,
+        onComplete: () => this.scene.globals.disable_player_inputs = false
+      }
+    );
+    this.scene.addObject(textbox);
   }
 
-  private harvest(): void {
-    if (!this.isFullyGrown) {
-      console.log(`harvesting growing ${this.currentlyGrowing}`);
-      this.scene.removeObjectById(this.id);
-      return;
+  private interactStageFullyGrown(): void {
+    console.log(`harvesting fully grown ${this.currentlyGrowing}`);
+    switch (this.currentlyGrowing) {
+      case InventoryItemType.TomatoSeeds:
+        this.scene.addToInventory(InventoryItemType.Tomato);
+        break;
+      case InventoryItemType.WheatSeeds:
+        this.scene.addToInventory(InventoryItemType.Wheat);
+        break;
     }
-
-    if (!this.isSpoiled) {
-      console.log(`harvesting fully grown ${this.currentlyGrowing}`);
-      this.scene.removeObjectById(this.id);
-      return;
-    }
-
-    console.log(`harvesting spoiled ${this.currentlyGrowing}`);
     this.scene.removeObjectById(this.id);
+    return;
   }
 
   private get isEmpty(): boolean {
@@ -120,73 +140,105 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   update(delta: number): void {
-    if (this.isEmpty) {
+    if (this.cropStage === CropStage.Empty || this.cropStage === CropStage.Watered) {
       this.counterDry += delta;
-    } else {
-      if (!this.isFullyGrown) {
-        this.counterGrow += delta;
-      } else {
-        this.counterSpoil += delta;
-      }
+    } else if (this.cropStage === CropStage.Growing) {
+      this.counterGrow += delta;
+    } else if (this.cropStage === CropStage.FullyGrown) {
+      this.counterSpoil += delta;
     }
 
     if (this.isEmpty && this.counterDry > DRY_COUNTER_MAX) {
       // dirt dried out
       this.scene.removeObjectById(this.id);
-    } else if (!this.isFullyGrown && this.counterGrow > GROW_COUNTER_MAX) {
+    } else if (this.cropStage === CropStage.Growing && this.counterGrow > GROW_COUNTER_MAX) {
       // plant fully grown
-      this.isFullyGrown = true;
-    } else if (this.isFullyGrown && this.counterSpoil > SPOIL_COUNTER_MAX) {
+      this.cropStage = CropStage.FullyGrown;
+    } else if (this.cropStage === CropStage.FullyGrown && this.counterSpoil > SPOIL_COUNTER_MAX) {
       // plant spoiled
-      this.isSpoiled = true;
+      this.cropStage = CropStage.Spoiled;
     }
   }
 
   render(context: CanvasRenderingContext2D): void {
-    this.renderSprite(context);
+    this.renderDirt(context);
+    this.renderCrop(context);
   }
 
-  destroy(): void {
-    this.scene.dispatchEvent(this.scene.eventTypes.DIRT_REMOVED);
+  destroy(): void { }
+
+  private renderDirt(context: CanvasRenderingContext2D): void {
+    let tileset = this.cropStage === CropStage.Empty ? TILESET_SOIL : TILESET_SOIL_DARKER;
+    RenderUtils.renderSprite(
+      context,
+      this.scene.assets.images[tileset],
+      this.spriteX,
+      this.spriteY,
+      this.positionX,
+      this.positionY,
+      1,
+      1
+    );
   }
 
-  private renderSprite(context: CanvasRenderingContext2D): void {
-    if (this.isEmpty) {
-      RenderUtils.renderSprite(
-        context,
-        this.scene.assets.images[TILE_SET],
-        this.spriteX,
-        this.spriteY,
-        this.positionX,
-        this.positionY,
-        1,
-        1
-      );
-    } else {
-      if (!this.isFullyGrown) {
-        RenderUtils.renderCircle(
-          context,
-          this.positionX,
-          this.positionY,
-          { colour: 'lightgreen', }
-        );
-      } else {
-        if (!this.isSpoiled) {
-          RenderUtils.renderCircle(
-            context,
-            this.positionX,
-            this.positionY,
-            { colour: 'green', }
-          );
-        } else {
-          RenderUtils.renderCircle(
-            context,
-            this.positionX,
-            this.positionY,
-            { colour: 'brown', }
-          );
-        }
-      }
+  private renderCrop(context: CanvasRenderingContext2D): void {
+    if (this.cropStage === CropStage.Empty || this.cropStage === CropStage.Watered) {
+      return;
     }
+
+    // TODO: this is a messy check, whole system could be greatly improved
+    if (this.currentlyGrowing !== InventoryItemType.TomatoSeeds && this.currentlyGrowing !== InventoryItemType.WheatSeeds) {
+      return;
+    }
+
+    let sprite = TYPE_TO_SPRITE_MAP[this.currentlyGrowing][this.cropStage];
+    if (sprite === undefined) {
+      return;
+    }
+
+    RenderUtils.renderSprite(
+      context,
+      this.scene.assets.images[sprite.tileset],
+      sprite.spriteX,
+      sprite.spriteY,
+      this.positionX,
+      this.positionY,
+      1,
+      1
+    );
   }
+
+  actionWater(): void {
+    if (this.cropStage !== CropStage.Empty) {
+      return;
+    }
+
+    this.counterDry = 0;
+    this.cropStage = CropStage.Watered;
+  }
+
+  actionPlant(): void {
+    let item = this.scene.selectedInventoryItem;
+    // no item selected
+    if (item === undefined) {
+      return;
+    }
+
+    // item cannot be planted
+    if (!PLANTABLE.includes(item.type)) {
+      return;
+    }
+
+    // only plant on watered soil
+    if (this.cropStage !== CropStage.Watered) {
+      return;
+    }
+
+    this.hasCollision = true;
+    this.currentlyGrowing = item.type;
+    this.cropStage = CropStage.Growing;
+
+    this.scene.removeFromInventory(this.scene.globals.hotbar_selected_index);
+  }
+
 }

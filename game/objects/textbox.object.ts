@@ -2,6 +2,11 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
+import { Input, MouseKey } from '@core/utils/input.utils';
+
+enum Controls {
+  Confirm = ' ',
+}
 
 const TILE_SET: string = 'tileset_dialogue_box';
 const DEFAULT_OVERLAY: boolean = true;
@@ -61,10 +66,6 @@ export class TextboxObject extends SceneObject {
   private completionTimer: number = 0;
   private readonly completionDuration: number | undefined;
 
-  private readonly controls = {
-    confirm: false,
-  };
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -86,14 +87,6 @@ export class TextboxObject extends SceneObject {
     this.completionDuration = config.completionDuration;
     this.scrollText = config.scrollText ?? DEFAULT_SCROLL_TEXT;
     this.scrollSpeed = config.scrollSpeed ?? DEFAULT_SCROLL_SPEED;
-
-    // define listeners
-    this.keyListeners.onConfirmKeyDown = this.onConfirmKeyDown.bind(this);
-
-    // wire listeners
-    document.addEventListener('keydown', this.keyListeners.onConfirmKeyDown);
-
-    this.scene.dispatchEvent(this.scene.eventTypes.TEXTBOX_OPENED);
 
     this.initText();
   }
@@ -135,11 +128,6 @@ export class TextboxObject extends SceneObject {
     this.renderText(context);
   }
 
-  destroy(): void {
-    document.removeEventListener('keydown', this.keyListeners.onConfirmKeyDown);
-    this.scene.dispatchEvent(this.scene.eventTypes.TEXTBOX_CLOSED);
-  }
-
   private updateTimer(delta: number): void {
     this.completionTimer += delta;
 
@@ -158,7 +146,8 @@ export class TextboxObject extends SceneObject {
   }
 
   private updateConfirm(): void {
-    if (!this.controls.confirm) {
+
+    if (!Input.isKeyPressed(Controls.Confirm) && !Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
@@ -166,7 +155,8 @@ export class TextboxObject extends SceneObject {
     if (this.scrollText) {
       if (this.currentText.length > this.characterIndex) {
         this.characterIndex = this.currentText.length;
-        this.controls.confirm = false;
+        Input.clearKeyPressed(Controls.Confirm)
+        Input.clearMousePressed(MouseKey.Left);
         return;
       }
     }
@@ -183,7 +173,8 @@ export class TextboxObject extends SceneObject {
       this.scene.removeObjectById(this.id);
     }
 
-    this.controls.confirm = false;
+    Input.clearKeyPressed(Controls.Confirm);
+    Input.clearMousePressed(MouseKey.Left);
   }
 
   private renderOverlay(context: CanvasRenderingContext2D): void {
@@ -373,19 +364,6 @@ export class TextboxObject extends SceneObject {
       this.animationIndex = 0;
     } else {
       this.animationIndex = 1;
-    }
-  }
-
-  private onConfirmKeyDown(event: KeyboardEvent): void {
-    // only accept first event
-    if (event.repeat) {
-      return;
-    }
-
-    switch (event.key.toLocaleLowerCase()) {
-      case ' ':
-        this.controls.confirm = true;
-        break;
     }
   }
 

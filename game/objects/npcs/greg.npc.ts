@@ -1,7 +1,7 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { TextboxObject } from '@game/objects/textbox.object';
-import { SAMPLE_SCENE_1_MAP_1_MAP_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
+import { SCENE_GAME_MAP_UNDERGROUND_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
 
 type Stage = 'idle' | 'hi' | 'pause' | 'bye';
 
@@ -60,7 +60,7 @@ export class GregNpcObject extends NpcObject {
       new TextboxObject(
         this.scene,
         {
-          text: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.greg.line_1,
+          text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_1,
           portrait: this.name, // TODO: need to implement proper portrait system
           name: this.name,
           onComplete: () => {
@@ -79,7 +79,7 @@ export class GregNpcObject extends NpcObject {
         this.scene,
         {
           showOverlay: false,
-          text: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.greg.line_2,
+          text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_2,
           portrait: this.name,
           name: this.name,
           onComplete: () => {
@@ -107,7 +107,7 @@ export class GregNpcObject extends NpcObject {
         this.scene,
         {
           showOverlay: false,
-          text: SAMPLE_SCENE_1_MAP_1_MAP_TEXT.quest_1.intro.greg.line_3,
+          text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_3,
           portrait: this.name,
           name: this.name,
           completionDuration: this.stageByeDuration,

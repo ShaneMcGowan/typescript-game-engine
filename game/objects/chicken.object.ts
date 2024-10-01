@@ -2,10 +2,11 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { EggObject } from './egg.object';
+import { EggObject } from '@game/objects/egg.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
-import { TextboxObject } from './textbox.object';
+import { TextboxObject } from '@game/objects/textbox.object';
+import { InventoryItemType } from '@game/models/inventory-item.model';
 
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
@@ -46,7 +47,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   // egg
   canLayEggs: boolean;
-  eggTimer = MathUtils.randomStartingDelta(2);;
+  eggTimer = MathUtils.randomStartingDelta(2);
   eggTimerMax = 7; // seconds until next egg
   eggMax = 200; // max total chickens + eggs allowed at one time
 
@@ -83,7 +84,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
       this.positionX,
-      this.positionY
+      this.positionY,
     );
   }
 
@@ -217,11 +218,79 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    console.log('[ChickenObject#interact] TODO: pick up chicken');
+    this.interactDefault();
+  };
+
+  private interactDefault(): void {
+    // disable inputs
+    this.scene.globals.disable_player_inputs = true;
+
     let textbox = new TextboxObject(
       this.scene,
-      { text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD, portrait: 'Chicken', name: 'Chicken', }
+      {
+        text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD,
+        portrait: 'Chicken',
+        name: 'Chicken',
+        onComplete: () => {
+          // enable inputs
+          this.scene.globals.disable_player_inputs = false;
+        }
+      }
     );
     this.scene.addObject(textbox);
-  };
+  }
+
+  actionGiveItem(): void {
+    switch (this.scene.selectedInventoryItem.type) {
+      case InventoryItemType.Tomato:
+        this.actionGiveTomato();
+        return;
+      case InventoryItemType.Wheat:
+        this.actionGiveWheat();
+        return;
+    }
+  }
+
+  private actionGiveTomato(): void {
+    // disable inputs
+    this.scene.globals.disable_player_inputs = true;
+
+    let textbox = new TextboxObject(
+      this.scene,
+      {
+        text: 'I LOooOooOoOooOoOVE TOMATOES!',
+        portrait: 'Chicken',
+        name: 'Chicken',
+        onComplete: () => {
+          // enable inputs
+          this.scene.globals.disable_player_inputs = false;
+        }
+      }
+    );
+
+    let index = this.scene.globals.inventory.indexOf(this.scene.selectedInventoryItem);
+    this.scene.removeFromInventory(index)
+    this.scene.addObject(textbox);
+  }
+
+  private actionGiveWheat(): void {
+    // disable inputs
+    this.scene.globals.disable_player_inputs = true;
+
+    let textbox = new TextboxObject(
+      this.scene,
+      {
+        text: 'I HAAAAAAAAAAAAAAAATE WHEAT!',
+        portrait: 'Chicken',
+        name: 'Chicken',
+        onComplete: () => {
+          // enable inputs
+          this.scene.globals.disable_player_inputs = false;
+        }
+      }
+    );
+
+    this.scene.addObject(textbox);
+  }
+
 }

@@ -1,6 +1,6 @@
 import { type BackgroundLayer } from '@core/model/background-layer';
 
-export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_1: BackgroundLayer = {
+export const SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_OTHER: BackgroundLayer = {
   index: 1,
   tiles: [
     /*

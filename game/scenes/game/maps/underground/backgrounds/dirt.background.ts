@@ -71,7 +71,7 @@ const BOTTOM_RIGHT: BackgroundTile = {
   ],
 };
 
-export const SAMPLE_SCENE_1_MAP_1_BACKGROUND_0: BackgroundLayer = {
+export const SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_DIRT: BackgroundLayer = {
   index: 0,
   tiles: [
     [],

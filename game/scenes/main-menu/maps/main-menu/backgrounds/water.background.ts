@@ -39,7 +39,7 @@ const MENU_TILE_COLUMN = [
   MENU_TILE
 ];
 
-export const SAMPLE_SCENE_0_MAP_0_BACKGROUND_0: BackgroundLayer = {
+export const SCENE_MAIN_MENU_MAP_MAIN_MENU_BACKGROUND_WATER: BackgroundLayer = {
   index: 0,
   tiles: [
     MENU_TILE_COLUMN,

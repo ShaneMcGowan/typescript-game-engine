@@ -8,14 +8,10 @@ import { PlayerObject } from '@game/objects/player.object';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './backgrounds/0.background';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './backgrounds/1.background';
 import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './backgrounds/2.background';
-import { CameraObject } from '@game/objects/camera.object';
-import { InventoryUiObject } from '@game/objects/inventory-ui.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { ChestObject } from '@game/objects/chest.object';
-import { IntervalObject } from '@core/objects/interval.object';
-import { TimerObject } from '@core/objects/timer.object';
-import { TransitionObject } from '@core/objects/transition.object';
+import { InventoryUiObject } from '@game/objects/inventory-ui.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -31,6 +27,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);
+
 
     // TODO: remove this when no longer debugging as it will be set in start menu map
     MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
@@ -117,6 +114,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new FenceObject(scene, { positionX: 17, positionY: 12, type: FenceType.MiddleHorizontal, }));
     this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 12, type: FenceType.BottomRight, }));
 
+    /*
+
     // load test
     // for (let i = 0; i < 20000; i++) {
     //   this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 10, canMove: true, follows: player, }));
@@ -163,5 +162,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
 
     // this.objects.push(new GenericSpriteObject(scene, { positionX: 5, positionY: 4, spriteX: 0, spriteY: 0, tileset: 'tileset_sample', }));
+    */
   }
 }

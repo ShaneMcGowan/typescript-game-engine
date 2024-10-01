@@ -1,4 +1,4 @@
-export const SAMPLE_SCENE_1_MAP_1_MAP_TEXT = {
+export const SCENE_GAME_MAP_UNDERGROUND_TEXT = {
   quest_1: {
     intro: {
       unknown_npc_1: 'Welcome. I have been expecting you. We all have.',

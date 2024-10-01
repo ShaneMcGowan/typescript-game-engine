@@ -1,21 +1,12 @@
 import { type Client } from '@core/client';
-import { SCENE_GAME_MAP_WORLD } from './maps/world/map';
-import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
+import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { InventoryItemObject } from '@game/objects/inventory-item.object';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
 
 const EVENT_TYPES: Record<string, string> = {
-  TOGGLE_INVENTORY: 'TOGGLE_INVENTORY',
-  INVENTORY_OPENED: 'INVENTORY_OPENED',
-  INVENTORY_CLOSED: 'INVENTORY_CLOSED',
-  TOGGLE_CHEST: 'TOGGLE_CHEST',
-  CHEST_OPENED: 'CHEST_OPENED',
-  CHEST_CLOSED: 'CHEST_CLOSED',
   DIRT_PLACED: 'DIRT_PLACED',
   DIRT_REMOVED: 'DIRT_REMOVED',
-  TEXTBOX_OPENED: 'TEXTBOX_OPENED',
-  TEXTBOX_CLOSED: 'TEXTBOX_CLOSED',
 };
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -23,20 +14,26 @@ interface Globals extends SceneGlobalsBaseConfig {
   inventory_size: number;
   hotbar_size: number;
   hotbar_selected_index: number;
+  disable_player_inputs: boolean;
 }
 
 export class SCENE_GAME extends Scene {
   globals: Globals = {
     ...this.globals,
     inventory: [
+      new InventoryItemObject(this, { type: InventoryItemType.Hoe, }),
+      new InventoryItemObject(this, { type: InventoryItemType.WateringCan, }),
+      new InventoryItemObject(this, { type: InventoryItemType.TomatoSeeds, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 10, }),
       new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
       new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
-      new InventoryItemObject(this, { type: InventoryItemType.TomatoSeeds, currentStackSize: 10, }),
-      new InventoryItemObject(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 10, })
+      new InventoryItemObject(this, { type: InventoryItemType.Tomato, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Wheat, currentStackSize: 10, }),
     ],
     inventory_size: 36,
     hotbar_size: 9,
     hotbar_selected_index: 0,
+    disable_player_inputs: false,
   };
 
   eventTypes = EVENT_TYPES;
@@ -102,4 +99,9 @@ export class SCENE_GAME extends Scene {
   get selectedInventoryItem(): InventoryItemObject | undefined {
     return this.globals.inventory[this.globals.hotbar_selected_index];
   }
+
+  get selectedInventoryIndex(): number {
+    return this.globals.hotbar_selected_index;
+  }
+
 }

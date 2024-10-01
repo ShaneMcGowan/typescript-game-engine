@@ -1,9 +1,9 @@
-import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { type PlayerObject } from './player.object';
+import { type PlayerObject } from '@game/objects/player.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { TransitionObject } from '@core/objects/transition.object';
 import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
+import { SCENE_GAME } from '@game/scenes/game/scene';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
@@ -14,7 +14,7 @@ export class WarpObject extends SceneObject {
   private isWarping: boolean = false;
 
   constructor(
-    protected scene: Scene,
+    protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);
@@ -30,6 +30,9 @@ export class WarpObject extends SceneObject {
       return;
     }
 
+    // disable input
+    this.scene.globals.disable_player_inputs = true;
+
     this.isWarping = true;
 
     let duration = 1.5;
@@ -37,6 +40,8 @@ export class WarpObject extends SceneObject {
       new TimerObject(this.scene, {
         duration,
         onComplete: () => {
+          // enable input
+          this.scene.globals.disable_player_inputs = false;
           this.scene.changeMap(SCENE_GAME_MAP_WORLD);
         },
       })

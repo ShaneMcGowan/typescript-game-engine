@@ -4,7 +4,7 @@ import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
-import { TextboxObject } from './textbox.object';
+import { TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 
 const DEFAULT_RENDER_LAYER: number = 8;

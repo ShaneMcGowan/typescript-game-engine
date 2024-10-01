@@ -37,6 +37,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
       tileset_chest: 'assets/sample/Objects/Chest.png',
       tileset_plants: 'assets/sample/Objects/Basic_Plants.png',
       tileset_dialogue_box: 'assets/sample/Dialouge UI/dialog box.png',
+      tileset_tools: 'assets/sample/Characters/Tools.png',
     },
     audio: {},
   };
