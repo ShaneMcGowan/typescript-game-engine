@@ -6,5 +6,15 @@ export enum InventoryItemType {
   TomatoSeeds = 'TomatoSeeds',
   Tomato = 'Tomato',
   Hoe = 'Hoe',
-  WateringCan = 'WateringCan'
+  WateringCan = 'WateringCan',
+  Chest = 'Chest'
+}
+
+/**
+ * where the item can be placed
+ */
+export enum InventoryItemRadius {
+  Player = 'Player', // in any tile surround the player
+  Anywhere = 'Anywhere', // any tile
+  None = 'None' // not useable / placeable on the map
 }

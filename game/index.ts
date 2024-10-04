@@ -14,6 +14,19 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
   /**
   * Add your scenes here, the first scene will be loaded on startup
   */
+
+  // this is for debugging, letting us launch into a specific scene
+  const params = new URLSearchParams(window.location.search);
+  const sceneParam = params.get('scene');
+
+  const defaultScene = SCENE_MAIN_MENU;
+
+  const SCENE_MAP: Record<string, SceneConstructorSignature> = {
+    'main-menu': SCENE_MAIN_MENU,
+    'game': SCENE_GAME
+  }
+  const scene: SceneConstructorSignature = SCENE_MAP[sceneParam] ?? SCENE_MAIN_MENU;
+
   const scenes: SceneConstructorSignature[] = [
     SCENE_MAIN_MENU,
     SCENE_GAME
@@ -46,7 +59,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
 
   window.engine = new Client(
     document.getElementById('render-area'),
-    scenes,
+    scene,
     assets,
     EditorUtils.engineObjectList,
     EditorUtils.engineObjectDetails,

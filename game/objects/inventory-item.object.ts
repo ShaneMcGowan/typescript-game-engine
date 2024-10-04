@@ -1,6 +1,6 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { InventoryItemType } from '@game/models/inventory-item.model';
+import { InventoryItemRadius, InventoryItemType } from '@game/models/inventory-item.model';
 
 const TYPE_TO_MAX_STACK_MAP: Record<InventoryItemType, number | undefined> = {
   [InventoryItemType.Chicken]: 1,
@@ -10,7 +10,8 @@ const TYPE_TO_MAX_STACK_MAP: Record<InventoryItemType, number | undefined> = {
   [InventoryItemType.TomatoSeeds]: 9,
   [InventoryItemType.Tomato]: 9,
   [InventoryItemType.Hoe]: 1,
-  [InventoryItemType.WateringCan]: 1
+  [InventoryItemType.WateringCan]: 1,
+  [InventoryItemType.Chest]: 1
 };
 
 const DEFAULT_MAX_STACK = 1;
@@ -23,9 +24,23 @@ const TYPE_TO_SPRITE_MAP: Record<InventoryItemType, any> = {
   [InventoryItemType.Wheat]: { tileset: 'tileset_plants', spriteX: 5, spriteY: 0, },
   [InventoryItemType.TomatoSeeds]: { tileset: 'tileset_plants', spriteX: 0, spriteY: 1, },
   [InventoryItemType.Tomato]: { tileset: 'tileset_plants', spriteX: 5, spriteY: 1, },
-  [InventoryItemType.Hoe]: { tileset: 'tileset_tools', spriteX: 2, spriteY: 0, },
+  [InventoryItemType.Hoe]: { tileset: 'tileset_tools', spriteX: 4, spriteY: 4, },
   [InventoryItemType.WateringCan]: { tileset: 'tileset_tools', spriteX: 0, spriteY: 0, },
+  [InventoryItemType.Chest]: { tileset: 'tileset_chest', spriteX: 1, spriteY: 1, },
 };
+
+const DEFAULT_INVENTORY_ITEM_RADIUS: InventoryItemRadius = InventoryItemRadius.None;
+const TYPE_TO_RADIUS_MAP: Record<InventoryItemType, InventoryItemRadius> = {
+  [InventoryItemType.Chicken]: InventoryItemRadius.Anywhere,
+  [InventoryItemType.Egg]: InventoryItemRadius.Anywhere,
+  [InventoryItemType.WheatSeeds]: InventoryItemRadius.Player,
+  [InventoryItemType.Wheat]: InventoryItemRadius.None,
+  [InventoryItemType.TomatoSeeds]: InventoryItemRadius.Player,
+  [InventoryItemType.Tomato]: InventoryItemRadius.None,
+  [InventoryItemType.Hoe]: InventoryItemRadius.Player,
+  [InventoryItemType.WateringCan]: InventoryItemRadius.Player,
+  [InventoryItemType.Chest]: InventoryItemRadius.Anywhere
+}
 
 interface Config extends SceneObjectBaseConfig {
   type: InventoryItemType;
@@ -37,6 +52,7 @@ export class InventoryItemObject extends SceneObject {
   currentStackSize: number;
   maxStackSize: number;
   sprite: { tileset: string; spriteX: number; spriteY: number; };
+  radius: InventoryItemRadius;
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
@@ -44,6 +60,7 @@ export class InventoryItemObject extends SceneObject {
     this.type = config.type;
     this.maxStackSize = TYPE_TO_MAX_STACK_MAP[this.type] ?? DEFAULT_MAX_STACK;
     this.sprite = TYPE_TO_SPRITE_MAP[this.type] ?? DEFAULT_SPRITE;
+    this.radius = TYPE_TO_RADIUS_MAP[this.type] ?? DEFAULT_INVENTORY_ITEM_RADIUS;
 
     if (config.currentStackSize !== undefined) {
       this.currentStackSize = config.currentStackSize > this.maxStackSize ? this.maxStackSize : config.currentStackSize;

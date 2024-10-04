@@ -82,14 +82,12 @@ export class Client {
 
   constructor(
     public container: HTMLElement,
-    scenes: SceneConstructorSignature[],
+    openingScene: SceneConstructorSignature,
     assets: AssetsConfig,
     public engineObjectList: HTMLElement | null,
     public engineObjectDetails: HTMLElement | null,
     private readonly engineControls?: DebugButtons
   ) {
-    // scenes
-    this.scenes = [...scenes];
 
     // load assets
     // TODO: some sort of loading screen / rendering delay until assets are loaded
@@ -134,7 +132,7 @@ export class Client {
     this.intialiseGamepadListeners();
 
     // load first scene
-    this.changeScene(this.scenes[0]);
+    this.changeScene(openingScene);
 
     // Run game logic
     this.frame(0);
@@ -341,7 +339,7 @@ export class Client {
     console.log('[listener added] mousemove');
     this.canvas.addEventListener('mousemove', (event: MouseEvent) => {
       Input.mouse.position = MouseUtils.getMousePosition(this.canvas, event);
-      Input.mouse.lastestEvent = event;
+      Input.mouse.latestEvent = event;
     });
 
     console.log('[listener added] mousedown');
@@ -376,17 +374,25 @@ export class Client {
       }
     });
 
-    // touch
+    // touch - this is for mobile only
     console.log('[listener added] touchstart');
     this.canvas.addEventListener('touchstart', (event: TouchEvent) => {
       console.log('[touchstart]', event);
       Input.mouse.click.left = true;
     });
 
+    // touch - this is for mobile only
     console.log('[listener added] touchend');
     this.canvas.addEventListener('touchend', (event: TouchEvent) => {
       console.log('[touchend]', event);
       Input.mouse.click.left = false;
+    });
+
+    // for mouse scroll
+    console.log('[listener added] wheel');
+    this.canvas.addEventListener("wheel", (event: WheelEvent) => {
+      console.log('[wheel]', event);
+      Input.mouse.wheel.event = event;
     });
   }
 

@@ -29,6 +29,7 @@ export class SCENE_GAME extends Scene {
       new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
       new InventoryItemObject(this, { type: InventoryItemType.Tomato, currentStackSize: 10, }),
       new InventoryItemObject(this, { type: InventoryItemType.Wheat, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chest, currentStackSize: 1, }),
     ],
     inventory_size: 36,
     hotbar_size: 9,

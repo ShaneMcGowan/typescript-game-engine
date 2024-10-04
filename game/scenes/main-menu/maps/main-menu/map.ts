@@ -28,8 +28,8 @@ export class SCENE_MAIN_MENU_MAP_MAIN_MENU extends SceneMap {
     // TODO: object layers so rendering order is correct
     this.objects.push(new StartButtonObject(scene, {
       renderLayer: 15,
-      positionX: CanvasConstants.CANVAS_CENTER_TILE_X,
-      positionY: CanvasConstants.CANVAS_CENTER_TILE_Y,
+      positionX: 16,
+      positionY: 9,
     }));
     this.objects.push(new MainMenuControllerObject(scene, {}));
   }

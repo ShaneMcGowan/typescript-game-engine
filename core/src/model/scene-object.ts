@@ -92,6 +92,9 @@ export abstract class SceneObject {
     };
   }
 
+  children: Array<SceneObject> = new Array(); // TODO: begin parent / child objects
+  parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
+
   constructor(
     protected scene: Scene,
     config: SceneObjectBaseConfig

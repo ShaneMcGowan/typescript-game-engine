@@ -3,7 +3,7 @@ import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { DirtObject } from '@game/objects/dirt.object';
-import { InventoryItemType } from '@game/models/inventory-item.model';
+import { InventoryItemRadius, InventoryItemType } from '@game/models/inventory-item.model';
 import { isInteractable } from '@game/models/interactable.model';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { useHoe } from '@game/objects/player/use-hoe.action';
@@ -18,6 +18,7 @@ import { useCropOnChicken } from '@game/objects/player/crop/use-crop-on-chicken.
 import { InventoryObject } from '@game/objects/inventory.object';
 import { useWateringCanOnChicken } from './player/watering-can/use-watering-can-on-chicken.action';
 import { Position } from '@game/models/position.model';
+import { useChest } from './player/use-chest.action';
 
 enum Direction {
   UP = 'w',
@@ -29,10 +30,6 @@ enum Direction {
 enum Controls {
   Inventory = 'tab',
   InventoryAlt = 'escape'
-}
-
-interface IControls {
-  ['click']: boolean;
 }
 
 const TILE_SET = 'tileset_player';
@@ -51,10 +48,6 @@ export class PlayerObject extends SceneObject {
 
   // constants
   movementSpeed = 4; // 4 tiles per second
-
-  controls: IControls = {
-    ['click']: false,
-  };
 
   animations = {
     [Direction.RIGHT]: [{ x: 7, y: 10, }, { x: 10, y: 10, }],
@@ -82,7 +75,10 @@ export class PlayerObject extends SceneObject {
   hotbarEnabled: boolean = false;
   leftClickEnabled: boolean = false;
   inventoryEnabled: boolean = false;
-  rightClickEnabled: boolean = false;
+  interactButtonEnabled: boolean = false;
+
+  // scroll wheel
+  latestScrollTimestamp: number; // used to track if the mouse wheel has been scrolled this frame
 
   constructor(
     protected scene: SCENE_GAME,
@@ -109,17 +105,20 @@ export class PlayerObject extends SceneObject {
   }
 
   private enableInteractKeys(): void {
-    this.rightClickEnabled = true;
+    this.interactButtonEnabled = true;
   }
-
 
   update(delta: number): void {
     this.updateMovement(delta);
     this.updateAnimations(delta);
-    this.updateHotbar();
+    this.updateHotbarViaKey();
+    this.updateHotbarViaWheel();
     this.updateLeftClick();
-    this.updateRightClick();
+    this.updateButtonInteract();
     this.updateOpenInventory();
+
+    // update at end of frame after checks have been ran
+    this.latestScrollTimestamp = Input.mouse.wheel.event.timeStamp;
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -246,26 +245,40 @@ export class PlayerObject extends SceneObject {
   * else
   *   use item (or nothing)
   */
-  private updateRightClick(): void {
+  private updateButtonInteract(): void {
     if (this.scene.globals.disable_player_inputs === true) {
       return;
     }
 
-    if (this.rightClickEnabled === false) {
+    if (this.interactButtonEnabled === false) {
       return;
     }
 
-    if (!Input.mouse.click.right) {
+    if (!Input.isKeyPressed('e')) {
       return;
     }
 
-    Input.mouse.click.right = false;
+    Input.clearKeyPressed('e');
 
-    let position = {
-      x: Math.ceil(Input.mouse.position.x + this.scene.globals.camera.startX),
-      y: Math.ceil(Input.mouse.position.y + this.scene.globals.camera.startY)
-    };
-    let object = this.scene.getObjectAtPosition(position.x, position.y, null);
+    let x = Math.ceil(this.positionX + this.scene.globals.camera.startX);
+    let y = Math.ceil(this.positionY + this.scene.globals.camera.startY)
+
+    switch (this.direction) {
+      case Direction.UP:
+        y -= 1
+        break;
+      case Direction.RIGHT:
+        x += 1
+        break;
+      case Direction.DOWN:
+        y += 1
+        break;
+      case Direction.LEFT:
+        x -= 1
+        break;
+    }
+
+    let object = this.scene.getObjectAtPosition(x, y, null);
 
     if (object === undefined) {
       return;
@@ -302,7 +315,7 @@ export class PlayerObject extends SceneObject {
     }
   }
 
-  private updateHotbar(): void {
+  private updateHotbarViaKey(): void {
     if (this.scene.globals.disable_player_inputs === true) {
       return;
     }
@@ -355,6 +368,38 @@ export class PlayerObject extends SceneObject {
       this.scene.globals['hotbar_selected_index'] = 8;
       return;
     }
+  }
+
+  private updateHotbarViaWheel(): void {
+    if (this.scene.globals.disable_player_inputs === true) {
+      return;
+    }
+
+    if (this.hotbarEnabled === false) {
+      return;
+    }
+
+    // no new scroll events this frame
+    if (this.latestScrollTimestamp === Input.mouse.wheel.event.timeStamp) {
+      return;
+    }
+
+    // wrap hotbar if at end
+    const index = this.scene.globals['hotbar_selected_index'];
+    if (Input.mouse.wheel.event.deltaY > 0) {
+      if (index === 8) {
+        this.scene.globals['hotbar_selected_index'] = 0;
+      } else {
+        this.scene.globals['hotbar_selected_index']++;
+      }
+    } else if (Input.mouse.wheel.event.deltaY < 0) {
+      if (index === 0) {
+        this.scene.globals['hotbar_selected_index'] = 8;
+      } else {
+        this.scene.globals['hotbar_selected_index']--;
+      }
+    }
+
   }
 
   private updateOpenInventory(): void {
@@ -414,19 +459,16 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    // only allow selection of 1 tile radius surrounding player
-    let position = this.calculateRelativeMousePosition();
-
     let object = this.scene.getObjectAtPosition(
-      position.x,
-      position.y,
+      Input.mouse.position.x,
+      Input.mouse.position.y,
       null
     );
 
     if (object === undefined) {
       switch (item.type) {
         case InventoryItemType.Hoe:
-          useHoe(this.scene, position);
+          useHoe(this.scene, this);
           return;
         case InventoryItemType.WateringCan:
           useWateringCan(this.scene);
@@ -440,6 +482,9 @@ export class PlayerObject extends SceneObject {
         case InventoryItemType.TomatoSeeds:
         case InventoryItemType.WheatSeeds:
           useSeed(this.scene);
+          return;
+        case InventoryItemType.Chest:
+          useChest(this.scene);
           return;
         default:
           return;
@@ -498,67 +543,39 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-
     let x = Input.mouse.position.x; // TODO: work with camera + this.scene.globals.camera.startX;
     let y = Input.mouse.position.y; // TODO: work with camera + this.scene.globals.camera.startY;
+
+    let item = this.scene.selectedInventoryItem;
+    // do not render cursor
+    if (item === undefined || item.radius === InventoryItemRadius.None) {
+      return;
+    }
 
     // don't render cursor ontop of self
     if (x === Math.floor(this.positionX) && y === Math.floor(this.positionY)) {
       return;
     }
 
-    /*
-    // top left
-    RenderUtils.renderSprite(
-      context,
-      this.assets.images.tileset_ui,
-      9,
-      9,
-      x - 0.5,
-      y - 0.5,
-      1,
-      1
-    );
+    // don't render cursor if greater than 1 tile away from user
+    if (item.radius === InventoryItemRadius.Player && (Math.abs(x - Math.floor(this.positionX)) > 1 || Math.abs(y - Math.floor(this.positionY)) > 1)) {
+      return;
+    }
 
-    // top right
-    RenderUtils.renderSprite(
+    RenderUtils.fillRectangle(
       context,
-      this.assets.images.tileset_ui,
-      10,
-      9,
-      x + 0.5,
-      y - 0.5,
+      x,
+      y,
       1,
-      1
-    );
-
-    // bottom left
-    RenderUtils.renderSprite(
-      context,
-      this.assets.images.tileset_ui,
-      9,
-      10,
-      x - 0.5,
-      y + 0.5,
       1,
-      1
+      {
+        colour: '#ff000033',
+        type: 'tile'
+      }
     );
-
-    // bottom right
-    RenderUtils.renderSprite(
-      context,
-      this.assets.images.tileset_ui,
-      10,
-      10,
-      x + 0.5,
-      y + 0.5,
-      1,
-      1
-    );
-    */
   }
 
-  private calculateRelativeMousePosition(): Position {
+  calculateRelativeMousePosition(): Position {
     // only allow selection of 1 tile radius surrounding player
     // x
     let xCalculation = Input.mouse.position.x - this.positionX;

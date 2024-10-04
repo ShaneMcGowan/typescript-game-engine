@@ -5,7 +5,7 @@ import { EggObject } from "@game/objects/egg.object";
 export function useEgg(scene: SCENE_GAME): void {
   let position = Input.mouse.position;
 
-  let newObject: EggObject = new EggObject(
+  let object: EggObject = new EggObject(
     scene,
     {
       positionX: position.x,
@@ -13,6 +13,6 @@ export function useEgg(scene: SCENE_GAME): void {
     }
   );
 
-  scene.addObject(newObject);
+  scene.addObject(object);
   scene.removeFromInventory(scene.selectedInventoryIndex);
 }

@@ -40,7 +40,7 @@ import { Client } from '@core/client';
 import { type AssetsConfig } from '@core/model/assets';
 import { type SceneConstructorSignature } from '@core/model/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { MY_SCENE } from './scenes/game/game.scene';
+import { MY_SCENE } from '@game/scenes/my-scene/scene';
 
 (function() {
   /**
@@ -121,7 +121,7 @@ export class MY_MAP extends SceneMap {
 The background shall consist of layers. We will allow for an infinite number of layers, rendering each in order. Background rendering shall be the first thing done, rendering each layer in order.
 
 ```TypeScript
-// TODO(smg):  
+// TODO:  
 ```
 
 ### Objects
@@ -177,10 +177,10 @@ MouseUtils.isClickWithin(mousePosition: MousePosition, x: number, y: number, wid
 ```
 
 ### MovementUtils
-TODO(smg): description of MovementUtils
+TODO: description of MovementUtils
 
 ### RenderUtils
-TODO(smg): description of RenderUtils
+TODO: description of RenderUtils
 
 ## Known Issues
 Nothing specific at the minute to highlight

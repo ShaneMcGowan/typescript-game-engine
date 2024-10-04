@@ -16,7 +16,10 @@ interface Mouse {
     exactX: number; // not rounded to tile
     exactY: number; // not rounded to tile
   };
-  lastestEvent: MouseEvent;
+  wheel: {
+    event: WheelEvent;
+  }
+  latestEvent: MouseEvent;
 }
 
 export abstract class Input {
@@ -34,7 +37,12 @@ export abstract class Input {
       exactX: 0,
       exactY: 0,
     },
-    lastestEvent: new MouseEvent('') // TODO: ensure this is valid
+    wheel: {
+      event: new WheelEvent('') // TODO: ensure this is a valid default event
+      // deltaY negative is a scroll up
+      // deltaY positive is a scroll down
+    },
+    latestEvent: new MouseEvent(''), // TODO: ensure this is a valid default event
   }
 
   static isKeyPressed(keys: string | string[]) {
