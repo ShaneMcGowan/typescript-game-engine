@@ -2,25 +2,27 @@ import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { type SceneObject } from '@core/model/scene-object';
 import { ChickenObject } from '@game/objects/chicken.object';
-import { FenceObject, FenceType } from '@game/objects/fence.object';
 import { HoleObject } from '@game/objects/hole.object';
 import { PlayerObject } from '@game/objects/player.object';
-import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_0 } from './backgrounds/0.background';
-import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_1 } from './backgrounds/1.background';
-import { SAMPLE_SCENE_1_MAP_0_BACKGROUND_2 } from './backgrounds/2.background';
+import { SCENE_GAME_MAP_WORLD_BACKGROUND_WATER } from './backgrounds/water.background';
+import { SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS } from './backgrounds/mountains.background';
+import { SCENE_GAME_MAP_WORLD_BACKGROUND_BRIDGES } from './backgrounds/bridges.background';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
-import { ChestObject } from '@game/objects/chest.object';
-import { InventoryUiObject } from '@game/objects/inventory-ui.object';
+import { CollisionObject } from '@game/objects/collision.object';
+import { SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND } from './backgrounds/ground.background';
+import { CameraObject } from '@game/objects/camera.object';
+import { HotbarObject } from '@game/objects/hotbar.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
   width = 100;
 
   backgroundLayers: BackgroundLayer[] = [
-    SAMPLE_SCENE_1_MAP_0_BACKGROUND_0,
-    SAMPLE_SCENE_1_MAP_0_BACKGROUND_1,
-    SAMPLE_SCENE_1_MAP_0_BACKGROUND_2
+    SCENE_GAME_MAP_WORLD_BACKGROUND_WATER,
+    SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND,
+    SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS,
+    SCENE_GAME_MAP_WORLD_BACKGROUND_BRIDGES,
   ];
 
   objects: SceneObject[] = [];
@@ -28,11 +30,10 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-
     // TODO: remove this when no longer debugging as it will be set in start menu map
     MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
 
-    this.objects.push(new InventoryUiObject(scene, { positionX: 0, positionY: 0, }));
+    this.objects.push(new HotbarObject(scene, { positionX: 7, positionY: 15, }));
 
     // TODO: allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index.
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
@@ -43,76 +44,40 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     let player = new PlayerObject(scene, { positionX: 4, positionY: 4, });
     this.objects.push(player);
 
-    this.objects.push(new ChestObject(scene, { positionX: 3, positionY: 3, }));
-    this.objects.push(new ChestObject(scene, { positionX: 4, positionY: 3, }));
-    this.objects.push(new ChestObject(scene, { positionX: 5, positionY: 3, }));
-
     // chickens
     this.objects.push(new ChickenObject(scene, { positionX: 17, positionY: 11, follows: player, canLayEggs: true, canMove: true, }));
 
     // fences
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 2, type: FenceType.TopLeft, }));
-    this.objects.push(new FenceObject(scene, { positionX: 3, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 4, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 5, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 6, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 7, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 8, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 9, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 10, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 11, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 12, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 13, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 14, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 15, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 16, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 17, positionY: 2, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 2, type: FenceType.TopRight, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 2, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 3, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 5, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 6, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 7, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 8, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 9, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 10, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 12, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 13, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 14, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 16, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 17, positionY: 2, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 18, positionY: 2, }));
 
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 3, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 3, type: FenceType.MiddleVertical, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 3, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 4, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 5, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 6, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 7, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 8, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 9, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 10, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 11, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 12, }));
 
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 4, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 4, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 5, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 5, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 6, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 6, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 7, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 7, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 8, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 8, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 9, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 9, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 10, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 10, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 11, type: FenceType.MiddleVertical, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 11, type: FenceType.MiddleVertical, }));
-
-    this.objects.push(new FenceObject(scene, { positionX: 2, positionY: 12, type: FenceType.BottomLeft, }));
-    this.objects.push(new FenceObject(scene, { positionX: 3, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 4, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 5, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 6, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 7, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 8, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 9, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 10, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 11, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 12, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 13, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 14, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 15, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 16, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 17, positionY: 12, type: FenceType.MiddleHorizontal, }));
-    this.objects.push(new FenceObject(scene, { positionX: 18, positionY: 12, type: FenceType.BottomRight, }));
+    this.objects.push(new CameraObject(scene, { object: player, }));
 
     /*
 
@@ -122,7 +87,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // }
 
     // camera
-    this.objects.push(new CameraObject(scene, { object: player, }));
 
     // fade in
     this.objects.push(new TransitionObject(scene, {

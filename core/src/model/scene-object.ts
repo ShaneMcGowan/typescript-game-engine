@@ -153,8 +153,8 @@ export abstract class SceneObject {
   debuggerRenderBoundary(context: CanvasRenderingContext2D): void {
     RenderUtils.strokeRectangle(
       context,
-      Math.floor(this.boundingBox.left * CanvasConstants.TILE_SIZE),
-      Math.floor(this.boundingBox.top * CanvasConstants.TILE_SIZE),
+      Math.floor(this.boundingBox.left * CanvasConstants.TILE_SIZE) + CanvasConstants.TILE_SIZE / 2,
+      Math.floor(this.boundingBox.top * CanvasConstants.TILE_SIZE) + CanvasConstants.TILE_SIZE / 2,
       Math.floor(this.width * CanvasConstants.TILE_SIZE),
       Math.floor(this.height * CanvasConstants.TILE_SIZE),
       'red'

@@ -61,7 +61,7 @@ const WATER_TILE_COLUMN = [
   WATER_TILE
 ];
 
-export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_0: BackgroundLayer = {
+export const SCENE_GAME_MAP_WORLD_BACKGROUND_WATER: BackgroundLayer = {
   index: 0,
   tiles: [
     [...WATER_TILE_COLUMN],

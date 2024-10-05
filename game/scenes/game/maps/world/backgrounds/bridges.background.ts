@@ -21,7 +21,7 @@ const BRIDGE_HORIZONTAL_END: BackgroundTile = {
   animationFrames: [{ spriteX: 4, spriteY: 0, }],
 };
 
-export const SAMPLE_SCENE_1_MAP_0_BACKGROUND_2: BackgroundLayer = {
+export const SCENE_GAME_MAP_WORLD_BACKGROUND_BRIDGES: BackgroundLayer = {
   index: 2,
   tiles: [
     [

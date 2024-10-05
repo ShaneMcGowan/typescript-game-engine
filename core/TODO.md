@@ -6,6 +6,7 @@ Editor is currently very limited
 [ ] Enable scene preview
 [ ] Enable object additions via the Editor
 [ ] Rename "engine" folder to Editor as that is what it is, engine is the underly code
+[ ] Background Editor - "Background Editor" to create multilayer backgrounds easily with a JSON file which imports directly into a game
 
 # Client
 [ ] Base resolution should be 1920x1080
