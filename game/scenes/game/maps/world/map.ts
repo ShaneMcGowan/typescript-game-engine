@@ -13,6 +13,7 @@ import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND } from './backgrounds/ground.background';
 import { CameraObject } from '@game/objects/camera.object';
 import { HotbarObject } from '@game/objects/hotbar.object';
+import { ShopKeeperObject } from '@game/objects/npcs/shop-keeper.npc';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -43,6 +44,11 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
     let player = new PlayerObject(scene, { positionX: 4, positionY: 4, });
     this.objects.push(player);
+
+    this.objects.push(new ShopKeeperObject(scene, {
+      positionX: 4,
+      positionY: 5,
+    }));
 
     // chickens
     this.objects.push(new ChickenObject(scene, { positionX: 17, positionY: 11, follows: player, canLayEggs: true, canMove: true, }));

@@ -1,10 +1,15 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
-import { TextboxObject } from '@game/objects/textbox.object';
+import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SCENE_GAME_MAP_UNDERGROUND_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
 
 type Stage = 'idle' | 'hi' | 'pause' | 'bye';
 
+const PORTRAIT: Portrait = {
+  tileset: 'tileset_chicken',
+  x: 0,
+  y: 0
+}
 export interface Config extends NpcObjectConfig {
 }
 
@@ -61,7 +66,7 @@ export class GregNpcObject extends NpcObject {
         this.scene,
         {
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_1,
-          portrait: this.name, // TODO: need to implement proper portrait system
+          portrait: PORTRAIT,
           name: this.name,
           onComplete: () => {
             this.startStagePause();
@@ -80,7 +85,7 @@ export class GregNpcObject extends NpcObject {
         {
           showOverlay: false,
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_2,
-          portrait: this.name,
+          portrait: PORTRAIT,
           name: this.name,
           onComplete: () => {
             this.startStageBye();
@@ -108,7 +113,7 @@ export class GregNpcObject extends NpcObject {
         {
           showOverlay: false,
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_3,
-          portrait: this.name,
+          portrait: PORTRAIT,
           name: this.name,
           completionDuration: this.stageByeDuration,
         }

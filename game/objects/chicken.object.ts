@@ -5,8 +5,14 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from '@game/objects/egg.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
-import { TextboxObject } from '@game/objects/textbox.object';
+import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { InventoryItemType } from '@game/models/inventory-item.model';
+
+const PORTRAIT: Portrait = {
+  tileset: 'tileset_chicken',
+  x: 0,
+  y: 0
+}
 
 const TILE_SET: string = 'tileset_chicken';
 const DEFAULT_RENDER_LAYER: number = 8;
@@ -229,7 +235,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       this.scene,
       {
         text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD,
-        portrait: 'Chicken',
+        portrait: PORTRAIT,
         name: 'Chicken',
         onComplete: () => {
           // enable inputs
@@ -259,7 +265,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       this.scene,
       {
         text: 'I LOooOooOoOooOoOVE TOMATOES!',
-        portrait: 'Chicken',
+        portrait: PORTRAIT,
         name: 'Chicken',
         onComplete: () => {
           // enable inputs
@@ -281,7 +287,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       this.scene,
       {
         text: 'I HAAAAAAAAAAAAAAAATE WHEAT!',
-        portrait: 'Chicken',
+        portrait: PORTRAIT,
         name: 'Chicken',
         onComplete: () => {
           // enable inputs

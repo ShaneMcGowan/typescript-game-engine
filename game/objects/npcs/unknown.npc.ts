@@ -1,8 +1,15 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
-import { TextboxObject } from '@game/objects/textbox.object';
+import { NpcObject, NpcState, type NpcObjectConfig } from '@game/objects/npc.object';
+import { Portrait, TextboxObject } from '@game/objects/textbox.object';
+import { SpriteAnimation } from '@core/model/sprite-animation';
 
 type Stage = 'idle' | 'intro' | 'outro';
+
+const PORTRAIT: Portrait = {
+  tileset: 'tileset_chicken',
+  x: 0,
+  y: 0
+}
 
 export interface Config extends NpcObjectConfig {
 }
@@ -53,7 +60,7 @@ export class UnknownNpcObject extends NpcObject {
         this.scene,
         {
           text: this.dialogue,
-          portrait: this.name, // TODO: new to implement proper portrait system
+          portrait: PORTRAIT, // TODO: new to implement proper portrait system
           name: this.name,
           onComplete: () => {
             this.startStageOutro();

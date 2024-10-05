@@ -4,8 +4,14 @@ import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
-import { TextboxObject } from '@game/objects/textbox.object';
+import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
+
+const PORTRAIT: Portrait = {
+  tileset: 'tileset_chicken',
+  x: 0,
+  y: 0
+}
 
 const DEFAULT_RENDER_LAYER: number = 8;
 const DEFAULT_CAN_MOVE: boolean = false;
@@ -23,7 +29,7 @@ const DEFAULT_MOVEMENT_SPEED: number = 2;
 const DEFAULT_MOVEMENT_DELAY: number | undefined = undefined;
 const DEFAULT_NAME: string = '???';
 
-type NpcState = 'idle' | 'moving';
+export type NpcState = 'idle' | 'moving';
 
 export interface NpcObjectConfig extends SceneObjectBaseConfig {
   follows?: SceneObject; // object to follow
@@ -200,7 +206,7 @@ export class NpcObject extends SceneObject implements Interactable {
       this.scene,
       {
         text: this.dialogue,
-        portrait: this.name, // TODO: new to implement proper portrait system
+        portrait: PORTRAIT, // TODO: new to implement proper portrait system
         name: this.name,
       }
     );

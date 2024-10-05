@@ -4,6 +4,12 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
 
+export interface Portrait {
+  tileset: string;
+  x: number;
+  y: number;
+}
+
 enum Controls {
   Confirm = ' ',
 }
@@ -18,7 +24,7 @@ const DEFAULT_SCROLL_SPEED: number = 48;
 interface Config extends SceneObjectBaseConfig {
   showOverlay?: boolean;
   text?: string;
-  portrait?: string;
+  portrait?: Portrait;
   name?: string;
   onComplete?: () => void;
   completionDuration?: number;
@@ -47,11 +53,11 @@ export class TextboxObject extends SceneObject {
   private readonly scrollSpeed: number;
 
   private readonly showOverlay: boolean;
-  private readonly portrait: string | undefined;
+  private readonly portrait: Portrait | undefined;
   private readonly name: string | undefined;
 
-  // portrait animation - copied from ChickenObject
-  // TODO: this is hard coded, update it
+  // portrait animation - copied from ChickenObjeect
+  // TODO: this is hard coded and no longer used, update it
   private readonly animations = {
     idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
   };
@@ -324,13 +330,13 @@ export class TextboxObject extends SceneObject {
   }
 
   private renderPortrait(context: CanvasRenderingContext2D): void {
-    let tileset = 'tileset_chicken';
-
     RenderUtils.renderSprite(
       context,
-      this.assets.images[tileset],
-      this.animations.idle[this.animationIndex].x,
-      this.animations.idle[this.animationIndex].y,
+      this.assets.images[this.portrait.tileset],
+      this.portrait.x,
+      this.portrait.y,
+      // this.animations.idle[this.animationIndex].x,
+      // this.animations.idle[this.animationIndex].y,
       3,
       9,
       undefined,
