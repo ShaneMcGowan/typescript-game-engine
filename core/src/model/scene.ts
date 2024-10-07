@@ -92,6 +92,7 @@ export abstract class Scene {
 
   // TODO: move client rendering code into here
   frame(delta: number): void {
+    this.awakeObjects();
     this.renderBackground(delta);
     this.updateObjects(delta);
     this.renderObjects(delta);
@@ -103,6 +104,23 @@ export abstract class Scene {
     }
 
     this.destroyObjects(delta);
+  }
+
+  private awakeObjects(): void {
+    if (this.client.debug.timing.frameUpdate) {
+      console.time('[frame] awake');
+    }
+
+    this.objects.forEach((object) => {
+      if (object.awake && !object.awakeRan) {
+        object.awake();
+        object.awakeRan = true;
+      }
+    });
+
+    if (this.client.debug.timing.frameUpdate) {
+      console.timeEnd('[frame] awake');
+    }
   }
 
   renderBackground(delta: number): void {

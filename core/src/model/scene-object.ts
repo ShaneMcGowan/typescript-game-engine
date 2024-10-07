@@ -51,10 +51,6 @@ export abstract class SceneObject {
   renderOpacity: number; // the opacity of the object when rendered (value between 0 and 1)
   renderScale: number; // the scale of the object when rendered
 
-  // TODO: I'm not convinced of this but I will go with it for now
-  keyListeners: Record<string, (event: KeyboardEvent) => void> = {}; // for keyboard events
-  eventListeners: Record<string, (event: CustomEvent) => void> = {}; // for scene events
-
   protected mainContext: CanvasRenderingContext2D;
   protected assets: Assets;
 
@@ -94,6 +90,8 @@ export abstract class SceneObject {
 
   children: Array<SceneObject> = new Array(); // TODO: begin parent / child objects
   parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
+
+  awakeRan: boolean = false; // flag to check if awake has been run for this object yet
 
   constructor(
     protected scene: Scene,
@@ -142,9 +140,10 @@ export abstract class SceneObject {
     this.renderScale = config.renderScale ?? DEFAULT_RENDER_SCALE;
   }
 
-  update?(delta: number): void;
-  render?(context: CanvasRenderingContext2D): void;
-  destroy?(): void;
+  awake?(): void; // TODO: when is this called? IMPLEMENT THIS
+  update?(delta: number): void; // called every frame
+  render?(context: CanvasRenderingContext2D): void; // called every frame after update
+  destroy?(): void; // TODO: when is this called?
 
   /**
    * Used for debugging

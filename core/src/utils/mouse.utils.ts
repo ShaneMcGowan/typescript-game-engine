@@ -74,7 +74,7 @@ export abstract class MouseUtils {
     return document.fullscreenElement !== null;
   }
 
-  private static isMouseWithinBoundary(mousePosition: MousePosition, x: number, y: number, width: number, height: number): boolean {
+  static isMouseWithinBoundary(mousePosition: MousePosition, x: number, y: number, width: number, height: number): boolean {
     return (
       mousePosition.exactX >= x &&
       mousePosition.exactX <= x + width &&

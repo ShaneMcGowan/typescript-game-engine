@@ -170,12 +170,13 @@ export abstract class RenderUtils {
     text: string,
     positionX: number,
     positionY: number,
-    options: { size?: number; colour?: string; } = {}
+    options: { size?: number; colour?: string; font?: string; } = {}
   ): void {
     let size = options.size ? options.size : 16;
     let colour = options.colour ? options.colour : 'black';
+    let font = options.font ? options.font : 'Helvetica';
 
-    context.font = `${size}px Helvetica`;
+    context.font = `${size}px ${font}`;
     context.fillStyle = `${colour}`;
     context.fillText(
       text,
@@ -187,15 +188,16 @@ export abstract class RenderUtils {
   static textToArray(
     text: string,
     width: number,
-    options: { size?: number; colour?: string; } = {}
+    options: { size?: number; colour?: string; font?: string; } = {}
   ): string[] {
     // defaults
     let size = options.size ?? 16;
     let colour = options.colour ?? 'black';
+    let font = options.font ? options.font : 'Helvetica';
 
     // configure context
     let context = document.createElement('canvas').getContext('2d');
-    context.font = `${size}px Helvetica`;
+    context.font = `${size}px ${font}`;
     context.fillStyle = `${colour}`;
 
     // split words then create new line once exceeding width
