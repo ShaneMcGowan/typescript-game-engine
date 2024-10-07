@@ -10,45 +10,39 @@ const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
 const INVENTORY_INDEX_TO_POSITION_MAP = [
   // hot bar
-  { x: 7, y: 15, },
-  { x: 9, y: 15, },
   { x: 11, y: 15, },
   { x: 13, y: 15, },
   { x: 15, y: 15, },
   { x: 17, y: 15, },
   { x: 19, y: 15, },
-  { x: 21, y: 15, },
-  { x: 23, y: 15, },
+
   // inventory - row 1
-  { x: 7, y: 8, },
-  { x: 9, y: 8, },
+  { x: 11, y: 6, },
+  { x: 13, y: 6, },
+  { x: 15, y: 6, },
+  { x: 17, y: 6, },
+  { x: 19, y: 6, },
+
+  // inventory - row 2
   { x: 11, y: 8, },
   { x: 13, y: 8, },
   { x: 15, y: 8, },
   { x: 17, y: 8, },
   { x: 19, y: 8, },
-  { x: 21, y: 8, },
-  { x: 23, y: 8, },
-  // inventory - row 2
-  { x: 7, y: 10, },
-  { x: 9, y: 10, },
+
+  // inventory - row 3
   { x: 11, y: 10, },
   { x: 13, y: 10, },
   { x: 15, y: 10, },
   { x: 17, y: 10, },
   { x: 19, y: 10, },
-  { x: 21, y: 10, },
-  { x: 23, y: 10, },
-  // inventory - row 3
-  { x: 7, y: 12, },
-  { x: 9, y: 12, },
+
+  // inventory - row 4
   { x: 11, y: 12, },
   { x: 13, y: 12, },
   { x: 15, y: 12, },
   { x: 17, y: 12, },
   { x: 19, y: 12, },
-  { x: 21, y: 12, },
-  { x: 23, y: 12, }
 ];
 
 const CHEST_INDEX_TO_POSITION_MAP = [
@@ -86,7 +80,6 @@ const CHEST_INDEX_TO_POSITION_MAP = [
 
 enum Controls {
   Close = 'tab',
-  CloseAlt = 'escape',
 }
 
 interface Config extends SceneObjectBaseConfig {
@@ -122,7 +115,7 @@ export class InventoryObject extends SceneObject {
   render(context: CanvasRenderingContext2D): void {
     // hotbar
     if (this.showHotbar) {
-      let x = 7;
+      let x = 11;
       let y = 15;
       this.renderInventoryBackground(context, x, y);
       this.renderInventoryContainers(context, x, y);
@@ -146,10 +139,10 @@ export class InventoryObject extends SceneObject {
 
     // inventory
     if (this.showInventory) {
-      this.renderInventoryHeader(context, 7, 7);
-      for (let row = 0; row < 3; row++) {
-        let x = 7;
-        let y = 8 + (row * 2);
+      this.renderInventoryHeader(context, 11, 5);
+      for (let row = 0; row < 4; row++) {
+        let x = 11;
+        let y = 6 + (row * 2);
         this.renderInventoryBackground(context, x, y);
         this.renderInventoryContainers(context, x, y);
         this.renderInventoryItems(context, x, y, this.inventory.slice(this.hotbarSize * (row + 1), this.hotbarSize * (row + 2)));
@@ -167,7 +160,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private renderHotbarSelector(context: CanvasRenderingContext2D): void {
-    const x = 7 + (this.hotbarSelectedIndex * 2);
+    const x = 11 + (this.hotbarSelectedIndex * 2);
     const y = 15;
     RenderUtils.renderSprite(
       context,
@@ -223,7 +216,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private renderInventoryBackground(context: CanvasRenderingContext2D, positionX: number, positionY: number): void {
-    let width = CanvasConstants.TILE_SIZE * 18;
+    let width = CanvasConstants.TILE_SIZE * 2 * this.scene.globals.hotbar_size;
     let height = CanvasConstants.TILE_SIZE * 2;
     RenderUtils.fillRectangle(
       context,
@@ -232,12 +225,11 @@ export class InventoryObject extends SceneObject {
       width,
       height,
       { colour: 'saddlebrown', }
-
     );
   }
 
   private renderInventoryContainers(context: CanvasRenderingContext2D, positionX: number, positionY: number): void {
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < this.scene.globals.hotbar_size; i++) {
       RenderUtils.renderSprite(
         context,
         this.assets.images.tileset_ui,
@@ -397,12 +389,11 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateClose(): void {
-    if (!Input.isKeyPressed(Controls.Close) && !Input.isKeyPressed(Controls.CloseAlt)) {
+    if (!Input.isKeyPressed(Controls.Close)) {
       return;
     }
 
     Input.clearKeyPressed(Controls.Close);
-    Input.clearKeyPressed(Controls.CloseAlt)
 
     this.scene.removeObjectById(this.id);
   }

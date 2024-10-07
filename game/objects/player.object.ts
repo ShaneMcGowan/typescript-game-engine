@@ -29,7 +29,8 @@ enum Direction {
 
 enum Controls {
   Inventory = 'tab',
-  InventoryAlt = 'escape'
+  Interact = 'e',
+  InteractAlt = ' '
 }
 
 const TILE_SET = 'tileset_player';
@@ -254,11 +255,11 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if (!Input.isKeyPressed('e')) {
+    if (!Input.isKeyPressed([Controls.Interact, Controls.InteractAlt])) {
       return;
     }
 
-    Input.clearKeyPressed('e');
+    Input.clearKeyPressed([Controls.Interact, Controls.InteractAlt]);
 
     let x = Math.ceil(this.positionX + this.scene.globals.camera.startX);
     let y = Math.ceil(this.positionY + this.scene.globals.camera.startY)
@@ -349,25 +350,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if (Input.isKeyPressed('6') === true) {
-      this.scene.globals['hotbar_selected_index'] = 5;
-      return;
-    }
-
-    if (Input.isKeyPressed('7') === true) {
-      this.scene.globals['hotbar_selected_index'] = 6;
-      return;
-    }
-
-    if (Input.isKeyPressed('8') === true) {
-      this.scene.globals['hotbar_selected_index'] = 7;
-      return;
-    }
-
-    if (Input.isKeyPressed('9') === true) {
-      this.scene.globals['hotbar_selected_index'] = 8;
-      return;
-    }
+    // TODO: this is hard coded, if hotbar size changes this won't work properly
   }
 
   private updateHotbarViaWheel(): void {
@@ -387,14 +370,14 @@ export class PlayerObject extends SceneObject {
     // wrap hotbar if at end
     const index = this.scene.globals['hotbar_selected_index'];
     if (Input.mouse.wheel.event.deltaY > 0) {
-      if (index === 8) {
+      if (index === this.scene.globals.hotbar_size - 1) {
         this.scene.globals['hotbar_selected_index'] = 0;
       } else {
         this.scene.globals['hotbar_selected_index']++;
       }
     } else if (Input.mouse.wheel.event.deltaY < 0) {
       if (index === 0) {
-        this.scene.globals['hotbar_selected_index'] = 8;
+        this.scene.globals['hotbar_selected_index'] = this.scene.globals.hotbar_size - 1;
       } else {
         this.scene.globals['hotbar_selected_index']--;
       }
@@ -411,7 +394,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let keys = [Controls.Inventory, Controls.InventoryAlt];
+    let keys = [Controls.Inventory];
 
     if (Input.isKeyPressed(keys) === false) {
       return;

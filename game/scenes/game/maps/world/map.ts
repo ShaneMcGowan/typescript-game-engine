@@ -14,6 +14,8 @@ import { SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND } from './backgrounds/ground.bac
 import { CameraObject } from '@game/objects/camera.object';
 import { HotbarObject } from '@game/objects/hotbar.object';
 import { ShopKeeperObject } from '@game/objects/npcs/shop-keeper.npc';
+import { FenceObject, FenceType } from '@game/objects/fence.object';
+import { ShopObject } from '@game/objects/shop.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -34,11 +36,13 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // TODO: remove this when no longer debugging as it will be set in start menu map
     MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
 
-    this.objects.push(new HotbarObject(scene, { positionX: 7, positionY: 15, }));
+    this.objects.push(new HotbarObject(scene, { positionX: 11, positionY: 15, }));
+
+    // this.objects.push(new ShopObject(scene, { positionX: 0, positionY: 0 }));
 
     // TODO: allow for the concept of entities vs objects, or some sort of rendering layer to ensure objects at the proper z-index.
     // e.g. HoleObject needs to be added to the scene before the player currently in order to have it render below the player
-    this.objects.push(new HoleObject(scene, { positionX: 17, positionY: 3, }));
+    // this.objects.push(new HoleObject(scene, { positionX: 17, positionY: 3, }));
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
@@ -83,7 +87,33 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new CollisionObject(scene, { positionX: 3, positionY: 15, }));
     this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 15, }));
 
+    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 16, type: FenceType.FencePost }));
+    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 17, type: FenceType.FencePost }));
+    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 18, type: FenceType.FencePost }));
 
+    this.objects.push(new CollisionObject(scene, { positionX: 0, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 2, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 3, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 5, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 6, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 7, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 8, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 9, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 10, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 12, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 13, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 14, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 16, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 17, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 18, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 19, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 20, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 21, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 22, positionY: 18, }));
 
     this.objects.push(new CameraObject(scene, { object: player, }));
 

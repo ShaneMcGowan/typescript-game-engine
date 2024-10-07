@@ -1,122 +1,111 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type ChestObject } from '@game/objects/chest.object';
 import { type InventoryItemObject } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { Input } from '@core/utils/input.utils';
+import { Input, MouseKey } from '@core/utils/input.utils';
+import { ShopItemBuyObject } from './shop/shop-item-buy.object';
+import { InventoryItemType } from '@game/models/inventory-item.model';
+import { ShopItemSellObject } from './shop/shop-item-sell.object';
+import { MouseUtils } from '@core/utils/mouse.utils';
 
 const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
-const INVENTORY_INDEX_TO_POSITION_MAP = [
-  // hot bar
-  { x: 7, y: 15, },
-  { x: 9, y: 15, },
-  { x: 11, y: 15, },
-  { x: 13, y: 15, },
-  { x: 15, y: 15, },
-  { x: 17, y: 15, },
-  { x: 19, y: 15, },
-  { x: 21, y: 15, },
-  { x: 23, y: 15, },
-  // inventory - row 1
-  { x: 7, y: 8, },
-  { x: 9, y: 8, },
-  { x: 11, y: 8, },
-  { x: 13, y: 8, },
-  { x: 15, y: 8, },
-  { x: 17, y: 8, },
-  { x: 19, y: 8, },
-  { x: 21, y: 8, },
-  { x: 23, y: 8, },
-  // inventory - row 2
-  { x: 7, y: 10, },
-  { x: 9, y: 10, },
-  { x: 11, y: 10, },
-  { x: 13, y: 10, },
-  { x: 15, y: 10, },
-  { x: 17, y: 10, },
-  { x: 19, y: 10, },
-  { x: 21, y: 10, },
-  { x: 23, y: 10, },
-  // inventory - row 3
-  { x: 7, y: 12, },
-  { x: 9, y: 12, },
-  { x: 11, y: 12, },
-  { x: 13, y: 12, },
-  { x: 15, y: 12, },
-  { x: 17, y: 12, },
-  { x: 19, y: 12, },
-  { x: 21, y: 12, },
-  { x: 23, y: 12, }
-];
-
-const CHEST_INDEX_TO_POSITION_MAP = [
-  // chest - row 1
-  { x: 7, y: 1, },
-  { x: 9, y: 1, },
-  { x: 11, y: 1, },
-  { x: 13, y: 1, },
-  { x: 15, y: 1, },
-  { x: 17, y: 1, },
-  { x: 19, y: 1, },
-  { x: 21, y: 1, },
-  { x: 23, y: 1, },
-  // chest - row 2
-  { x: 7, y: 3, },
-  { x: 9, y: 3, },
-  { x: 11, y: 3, },
-  { x: 13, y: 3, },
-  { x: 15, y: 3, },
-  { x: 17, y: 3, },
-  { x: 19, y: 3, },
-  { x: 21, y: 3, },
-  { x: 23, y: 3, },
-  // chest - row 3
-  { x: 7, y: 5, },
-  { x: 9, y: 5, },
-  { x: 11, y: 5, },
-  { x: 13, y: 5, },
-  { x: 15, y: 5, },
-  { x: 17, y: 5, },
-  { x: 19, y: 5, },
-  { x: 21, y: 5, },
-  { x: 23, y: 5, }
-];
 
 enum Controls {
   Close = 'tab',
-  CloseAlt = 'escape',
 }
 
 interface Config extends SceneObjectBaseConfig {
-  chest?: ChestObject
+  onLeave?: () => void;
 }
+
+const ITEMS_FOR_SALE: Array<{ type: InventoryItemType, price: number }> = [
+  {
+    type: InventoryItemType.TomatoSeeds,
+    price: 5
+  },
+  {
+    type: InventoryItemType.WheatSeeds,
+    price: 5
+  },
+];
+
 
 export class ShopObject extends SceneObject {
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   collisionLayer = DEFAULT_COLLISION_LAYER;
 
+  onLeave?: () => void;
+
   constructor(
     protected scene: SCENE_GAME,
     config: Config
   ) {
     super(scene, config);
+
+    this.onLeave = config.onLeave;
+  }
+
+  items: Array<ShopItemBuyObject | ShopItemSellObject> = []; // TODO: once SceneObject.children is implemented, replace this with it
+
+  awake(): void {
+    for (let i = 0; i < ITEMS_FOR_SALE.length; i++) {
+      const item = ITEMS_FOR_SALE[i];
+      this.items.push(new ShopItemBuyObject(this.scene, {
+        positionX: this.positionX + 2 + (i * 2.5),
+        positionY: this.positionY + 2,
+        price: item.price,
+        type: item.type,
+      }));
+    }
+
+    // hotbar offset so player can't sell hotbar items
+    const hotbarOffset = this.scene.globals.hotbar_size;
+    const columnsPerRow = 5;
+    const totalRows = 4;
+    for (let col = 0; col < columnsPerRow; col++) {
+      for (let row = 0; row < totalRows; row++) {
+
+        const index = col + (row * columnsPerRow) + hotbarOffset;
+
+        const item = this.inventory[index];
+        if (item === undefined) {
+          continue;
+        }
+
+        this.items.push(new ShopItemSellObject(this.scene, {
+          positionX: this.positionX + 18 + (col * 2.5),
+          positionY: this.positionY + 2 + (row * 2.5),
+          item: item,
+          index: index,
+        }));
+      }
+    }
+
+    this.items.forEach(item => this.scene.addObject(item));
   }
 
   update(delta: number): void {
-
+    this.updateButtonClose();
+    this.updateClickClose();
   }
 
   render(context: CanvasRenderingContext2D): void {
     this.renderBackground(context);
     this.renderShopBackground(context);
+    this.renderShopTitle(context);
     this.renderInventoryBackground(context);
+    this.renderInventoryTitle(context);
+    this.renderTotalGold(context);
+    this.renderLeaveButton(context);
   }
 
   destroy(): void {
-    this.scene.globals.disable_player_inputs = false;
+
+    // TODO: destroy all shop items, ideally this would be done via SceneObject.children and having them all be destroyed
+    this.items.forEach(item => this.scene.removeObjectById(item.id));
   }
 
   get inventory(): InventoryItemObject[] {
@@ -125,6 +114,44 @@ export class ShopObject extends SceneObject {
 
   get inventorySize(): number {
     return this.scene.globals['inventory_size'];
+  }
+
+  private updateButtonClose(): void {
+    if (!Input.isKeyPressed(Controls.Close)) {
+      return;
+    }
+
+    Input.clearKeyPressed(Controls.Close);
+
+    this.close();
+  }
+
+  private updateClickClose(): void {
+    if (!Input.isMousePressed(MouseKey.Left)) {
+      return;
+    }
+
+    if (!MouseUtils.isMouseWithinBoundary(
+      Input.mouse.position,
+      21.5,
+      12,
+      4.5,
+      1.5
+    )) {
+      return;
+    }
+
+    Input.clearMousePressed(MouseKey.Left);
+
+    this.close();
+  }
+
+  private close(): void {
+    this.scene.removeObjectById(this.id);
+
+    if (this.onLeave) {
+      this.onLeave();
+    }
   }
 
   private renderBackground(context: CanvasRenderingContext2D) {
@@ -147,12 +174,34 @@ export class ShopObject extends SceneObject {
       1,
       1,
       14,
-      8,
+      10,
       {
         colour: 'brown',
         type: 'tile'
       }
     )
+  }
+
+  private renderShopTitle(context: CanvasRenderingContext2D) {
+    RenderUtils.fillRectangle(
+      context,
+      4,
+      0.25,
+      8,
+      1.5,
+      {
+        colour: 'goldenrod',
+        type: 'tile'
+      }
+    );
+
+    RenderUtils.renderText(
+      context,
+      `Shop (buy)`,
+      6,
+      1.25,
+      { size: 12, colour: 'black', font: 'MS Gothic' }
+    );
   }
 
   private renderInventoryBackground(context: CanvasRenderingContext2D) {
@@ -161,12 +210,78 @@ export class ShopObject extends SceneObject {
       17,
       1,
       14,
-      8,
+      11.75,
       {
         colour: 'brown',
         type: 'tile'
       }
     )
+  }
+
+  private renderInventoryTitle(context: CanvasRenderingContext2D) {
+    RenderUtils.fillRectangle(
+      context,
+      20,
+      0.25,
+      8,
+      1.5,
+      {
+        colour: 'goldenrod',
+        type: 'tile'
+      }
+    );
+
+    RenderUtils.renderText(
+      context,
+      `Inventory (sell)`,
+      21,
+      1.25,
+      { size: 12, colour: 'black', font: 'MS Gothic' }
+    );
+  }
+
+  private renderTotalGold(context: CanvasRenderingContext2D) {
+    RenderUtils.fillRectangle(
+      context,
+      26.5,
+      12,
+      4.5,
+      1.5,
+      {
+        colour: 'goldenrod',
+        type: 'tile'
+      }
+    );
+
+    RenderUtils.renderText(
+      context,
+      `Gold: ${this.scene.globals.gold}`,
+      27,
+      13,
+      { size: 12, colour: 'black', font: 'MS Gothic' }
+    );
+  }
+
+  private renderLeaveButton(context: CanvasRenderingContext2D) {
+    RenderUtils.fillRectangle(
+      context,
+      21.5,
+      12,
+      4.5,
+      1.5,
+      {
+        colour: 'grey',
+        type: 'tile'
+      }
+    );
+
+    RenderUtils.renderText(
+      context,
+      `Leave`,
+      22.5,
+      13,
+      { size: 12, colour: 'black', font: 'MS Gothic' }
+    );
   }
 
 }

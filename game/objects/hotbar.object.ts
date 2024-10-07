@@ -49,7 +49,7 @@ export class HotbarObject extends SceneObject {
   }
 
   private renderBackground(context: CanvasRenderingContext2D): void {
-    let width = CanvasConstants.TILE_SIZE * 18;
+    let width = CanvasConstants.TILE_SIZE * 2 * this.hotbarSize;
     let height = CanvasConstants.TILE_SIZE * 2;
 
     RenderUtils.fillRectangle(
@@ -63,7 +63,7 @@ export class HotbarObject extends SceneObject {
   }
 
   private renderContainers(context: CanvasRenderingContext2D): void {
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 5; i++) {
       RenderUtils.renderSprite(
         context,
         this.assets.images.tileset_ui,
@@ -78,7 +78,7 @@ export class HotbarObject extends SceneObject {
   }
 
   private renderItems(context: CanvasRenderingContext2D, inventory: InventoryItemObject[]): void {
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 5; i++) {
       let item = inventory[i];
       if (item === undefined) {
         continue;

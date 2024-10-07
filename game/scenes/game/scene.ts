@@ -15,6 +15,7 @@ interface Globals extends SceneGlobalsBaseConfig {
   hotbar_size: number;
   hotbar_selected_index: number;
   disable_player_inputs: boolean;
+  gold: number;
 }
 
 export class SCENE_GAME extends Scene {
@@ -25,16 +26,33 @@ export class SCENE_GAME extends Scene {
       new InventoryItemObject(this, { type: InventoryItemType.WateringCan, }),
       new InventoryItemObject(this, { type: InventoryItemType.TomatoSeeds, currentStackSize: 10, }),
       new InventoryItemObject(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 10, }),
+      undefined,
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Tomato, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Wheat, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chest, currentStackSize: 1, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Tomato, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Wheat, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chest, currentStackSize: 1, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Tomato, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Wheat, currentStackSize: 10, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chest, currentStackSize: 1, }),
       new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
       new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
       new InventoryItemObject(this, { type: InventoryItemType.Tomato, currentStackSize: 10, }),
       new InventoryItemObject(this, { type: InventoryItemType.Wheat, currentStackSize: 10, }),
       new InventoryItemObject(this, { type: InventoryItemType.Chest, currentStackSize: 1, }),
     ],
-    inventory_size: 36,
-    hotbar_size: 9,
+    inventory_size: 25,
+    hotbar_size: 5,
     hotbar_selected_index: 0,
     disable_player_inputs: false,
+    gold: 999,
   };
 
   eventTypes = EVENT_TYPES;

@@ -11,7 +11,8 @@ export interface Portrait {
 }
 
 enum Controls {
-  Confirm = ' ',
+  Confirm = 'e',
+  ConfirmAlt = ' ',
 }
 
 const TILE_SET: string = 'tileset_dialogue_box';
@@ -153,7 +154,7 @@ export class TextboxObject extends SceneObject {
 
   private updateConfirm(): void {
 
-    if (!Input.isKeyPressed(Controls.Confirm) && !Input.isMousePressed(MouseKey.Left)) {
+    if (!Input.isKeyPressed([Controls.Confirm, Controls.ConfirmAlt]) && !Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
@@ -161,7 +162,7 @@ export class TextboxObject extends SceneObject {
     if (this.scrollText) {
       if (this.currentText.length > this.characterIndex) {
         this.characterIndex = this.currentText.length;
-        Input.clearKeyPressed(Controls.Confirm)
+        Input.clearKeyPressed([Controls.Confirm, Controls.ConfirmAlt])
         Input.clearMousePressed(MouseKey.Left);
         return;
       }
@@ -179,7 +180,7 @@ export class TextboxObject extends SceneObject {
       this.scene.removeObjectById(this.id);
     }
 
-    Input.clearKeyPressed(Controls.Confirm);
+    Input.clearKeyPressed([Controls.Confirm, Controls.ConfirmAlt]);
     Input.clearMousePressed(MouseKey.Left);
   }
 
