@@ -103,8 +103,18 @@ For an example, view the sample game.
 ## SceneObject
 Objects are a generic, reusable, programable class. Objects can spawn other objects and are controller by the scene. Objects have various lifecycle functions
 
-- Awake
-- Update
+#### Awake
+Runs once when the object is created
+
+#### Update
+Ran every frame after `Awake` is ran for all objects.
+
+#### Render
+Ran every frame after `Update` is ran for all objects.
+
+#### Destory
+Ran every frame after `Render` if the object has `flaggedForDestroy` set to true.
+After this is ran, then the object is removed from the Scene.
 
 # All APIs are incomplete and subject to massive change
 I am developing this iteratively as a hobby project so expect massive change if you opt to use this engine. I recommend staying at a fixed version or forking the repo yourself for best stability.
