@@ -61,47 +61,15 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new CollisionObject(scene, { positionX: 6.5, positionY: 8.5, width: 6 }));
     this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 8.5, width: 9 }));
 
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 9, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 10, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 11, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 12, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 13, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 14, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 12, height: 6 }));
 
-
-    this.objects.push(new CollisionObject(scene, { positionX: 0, positionY: 15, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 15, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 2, positionY: 15, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 3, positionY: 15, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 15, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 2.25, positionY: 15.5, width: 4.5 }));
 
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 16, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 17, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 18, type: FenceType.FencePost }));
 
-    this.objects.push(new CollisionObject(scene, { positionX: 0, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 1, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 2, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 3, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 5, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 6, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 7, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 8, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 9, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 10, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 12, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 13, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 14, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 16, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 17, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 18, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 19, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 20, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 21, positionY: 18, }));
-    this.objects.push(new CollisionObject(scene, { positionX: 22, positionY: 18, }));
+    this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 19.5, width: 22 }));
 
     this.objects.push(new CameraObject(scene, { object: player, }));
 
