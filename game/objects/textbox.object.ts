@@ -80,10 +80,10 @@ export class TextboxObject extends SceneObject {
     super(scene, config);
 
     if (config.positionX === undefined) {
-      this.positionX = 0;
+      this.transform.position.x = 0;
     }
     if (config.positionY === undefined) {
-      this.positionY = CanvasConstants.CANVAS_TILE_HEIGHT - this.height; // bottom of canvas
+      this.transform.position.y = CanvasConstants.CANVAS_TILE_HEIGHT - this.height; // bottom of canvas
     }
 
     this.showOverlay = config.showOverlay ?? DEFAULT_OVERLAY;

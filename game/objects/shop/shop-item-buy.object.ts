@@ -75,8 +75,8 @@ export class ShopItemBuyObject extends SceneObject {
   private renderContainer(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       this.width,
       this.height,
       {
@@ -89,8 +89,8 @@ export class ShopItemBuyObject extends SceneObject {
   private renderItem(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       this.width,
       this.height,
       {
@@ -104,8 +104,8 @@ export class ShopItemBuyObject extends SceneObject {
       this.assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       undefined,
       undefined,
     );
@@ -115,8 +115,8 @@ export class ShopItemBuyObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `$${this.price}`,
-      this.positionX + 1,
-      this.positionY + 2,
+      this.transform.position.x + 1,
+      this.transform.position.y + 2,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }

@@ -15,7 +15,6 @@ interface Config extends SceneObjectBaseConfig {
 
 export class EggObject extends SceneObject implements Interactable {
   isRenderable = true;
-  hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   width = 1;
   height = 1;
@@ -37,6 +36,7 @@ export class EggObject extends SceneObject implements Interactable {
     config: Config
   ) {
     super(scene, config);
+    this.collision.enabled = true;
   }
 
   update(delta: number): void {
@@ -50,8 +50,13 @@ export class EggObject extends SceneObject implements Interactable {
       this.assets.images[TILE_SET],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
-      this.positionX,
-      this.positionY
+      this.transform.position.x,
+      this.transform.position.y,
+      1,
+      1,
+      {
+        centered: true,
+      }
     );
   }
 
@@ -71,7 +76,7 @@ export class EggObject extends SceneObject implements Interactable {
     }
 
     let player = this.scene.getObjectsByType(PlayerObject)[0] as PlayerObject;
-    let chicken = new ChickenObject(this.scene, { positionX: this.positionX, positionY: this.positionY, follows: player, });
+    let chicken = new ChickenObject(this.scene, { positionX: this.transform.position.x, positionY: this.transform.position.y, follows: player, });
 
     this.scene.removeObjectById(this.id);
     this.scene.addObject(chicken);

@@ -16,6 +16,9 @@ export class HotbarObject extends SceneObject {
   renderLayer = DEFAULT_RENDER_LAYER;
   collisionLayer = DEFAULT_COLLISION_LAYER;
 
+  height: number = 2;
+  width: number = 10;
+
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -33,8 +36,8 @@ export class HotbarObject extends SceneObject {
   }
 
   private renderHotbarSelector(context: CanvasRenderingContext2D): void {
-    const x = this.positionX + (this.hotbarSelectedIndex * 2);
-    const y = this.positionY;
+    const x = this.boundingBox.left + 1 + (this.hotbarSelectedIndex * 2);
+    const y = this.boundingBox.top + 1;
 
     RenderUtils.renderSprite(
       context,
@@ -44,21 +47,21 @@ export class HotbarObject extends SceneObject {
       x,
       y,
       2,
-      2
+      2,
+      {
+        centered: true,
+      }
     );
   }
 
   private renderBackground(context: CanvasRenderingContext2D): void {
-    let width = CanvasConstants.TILE_SIZE * 2 * this.hotbarSize;
-    let height = CanvasConstants.TILE_SIZE * 2;
-
     RenderUtils.fillRectangle(
       context,
-      this.positionX,
-      this.positionY,
-      width,
-      height,
-      { colour: 'saddlebrown', }
+      this.boundingBox.left,
+      this.boundingBox.top,
+      this.width,
+      this.height,
+      { colour: 'saddlebrown', type: 'tile' }
     );
   }
 
@@ -69,10 +72,13 @@ export class HotbarObject extends SceneObject {
         this.assets.images.tileset_ui,
         0.5,
         3.5,
-        this.positionX + (i * 2),
-        this.positionY,
+        this.boundingBox.left + 1 + (i * 2),
+        this.boundingBox.top + 1,
         2,
-        2
+        2,
+        {
+          centered: true,
+        }
       );
     }
   }
@@ -91,8 +97,8 @@ export class HotbarObject extends SceneObject {
         item.maxStackSize,
         item.sprite.spriteX,
         item.sprite.spriteY,
-        (this.positionX + 0.5) + (i * 2),
-        (this.positionY + 0.5)
+        (this.boundingBox.left + 1) + (i * 2),
+        (this.boundingBox.top + 1)
       );
     }
   }
@@ -104,7 +110,12 @@ export class HotbarObject extends SceneObject {
       spriteX,
       spriteY,
       positionX,
-      positionY
+      positionY,
+      1,
+      1,
+      {
+        centered: true,
+      }
     );
 
     if (maxStackSize > 1) {

@@ -52,7 +52,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class DirtObject extends SceneObject implements Interactable {
-  hasCollision = false;
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
@@ -75,8 +74,8 @@ export class DirtObject extends SceneObject implements Interactable {
 
   private onDirtPlaced(event: CustomEvent): void {
     // update sprite based on surrounding dirt
-    let left = this.scene.getAllObjectsAtPosition(this.positionX - 1, this.positionY);
-    let right = this.scene.getAllObjectsAtPosition(this.positionX + 1, this.positionY);
+    let left = this.scene.getAllObjectsAtPosition(this.transform.position.x - 1, this.transform.position.y);
+    let right = this.scene.getAllObjectsAtPosition(this.transform.position.x + 1, this.transform.position.y);
 
     let hasLeft = left.filter(object => object instanceof DirtObject).length > 0;
     let hasRight = right.filter(object => object instanceof DirtObject).length > 0;
@@ -174,10 +173,13 @@ export class DirtObject extends SceneObject implements Interactable {
       this.scene.assets.images[tileset],
       this.spriteX,
       this.spriteY,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       1,
-      1
+      1,
+      {
+        centered: true,
+      }
     );
   }
 
@@ -201,10 +203,13 @@ export class DirtObject extends SceneObject implements Interactable {
       this.scene.assets.images[sprite.tileset],
       sprite.spriteX,
       sprite.spriteY,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       1,
-      1
+      1,
+      {
+        centered: true,
+      }
     );
   }
 
@@ -234,7 +239,7 @@ export class DirtObject extends SceneObject implements Interactable {
       return;
     }
 
-    this.hasCollision = true;
+    this.collision.enabled = true;
     this.currentlyGrowing = item.type;
     this.cropStage = CropStage.Growing;
 

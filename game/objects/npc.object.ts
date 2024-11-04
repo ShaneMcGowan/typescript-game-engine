@@ -44,8 +44,10 @@ export interface NpcObjectConfig extends SceneObjectBaseConfig {
 export class NpcObject extends SceneObject implements Interactable {
   state: NpcState = 'idle';
 
+  targetX: number = -1;
+  targetY: number = -1;
+
   isRenderable = true;
-  hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   width = 1;
   height = 1;
@@ -75,7 +77,9 @@ export class NpcObject extends SceneObject implements Interactable {
     config: NpcObjectConfig
   ) {
     super(scene, config);
-
+    this.targetX = this.positionX;
+    this.targetY = this.positionY;
+    this.collision.enabled = true;
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
     this.following = config.follows;
     this.dialogue = config.dialogue;
@@ -99,13 +103,14 @@ export class NpcObject extends SceneObject implements Interactable {
       this.assets.images[animation.tileset],
       frame.spriteX,
       frame.spriteY,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       undefined,
       undefined,
       {
         opacity: this.renderOpacity,
         scale: this.renderScale,
+        centered: true,
       }
     );
   }
@@ -144,24 +149,22 @@ export class NpcObject extends SceneObject implements Interactable {
       // TODO: this logic is dumb and can get stuck if no clear path
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
-          this.positionX,
-          this.positionY,
+          this.transform.position.x,
+          this.transform.position.y,
           this.targetX,
           this.targetY
         ),
-        new Movement(
-          this.following.positionX,
-          this.following.positionY,
-          this.following.targetX,
-          this.following.targetY
-        )
+        {
+          positionX: this.following.positionX,
+          positionY: this.following.positionY,
+        }
       );
     } else {
       // move in a random direction
       movement = MovementUtils.moveInRandomDirection(
         new Movement(
-          this.positionX,
-          this.positionY,
+          this.transform.position.x,
+          this.transform.position.y,
           this.targetX,
           this.targetY
         )
@@ -173,9 +176,10 @@ export class NpcObject extends SceneObject implements Interactable {
       return;
     }
 
-    if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY, this)) {
-      return;
-    }
+    // TODO: disable for now, see player.object.ts for info
+    // if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY, this)) {
+    //   return;
+    // }
 
     if (this.scene.isOutOfBounds(movement.targetX, movement.targetY)) {
       return;
@@ -186,12 +190,12 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
-      let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
-      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(this.movementSpeed, delta));
+    if (this.targetX !== this.transform.position.x || this.targetY !== this.transform.position.y) {
+      let movement = new Movement(this.transform.position.x, this.transform.position.y, this.targetX, this.targetY);
+      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.positionX = updatedMovement.positionX;
-      this.positionY = updatedMovement.positionY;
+      this.transform.position.x = updatedMovement.positionX;
+      this.transform.position.y = updatedMovement.positionY;
     }
   }
 

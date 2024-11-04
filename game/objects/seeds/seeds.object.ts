@@ -10,7 +10,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class SeedsObject extends SceneObject {
-  hasCollision = false;
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
@@ -27,8 +26,8 @@ export class SeedsObject extends SceneObject {
       this.scene.assets.images[TILESET],
       this.spriteX,
       this.spriteY,
-      this.positionX,
-      this.positionY
+      this.transform.position.x,
+      this.transform.position.y
     );
   }
 }

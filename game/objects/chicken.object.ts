@@ -31,10 +31,11 @@ interface Config extends SceneObjectBaseConfig {
 
 export class ChickenObject extends SceneObject implements Interactable {
   isRenderable = true;
-  hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   width = 1;
   height = 1;
+  targetX: number = -1;
+  targetY: number = -1;
 
   // animation
   animations = {
@@ -69,6 +70,10 @@ export class ChickenObject extends SceneObject implements Interactable {
   ) {
     console.log('[ChickenObject] created');
     super(scene, config);
+    this.collision.enabled = true;
+    this.targetX = this.positionX;
+    this.targetY = this.positionY;
+
     this.canLayEggs = config.canLayEggs ?? DEFAULT_CAN_LAY_EGGS;
     this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
@@ -89,8 +94,13 @@ export class ChickenObject extends SceneObject implements Interactable {
       this.assets.images[TILE_SET],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
+      undefined,
+      undefined,
+      {
+        centered: true,
+      }
     );
   }
 
@@ -132,24 +142,22 @@ export class ChickenObject extends SceneObject implements Interactable {
       // TODO: add some randomness to movement, can be done later
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
-          this.positionX,
-          this.positionY,
+          this.transform.position.x,
+          this.transform.position.y,
           this.targetX,
           this.targetY
         ),
-        new Movement(
-          this.following.positionX,
-          this.following.positionY,
-          this.following.targetX,
-          this.following.targetY
-        )
+        {
+          positionX: this.following.positionX,
+          positionY: this.following.positionY,
+        }
       );
     } else {
       // move in a random direction
       movement = MovementUtils.moveInRandomDirection(
         new Movement(
-          this.positionX,
-          this.positionY,
+          this.transform.position.x,
+          this.transform.position.y,
           this.targetX,
           this.targetY
         )
@@ -161,9 +169,10 @@ export class ChickenObject extends SceneObject implements Interactable {
       return;
     }
 
-    if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY, this)) {
-      return;
-    }
+    // TODO: disable for now, see player.object.ts for info
+    // if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY, this)) {
+    //   return;
+    // }
 
     if (this.scene.isOutOfBounds(movement.targetX, movement.targetY)) {
       return;
@@ -174,12 +183,12 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
-      let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
-      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(this.movementSpeed, delta));
+    if (this.targetX !== this.transform.position.x || this.targetY !== this.transform.position.y) {
+      let movement = new Movement(this.transform.position.x, this.transform.position.y, this.targetX, this.targetY);
+      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.positionX = updatedMovement.positionX;
-      this.positionY = updatedMovement.positionY;
+      this.transform.position.x = updatedMovement.positionX;
+      this.transform.position.y = updatedMovement.positionY;
 
       // set flag
       this.isMovingThisFrame = true;
@@ -211,13 +220,13 @@ export class ChickenObject extends SceneObject implements Interactable {
 
     // check direction travelling to ensure that egg is always beneath chicken as they walk away
     let roundDirection;
-    if (this.positionX > this.targetX || this.positionY > this.targetY) {
+    if (this.transform.position.x > this.targetX || this.transform.position.y > this.targetY) {
       roundDirection = Math.ceil;
     } else {
       roundDirection = Math.floor;
     }
     this.scene.addObject(
-      new EggObject(this.scene, { positionX: roundDirection(this.positionX), positionY: roundDirection(this.positionY), })
+      new EggObject(this.scene, { positionX: roundDirection(this.transform.position.x), positionY: roundDirection(this.transform.position.y), })
     );
 
     this.eggTimer = 0;

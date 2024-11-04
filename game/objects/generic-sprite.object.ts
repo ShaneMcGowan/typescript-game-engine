@@ -15,6 +15,8 @@ interface Config extends SceneObjectBaseConfig {
   isRenderable?: boolean;
   destroyAtTarget?: boolean; // destroy the object when it reaches its target position
   movementSpeed?: number;
+  targetX?: number;
+  targetY?: number;
 }
 
 /**
@@ -24,6 +26,9 @@ export class GenericSpriteObject extends SceneObject {
   isRenderable = true;
   width = 1;
   height = 1;
+
+  targetX: number = -1;
+  targetY: number = -1;
 
   tileset: string;
   spriteX: number;
@@ -57,19 +62,19 @@ export class GenericSpriteObject extends SceneObject {
   }
 
   private updatePosition(delta: number): void {
-    if (this.positionX === this.targetX && this.positionY === this.targetY) {
+    if (this.transform.position.x === this.targetX && this.transform.position.y === this.targetY) {
       if (this.destroyAtTarget) {
         this.scene.removeObjectById(this.id);
       }
       return;
     }
 
-    let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
+    let movement = new Movement(this.transform.position.x, this.transform.position.y, this.targetX, this.targetY);
     let velocity = this.movementSpeed * delta;
     let updatedMovement = MovementUtils.moveTowardsPosition(movement, velocity);
 
-    this.positionX = updatedMovement.positionX;
-    this.positionY = updatedMovement.positionY;
+    this.transform.position.x = updatedMovement.positionX;
+    this.transform.position.y = updatedMovement.positionY;
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -78,10 +83,13 @@ export class GenericSpriteObject extends SceneObject {
       this.assets.images[this.tileset],
       this.spriteX,
       this.spriteY,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       this.spriteWidth,
-      this.spriteWidth
+      this.spriteWidth,
+      {
+        centered: true,
+      }
     );
   }
 }

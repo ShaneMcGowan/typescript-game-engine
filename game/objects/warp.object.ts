@@ -26,7 +26,7 @@ export class WarpObject extends SceneObject {
       return;
     }
 
-    if (this.positionX !== this.player.positionX || this.positionY !== this.player.positionY) {
+    if (this.transform.position.x !== this.player.positionX || this.transform.position.y !== this.player.positionY) {
       return;
     }
 
@@ -50,8 +50,8 @@ export class WarpObject extends SceneObject {
       new TransitionObject(this.scene, {
         animationType: 'circle',
         animationDirection: 'out',
-        animationCenterX: this.positionX,
-        animationCenterY: this.positionY,
+        animationCenterX: this.transform.position.x,
+        animationCenterY: this.transform.position.y,
         animationLength: duration,
       })
     );

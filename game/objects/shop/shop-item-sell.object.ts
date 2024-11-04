@@ -80,8 +80,8 @@ export class ShopItemSellObject extends SceneObject {
   private renderContainer(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.positionX,
-      this.positionY,
+      this.boundingBox.left,
+      this.boundingBox.top,
       this.width,
       this.height,
       {
@@ -92,27 +92,18 @@ export class ShopItemSellObject extends SceneObject {
   }
 
   private renderItem(context: CanvasRenderingContext2D): void {
-    RenderUtils.fillRectangle(
-      context,
-      this.positionX,
-      this.positionY,
-      this.width,
-      this.height,
-      {
-        colour: 'white',
-        type: 'tile'
-      }
-    );
-
     RenderUtils.renderSprite(
       context,
       this.assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       undefined,
       undefined,
+      {
+        centered: true
+      }
     );
   }
 
@@ -120,8 +111,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `$${this.price}`,
-      this.positionX + 1,
-      this.positionY + 1.75,
+      this.boundingBox.right - 0.75,
+      this.boundingBox.bottom,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
@@ -130,8 +121,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `${this.item.currentStackSize}`,
-      this.positionX + 1,
-      this.positionY + 1,
+      this.boundingBox.right - 0.75,
+      this.boundingBox.top + 0.75,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }

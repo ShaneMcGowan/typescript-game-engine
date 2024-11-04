@@ -19,18 +19,11 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
   const params = new URLSearchParams(window.location.search);
   const sceneParam = params.get('scene');
 
-  const defaultScene = SCENE_MAIN_MENU;
-
   const SCENE_MAP: Record<string, SceneConstructorSignature> = {
     'main-menu': SCENE_MAIN_MENU,
     'game': SCENE_GAME
   }
   const scene: SceneConstructorSignature = SCENE_MAP[sceneParam] ?? SCENE_MAIN_MENU;
-
-  const scenes: SceneConstructorSignature[] = [
-    SCENE_MAIN_MENU,
-    SCENE_GAME
-  ];
 
   const assets: AssetsConfig = {
     images: {
@@ -61,6 +54,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
     document.getElementById('render-area'),
     scene,
     assets,
+    EditorUtils.engineMapList,
     EditorUtils.engineObjectList,
     EditorUtils.engineObjectDetails,
     EditorUtils.engineControls

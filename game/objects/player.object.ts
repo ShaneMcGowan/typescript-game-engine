@@ -42,10 +42,12 @@ interface Config extends SceneObjectBaseConfig {
 
 export class PlayerObject extends SceneObject {
   isRenderable = true;
-  hasCollision = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   width = 1;
   height = 1;
+
+  targetX: number = -1;
+  targetY: number = -1;
 
   // constants
   movementSpeed = 4; // 4 tiles per second
@@ -86,6 +88,9 @@ export class PlayerObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.collision.enabled = true;
+    this.targetX = this.positionX;
+    this.targetY = this.positionY;
 
     this.enableMovement();
     this.enableInteractKeys();
@@ -142,16 +147,16 @@ export class PlayerObject extends SceneObject {
 
   private determineNextMovement(delta: number): void {
     // check if we are moving
-    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
+    if (this.targetX !== this.transform.position.x || this.targetY !== this.transform.position.y) {
       return;
     }
 
     // check if button pressed
-    if (!Input.isKeyPressed(Direction.RIGHT) && !Input.isKeyPressed(Direction.LEFT) && !Input.isKeyPressed(Direction.UP) && !Input.isKeyPressed(Direction.DOWN)) {
+    if (!Input.isKeyPressed([Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN])) {
       return;
     }
 
-    let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
+    let movement = new Movement(this.transform.position.x, this.transform.position.y, this.targetX, this.targetY);
     let direction;
 
     // determine next position and set direction
@@ -185,12 +190,28 @@ export class PlayerObject extends SceneObject {
     }
 
     // check if can move to position
-    if (this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY)) {
+    // TODO: why isn't this working?
+
+    console.log(movement);
+
+    const targetBoundingBox = SceneObject.calculateBoundingBox(
+      movement.target.x,
+      movement.target.y,
+      this.width,
+      this.height
+    );
+
+    console.log(targetBoundingBox);
+    if (this.scene.hasCollisionAtBoundingBox(targetBoundingBox, this)) {
       return;
     }
-    if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY)) {
-      return;
-    }
+
+    // TODO: for now I will disable this but we could end up in the same position as another object if they are both moving
+    // TODO: need to do this in a way that doesn't add targetX and targetY to the engine models
+    // if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY)) {
+    //   return;
+    // }
+
     if (this.scene.isOutOfBounds(movement.targetX, movement.targetY)) {
       return;
     }
@@ -200,7 +221,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateAnimations(delta: number): void {
-    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
+    if (this.targetX !== this.transform.position.x || this.targetY !== this.transform.position.y) {
       this.isIdle = false;
     } else {
       this.isIdle = true;
@@ -229,12 +250,12 @@ export class PlayerObject extends SceneObject {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.positionX || this.targetY !== this.positionY) {
-      let movement = new Movement(this.positionX, this.positionY, this.targetX, this.targetY);
-      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameVelocity(this.movementSpeed, delta));
+    if (this.targetX !== this.transform.position.x || this.targetY !== this.transform.position.y) {
+      let movement = new Movement(this.transform.position.x, this.transform.position.y, this.targetX, this.targetY);
+      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.positionX = updatedMovement.positionX;
-      this.positionY = updatedMovement.positionY;
+      this.transform.position.x = updatedMovement.positionX;
+      this.transform.position.y = updatedMovement.positionY;
     }
   }
 
@@ -261,8 +282,8 @@ export class PlayerObject extends SceneObject {
 
     Input.clearKeyPressed([Controls.Interact, Controls.InteractAlt]);
 
-    let x = Math.ceil(this.positionX + this.scene.globals.camera.startX);
-    let y = Math.ceil(this.positionY + this.scene.globals.camera.startY)
+    let x = this.transform.position.x + this.scene.globals.camera.startX;
+    let y = this.transform.position.y + this.scene.globals.camera.startY;
 
     switch (this.direction) {
       case Direction.UP:
@@ -279,8 +300,7 @@ export class PlayerObject extends SceneObject {
         break;
     }
 
-    let object = this.scene.getObjectAtPosition(x, y, null);
-
+    let object = this.scene.getObjectAtPosition(x, y, this);
     if (object === undefined) {
       return;
     }
@@ -302,8 +322,8 @@ export class PlayerObject extends SceneObject {
    * @returns
    */
   getPositionFacing(): { x: number; y: number; } {
-    let x: number = Math.floor(this.positionX);
-    let y: number = Math.floor(this.positionY);
+    let x: number = Math.floor(this.transform.position.x);
+    let y: number = Math.floor(this.transform.position.y);
 
     if (this.direction === Direction.RIGHT) {
       return { x: x + 1, y, };
@@ -445,7 +465,7 @@ export class PlayerObject extends SceneObject {
     let object = this.scene.getObjectAtPosition(
       Input.mouse.position.x,
       Input.mouse.position.y,
-      null
+      this,
     );
 
     if (object === undefined) {
@@ -516,8 +536,13 @@ export class PlayerObject extends SceneObject {
       this.assets.images[TILE_SET],
       animations[this.direction][this.animationIndex].x, // sprite x
       animations[this.direction][this.animationIndex].y, // sprite y
-      this.positionX,
-      this.positionY
+      this.transform.position.x,
+      this.transform.position.y,
+      undefined,
+      undefined,
+      {
+        centered: true,
+      }
     );
   }
 
@@ -526,8 +551,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let x = Input.mouse.position.x; // TODO: work with camera + this.scene.globals.camera.startX;
-    let y = Input.mouse.position.y; // TODO: work with camera + this.scene.globals.camera.startY;
+    let x = Input.mouse.position.x + this.scene.globals.camera.startX;
+    let y = Input.mouse.position.y + this.scene.globals.camera.startY;
 
     let item = this.scene.selectedInventoryItem;
     // do not render cursor
@@ -536,12 +561,12 @@ export class PlayerObject extends SceneObject {
     }
 
     // don't render cursor ontop of self
-    if (x === Math.floor(this.positionX) && y === Math.floor(this.positionY)) {
+    if (x === Math.floor(this.transform.position.x) && y === Math.floor(this.transform.position.y)) {
       return;
     }
 
     // don't render cursor if greater than 1 tile away from user
-    if (item.radius === InventoryItemRadius.Player && (Math.abs(x - Math.floor(this.positionX)) > 1 || Math.abs(y - Math.floor(this.positionY)) > 1)) {
+    if (item.radius === InventoryItemRadius.Player && (Math.abs(x - Math.floor(this.transform.position.x)) > 1 || Math.abs(y - Math.floor(this.transform.position.y)) > 1)) {
       return;
     }
 
@@ -561,7 +586,7 @@ export class PlayerObject extends SceneObject {
   calculateRelativeMousePosition(): Position {
     // only allow selection of 1 tile radius surrounding player
     // x
-    let xCalculation = Input.mouse.position.x - this.positionX;
+    let xCalculation = Input.mouse.position.x - this.transform.position.x;
     let xOffset: number;
     if (xCalculation === 0) {
       xOffset = 0
@@ -571,7 +596,7 @@ export class PlayerObject extends SceneObject {
       xOffset = -1
     }
     // y
-    let yCalculation = Input.mouse.position.y - this.positionY;
+    let yCalculation = Input.mouse.position.y - this.transform.position.y;
     let yOffset: number;
     if (yCalculation === 0) {
       yOffset = 0
@@ -582,8 +607,8 @@ export class PlayerObject extends SceneObject {
     }
 
     return {
-      x: this.positionX + xOffset,
-      y: this.positionY + yOffset
+      x: this.transform.position.x + xOffset,
+      y: this.transform.position.y + yOffset
     }
   }
 }

@@ -22,7 +22,6 @@ interface Config extends SceneObjectBaseConfig {
 
 export class FenceObject extends SceneObject implements Interactable {
   isRenderable = true;
-  hasCollision = true;
   width = 1;
   height = 1;
 
@@ -35,6 +34,8 @@ export class FenceObject extends SceneObject implements Interactable {
   ) {
     super(scene, config);
 
+    this.collision.enabled = true;
+
     if (config.type) {
       this.type = config.type;
     }
@@ -46,18 +47,23 @@ export class FenceObject extends SceneObject implements Interactable {
       this.assets.images[TILE_SET],
       this.open ? FenceType.Open.x : this.type.x,
       this.open ? FenceType.Open.y : this.type.y,
-      this.positionX,
-      this.positionY
+      this.transform.position.x,
+      this.transform.position.y,
+      1,
+      1,
+      {
+        centered: true,
+      }
     );
   }
 
   interact(): void {
     if (this.open) {
       this.open = false;
-      this.hasCollision = true;
+      this.collision.enabled = true;
     } else {
       this.open = true;
-      this.hasCollision = false;
+      this.collision.enabled = false;
     }
   }
 }

@@ -13,7 +13,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ChestObject extends SceneObject implements Interactable {
-  hasCollision = true;
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   width = 1;
@@ -24,6 +23,7 @@ export class ChestObject extends SceneObject implements Interactable {
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
+    this.collision.enabled = true;
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -58,10 +58,13 @@ export class ChestObject extends SceneObject implements Interactable {
         this.scene.assets.images[TILE_SET],
         13,
         0.5,
-        this.positionX,
-        this.positionY - 0.5,
+        this.transform.position.x,
+        this.transform.position.y - 0.5,
         1,
-        2
+        2,
+        {
+          centered: true,
+        }
       );
     } else {
       RenderUtils.renderSprite(
@@ -69,10 +72,13 @@ export class ChestObject extends SceneObject implements Interactable {
         this.scene.assets.images[TILE_SET],
         1,
         0.5,
-        this.positionX,
-        this.positionY - 0.5,
+        this.transform.position.x,
+        this.transform.position.y - 0.5,
         1,
-        2
+        2,
+        {
+          centered: true,
+        }
       );
     }
   }

@@ -6,12 +6,12 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class CollisionObject extends SceneObject {
-  hasCollision = true;
-
   constructor(
     protected scene: Scene,
     config: Config
   ) {
     super(scene, config);
+
+    this.collision.enabled = true;
   }
 }
