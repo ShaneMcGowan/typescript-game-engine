@@ -9,6 +9,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
   <link rel="stylesheet" href="./assets/index.css">
 </head>
+<script>
+  function changeTab(id) {
+    document.getElementById('map-objects').classList.add('hidden');
+    document.getElementById('tab-objects').classList.add('hidden');
+    document.getElementById(id).classList.remove('hidden');
+  }
+</script>
 
 <body>
   <div class="flex flex-column w-100 h-100">
@@ -24,22 +31,38 @@
       <button id="btnTimingFrameUpdate" class="m-r-1 p-1">timing - frame update</button>
       <button id="btnCanvasLayers" class="m-r-1 p-1">canvas layers</button>
       <button id="btnFullscreen" class="m-r-1 p-1">fullscreen</button>
-      <button id="btnRenderBoundary" class="m-r-1 p-1">render boundary</button>
+      <div>
+        <input type="checkbox" id="btnRenderBoundary" name="btnRenderBoundary" value="Render Boundary">
+        <label for="btnRenderBoundary">Render Boundary</label><br>
+      </div>
       <button id="btnRenderBackground" class="m-r-1 p-1">render background</button>
     </div>
 
     <div class="flex h-100">
       <!-- Engine container -->
-      <div class="engine-container">
+      <div class="editor-container">
         <div class="w-100 border-right border-bottom p-1">
-          <button>Objects</button>
+          <button onclick="changeTab('map-objects')">Maps</button>
+          <button onclick="changeTab('tab-objects')">Objects</button>
+        </div>
+
+        <!-- Maps Tab -->
+        <div id="map-objects" class="flex h-100">
+          <div class="map-list-container" id="map-list">
+          </div>
         </div>
 
         <!-- Objects Tab -->
-        <div id="tab-objects" class="object-tab-container">
+        <div id="tab-objects" class="object-tab-container hidden">
           <div class="object-list-container" id="object-list">
           </div>
           <div class="object-details-container" id="object-details">
+            <div class="object-details-header" id="object-details-header">
+
+            </div>
+            <div class="object-details-content" id="object-details-content">
+
+            </div>
           </div>
         </div>
       </div>
@@ -52,10 +75,11 @@
     </div>
   </div>
 
-
-
 </body>
 <script>
+
+
+
   (function () {
     function resize() {
       let container = document.getElementById('render-area');

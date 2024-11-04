@@ -2,12 +2,29 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { type Scene } from './scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Assets } from './assets';
+import { Vector } from './vector';
+
+export interface SceneObjectBoundingBox {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+interface Transform {
+  position: Vector;
+  scale: number;
+  rotation: number;
+}
+
+interface Collision {
+  enabled: boolean;
+  layer: number;
+}
 
 export interface SceneObjectBaseConfig {
   positionX?: number;
   positionY?: number;
-  targetX?: number;
-  targetY?: number;
   width?: number;
   height?: number;
 
@@ -16,7 +33,7 @@ export interface SceneObjectBaseConfig {
   renderOpacity?: number;
   renderScale?: number;
 
-  hasCollision?: boolean;
+  collisionEnabled?: boolean;
   collisionLayer?: number;
 }
 
@@ -31,19 +48,36 @@ const DEFAULT_COLLISION_LAYER: number = 0;
 export abstract class SceneObject {
   id: string = crypto.randomUUID();
 
-  // position
-  positionX: number = -1;
-  positionY: number = -1;
-  targetX: number = -1;
-  targetY: number = -1;
+  readonly transform: Transform = {
+    position: new Vector(0, 0),
+    scale: 1,
+    rotation: 1
+  }
 
+  readonly collision: Collision = {
+    enabled: false,
+    layer: DEFAULT_COLLISION_LAYER
+  }
+
+  get positionX(): number {
+    return this.transform.position.x;
+  }
+
+  get positionY(): number {
+    return this.transform.position.y;
+  }
+
+  get boundingBox(): SceneObjectBoundingBox {
+    return SceneObject.calculateBoundingBox(
+      this.transform.position.x,
+      this.transform.position.y,
+      this.width,
+      this.height
+    )
+  }
   // dimensions
   width: number = 1;
   height: number = 1;
-
-  // collision
-  hasCollision: boolean;
-  collisionLayer: number;
 
   // rendering
   isRenderable: boolean;
@@ -52,41 +86,12 @@ export abstract class SceneObject {
   renderScale: number; // the scale of the object when rendered
 
   protected mainContext: CanvasRenderingContext2D;
-  protected assets: Assets;
+  protected assets: Assets; // TODO: this shouldn't be on the object, leave it on the scene
 
   // flags
   flaggedForRender: boolean = true; // TODO: implement the usage of this flag to improve engine performance
   flaggedForUpdate: boolean = true; // TODO: implement the usage of this flag to improve engine performance
   flaggedForDestroy: boolean = false; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
-
-  // TODO: Currently we are using positionX and positionY as the top left corner of the object
-  // boundingX and boundingY are the bottom right corner of the object
-  // I want to change this so that positionX and positionY are the center of the object (or whatever the user wants it to be)
-  // I at least want it to be configurable.
-  // boundingBox should then be used for all collisions and be based off of positionX and positionY and width and height
-  // e.g. positionX = 5 and position Y = 10, width and height = 2 would mean the bounding box is
-  // top: 9, (10 - (2 / 2) = 9)
-  // right: 6, (5 + (2 / 2) = 6)
-  // bottom: 11, (10 + (2 / 2) = 11
-  // left: 4 (5 - (2 / 2) = 4
-
-  // TODO: this being a getter probably is quite slow if it's used a lot but it's fine for now
-  get boundingBox(): {
-    top: number;
-    right: number;
-    bottom: number;
-    left: number;
-  } {
-    let xOffset = this.width / 2; // TODO: this should be calculated based off of how the user wants the position to be calculated
-    let yOffset = this.height / 2; // TODO: same as above
-
-    return {
-      top: this.positionY - yOffset,
-      right: this.positionX + xOffset,
-      bottom: this.positionY + yOffset,
-      left: this.positionX - xOffset,
-    };
-  }
 
   children: Array<SceneObject> = new Array(); // TODO: begin parent / child objects
   parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
@@ -102,25 +107,11 @@ export abstract class SceneObject {
 
     // position default
     if (config.positionX !== undefined) {
-      this.positionX = config.positionX;
-      if (config.targetX === undefined) {
-        this.targetX = this.positionX;
-      }
+      this.transform.position.x = config.positionX
     }
 
     if (config.positionY !== undefined) {
-      this.positionY = config.positionY;
-      if (config.targetY === undefined) {
-        this.targetY = this.positionY;
-      }
-    }
-
-    if (config.targetX !== undefined) {
-      this.targetX = config.targetX;
-    }
-
-    if (config.targetY !== undefined) {
-      this.targetY = config.targetY;
+      this.transform.position.y = config.positionY;
     }
 
     if (config.width !== undefined) {
@@ -135,8 +126,8 @@ export abstract class SceneObject {
     this.renderLayer = config.renderLayer ?? DEFAULT_RENDER_LAYER;
     this.renderOpacity = config.renderOpacity ?? DEFAULT_RENDER_OPACITY;
 
-    this.hasCollision = config.hasCollision ?? DEFAULT_HAS_COLLISION;
-    this.collisionLayer = config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
+    this.collision.enabled = config.collisionEnabled ?? DEFAULT_HAS_COLLISION;
+    this.collision.layer = config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
     this.renderScale = config.renderScale ?? DEFAULT_RENDER_SCALE;
   }
 
@@ -152,11 +143,14 @@ export abstract class SceneObject {
   debuggerRenderBoundary(context: CanvasRenderingContext2D): void {
     RenderUtils.strokeRectangle(
       context,
-      Math.floor(this.boundingBox.left * CanvasConstants.TILE_SIZE) + CanvasConstants.TILE_SIZE / 2,
-      Math.floor(this.boundingBox.top * CanvasConstants.TILE_SIZE) + CanvasConstants.TILE_SIZE / 2,
-      Math.floor(this.width * CanvasConstants.TILE_SIZE),
-      Math.floor(this.height * CanvasConstants.TILE_SIZE),
-      'red'
+      this.boundingBox.left,
+      this.boundingBox.top,
+      this.width,
+      this.height,
+      {
+        colour: 'red',
+        type: 'tile'
+      }
     );
   }
 
@@ -176,11 +170,11 @@ export abstract class SceneObject {
   }
 
   get cameraRelativePositionX(): number {
-    return this.positionX + this.scene.globals.camera.startX;
+    return this.transform.position.x + this.scene.globals.camera.startX;
   }
 
   get cameraRelativePositionY(): number {
-    return this.positionY + this.scene.globals.camera.startY;
+    return this.transform.position.y + this.scene.globals.camera.startY;
   }
 
   get pixelWidth(): number {
@@ -217,5 +211,17 @@ export abstract class SceneObject {
     }
 
     return false;
+  }
+
+  static calculateBoundingBox(x: number, y: number, width: number, height: number): SceneObjectBoundingBox {
+    let xOffset = width / 2;
+    let yOffset = height / 2;
+
+    return {
+      top: y - yOffset,
+      right: x + xOffset,
+      bottom: y + yOffset,
+      left: x - xOffset,
+    };
   }
 }

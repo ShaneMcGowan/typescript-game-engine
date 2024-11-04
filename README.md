@@ -1,21 +1,28 @@
 # typescript-game-engine
-A work in progress game engine, written in typescript.
+A work in progress 2D Game Engine, written in TypeScript using HTML5 Canvas for rendering.
 
-## Sample Games
-Check out the samples folder for sample games.
-- Sample Game 2d https://shanemcgowan.com/typescript-game-engine/game/dist/
+This engine is designed for pixel art games primarily but can be used for other styles of games.
 
-## Core Components
-A game will be comprised of the following core components
-- Scene
-- Maps
-- Background
-- Objects
+# Sample Game
+Check out the sample game here https://shanemcgowan.com/typescript-game-engine/game/dist/
 
-## Setting up this repo
-There are 2 ways to run this repo, `local` mode and `npm` mode.
-- `local` mode will pull directly from the `core` folder in the repo, meaning any changes you make in the `core` folder will update live with your game. This is for people who want full control over the engine.
-- `npm` mode is for people who don't care about altering the engine and will just use whatever version of the engine is in the `package.json` file. 
+# Setting up this repo
+There are 2 ways to run this repo, `local` mode and `npm` mode. Alternatively you can simply install the package yourself with `npm install typescript-game-engine`.
+
+# Local Mode
+`local` mode will pull directly from the `core` folder in the repo, meaning any changes you make in the `core` folder will update live with your game. This is for people who want full control over the engine.
+
+- Clone the repo
+
+- `cd game`
+- `npm install`
+- To use the editor `npm run dev-local`
+- To use just the game `npm run build-local-watch`
+
+Your browser should now open on localhost:8080
+
+# NPM Mode
+`npm` mode is for people who don't care about altering the engine and will just use whatever version of the engine is in the `package.json` file. This packages up the core library into an NPM package and uses it as if you were using an actual npm package.
 
 NOTE: if you wish to use `npm` mode, you need to update the `tsconfig.json` so that your editor will have correct syntax highlighting etc. Check the `tsconfig.json` file for comments on how to do this.
 
@@ -26,161 +33,78 @@ NOTE: if you wish to use `npm` mode, you need to update the `tsconfig.json` so t
 - `cd ..`
 - `cd game`
 - `npm install`
-- `npm run dev`
+- `npm run dev-npm`
 
-Your browser should now open on localhost:8080 with the game live in the editor.
+Your browser should now open on localhost:8080
 
 If you do not want the editor running, you can run `npm run build-watch` instead
 
-# ALL BELOW IS POTENTIALLY OUTDATED
+## Core Components
+A game will be comprised of the following core components
+- Scene
+- Maps
+- Background
+- Objects
 
 ### index.ts
+This is the entry point to your game, you will configure your canvas, assets etc here.
 ```TypeScript
 import { Client } from '@core/client';
+import { EditorUtils } from '@core/editor/editor.utils';
 import { type AssetsConfig } from '@core/model/assets';
 import { type SceneConstructorSignature } from '@core/model/scene';
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { MY_SCENE } from '@game/scenes/my-scene/scene';
+import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
 
-(function() {
-  /**
-   * Declare your canvas constants here
-   */
-  CanvasConstants.CANVAS_TILE_HEIGHT = 16;
-  CanvasConstants.CANVAS_TILE_WIDTH = 9;
-  CanvasConstants.TILE_SIZE = 16;
+(function () {
 
-  /**
-  * Add your scenes here, the first scene will be loaded on startup
-  */
-  const scenes: SceneConstructorSignature[] = [
-    MY_SCENE
-  ];
+  // Declare your canvas constants here
+  CanvasConstants.CANVAS_TILE_HEIGHT = 18;
+
 
   const assets: AssetsConfig = {
+    // all image assets need to be defined here, this list will be loaded into memory
     images: {
-      sprites: 'assets/sprites.png',
+      someSprite: 'assets/some-sprite.png',
     },
-    audio: {},
+    // audio is not currently supported but will be defined here at a later stage
+    audio: { },
   };
+  
+  // This adds helpers to your client, e.g. the short hand object query `o(id)` helper which becomes available on the `window` object
+  EditorUtils.initHelpers();
 
   window.engine = new Client(
     document.getElementById('render-area'),
-    scenes,
-    assets
+    SCENE_MAIN_MENU, // your opening scene
+    assets, // your asset config declared above
+    EditorUtils.engineMapList,
+    EditorUtils.engineObjectList,
+    EditorUtils.engineObjectDetails,
+    EditorUtils.engineControls
   );
 })();
-
 ```
 
-### Scene
-```TypeScript
-import { Scene } from '@core/model/scene';
-import { type Client } from '@core/client';
-import { MY_MAP } from 'my-map.map'; // some map
+## Scene
+Think of a scene like a container for your many maps. Set up constants for your scene and logic you want to share that doesn't suit being in a object.
 
-export class MY_SCENE extends Scene {
-  maps = [
-    MY_MAP
-  ];
+For an example, view the sample game.
 
-  constructor(protected client: Client) {
-    super(client);
-    this.changeMap(0);
-  }
-}
-```
+## Map
+A map is a collection of objects and backgrounds. Use these to organise your game into different sections. If you really want your game just be one massive map but that would be a bit tedious to maintain.
 
-### Maps
-```TypeScript
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type BackgroundLayer } from '@core/model/background-layer';
-import { SceneMap } from '@core/model/scene-map';
+For an example, view the sample game.
 
-export class MY_MAP extends SceneMap {
-  height = CanvasConstants.CANVAS_TILE_HEIGHT;
-  width = CanvasConstants.CANVAS_TILE_WIDTH;
-
-  backgroundLayers: BackgroundLayer[] = [
-    // ... background layers
-  ];
-
-  objects: SceneObject[] = [
-    // ... scene objects
-  ];
-
-  constructor(protected scene: MY_SCENE) {
-    super(scene);
-
-    // this.objects.push(new MyObject(this.scene, { }));
-  }
-}
-```
-
-### Background
+#### Background
 The background shall consist of layers. We will allow for an infinite number of layers, rendering each in order. Background rendering shall be the first thing done, rendering each layer in order.
 
-```TypeScript
-// TODO:  
-```
+For an example, view the sample game.
 
-### Objects
-Objects are a generic, programable class. Objects can spawn other objects and are controller by the scene.
+## SceneObject
+Objects are a generic, reusable, programable class. Objects can spawn other objects and are controller by the scene. Objects have various lifecycle functions
 
-```TypeScript
-import { type Scene } from '@core/model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+- Awake
+- Update
 
-interface Config extends SceneObjectBaseConfig {
-}
-
-export class MyObject extends SceneObject {
-  constructor(protected scene: Scene, config: Config) {
-    super(scene, config);
-  }
-}
-```
-
-## Utils
-Included utils to make certain objects easier
-
-### MathUtils
-```TypeScript
-// Generates a random int
-MathUtils.randomIntFromRange(min: number, max: number);
-```
-
-```TypeScript
-// Generates a random number
-MathUtils.randomNumberFromRange(min: number, max: number);
-```
-
-```TypeScript
-// Used for adding some randomness to animations
-MathUtils.randomStartingDelta(seconds: number);
-```
-
-### MouseUtils
-```TypeScript
-// Gets the current mouse position in the canvas
-MouseUtils.getMousePosition(canvas: HTMLCanvasElement, event: MouseEvent);
-```
-
-```TypeScript
-// Sets the mouse cursor
-MouseUtils.setCursor(canvas: HTMLCanvasElement, cursor: string);
-```
-
-```TypeScript
-// Returns true if current mouse position is within coordinates
-MouseUtils.isClickWithin(mousePosition: MousePosition, x: number, y: number, width: number, height: number);
-```
-
-### MovementUtils
-TODO: description of MovementUtils
-
-### RenderUtils
-TODO: description of RenderUtils
-
-## Known Issues
-Nothing specific at the minute to highlight
+# All APIs are incomplete and subject to massive change
+I am developing this iteratively as a hobby project so expect massive change if you opt to use this engine. I recommend staying at a fixed version or forking the repo yourself for best stability.

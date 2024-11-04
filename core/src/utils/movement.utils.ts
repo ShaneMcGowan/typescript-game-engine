@@ -1,12 +1,46 @@
+import { Vector } from '@core/model/vector';
 import { MathUtils } from './math.utils';
+import { SceneObject, SceneObjectBoundingBox } from '@core/model/scene-object';
 
 export class Movement {
+
+  get position(): {
+    x: number,
+    y: number,
+    // boundingBox: SceneObjectBoundingBox // TODO: should we add this in here?
+  } {
+    return {
+      x: this.targetX,
+      y: this.targetY,
+    }
+  }
+
+  get target(): {
+    x: number,
+    y: number,
+    // boundingBox: SceneObjectBoundingBox // TODO: should we add this in here?
+  } {
+    return {
+      x: this.targetX,
+      y: this.targetY,
+    }
+  }
+
   constructor(
     public positionX: number,
     public positionY: number,
     public targetX: number,
     public targetY: number
-  ) { }
+  ) {
+    // this.position = {
+    //   x: this.positionX,
+    //   y: this.positionY,
+    // }
+    // this.target = {
+    //   x: this.targetX,
+    //   y: this.targetY,
+    // }
+  }
 }
 export abstract class MovementUtils {
   /**
@@ -47,11 +81,12 @@ export abstract class MovementUtils {
 
   /**
    * Will translate current position 1 tile towards the target position, x-axis first, followed by y-axis
+   * TODO: just straight up replace this with a DFS algorithm
    * @param currentMovement
    * @param targetMovement
    * @returns
    */
-  static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: Movement): Movement {
+  static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: { positionX: number, positionY: number }): Movement {
     // TODO: add some randomness to this, potentially via MathUtils.randomIntFromRange(1, 4);
 
     if (targetMovement.positionX > currentMovement.positionX) {
@@ -103,7 +138,22 @@ export abstract class MovementUtils {
    * @param delta time since last frame
    * @returns
    */
-  static frameVelocity(speed: number, delta: number): number {
+  static frameSpeed(speed: number, delta: number): number {
     return speed * delta;
   }
+
+  static MoveTowards(current: Vector, target: Vector, speed: number): Vector {
+    // following object position relative to the current object 
+    let direction = target.subtract(current)
+    // movement at desidered speed
+    let movement = direction.normalized.multiply(speed)
+    // ensure movement doesn't go passed the target
+
+    if (movement.magnitude > direction.magnitude) {
+      movement = direction;
+    }
+
+    return movement;
+  }
+
 }

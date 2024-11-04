@@ -31,7 +31,7 @@ body {
   color: var(--colour-white);
 }
 
-.engine-container {
+.editor-container {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -44,8 +44,7 @@ body {
 
 .object-tab-container {
   display: flex;
-  height: 96%;
-  /* TODO: need to fix the container */
+  height: 100%;
 }
 
 .object-list-container {
@@ -58,14 +57,26 @@ body {
 
 .object-details-container {
   width: 66.666666%;
-  overflow: auto;
-  flex-shrink: 0;
+  /* overflow: auto;
+  flex-shrink: 0; */
   padding: 2rem;
   border-right: 1px solid var(--colour-white);
 }
 
+.object-details-header {
+  padding-bottom: 2rem;
+}
+
+.object-details-content {}
+
+.object-details-container code {
+  background-color: var(--colour-white);
+  color: var(--colour-black);
+  padding: 4px;
+}
+
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 #render-area {

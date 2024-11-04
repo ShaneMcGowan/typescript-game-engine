@@ -15,7 +15,6 @@ interface Config extends SceneObjectBaseConfig {
 
 export class SpriteObject extends SceneObject {
   isRenderable = true;
-  hasCollision = false;
 
   tileset: string;
   spriteX: number;
@@ -30,6 +29,7 @@ export class SpriteObject extends SceneObject {
     this.spriteX = config.spriteX;
     this.spriteY = config.spriteY;
     this.renderLayer = config.renderLayer ?? 0;
+    this.collision.enabled = true;
   }
 
   render(context: CanvasRenderingContext2D): void {
@@ -38,8 +38,8 @@ export class SpriteObject extends SceneObject {
       this.assets.images['sprites'],
       this.spriteX,
       this.spriteY,
-      this.positionX,
-      this.positionY,
+      this.transform.position.x,
+      this.transform.position.y,
       this.width,
       this.height,
       { centered: true, }

@@ -2,7 +2,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
-import { type SceneObject } from './scene-object';
+import { SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { type Client } from '@core/client';
 import { type Assets } from './assets';
@@ -314,37 +314,55 @@ export abstract class Scene {
    * @returns
    */
   hasCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
-    let object = this.objects.find(o => o.positionX === positionX && o.positionY === positionY && o.hasCollision);
-    if (object === undefined) {
-      return false;
+    for (const object of this.objects) {
+
+      if (!object.collision.enabled) {
+        continue;
+      }
+
+      if (object === sceneObject) {
+        continue;
+      }
+
+      if (
+        positionX < object.boundingBox.right &&
+        positionX > object.boundingBox.left &&
+        positionY < object.boundingBox.bottom &&
+        positionY > object.boundingBox.top
+      ) {
+        return true;
+      }
     }
 
-    // ignore provided object (usually self)
-    if (sceneObject === object) {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 
   /**
-   * Checks if an object is on it's way to the provided position and has collision
-   * @param x
-   * @param y
-   * @returns
-   */
-  willHaveCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
-    let object = this.objects.find(o => o.targetX === positionX && o.targetY === positionY && o.hasCollision);
-    if (object === undefined) {
-      return false;
-    }
+ * Checks if an object exists at the provided position and has collision
+ * @param x
+ * @param y
+ * @returns
+ */
+  hasCollisionAtBoundingBox(boundingBox: SceneObjectBoundingBox, sceneObject?: SceneObject): SceneObject | undefined {
+    for (const object of this.objects) {
+      if (!object.collision.enabled) {
+        continue;
+      }
 
-    // ignore provided object (usually self)
-    if (sceneObject === object) {
-      return false;
-    }
+      if (object === sceneObject) {
+        continue;
+      }
 
-    return true;
+      if (
+        boundingBox.left < object.boundingBox.right &&
+        boundingBox.right > object.boundingBox.left &&
+        boundingBox.top < object.boundingBox.bottom &&
+        boundingBox.bottom > object.boundingBox.top
+      ) {
+        return object;
+      }
+    }
+    return undefined;
   }
 
   isOutOfBounds(positionX: number, positionY: number): boolean {
@@ -352,27 +370,28 @@ export abstract class Scene {
   }
 
   /**
-   * A combination of hasCollisionAtPosition and willHaveCollisionAtPosition
-   * @param positionX
-   * @param positionY
-   * @param sceneObject
-   * @returns
-   */
-  hasOrWillHaveCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
-    return this.hasCollisionAtPosition(positionX, positionY, sceneObject) || this.willHaveCollisionAtPosition(positionX, positionY, sceneObject);
-  }
+ * Checks if an object exists at the provided position and has collision
+ * @param x
+ * @param y
+ * @returns
+ */
+  getObjectAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): SceneObject | undefined {
+    for (const object of this.objects) {
+      if (object === sceneObject) {
+        continue;
+      }
 
-  /**
-   * returns the first object found at the provided position
-   * @param positionX
-   * @param positionY
-   * @param type
-   * @returns
-   */
-  getObjectAtPosition(positionX: number, positionY: number, type?: any): SceneObject | undefined {
-    // TODO: add optional type check
-    // TODO: this is a very heavy operation
-    return this.objects.find(o => o.positionX === positionX && o.positionY === positionY && o.collisionLayer !== CanvasConstants.UI_COLLISION_LAYER);
+      if (
+        positionX < object.boundingBox.right &&
+        positionX > object.boundingBox.left &&
+        positionY < object.boundingBox.bottom &&
+        positionY > object.boundingBox.top
+      ) {
+        return object;
+      }
+    }
+
+    return undefined;
   }
 
   /**
@@ -385,7 +404,7 @@ export abstract class Scene {
   getAllObjectsAtPosition(positionX: number, positionY: number, type?: any): SceneObject[] {
     // TODO: add optional type check
     // TODO: this is a very heavy operation
-    return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY && o.collisionLayer !== CanvasConstants.UI_COLLISION_LAYER);
+    return this.objects.filter(o => o.positionX === positionX && o.positionY === positionY && o.collision.layer !== CanvasConstants.UI_COLLISION_LAYER);
   }
 
   private removeAllObjects(): void {

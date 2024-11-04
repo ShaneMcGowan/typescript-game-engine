@@ -132,11 +132,22 @@ export abstract class RenderUtils {
     context.fill();
   }
 
-  static strokeRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, colour?: string): void {
-    context.strokeStyle = colour || 'black';
+  static strokeRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, options: { type?: 'pixel' | 'tile', colour?: string } = {}): void {
+    context.strokeStyle = options.colour ?? 'black';
     // canvas renders on a half pixel so we need to offset by .5 in order to get the stroke width to be 1px, otherwise it was 2px wide https://stackoverflow.com/a/13879402
     context.lineWidth = 1;
-    context.strokeRect(positionX + 0.5, positionY + 0.5, width - 1, height - 1);
+
+    let x = options.type === 'tile' ? Math.floor(positionX * CanvasConstants.TILE_SIZE) : positionX;
+    let y = options.type === 'tile' ? Math.floor(positionY * CanvasConstants.TILE_SIZE) : positionY;
+    let w = options.type === 'tile' ? Math.floor(width * CanvasConstants.TILE_SIZE) : width;
+    let h = options.type === 'tile' ? Math.floor(height * CanvasConstants.TILE_SIZE) : height;
+
+    context.strokeRect(
+      x + 0.5,
+      y + 0.5,
+      w - 1,
+      h - 1
+    );
   }
 
   static clearCanvas(context: CanvasRenderingContext2D): void {

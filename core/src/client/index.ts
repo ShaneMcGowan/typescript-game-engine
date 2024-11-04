@@ -4,6 +4,7 @@ import { type AssetsConfig, type Assets } from '../model/assets';
 import { CanvasConstants } from '../constants/canvas.constants';
 import { Input } from '../utils/input.utils';
 import { MouseUtils } from '../utils/mouse.utils';
+import { EditorUtils } from '@core/editor/editor.utils';
 
 interface DebugButtons {
   gridLines?: HTMLElement;
@@ -78,12 +79,13 @@ export class Client {
 
   // engine
   engineSelectedObjectId: string | undefined;
-  engineTimer: number = 0; // how often to refresh
+  editorTimer: number = 0; // how often to refresh
 
   constructor(
     public container: HTMLElement,
     openingScene: SceneConstructorSignature,
     assets: AssetsConfig,
+    public engineMapList: HTMLElement | null,
     public engineObjectList: HTMLElement | null,
     public engineObjectDetails: HTMLElement | null,
     private readonly engineControls?: DebugButtons
@@ -101,6 +103,7 @@ export class Client {
 
     // initialise debug controls
     if (this.debug.enabled) {
+      this.initialiseDebuggerState();
       this.initialiseDebuggerListeners();
     }
 
@@ -198,10 +201,10 @@ export class Client {
     }
 
     // update engine
-    this.engineTimer += this.delta;
-    if (this.engineTimer > 1) {
-      this.engine();
-      this.engineTimer = 0;
+    this.editorTimer += this.delta;
+    if (this.editorTimer > 1) {
+      this.editor();
+      this.editorTimer = 0;
     }
 
     // Call next frame
@@ -232,7 +235,7 @@ export class Client {
     if (this.debug.ui.grid.lines) {
       for (let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE) {
         for (let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE) {
-          RenderUtils.strokeRectangle(this.context, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, 'black');
+          RenderUtils.strokeRectangle(this.context, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black' });
         }
       }
     }
@@ -246,6 +249,20 @@ export class Client {
           this.context.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
         }
       }
+    }
+  }
+
+  private initialiseDebuggerState(): void {
+    if (this.engineControls === undefined) {
+      return;
+    }
+
+    if (this.engineControls.renderBoundary) {
+      const value: boolean = JSON.parse(
+        localStorage.getItem('object.renderBoundary')
+      );
+      (this.engineControls.renderBoundary as HTMLInputElement).checked = value;
+      this.debug.object.renderBoundary = value;
     }
   }
 
@@ -295,7 +312,10 @@ export class Client {
     }
 
     if (this.engineControls.renderBoundary) {
-      this.engineControls.renderBoundary.addEventListener('click', () => { this.debug.object.renderBoundary = !this.debug.object.renderBoundary; });
+      this.engineControls.renderBoundary.addEventListener('click', () => {
+        this.debug.object.renderBoundary = !this.debug.object.renderBoundary;
+        localStorage.setItem('object.renderBoundary', JSON.stringify(this.debug.object.renderBoundary));
+      });
     }
 
     if (this.engineControls.renderBackground) {
@@ -413,12 +433,28 @@ export class Client {
   }
 
   /**
-   * Update the engine information
+   * Update the editor information
    */
-  private engine(): void {
-    if (this.engineObjectList === null) {
+  private editor(): void {
+    if (this.engineObjectList === null || this.engineMapList === null) {
       return;
     }
+
+    // update map list
+    let mapList = document.createElement('ul');
+    this.engineMapList.innerHTML = '';
+    this.engineMapList.appendChild(mapList);
+
+    const maps = [...EditorUtils.TEST_MAPS];
+    maps.forEach((map) => {
+      let item = document.createElement('li');
+      item.innerHTML = map.name;
+      mapList.appendChild(item);
+
+      item.addEventListener('click', () => {
+        EditorUtils.changeMap(map.map);
+      });
+    });
 
     // update object list
     let list = document.createElement('ul');
@@ -451,18 +487,35 @@ export class Client {
       return;
     }
 
+    const header = this.engineObjectDetails.querySelector('#object-details-header');
+    const content = this.engineObjectDetails.querySelector('#object-details-content');
+
     // clear
-    this.engineObjectDetails.innerHTML = '';
+    header.innerHTML = `<h3>${object.constructor.name}</h3>`;
+    content.innerHTML = '';
 
     // details
-    this.engineObjectDetails.innerHTML += `<h3>${object.constructor.name}</h3>`;
     Object.keys(object).forEach((key) => {
-      let html = '';
-      html += '<div style="display:flex; padding: 0.25rem 0;">';
-      html += `<span style="margin-right: auto;">${key}</span>`;
-      html += `<input value="${(object as any)[key]}"`;
-      html += '</div>';
-      this.engineObjectDetails.innerHTML += html;
+      if (key === 'transform') {
+        content.innerHTML += generateDebuggerLine(object.transform.position, 'x');
+        content.innerHTML += generateDebuggerLine(object.transform.position, 'y');
+      } else {
+        content.innerHTML += generateDebuggerLine(object, key);
+      }
     });
+
+    // log the object to the console
+    console.log(object);
   }
+}
+
+function generateDebuggerLine(object: Object, key: string) {
+  let html = '';
+
+  html += '<div style="display:flex; padding: 0.25rem 0;">';
+  html += `<span style="margin-right: auto;">${key}</span>`;
+  html += `<code>${(object as any)[key]}</code>`;
+  html += '</div>';
+
+  return html;
 }
