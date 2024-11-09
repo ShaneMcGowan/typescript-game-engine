@@ -132,7 +132,7 @@ export abstract class RenderUtils {
     context.fill();
   }
 
-  static strokeRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, options: { type?: 'pixel' | 'tile', colour?: string } = {}): void {
+  static strokeRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, options: { type?: 'pixel' | 'tile'; colour?: string; } = {}): void {
     context.strokeStyle = options.colour ?? 'black';
     // canvas renders on a half pixel so we need to offset by .5 in order to get the stroke width to be 1px, otherwise it was 2px wide https://stackoverflow.com/a/13879402
     context.lineWidth = 1;

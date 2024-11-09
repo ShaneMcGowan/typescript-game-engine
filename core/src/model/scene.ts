@@ -2,11 +2,9 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
-import { SceneObjectBoundingBox, type SceneObject } from './scene-object';
-import { MouseUtils } from '@core/utils/mouse.utils';
+import { type SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { type Client } from '@core/client';
 import { type Assets } from './assets';
-import { Input } from '@core/utils/input.utils';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
@@ -315,7 +313,6 @@ export abstract class Scene {
    */
   hasCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
     for (const object of this.objects) {
-
       if (!object.collision.enabled) {
         continue;
       }
@@ -486,14 +483,14 @@ export abstract class Scene {
   }
 
   addEventListener(eventName: string, callback: any): void {
-    console.log(`addEventListener is deprecated. refactor your code.`)
+    console.log('addEventListener is deprecated. refactor your code.');
   }
 
   removeEventListener(eventName: string, callback: any): void {
-    console.log(`removeEventListener is deprecated. refactor your code.`)
+    console.log('removeEventListener is deprecated. refactor your code.');
   }
 
   dispatchEvent(eventName: string, detail?: any): void {
-    console.log(`dispatchEvent is deprecated. refactor your code.`)
+    console.log('dispatchEvent is deprecated. refactor your code.');
   }
 }

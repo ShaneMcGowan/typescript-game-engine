@@ -1,9 +1,8 @@
 import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { type SceneObject } from '@core/model/scene-object';
-import { Scene } from '@core/model/scene';
+import { type Scene } from '@core/model/scene';
 import { CollisionTestObject } from './collision-test.object';
-
 
 export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
   height = 18;
@@ -21,133 +20,133 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
   }
 
   private initialiseNotColliding(): void {
-    // top left 
+    // top left
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 1.5, positionY: 1.5
+      positionX: 1.5, positionY: 1.5,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 2.5, positionY: 1.5, collisionEnabled: true
+      positionX: 2.5, positionY: 1.5, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 1.5, positionY: 2.5, collisionEnabled: true
+      positionX: 1.5, positionY: 2.5, collisionEnabled: true,
     }));
 
     // top right
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 4.5, positionY: 1.5
+      positionX: 4.5, positionY: 1.5,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 5.5, positionY: 1.5, collisionEnabled: true
+      positionX: 5.5, positionY: 1.5, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 5.5, positionY: 2.5, collisionEnabled: true
-    }));
-
-    // bottom left 
-    this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 1.5, positionY: 4.5
-    }));
-
-    this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 2.5, positionY: 5.5, collisionEnabled: true
-    }));
-
-    this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 1.5, positionY: 5.5, collisionEnabled: true
+      positionX: 5.5, positionY: 2.5, collisionEnabled: true,
     }));
 
     // bottom left
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 5.5, positionY: 4.5
+      positionX: 1.5, positionY: 4.5,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 4.5, positionY: 5.5, collisionEnabled: true
+      positionX: 2.5, positionY: 5.5, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 5.5, positionY: 5.5, collisionEnabled: true
+      positionX: 1.5, positionY: 5.5, collisionEnabled: true,
+    }));
+
+    // bottom left
+    this.objects.push(new CollisionTestObject(this.scene, {
+      positionX: 5.5, positionY: 4.5,
+    }));
+
+    this.objects.push(new CollisionTestObject(this.scene, {
+      positionX: 4.5, positionY: 5.5, collisionEnabled: true,
+    }));
+
+    this.objects.push(new CollisionTestObject(this.scene, {
+      positionX: 5.5, positionY: 5.5, collisionEnabled: true,
     }));
   }
 
   private initialiseColliding(): void {
-    // top left 
+    // top left
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 7.5, positionY: 1.5
+      positionX: 7.5, positionY: 1.5,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 8, positionY: 1.5, collisionEnabled: true
+      positionX: 8, positionY: 1.5, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 7.5, positionY: 2, collisionEnabled: true
+      positionX: 7.5, positionY: 2, collisionEnabled: true,
     }));
 
     // top right
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 11, positionY: 1.5, collisionEnabled: true
+      positionX: 11, positionY: 1.5, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 11.5, positionY: 1.5
+      positionX: 11.5, positionY: 1.5,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 11.5, positionY: 2, collisionEnabled: true
-    }));
-
-    // bottom left 
-    this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 7.5, positionY: 5, collisionEnabled: true
-    }));
-
-    this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 8, positionY: 5.5, collisionEnabled: true
-    }));
-
-    this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 7.5, positionY: 5.5
+      positionX: 11.5, positionY: 2, collisionEnabled: true,
     }));
 
     // bottom left
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 11.5, positionY: 5, collisionEnabled: true
+      positionX: 7.5, positionY: 5, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 11, positionY: 5.5, collisionEnabled: true
+      positionX: 8, positionY: 5.5, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 11.5, positionY: 5.5
+      positionX: 7.5, positionY: 5.5,
+    }));
+
+    // bottom left
+    this.objects.push(new CollisionTestObject(this.scene, {
+      positionX: 11.5, positionY: 5, collisionEnabled: true,
+    }));
+
+    this.objects.push(new CollisionTestObject(this.scene, {
+      positionX: 11, positionY: 5.5, collisionEnabled: true,
+    }));
+
+    this.objects.push(new CollisionTestObject(this.scene, {
+      positionX: 11.5, positionY: 5.5,
     }));
 
     // left / right
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 1.5, positionY: 7.5
+      positionX: 1.5, positionY: 7.5,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 2, positionY: 7.5, collisionEnabled: true
+      positionX: 2, positionY: 7.5, collisionEnabled: true,
     }));
 
     // up / down
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 3.5, positionY: 7.5
+      positionX: 3.5, positionY: 7.5,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 3.5, positionY: 8, collisionEnabled: true
+      positionX: 3.5, positionY: 8, collisionEnabled: true,
     }));
 
     // corner - top left
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 5.001, positionY: 7.501, collisionEnabled: true
+      positionX: 5.001, positionY: 7.501, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
@@ -156,7 +155,7 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
 
     // corner - top right
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 8.499, positionY: 7.501, collisionEnabled: true
+      positionX: 8.499, positionY: 7.501, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
@@ -165,7 +164,7 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
 
     // corner - bottom left
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 5.001, positionY: 10.999, collisionEnabled: true
+      positionX: 5.001, positionY: 10.999, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
@@ -174,14 +173,14 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
 
     // corner - bottom right
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 8.499, positionY: 10.999, collisionEnabled: true
+      positionX: 8.499, positionY: 10.999, collisionEnabled: true,
     }));
 
     this.objects.push(new CollisionTestObject(this.scene, {
       positionX: 7.5, positionY: 10,
     }));
 
-    ////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////
 
     // large - container
     this.objects.push(new CollisionTestObject(this.scene, {
@@ -189,7 +188,7 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
       positionY: 5,
       width: 6,
       height: 6,
-      collisionEnabled: true
+      collisionEnabled: true,
     }));
 
     // large - top left
@@ -214,7 +213,7 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
 
     // large - center
     this.objects.push(new CollisionTestObject(this.scene, {
-      positionX: 18, positionY: 5
+      positionX: 18, positionY: 5,
     }));
 
     // large - center right
@@ -237,7 +236,7 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
       positionX: 21.5, positionY: 8.5, collisionEnabled: true,
     }));
 
-    ////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////
 
     // large - container
     this.objects.push(new CollisionTestObject(this.scene, {
@@ -292,7 +291,7 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
       positionX: 21.499, positionY: 17.499, collisionEnabled: true,
     }));
 
-    ////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////
 
     // different lengths
     this.objects.push(new CollisionTestObject(this.scene, {
@@ -325,7 +324,5 @@ export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
       height: 5,
       collisionEnabled: true,
     }));
-
   }
-
 }

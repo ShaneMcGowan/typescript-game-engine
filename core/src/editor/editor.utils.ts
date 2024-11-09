@@ -1,12 +1,11 @@
-import { SceneConstructorSignature } from "@core/model/scene";
-import { SceneMapConstructorSignature } from "@core/model/scene-map";
-import { SCENE_GAME_MAP_TEST_COLLISION } from "@core/tests/collision/map";
+import { type SceneConstructorSignature } from '@core/model/scene';
+import { type SceneMapConstructorSignature } from '@core/model/scene-map';
+import { SCENE_GAME_MAP_TEST_COLLISION } from '@core/tests/collision/map';
 
 export class EditorUtils {
-
-  static readonly TEST_MAPS: Array<{ name: string, map: SceneMapConstructorSignature }> = [
-    { name: 'collision test', map: SCENE_GAME_MAP_TEST_COLLISION }
-  ]
+  static readonly TEST_MAPS: Array<{ name: string; map: SceneMapConstructorSignature; }> = [
+    { name: 'collision test', map: SCENE_GAME_MAP_TEST_COLLISION, }
+  ];
 
   static get engineMapList(): any {
     return document.getElementById('map-list') || null;
@@ -49,5 +48,4 @@ export class EditorUtils {
   static changeMap(mapClass: SceneMapConstructorSignature): void {
     window.engine.currentScene.changeMap(mapClass);
   }
-
 }

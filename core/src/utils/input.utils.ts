@@ -18,18 +18,17 @@ interface Mouse {
   };
   wheel: {
     event: WheelEvent;
-  }
+  };
   latestEvent: MouseEvent;
 }
 
 export abstract class Input {
-
-  private static readonly keyboard: Record<string, boolean> = {} // TODO: add better typing for key
+  private static readonly keyboard: Record<string, boolean> = {}; // TODO: add better typing for key
   static readonly mouse: Mouse = {
     click: {
       left: false,
       middle: false,
-      right: false
+      right: false,
     },
     position: {
       x: 0,
@@ -38,20 +37,20 @@ export abstract class Input {
       exactY: 0,
     },
     wheel: {
-      event: new WheelEvent('') // TODO: ensure this is a valid default event
+      event: new WheelEvent(''), // TODO: ensure this is a valid default event
       // deltaY negative is a scroll up
       // deltaY positive is a scroll down
     },
     latestEvent: new MouseEvent(''), // TODO: ensure this is a valid default event
-  }
+  };
 
-  static isKeyPressed(keys: string | string[]) {
+  static isKeyPressed(keys: string | string[]): boolean {
     if (!Array.isArray(keys)) {
       keys = [keys];
     }
 
     for (const key of keys) {
-      if (this.keyboard[key] === true) {
+      if (this.keyboard[key]) {
         return true;
       }
     }
@@ -59,7 +58,7 @@ export abstract class Input {
     return false;
   }
 
-  static setKeyPressed(keys: string | string[]) {
+  static setKeyPressed(keys: string | string[]): void {
     if (!Array.isArray(keys)) {
       keys = [keys];
     }
@@ -69,7 +68,7 @@ export abstract class Input {
     }
   }
 
-  static clearKeyPressed(keys: string | string[]) {
+  static clearKeyPressed(keys: string | string[]): void {
     if (!Array.isArray(keys)) {
       keys = [keys];
     }

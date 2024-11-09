@@ -1,5 +1,4 @@
 export class Vector {
-
   constructor(
     public x: number,
     public y: number
@@ -28,14 +27,14 @@ export class Vector {
     return new Vector(
       this.x + vector.x,
       this.y + vector.y
-    )
+    );
   }
 
   subtract(vector: Vector): Vector {
     return new Vector(
       this.x - vector.x,
       this.y - vector.y
-    )
+    );
   }
 
   multiply(speed: number): Vector {
@@ -51,5 +50,4 @@ export class Vector {
       this.y / speed
     );
   }
-
 }

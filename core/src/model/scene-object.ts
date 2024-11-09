@@ -51,13 +51,13 @@ export abstract class SceneObject {
   readonly transform: Transform = {
     position: new Vector(0, 0),
     scale: 1,
-    rotation: 1
-  }
+    rotation: 1,
+  };
 
   readonly collision: Collision = {
     enabled: false,
-    layer: DEFAULT_COLLISION_LAYER
-  }
+    layer: DEFAULT_COLLISION_LAYER,
+  };
 
   get positionX(): number {
     return this.transform.position.x;
@@ -73,8 +73,9 @@ export abstract class SceneObject {
       this.transform.position.y,
       this.width,
       this.height
-    )
+    );
   }
+
   // dimensions
   width: number = 1;
   height: number = 1;
@@ -93,7 +94,7 @@ export abstract class SceneObject {
   flaggedForUpdate: boolean = true; // TODO: implement the usage of this flag to improve engine performance
   flaggedForDestroy: boolean = false; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
 
-  children: Array<SceneObject> = new Array(); // TODO: begin parent / child objects
+  children = new Array<SceneObject>(); // TODO: begin parent / child objects
   parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
 
   awakeRan: boolean = false; // flag to check if awake has been run for this object yet
@@ -107,7 +108,7 @@ export abstract class SceneObject {
 
     // position default
     if (config.positionX !== undefined) {
-      this.transform.position.x = config.positionX
+      this.transform.position.x = config.positionX;
     }
 
     if (config.positionY !== undefined) {
@@ -149,7 +150,7 @@ export abstract class SceneObject {
       this.height,
       {
         colour: 'red',
-        type: 'tile'
+        type: 'tile',
       }
     );
   }

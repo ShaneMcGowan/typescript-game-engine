@@ -90,7 +90,6 @@ export class Client {
     public engineObjectDetails: HTMLElement | null,
     private readonly engineControls?: DebugButtons
   ) {
-
     // load assets
     // TODO: some sort of loading screen / rendering delay until assets are loaded
     Object.keys(assets.images).forEach((key) => {
@@ -235,7 +234,7 @@ export class Client {
     if (this.debug.ui.grid.lines) {
       for (let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE) {
         for (let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE) {
-          RenderUtils.strokeRectangle(this.context, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black' });
+          RenderUtils.strokeRectangle(this.context, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black', });
         }
       }
     }
@@ -340,7 +339,7 @@ export class Client {
 
       console.log('[keydown]', event);
       let key = event.key.toLocaleLowerCase();
-      Input.setKeyPressed(key)
+      Input.setKeyPressed(key);
     });
 
     console.log('[listener added] keyup');
@@ -351,7 +350,7 @@ export class Client {
 
       console.log('[keyup]', event);
       let key = event.key.toLocaleLowerCase();
-      Input.clearKeyPressed(key)
+      Input.clearKeyPressed(key);
     });
   }
 
@@ -410,7 +409,7 @@ export class Client {
 
     // for mouse scroll
     console.log('[listener added] wheel');
-    this.canvas.addEventListener("wheel", (event: WheelEvent) => {
+    this.canvas.addEventListener('wheel', (event: WheelEvent) => {
       console.log('[wheel]', event);
       Input.mouse.wheel.event = event;
     });
@@ -509,12 +508,12 @@ export class Client {
   }
 }
 
-function generateDebuggerLine(object: Object, key: string) {
+function generateDebuggerLine(object: any, key: string): string {
   let html = '';
 
   html += '<div style="display:flex; padding: 0.25rem 0;">';
   html += `<span style="margin-right: auto;">${key}</span>`;
-  html += `<code>${(object as any)[key]}</code>`;
+  html += `<code>${(object)[key]}</code>`;
   html += '</div>';
 
   return html;

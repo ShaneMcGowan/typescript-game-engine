@@ -1,6 +1,6 @@
-import { Scene } from "@core/model/scene";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
+import { type Scene } from '@core/model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig { }
 
@@ -40,10 +40,10 @@ export class CollisionTestObject extends SceneObject {
       this.width,
       this.height,
       {
-        colour: colour,
-        type: 'tile'
+        colour,
+        type: 'tile',
       }
-    )
+    );
   }
 
   private updateCollision(): void {

@@ -1,29 +1,27 @@
-import { Vector } from '@core/model/vector';
+import { type Vector } from '@core/model/vector';
 import { MathUtils } from './math.utils';
-import { SceneObject, SceneObjectBoundingBox } from '@core/model/scene-object';
 
 export class Movement {
-
   get position(): {
-    x: number,
-    y: number,
+    x: number;
+    y: number;
     // boundingBox: SceneObjectBoundingBox // TODO: should we add this in here?
   } {
     return {
       x: this.targetX,
       y: this.targetY,
-    }
+    };
   }
 
   get target(): {
-    x: number,
-    y: number,
+    x: number;
+    y: number;
     // boundingBox: SceneObjectBoundingBox // TODO: should we add this in here?
   } {
     return {
       x: this.targetX,
       y: this.targetY,
-    }
+    };
   }
 
   constructor(
@@ -86,7 +84,7 @@ export abstract class MovementUtils {
    * @param targetMovement
    * @returns
    */
-  static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: { positionX: number, positionY: number }): Movement {
+  static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: { positionX: number; positionY: number; }): Movement {
     // TODO: add some randomness to this, potentially via MathUtils.randomIntFromRange(1, 4);
 
     if (targetMovement.positionX > currentMovement.positionX) {
@@ -143,10 +141,10 @@ export abstract class MovementUtils {
   }
 
   static MoveTowards(current: Vector, target: Vector, speed: number): Vector {
-    // following object position relative to the current object 
-    let direction = target.subtract(current)
+    // following object position relative to the current object
+    let direction = target.subtract(current);
     // movement at desidered speed
-    let movement = direction.normalized.multiply(speed)
+    let movement = direction.normalized.multiply(speed);
     // ensure movement doesn't go passed the target
 
     if (movement.magnitude > direction.magnitude) {
@@ -155,5 +153,4 @@ export abstract class MovementUtils {
 
     return movement;
   }
-
 }
