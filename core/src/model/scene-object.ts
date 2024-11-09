@@ -31,8 +31,8 @@ interface Renderer {
 
 interface Flags {
   awake: boolean; // flag to check if awake has been run for this object yet
-  update: boolean; // TODO: implement the usage of this flag to improve engine performance
-  render: boolean; // TODO: implement the usage of this flag to improve engine performance
+  update: boolean; // flag to check if update should be ran for the object this frame, TODO: implement the usage of this flag to improve engine performance
+  render: boolean; // flag to check if render should be ran for the object this frame, TODO: implement the usage of this flag to improve engine performance
   destroy: boolean; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
 }
 
@@ -64,8 +64,8 @@ const RENDERER_OPACITY_DEFAULT: number = 1;
 const RENDERER_SCALE_DEFAULT: number = 1;
 
 const FLAGS_AWAKE_DEFAULT = false;
-const FLAGS_UPDATE_DEFAULT = false;
-const FLAGS_RENDER_DEFAULT = false;
+const FLAGS_UPDATE_DEFAULT = true;
+const FLAGS_RENDER_DEFAULT = true;
 const FLAGS_DESTROY_DEFAULT = false;
 
 export abstract class SceneObject {
@@ -117,11 +117,6 @@ export abstract class SceneObject {
 
   protected mainContext: CanvasRenderingContext2D;
   protected assets: Assets; // TODO: this shouldn't be on the object, leave it on the scene
-
-  // flags
-  flaggedForUpdate: boolean = true; // TODO: implement the usage of this flag to improve engine performance
-  flaggedForRender: boolean = true; // TODO: implement the usage of this flag to improve engine performance
-  flaggedForDestroy: boolean = false; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
 
   children = new Array<SceneObject>(); // TODO: begin parent / child objects
   parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects

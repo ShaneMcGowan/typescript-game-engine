@@ -109,17 +109,21 @@ export abstract class Scene {
       console.time('[frame] awake');
     }
 
-    this.objects.forEach((object) => {
+    for (let i = 0; i < this.objects.length; i++) {
+      const object = this.objects[i];
+
       if (object.flags.awake) {
-        return;
+        continue;
       }
+
       object.flags.awake = true;
 
       if (object.awake === undefined) {
-        return;
+        continue;
       }
+
       object.awake();
-    });
+    }
 
     if (this.client.debug.timing.frameUpdate) {
       console.timeEnd('[frame] awake');
@@ -201,11 +205,19 @@ export abstract class Scene {
       console.time('[frame] update');
     }
 
-    this.objects.forEach((object) => {
-      if (object.update) {
-        object.update(delta);
+    for (let i = 0; i < this.objects.length; i++) {
+      const object = this.objects[i];
+
+      if (!object.flags.update) {
+        continue;
       }
-    });
+
+      if (object.update === undefined) {
+        continue;
+      }
+
+      object.update(delta);
+    }
 
     if (this.client.debug.timing.frameUpdate) {
       console.timeEnd('[frame] update');
@@ -223,7 +235,13 @@ export abstract class Scene {
     });
 
     // render objects
-    this.objects.forEach((object) => {
+    for (let i = 0; i < this.objects.length; i++) {
+      const object = this.objects[i];
+
+      if (!object.flags.render) {
+        continue;
+      }
+
       if (this.client.debug.object.renderBackground) {
         object.debuggerRenderBackground(
           this.renderingContext.objects[object.renderLayer]
@@ -241,7 +259,7 @@ export abstract class Scene {
           this.renderingContext.objects[object.renderLayer]
         );
       }
-    });
+    }
 
     if (this.client.debug.timing.frameRender) {
       console.timeEnd('[frame] render');
@@ -253,11 +271,15 @@ export abstract class Scene {
       console.time('[frame] destroy');
     }
 
-    this.objects.forEach((object) => {
-      if (object.flaggedForDestroy) {
-        this.removeObjectById(object.id);
+    for (let i = 0; i < this.objects.length; i++) {
+      const object = this.objects[i];
+
+      if (!object.flags.destroy) {
+        continue;
       }
-    });
+
+      this.removeObjectById(object.id);
+    }
 
     if (this.client.debug.timing.frameDestroy) {
       console.timeEnd('[frame] destroy');
