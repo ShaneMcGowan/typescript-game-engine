@@ -44,7 +44,7 @@ export interface SceneObjectBaseConfig {
   collisionLayer?: number;
 }
 
-const TRANSFORM_POSITION_DEFAULT = new Vector(0, 0);
+const TRANSFORM_POSITION_DEFAULT = (): Vector => new Vector(0, 0);
 const TRANSFORM_SCALE_DEFAULT = 1;
 const TRANSFORM_ROTATION_DEFAULT = 0;
 
@@ -60,7 +60,7 @@ export abstract class SceneObject {
   id: string = crypto.randomUUID();
 
   readonly transform: Transform = {
-    position: TRANSFORM_POSITION_DEFAULT,
+    position: TRANSFORM_POSITION_DEFAULT(),
     scale: TRANSFORM_SCALE_DEFAULT,
     rotation: TRANSFORM_ROTATION_DEFAULT,
   };
