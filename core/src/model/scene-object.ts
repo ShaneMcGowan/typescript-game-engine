@@ -14,12 +14,19 @@ export interface SceneObjectBoundingBox {
 interface Transform {
   position: Vector;
   scale: number;
-  rotation: number;
+  rotation: number; // rotation in degrees
 }
 
 interface Collision {
   enabled: boolean;
   layer: number;
+}
+
+interface Renderer {
+  enabled: boolean;
+  layer: number;
+  opacity: number; // the opacity of the object when rendered (value between 0 and 1)
+  scale: number; // the scale of the object when rendered
 }
 
 export interface SceneObjectBaseConfig {
@@ -37,26 +44,37 @@ export interface SceneObjectBaseConfig {
   collisionLayer?: number;
 }
 
-const DEFAULT_IS_RENDERABLE: boolean = false;
-const DEFAULT_RENDER_LAYER: number = 0;
-const DEFAULT_RENDER_OPACITY: number = 1;
-const DEFAULT_RENDER_SCALE: number = 1;
+const TRANSFORM_POSITION_DEFAULT = new Vector(0, 0);
+const TRANSFORM_SCALE_DEFAULT = 1;
+const TRANSFORM_ROTATION_DEFAULT = 0;
 
-const DEFAULT_HAS_COLLISION: boolean = false;
-const DEFAULT_COLLISION_LAYER: number = 0;
+const COLLISION_ENABLED_DEFAULT: boolean = false;
+const COLLISION_LAYER_DEFAULT: number = 0;
+
+const RENDERER_ENABLED_DEFAULT: boolean = false;
+const RENDERER_LAYER_DEFAULT: number = 0;
+const RENDERER_OPACITY_DEFAULT: number = 1;
+const RENDERER_SCALE_DEFAULT: number = 1;
 
 export abstract class SceneObject {
   id: string = crypto.randomUUID();
 
   readonly transform: Transform = {
-    position: new Vector(0, 0),
-    scale: 1,
-    rotation: 1,
+    position: TRANSFORM_POSITION_DEFAULT,
+    scale: TRANSFORM_SCALE_DEFAULT,
+    rotation: TRANSFORM_ROTATION_DEFAULT,
   };
 
   readonly collision: Collision = {
-    enabled: false,
-    layer: DEFAULT_COLLISION_LAYER,
+    enabled: COLLISION_ENABLED_DEFAULT,
+    layer: COLLISION_LAYER_DEFAULT,
+  };
+
+  readonly renderer: Renderer = {
+    enabled: RENDERER_ENABLED_DEFAULT,
+    layer: RENDERER_LAYER_DEFAULT,
+    opacity: RENDERER_OPACITY_DEFAULT,
+    scale: RENDERER_SCALE_DEFAULT,
   };
 
   get boundingBox(): SceneObjectBoundingBox {
@@ -115,19 +133,19 @@ export abstract class SceneObject {
       this.height = config.height;
     }
 
-    this.isRenderable = config.isRenderable ?? DEFAULT_IS_RENDERABLE;
-    this.renderLayer = config.renderLayer ?? DEFAULT_RENDER_LAYER;
-    this.renderOpacity = config.renderOpacity ?? DEFAULT_RENDER_OPACITY;
+    this.isRenderable = config.isRenderable ?? RENDERER_ENABLED_DEFAULT;
+    this.renderLayer = config.renderLayer ?? RENDERER_LAYER_DEFAULT;
+    this.renderOpacity = config.renderOpacity ?? RENDERER_OPACITY_DEFAULT;
 
-    this.collision.enabled = config.collisionEnabled ?? DEFAULT_HAS_COLLISION;
-    this.collision.layer = config.collisionLayer ?? DEFAULT_COLLISION_LAYER;
-    this.renderScale = config.renderScale ?? DEFAULT_RENDER_SCALE;
+    this.collision.enabled = config.collisionEnabled ?? COLLISION_ENABLED_DEFAULT;
+    this.collision.layer = config.collisionLayer ?? COLLISION_LAYER_DEFAULT;
+    this.renderScale = config.renderScale ?? RENDERER_SCALE_DEFAULT;
   }
 
-  awake?(): void; // TODO: when is this called? IMPLEMENT THIS
-  update?(delta: number): void; // called every frame
+  awake?(): void; // called once at start of frame if awakeRan is false
+  update?(delta: number): void; // called every frame after awake
   render?(context: CanvasRenderingContext2D): void; // called every frame after update
-  destroy?(): void; // TODO: when is this called?
+  destroy?(): void; // called once after render if flaggedForDestroy is true
 
   /**
    * Used for debugging
