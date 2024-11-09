@@ -71,8 +71,8 @@ export class ChickenObject extends SceneObject implements Interactable {
     console.log('[ChickenObject] created');
     super(scene, config);
     this.collision.enabled = true;
-    this.targetX = this.positionX;
-    this.targetY = this.positionY;
+    this.targetX = this.transform.position.x;
+    this.targetY = this.transform.position.y;
 
     this.canLayEggs = config.canLayEggs ?? DEFAULT_CAN_LAY_EGGS;
     this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
@@ -148,8 +148,8 @@ export class ChickenObject extends SceneObject implements Interactable {
           this.targetY
         ),
         {
-          positionX: this.following.positionX,
-          positionY: this.following.positionY,
+          positionX: this.following.transform.position.x,
+          positionY: this.following.transform.position.y,
         }
       );
     } else {

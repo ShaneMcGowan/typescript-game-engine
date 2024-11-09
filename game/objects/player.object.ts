@@ -89,8 +89,8 @@ export class PlayerObject extends SceneObject {
   ) {
     super(scene, config);
     this.collision.enabled = true;
-    this.targetX = this.positionX;
-    this.targetY = this.positionY;
+    this.targetX = this.transform.position.x;
+    this.targetY = this.transform.position.y;
 
     this.enableMovement();
     this.enableInteractKeys();

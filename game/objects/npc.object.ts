@@ -77,8 +77,8 @@ export class NpcObject extends SceneObject implements Interactable {
     config: NpcObjectConfig
   ) {
     super(scene, config);
-    this.targetX = this.positionX;
-    this.targetY = this.positionY;
+    this.targetX = this.transform.position.x;
+    this.targetY = this.transform.position.y;
     this.collision.enabled = true;
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
     this.following = config.follows;
@@ -155,8 +155,8 @@ export class NpcObject extends SceneObject implements Interactable {
           this.targetY
         ),
         {
-          positionX: this.following.positionX,
-          positionY: this.following.positionY,
+          positionX: this.following.transform.position.x,
+          positionY: this.following.transform.position.y,
         }
       );
     } else {

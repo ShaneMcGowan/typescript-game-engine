@@ -59,14 +59,6 @@ export abstract class SceneObject {
     layer: DEFAULT_COLLISION_LAYER,
   };
 
-  get positionX(): number {
-    return this.transform.position.x;
-  }
-
-  get positionY(): number {
-    return this.transform.position.y;
-  }
-
   get boundingBox(): SceneObjectBoundingBox {
     return SceneObject.calculateBoundingBox(
       this.transform.position.x,

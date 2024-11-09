@@ -5,8 +5,8 @@ import { Input } from "@core/utils/input.utils";
 
 export function useHoe(scene: SCENE_GAME, player: PlayerObject): void {
 
-  const playerX = Math.floor(player.positionX);
-  const playerY = Math.floor(player.positionY);
+  const playerX = Math.floor(player.transform.position.x);
+  const playerY = Math.floor(player.transform.position.y);
   const mouseX = Input.mouse.position.x;
   const mouseY = Input.mouse.position.y;
 

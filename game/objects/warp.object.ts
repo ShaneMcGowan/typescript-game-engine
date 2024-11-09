@@ -26,7 +26,7 @@ export class WarpObject extends SceneObject {
       return;
     }
 
-    if (this.transform.position.x !== this.player.positionX || this.transform.position.y !== this.player.positionY) {
+    if (this.transform.position.x !== this.player.transform.position.x || this.transform.position.y !== this.player.transform.position.y) {
       return;
     }
 
