@@ -110,10 +110,15 @@ export abstract class Scene {
     }
 
     this.objects.forEach((object) => {
-      if (object.awake && !object.awakeRan) {
-        object.awake();
-        object.awakeRan = true;
+      if (object.flags.awake) {
+        return;
       }
+      object.flags.awake = true;
+
+      if (object.awake === undefined) {
+        return;
+      }
+      object.awake();
     });
 
     if (this.client.debug.timing.frameUpdate) {

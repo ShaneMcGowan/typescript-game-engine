@@ -29,6 +29,13 @@ interface Renderer {
   scale: number; // the scale of the object when rendered
 }
 
+interface Flags {
+  awake: boolean; // flag to check if awake has been run for this object yet
+  update: boolean; // TODO: implement the usage of this flag to improve engine performance
+  render: boolean; // TODO: implement the usage of this flag to improve engine performance
+  destroy: boolean; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
+}
+
 export interface SceneObjectBaseConfig {
   positionX?: number;
   positionY?: number;
@@ -56,6 +63,11 @@ const RENDERER_LAYER_DEFAULT: number = 0;
 const RENDERER_OPACITY_DEFAULT: number = 1;
 const RENDERER_SCALE_DEFAULT: number = 1;
 
+const FLAGS_AWAKE_DEFAULT = false;
+const FLAGS_UPDATE_DEFAULT = false;
+const FLAGS_RENDER_DEFAULT = false;
+const FLAGS_DESTROY_DEFAULT = false;
+
 export abstract class SceneObject {
   id: string = crypto.randomUUID();
 
@@ -75,6 +87,13 @@ export abstract class SceneObject {
     layer: RENDERER_LAYER_DEFAULT,
     opacity: RENDERER_OPACITY_DEFAULT,
     scale: RENDERER_SCALE_DEFAULT,
+  };
+
+  readonly flags: Flags = {
+    awake: FLAGS_AWAKE_DEFAULT,
+    update: FLAGS_UPDATE_DEFAULT,
+    render: FLAGS_RENDER_DEFAULT,
+    destroy: FLAGS_DESTROY_DEFAULT,
   };
 
   get boundingBox(): SceneObjectBoundingBox {
@@ -100,14 +119,12 @@ export abstract class SceneObject {
   protected assets: Assets; // TODO: this shouldn't be on the object, leave it on the scene
 
   // flags
-  flaggedForRender: boolean = true; // TODO: implement the usage of this flag to improve engine performance
   flaggedForUpdate: boolean = true; // TODO: implement the usage of this flag to improve engine performance
+  flaggedForRender: boolean = true; // TODO: implement the usage of this flag to improve engine performance
   flaggedForDestroy: boolean = false; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
 
   children = new Array<SceneObject>(); // TODO: begin parent / child objects
   parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
-
-  awakeRan: boolean = false; // flag to check if awake has been run for this object yet
 
   constructor(
     protected scene: Scene,
