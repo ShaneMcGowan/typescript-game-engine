@@ -22,8 +22,6 @@ interface Config extends SceneObjectBaseConfig {
 
 export class FenceObject extends SceneObject implements Interactable {
   isRenderable = true;
-  width = 1;
-  height = 1;
 
   private readonly type: { x: number; y: number; } = FenceType.FencePost;
   private open = false;

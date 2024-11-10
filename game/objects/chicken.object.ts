@@ -32,8 +32,6 @@ interface Config extends SceneObjectBaseConfig {
 export class ChickenObject extends SceneObject implements Interactable {
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
-  width = 1;
-  height = 1;
   targetX: number = -1;
   targetY: number = -1;
 

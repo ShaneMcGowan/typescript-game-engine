@@ -6,8 +6,6 @@ interface Config extends SceneObjectBaseConfig { }
 
 export class CollisionTestObject extends SceneObject {
   isRenderable = true;
-  width = 1;
-  height = 1;
 
   isColliding: boolean = false;
 

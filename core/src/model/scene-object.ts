@@ -63,10 +63,13 @@ const RENDERER_LAYER_DEFAULT: number = 0;
 const RENDERER_OPACITY_DEFAULT: number = 1;
 const RENDERER_SCALE_DEFAULT: number = 1;
 
-const FLAGS_AWAKE_DEFAULT = false;
-const FLAGS_UPDATE_DEFAULT = true;
-const FLAGS_RENDER_DEFAULT = true;
-const FLAGS_DESTROY_DEFAULT = false;
+const FLAGS_AWAKE_DEFAULT: boolean = false;
+const FLAGS_UPDATE_DEFAULT: boolean = true;
+const FLAGS_RENDER_DEFAULT: boolean = true;
+const FLAGS_DESTROY_DEFAULT: boolean = false;
+
+const WIDTH_DEFAULT: number = 1;
+const HEIGHT_DEFAULT: number = 1;
 
 export abstract class SceneObject {
   id: string = crypto.randomUUID();
@@ -106,8 +109,8 @@ export abstract class SceneObject {
   }
 
   // dimensions
-  width: number = 1;
-  height: number = 1;
+  width: number = WIDTH_DEFAULT;
+  height: number = HEIGHT_DEFAULT;
 
   // rendering
   isRenderable: boolean;

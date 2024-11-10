@@ -49,8 +49,6 @@ export class NpcObject extends SceneObject implements Interactable {
 
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
-  width = 1;
-  height = 1;
 
   // animation
   animation = {

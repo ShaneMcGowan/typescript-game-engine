@@ -15,8 +15,6 @@ interface Config extends SceneObjectBaseConfig {
 export class ChestObject extends SceneObject implements Interactable {
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
-  width = 1;
-  height = 1;
 
   private isOpen: boolean = false;
   inventory: InventoryItemObject[] = [];

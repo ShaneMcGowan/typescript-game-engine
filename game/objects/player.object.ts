@@ -43,8 +43,6 @@ interface Config extends SceneObjectBaseConfig {
 export class PlayerObject extends SceneObject {
   isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
-  width = 1;
-  height = 1;
 
   targetX: number = -1;
   targetY: number = -1;

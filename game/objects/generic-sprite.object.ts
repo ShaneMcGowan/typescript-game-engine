@@ -24,8 +24,6 @@ interface Config extends SceneObjectBaseConfig {
  */
 export class GenericSpriteObject extends SceneObject {
   isRenderable = true;
-  width = 1;
-  height = 1;
 
   targetX: number = -1;
   targetY: number = -1;
