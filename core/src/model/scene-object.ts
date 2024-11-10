@@ -113,7 +113,6 @@ export abstract class SceneObject {
   height: number = HEIGHT_DEFAULT;
 
   // rendering
-  isRenderable: boolean;
   renderLayer: number;
   renderOpacity: number; // the opacity of the object when rendered (value between 0 and 1)
   renderScale: number; // the scale of the object when rendered
@@ -148,13 +147,19 @@ export abstract class SceneObject {
       this.height = config.height;
     }
 
-    this.isRenderable = config.isRenderable ?? RENDERER_ENABLED_DEFAULT;
+    // NEW
+    this.renderer.enabled = config.isRenderable ?? this.renderer.enabled;
+    this.renderer.layer = config.renderLayer ?? this.renderer.layer;
+    this.renderer.opacity = config.renderOpacity ?? this.renderer.opacity;
+    this.renderer.scale = config.renderScale ?? this.renderer.scale;
+
+    // OLD
     this.renderLayer = config.renderLayer ?? RENDERER_LAYER_DEFAULT;
     this.renderOpacity = config.renderOpacity ?? RENDERER_OPACITY_DEFAULT;
+    this.renderScale = config.renderScale ?? RENDERER_SCALE_DEFAULT;
 
     this.collision.enabled = config.collisionEnabled ?? COLLISION_ENABLED_DEFAULT;
     this.collision.layer = config.collisionLayer ?? COLLISION_LAYER_DEFAULT;
-    this.renderScale = config.renderScale ?? RENDERER_SCALE_DEFAULT;
   }
 
   awake?(): void; // called once at start of frame if awakeRan is false

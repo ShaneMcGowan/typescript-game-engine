@@ -12,7 +12,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class HotbarObject extends SceneObject {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   collisionLayer = DEFAULT_COLLISION_LAYER;
 
@@ -24,6 +23,7 @@ export class HotbarObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
   }
 
   update(delta: number): void { }

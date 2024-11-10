@@ -5,8 +5,6 @@ import { RenderUtils } from '@core/utils/render.utils';
 interface Config extends SceneObjectBaseConfig { }
 
 export class CollisionTestObject extends SceneObject {
-  isRenderable = true;
-
   isColliding: boolean = false;
 
   constructor(
@@ -14,6 +12,8 @@ export class CollisionTestObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+
+    this.renderer.enabled = true;
 
     if (config.width) {
       this.width = config.width;

@@ -34,8 +34,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class TextboxObject extends SceneObject {
-  isRenderable = true;
-
   height = 3;
   width = CanvasConstants.CANVAS_TILE_WIDTH;
   renderLayer = CanvasConstants.UI_RENDER_LAYER;
@@ -78,6 +76,7 @@ export class TextboxObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
 
     if (config.positionX === undefined) {
       this.transform.position.x = 0;

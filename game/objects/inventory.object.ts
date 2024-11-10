@@ -87,7 +87,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class InventoryObject extends SceneObject {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   collisionLayer = DEFAULT_COLLISION_LAYER;
 
@@ -101,6 +100,7 @@ export class InventoryObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
 
     this.scene.globals.disable_player_inputs = true;
     this.chest = config.chest;

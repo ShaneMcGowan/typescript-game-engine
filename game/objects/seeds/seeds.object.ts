@@ -10,7 +10,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class SeedsObject extends SceneObject {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
   spriteX: number = 0;
@@ -18,6 +17,7 @@ export class SeedsObject extends SceneObject {
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
+    this.renderer.enabled = true;
   }
 
   render(context: CanvasRenderingContext2D): void {

@@ -52,7 +52,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class DirtObject extends SceneObject implements Interactable {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
   private spriteX: number = DIRT.x;
@@ -69,6 +68,8 @@ export class DirtObject extends SceneObject implements Interactable {
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
+    this.renderer.enabled = true;
+
     this.cropStage = CropStage.Empty;
   }
 

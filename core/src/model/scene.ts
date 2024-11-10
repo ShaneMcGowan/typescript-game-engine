@@ -248,7 +248,7 @@ export abstract class Scene {
         );
       }
 
-      if (object.render && object.isRenderable) {
+      if (object.render && object.renderer.enabled) {
         object.render(
           this.renderingContext.objects[object.renderLayer]
         );

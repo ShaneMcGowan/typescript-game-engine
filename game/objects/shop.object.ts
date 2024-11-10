@@ -33,7 +33,6 @@ const ITEMS_FOR_SALE: Array<{ type: InventoryItemType, price: number }> = [
 
 
 export class ShopObject extends SceneObject {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   collisionLayer = DEFAULT_COLLISION_LAYER;
 
@@ -44,6 +43,7 @@ export class ShopObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
 
     this.onLeave = config.onLeave;
   }

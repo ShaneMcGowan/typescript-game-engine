@@ -15,7 +15,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ShopItemSellObject extends SceneObject {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
   width: number = 2;
@@ -29,6 +28,7 @@ export class ShopItemSellObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
 
     this.item = config.item;
     this.index = config.index;

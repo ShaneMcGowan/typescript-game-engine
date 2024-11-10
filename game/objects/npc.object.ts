@@ -47,7 +47,6 @@ export class NpcObject extends SceneObject implements Interactable {
   targetX: number = -1;
   targetY: number = -1;
 
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
   // animation
@@ -78,6 +77,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.targetX = this.transform.position.x;
     this.targetY = this.transform.position.y;
     this.collision.enabled = true;
+    this.renderer.enabled = true;
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
     this.following = config.follows;
     this.dialogue = config.dialogue;

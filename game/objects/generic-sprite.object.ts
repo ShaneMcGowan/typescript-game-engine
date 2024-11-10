@@ -12,7 +12,6 @@ interface Config extends SceneObjectBaseConfig {
   spriteY: number;
   spriteWidth?: number;
   spriteHeight?: number;
-  isRenderable?: boolean;
   destroyAtTarget?: boolean; // destroy the object when it reaches its target position
   movementSpeed?: number;
   targetX?: number;
@@ -23,7 +22,6 @@ interface Config extends SceneObjectBaseConfig {
  * A generic sprite object that can be used to render a sprite from a tileset.
  */
 export class GenericSpriteObject extends SceneObject {
-  isRenderable = true;
 
   targetX: number = -1;
   targetY: number = -1;
@@ -42,10 +40,8 @@ export class GenericSpriteObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
 
-    if (config.isRenderable !== undefined) {
-      this.isRenderable = config.isRenderable;
-    }
     this.tileset = config.tileset;
     this.spriteX = config.spriteX;
     this.spriteY = config.spriteY;

@@ -13,7 +13,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ChestObject extends SceneObject implements Interactable {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
   private isOpen: boolean = false;
@@ -22,6 +21,7 @@ export class ChestObject extends SceneObject implements Interactable {
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
     this.collision.enabled = true;
+    this.renderer.enabled = true;
   }
 
   render(context: CanvasRenderingContext2D): void {

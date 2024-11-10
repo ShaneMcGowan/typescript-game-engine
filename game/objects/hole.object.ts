@@ -10,8 +10,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class HoleObject extends SceneObject {
-  isRenderable = true;
-
   private playerConsumed: boolean = false;
 
   constructor(
@@ -19,6 +17,7 @@ export class HoleObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
   }
 
   update(delta: number): void {

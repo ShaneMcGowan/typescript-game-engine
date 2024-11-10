@@ -10,7 +10,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class StartButtonObject extends SceneObject {
-  isRenderable = true;
 
   width = 6;
   height = 2;
@@ -23,6 +22,7 @@ export class StartButtonObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
   }
 
   update(delta: number): void {

@@ -14,7 +14,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class EggObject extends SceneObject implements Interactable {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
 
   // animation
@@ -35,6 +34,7 @@ export class EggObject extends SceneObject implements Interactable {
   ) {
     super(scene, config);
     this.collision.enabled = true;
+    this.renderer.enabled = true;
   }
 
   update(delta: number): void {

@@ -30,7 +30,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ChickenObject extends SceneObject implements Interactable {
-  isRenderable = true;
   renderLayer = DEFAULT_RENDER_LAYER;
   targetX: number = -1;
   targetY: number = -1;
@@ -69,6 +68,7 @@ export class ChickenObject extends SceneObject implements Interactable {
     console.log('[ChickenObject] created');
     super(scene, config);
     this.collision.enabled = true;
+    this.renderer.enabled = true;
     this.targetX = this.transform.position.x;
     this.targetY = this.transform.position.y;
 

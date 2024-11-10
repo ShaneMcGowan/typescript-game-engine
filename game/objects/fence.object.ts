@@ -21,8 +21,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class FenceObject extends SceneObject implements Interactable {
-  isRenderable = true;
-
   private readonly type: { x: number; y: number; } = FenceType.FencePost;
   private open = false;
 
@@ -33,6 +31,7 @@ export class FenceObject extends SceneObject implements Interactable {
     super(scene, config);
 
     this.collision.enabled = true;
+    this.renderer.enabled = true;
 
     if (config.type) {
       this.type = config.type;
