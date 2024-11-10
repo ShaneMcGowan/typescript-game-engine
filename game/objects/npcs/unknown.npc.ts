@@ -43,8 +43,6 @@ export class UnknownNpcObject extends NpcObject {
   }
 
   interact(): void {
-    console.log('[GregNpcObject#interact]');
-
     if (this.stage !== 'idle') {
       return;
     }

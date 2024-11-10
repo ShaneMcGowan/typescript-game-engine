@@ -15,7 +15,7 @@ import { CameraObject } from '@game/objects/camera.object';
 import { HotbarObject } from '@game/objects/hotbar.object';
 import { ShopKeeperObject } from '@game/objects/npcs/shop-keeper.npc';
 import { FenceObject, FenceType } from '@game/objects/fence.object';
-import { ShopObject } from '@game/objects/shop.object';
+import { TransitionObject } from '@core/objects/transition.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -46,7 +46,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    let player = new PlayerObject(scene, { positionX: 3.5, positionY: 4.5, });
+    let player = new PlayerObject(scene, { positionX: 4, positionY: 5, });
     this.objects.push(player);
 
     this.objects.push(new ShopKeeperObject(scene, {
@@ -58,68 +58,23 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new ChickenObject(scene, { positionX: 17, positionY: 11, follows: player, canLayEggs: true, canMove: true, }));
 
     // fences
-    this.objects.push(new CollisionObject(scene, { positionX: 6.5, positionY: 8.5, width: 6 }));
-    this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 8.5, width: 9 }));
-
+    this.objects.push(new CollisionObject(scene, { positionX: 6.5, positionY: 8, width: 6 }));
+    this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 8, width: 9 }));
     this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 12, height: 6 }));
-
-    this.objects.push(new CollisionObject(scene, { positionX: 2.25, positionY: 15.5, width: 4.5 }));
-
+    this.objects.push(new CollisionObject(scene, { positionX: 2.25, positionY: 15, width: 4.5 }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 16, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 17, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 18, type: FenceType.FencePost }));
-
-    this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 19.5, width: 22 }));
-
+    this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 19, width: 22 }));
     this.objects.push(new CameraObject(scene, { object: player, }));
-
-    /*
-
-    // load test
-    // for (let i = 0; i < 20000; i++) {
-    //   this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 10, canMove: true, follows: player, }));
-    // }
-
-    // camera
 
     // fade in
     this.objects.push(new TransitionObject(scene, {
-      animationCenterX: player.positionX,
-      animationCenterY: player.positionY,
+      animationCenterX: player.transform.position.x,
+      animationCenterY: player.transform.position.y,
       animationType: 'circle',
       animationLength: 1,
     }));
 
-    // interval tests
-    this.objects.push(new IntervalObject(scene, {
-      duration: 1,
-      onInterval: () => {
-        // console.log('[onInterval] test interval - max 5');
-      },
-      onDestroy: () => {
-        // console.log('[onDestroy] test interval - max 5');
-      },
-      maxIntervals: 5,
-    }));
-
-    this.objects.push(new IntervalObject(scene, {
-      duration: 1,
-      onInterval: () => {
-        // console.log('[onInterval] test interval - no max');
-      },
-      onDestroy: () => {
-        // console.log('[onDestroy] test interval - no max');
-      },
-    }));
-
-    this.objects.push(new TimerObject(scene, {
-      duration: 1,
-      onComplete: () => {
-        // console.log('test timer');
-      },
-    }));
-
-    // this.objects.push(new GenericSpriteObject(scene, { positionX: 5, positionY: 4, spriteX: 0, spriteY: 0, tileset: 'tileset_sample', }));
-    */
   }
 }

@@ -107,7 +107,4 @@ export class TransitionObject extends SceneObject {
     context.fill();
   }
 
-  destroy(): void {
-    console.log('[TransitionObject] animation complete');
-  }
 }

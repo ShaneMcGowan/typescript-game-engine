@@ -103,10 +103,6 @@ export class ChickenObject extends SceneObject implements Interactable {
     );
   }
 
-  destroy(): void {
-    console.log('[ChickenObject] destroyed');
-  }
-
   private updateAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 4;
     if (this.animationTimer < 3.5) {

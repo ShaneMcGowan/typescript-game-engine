@@ -65,9 +65,6 @@ export class ShopItemSellObject extends SceneObject {
 
     this.scene.globals.gold += this.price;
 
-    console.log(this.scene.globals.gold);
-    console.log(this.item.currentStackSize);
-
     this.scene.removeFromInventory(this.index);
 
     // last of an item being sold, remove from ui

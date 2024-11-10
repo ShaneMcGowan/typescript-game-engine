@@ -48,13 +48,9 @@ export class ShopItemBuyObject extends SceneObject {
       return;
     }
 
-    console.log('updateClicked');
-
     if (!MouseUtils.isMouseWithinObject(this)) {
       return;
     }
-
-    console.log('updateClicked');
 
     Input.clearMousePressed();
 
@@ -62,11 +58,7 @@ export class ShopItemBuyObject extends SceneObject {
       return;
     }
 
-    console.log('updateClicked');
-
     this.scene.globals.gold -= this.price;
-
-    console.log('updateClicked');
 
     this.scene.addToInventory(this.type);
   }

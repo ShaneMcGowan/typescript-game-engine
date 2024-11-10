@@ -53,6 +53,5 @@ export class IntervalObject extends SceneObject {
     if (this.onDestroy) {
       this.onDestroy();
     }
-    console.log('[IntervalObject] destroyed');
   }
 }

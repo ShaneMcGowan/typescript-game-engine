@@ -49,8 +49,6 @@ export class GregNpcObject extends NpcObject {
   }
 
   interact(): void {
-    console.log('[GregNpcObject#interact]');
-
     if (this.stage !== 'idle') {
       return;
     }

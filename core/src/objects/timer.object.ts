@@ -36,7 +36,4 @@ export class TimerObject extends SceneObject {
     }
   }
 
-  destroy(): void {
-    console.log('[TimerObject] destroyed');
-  }
 }

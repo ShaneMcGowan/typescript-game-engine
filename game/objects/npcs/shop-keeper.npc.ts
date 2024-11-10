@@ -42,7 +42,6 @@ export class ShopKeeperObject extends NpcObject {
 
   interact(): void {
     this.scene.globals.disable_player_inputs = true;
-    console.log('[ShopKeeperObject#interact]');
 
     // if (this.stage !== 'idle') {
     //   return;

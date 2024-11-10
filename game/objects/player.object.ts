@@ -191,8 +191,6 @@ export class PlayerObject extends SceneObject {
     // check if can move to position
     // TODO: why isn't this working?
 
-    console.log(movement);
-
     const targetBoundingBox = SceneObject.calculateBoundingBox(
       movement.target.x,
       movement.target.y,
@@ -200,7 +198,6 @@ export class PlayerObject extends SceneObject {
       this.height
     );
 
-    console.log(targetBoundingBox);
     if (this.scene.hasCollisionAtBoundingBox(targetBoundingBox, this)) {
       return;
     }
@@ -553,29 +550,21 @@ export class PlayerObject extends SceneObject {
     let x = Input.mouse.position.x + this.scene.globals.camera.startX;
     let y = Input.mouse.position.y + this.scene.globals.camera.startY;
 
-    console.log('renderCursor');
-
     let item = this.scene.selectedInventoryItem;
     // do not render cursor
     if (item === undefined || item.radius === InventoryItemRadius.None) {
       return;
     }
 
-    console.log(`renderCursor ${item}`);
-
     // don't render cursor ontop of self
     if (x === Math.floor(this.transform.position.x) && y === Math.floor(this.transform.position.y)) {
       return;
     }
 
-    console.log(`renderCursor not on self`);
-
     // don't render cursor if greater than 1 tile away from user
     if (item.radius === InventoryItemRadius.Player && (Math.abs(x - Math.floor(this.transform.position.x)) > 1 || Math.abs(y - Math.floor(this.transform.position.y)) > 1)) {
       return;
     }
-
-    console.log(`renderCursor x: ${x} y: ${y}`);
 
     RenderUtils.fillRectangle(
       context,

@@ -122,7 +122,6 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   private interactStageFullyGrown(): void {
-    console.log(`harvesting fully grown ${this.currentlyGrowing}`);
     switch (this.currentlyGrowing) {
       case InventoryItemType.TomatoSeeds:
         this.scene.addToInventory(InventoryItemType.Tomato);

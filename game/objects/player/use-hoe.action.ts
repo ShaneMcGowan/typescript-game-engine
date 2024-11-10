@@ -10,11 +10,6 @@ export function useHoe(scene: SCENE_GAME, player: PlayerObject): void {
   const mouseX = Input.mouse.position.x;
   const mouseY = Input.mouse.position.y;
 
-  console.log({
-    x: Math.abs(mouseX - playerX),
-    y: Math.abs(mouseY - playerY)
-  })
-
   // don't perform action if player is clicking greater than 1 tile away
   if (Math.abs(mouseX - playerX) > 1 || Math.abs(mouseY - playerY) > 1) {
     return;

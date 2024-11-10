@@ -114,10 +114,6 @@ export class NpcObject extends SceneObject implements Interactable {
     );
   }
 
-  destroy(): void {
-    console.log('[NpcObject#destroy]', this);
-  }
-
   private updateAnimationTimer(delta: number): void {
     this.animation.timer = (this.animation.timer + delta) % this.animations[this.state].duration;
   }
@@ -199,8 +195,6 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    console.log('[NpcObject#interact]');
-
     if (this.dialogue === undefined) {
       return;
     }
