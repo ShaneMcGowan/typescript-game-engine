@@ -1,5 +1,6 @@
 import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { Assets } from '@core/utils/assets.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
@@ -26,7 +27,7 @@ export class SpriteObject extends SceneObject {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images['sprites'],
+      Assets.images['sprites'],
       this.spriteX,
       this.spriteY,
       this.transform.position.x,

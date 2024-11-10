@@ -1,6 +1,5 @@
 import { type SceneConstructorSignature, type Scene } from '../model/scene';
 import { RenderUtils } from '../utils/render.utils';
-import { type AssetsConfig, type Assets } from '../model/assets';
 import { CanvasConstants } from '../constants/canvas.constants';
 import { Input } from '../utils/input.utils';
 import { MouseUtils } from '../utils/mouse.utils';
@@ -36,12 +35,6 @@ export class Client {
   // Data
   private readonly scenes: SceneConstructorSignature[];
   currentScene: Scene;
-
-  // Assets
-  assets: Assets = {
-    images: {},
-    audio: {},
-  };
 
   // Debug
   debug = {
@@ -84,22 +77,11 @@ export class Client {
   constructor(
     public container: HTMLElement,
     openingScene: SceneConstructorSignature,
-    assets: AssetsConfig,
     public engineMapList: HTMLElement | null,
     public engineObjectList: HTMLElement | null,
     public engineObjectDetails: HTMLElement | null,
     private readonly engineControls?: DebugButtons
   ) {
-    // load assets
-    // TODO: some sort of loading screen / rendering delay until assets are loaded
-    Object.keys(assets.images).forEach((key) => {
-      this.assets.images[key] = new Image();
-      this.assets.images[key].src = assets.images[key];
-    });
-    Object.keys(assets.audio).forEach((key) => {
-      this.assets.audio[key] = new Audio(assets.audio[key]);
-    });
-
     // initialise debug controls
     if (this.debug.enabled) {
       this.initialiseDebuggerState();

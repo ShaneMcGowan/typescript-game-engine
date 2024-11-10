@@ -7,6 +7,7 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { InventoryItemType } from '@game/models/inventory-item.model';
+import { Assets } from '@core/utils/assets.utils';
 
 const PORTRAIT: Portrait = {
   tileset: 'tileset_chicken',
@@ -89,7 +90,7 @@ export class ChickenObject extends SceneObject implements Interactable {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
       this.transform.position.x,

@@ -6,6 +6,7 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { InventoryItemObject, TYPE_TO_SELL_VALUE_MAP, TYPE_TO_SPRITE_MAP } from "../inventory-item.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input } from "@core/utils/input.utils";
+import { Assets } from "@core/utils/assets.utils";
 
 
 interface Config extends SceneObjectBaseConfig {
@@ -92,7 +93,7 @@ export class ShopItemSellObject extends SceneObject {
   private renderItem(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[this.sprite.tileset],
+      Assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
       this.transform.position.x,

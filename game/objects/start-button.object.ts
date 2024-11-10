@@ -4,6 +4,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input } from '@core/utils/input.utils';
+import { Assets } from '@core/utils/assets.utils';
 
 interface Config extends SceneObjectBaseConfig {
 
@@ -37,7 +38,7 @@ export class StartButtonObject extends SceneObject {
   private renderStartButton(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images.tileset_button,
+      Assets.images.tileset_button,
       this.clicked ? 6 : 0, // sprite x
       2, // sprite y
       this.transform.position.x,

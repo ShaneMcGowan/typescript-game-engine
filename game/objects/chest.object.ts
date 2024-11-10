@@ -4,6 +4,7 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type InventoryItemObject } from '@game/objects/inventory-item.object';
 import { type Interactable } from '@game/models/interactable.model';
 import { InventoryObject } from '@game/objects/inventory.object';
+import { Assets } from '@core/utils/assets.utils';
 
 const TILE_SET: string = 'tileset_chest';
 const RENDERER_LAYER = 8;
@@ -53,7 +54,7 @@ export class ChestObject extends SceneObject implements Interactable {
     if (this.isOpen) {
       RenderUtils.renderSprite(
         context,
-        this.scene.assets.images[TILE_SET],
+        Assets.images[TILE_SET],
         13,
         0.5,
         this.transform.position.x,
@@ -67,7 +68,7 @@ export class ChestObject extends SceneObject implements Interactable {
     } else {
       RenderUtils.renderSprite(
         context,
-        this.scene.assets.images[TILE_SET],
+        Assets.images[TILE_SET],
         1,
         0.5,
         this.transform.position.x,

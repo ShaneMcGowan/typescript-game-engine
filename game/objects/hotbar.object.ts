@@ -3,6 +3,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type InventoryItemObject } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
+import { Assets } from '@core/utils/assets.utils';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -36,7 +37,7 @@ export class HotbarObject extends SceneObject {
 
     RenderUtils.renderSprite(
       context,
-      this.assets.images.tileset_ui,
+      Assets.images.tileset_ui,
       9,
       9,
       x,
@@ -64,7 +65,7 @@ export class HotbarObject extends SceneObject {
     for (let i = 0; i < 5; i++) {
       RenderUtils.renderSprite(
         context,
-        this.assets.images.tileset_ui,
+        Assets.images.tileset_ui,
         0.5,
         3.5,
         this.boundingBox.left + 1 + (i * 2),
@@ -101,7 +102,7 @@ export class HotbarObject extends SceneObject {
   private renderInventoryItem(context: CanvasRenderingContext2D, tileset: string, stackSize: number, maxStackSize: number, spriteX: number, spriteY: number, positionX: number, positionY: number): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[tileset],
+      Assets.images[tileset],
       spriteX,
       spriteY,
       positionX,

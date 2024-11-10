@@ -1,6 +1,7 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
+import { Assets } from '@core/utils/assets.utils';
 
 const TILESET = 'tileset_plants';
 const RENDERER_LAYER = 7;
@@ -22,7 +23,7 @@ export class SeedsObject extends SceneObject {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.scene.assets.images[TILESET],
+      Assets.images[TILESET],
       this.spriteX,
       this.spriteY,
       this.transform.position.x,

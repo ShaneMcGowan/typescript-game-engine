@@ -3,6 +3,7 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
+import { Assets } from '@core/utils/assets.utils';
 
 export interface Portrait {
   tileset: string;
@@ -201,7 +202,7 @@ export class TextboxObject extends SceneObject {
     // left
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       0,
       0,
       offset,
@@ -209,7 +210,7 @@ export class TextboxObject extends SceneObject {
     );
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       0,
       1,
       offset,
@@ -217,7 +218,7 @@ export class TextboxObject extends SceneObject {
     );
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       0,
       1,
       offset,
@@ -225,7 +226,7 @@ export class TextboxObject extends SceneObject {
     );
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       0,
       2,
       offset,
@@ -236,7 +237,7 @@ export class TextboxObject extends SceneObject {
     for (let i = 1; i < width - 1; i++) {
       RenderUtils.renderSprite(
         context,
-        this.assets.images[TILE_SET],
+        Assets.images[TILE_SET],
         1,
         0,
         offset + i,
@@ -244,7 +245,7 @@ export class TextboxObject extends SceneObject {
       );
       RenderUtils.renderSprite(
         context,
-        this.assets.images[TILE_SET],
+        Assets.images[TILE_SET],
         1,
         1,
         offset + i,
@@ -252,7 +253,7 @@ export class TextboxObject extends SceneObject {
       );
       RenderUtils.renderSprite(
         context,
-        this.assets.images[TILE_SET],
+        Assets.images[TILE_SET],
         1,
         1,
         offset + i,
@@ -260,7 +261,7 @@ export class TextboxObject extends SceneObject {
       );
       RenderUtils.renderSprite(
         context,
-        this.assets.images[TILE_SET],
+        Assets.images[TILE_SET],
         1,
         2,
         offset + i,
@@ -271,7 +272,7 @@ export class TextboxObject extends SceneObject {
     // right
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       2,
       0,
       offset + width - 1,
@@ -279,7 +280,7 @@ export class TextboxObject extends SceneObject {
     );
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       2,
       1,
       offset + width - 1,
@@ -287,7 +288,7 @@ export class TextboxObject extends SceneObject {
     );
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       2,
       1,
       offset + width - 1,
@@ -295,7 +296,7 @@ export class TextboxObject extends SceneObject {
     );
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       2,
       2,
       offset + width - 1,
@@ -332,7 +333,7 @@ export class TextboxObject extends SceneObject {
   private renderPortrait(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[this.portrait.tileset],
+      Assets.images[this.portrait.tileset],
       this.portrait.x,
       this.portrait.y,
       // this.animations.idle[this.animationIndex].x,

@@ -6,6 +6,7 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
+import { Assets } from '@core/utils/assets.utils';
 
 const PORTRAIT: Portrait = {
   tileset: 'tileset_chicken',
@@ -98,7 +99,7 @@ export class NpcObject extends SceneObject implements Interactable {
 
     RenderUtils.renderSprite(
       context,
-      this.assets.images[animation.tileset],
+      Assets.images[animation.tileset],
       frame.spriteX,
       frame.spriteY,
       this.transform.position.x,

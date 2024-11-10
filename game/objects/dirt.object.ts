@@ -4,6 +4,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from '@game/objects/textbox.object';
+import { Assets } from '@core/utils/assets.utils';
 
 const DIRT = { x: 1, y: 1, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
@@ -170,7 +171,7 @@ export class DirtObject extends SceneObject implements Interactable {
     let tileset = this.cropStage === CropStage.Empty ? TILESET_SOIL : TILESET_SOIL_DARKER;
     RenderUtils.renderSprite(
       context,
-      this.scene.assets.images[tileset],
+      Assets.images[tileset],
       this.spriteX,
       this.spriteY,
       this.transform.position.x,
@@ -200,7 +201,7 @@ export class DirtObject extends SceneObject implements Interactable {
 
     RenderUtils.renderSprite(
       context,
-      this.scene.assets.images[sprite.tileset],
+      Assets.images[sprite.tileset],
       sprite.spriteX,
       sprite.spriteY,
       this.transform.position.x,

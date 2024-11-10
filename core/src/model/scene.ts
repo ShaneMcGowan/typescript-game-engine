@@ -4,7 +4,7 @@ import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { type Client } from '@core/client';
-import { type Assets } from './assets';
+import { Assets } from '@core/utils/assets.utils';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
@@ -73,13 +73,11 @@ export abstract class Scene {
 
   // from client
   context: CanvasRenderingContext2D;
-  assets: Assets;
 
   constructor(
     protected client: Client
   ) {
     this.context = this.client.context;
-    this.assets = this.client.assets;
   }
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
@@ -181,7 +179,7 @@ export abstract class Scene {
 
           RenderUtils.renderSprite(
             context,
-            this.assets.images[tile.tileset],
+            Assets.images[tile.tileset],
             animationFrame.spriteX,
             animationFrame.spriteY,
             x,
@@ -221,6 +219,9 @@ export abstract class Scene {
   }
 
   renderObjects(delta: number): void {
+    // TODO(shane): currently each object is rendered onto the onto the screen directly
+    // this should be changed to rendering to an offscreen canvas, then copying the full render to a display canvas
+
     if (this.client.debug.timing.frameRender) {
       console.time('[frame] render');
     }

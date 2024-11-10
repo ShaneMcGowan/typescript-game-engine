@@ -1,6 +1,6 @@
 import { Client } from '@core/client';
 import { EditorUtils } from '@core/editor/editor.utils';
-import { type AssetsConfig } from '@core/model/assets';
+import { Assets, AssetsConfig } from '@core/utils/assets.utils';
 import { type SceneConstructorSignature } from '@core/model/scene';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
 import { SCENE_GAME } from '@game/scenes/game/scene';
@@ -25,7 +25,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
   }
   const scene: SceneConstructorSignature = SCENE_MAP[sceneParam] ?? SCENE_MAIN_MENU;
 
-  const assets: AssetsConfig = {
+  const config: AssetsConfig = {
     images: {
       tileset_sample: 'assets/16x16.png',
       tileset_grass: 'assets/sample/Tilesets/Grass.png',
@@ -47,13 +47,13 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
     },
     audio: {},
   };
+  Assets.initialise(config);
 
   EditorUtils.initHelpers()
 
   window.engine = new Client(
     document.getElementById('render-area'),
     scene,
-    assets,
     EditorUtils.engineMapList,
     EditorUtils.engineObjectList,
     EditorUtils.engineObjectDetails,

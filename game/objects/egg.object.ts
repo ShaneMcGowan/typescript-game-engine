@@ -5,6 +5,7 @@ import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { InventoryItemType } from '@game/models/inventory-item.model';
+import { Assets } from '@core/utils/assets.utils';
 
 const TILE_SET = 'tileset_egg'; // TODO: some sort of enum for tilesets
 const RENDERER_LAYER: number = 7;
@@ -44,7 +45,7 @@ export class EggObject extends SceneObject implements Interactable {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
       this.transform.position.x,

@@ -1,5 +1,6 @@
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
+import { Assets } from '@core/utils/assets.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 
@@ -74,7 +75,7 @@ export class GenericSpriteObject extends SceneObject {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[this.tileset],
+      Assets.images[this.tileset],
       this.spriteX,
       this.spriteY,
       this.transform.position.x,

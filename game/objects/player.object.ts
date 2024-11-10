@@ -19,6 +19,7 @@ import { InventoryObject } from '@game/objects/inventory.object';
 import { useWateringCanOnChicken } from './player/watering-can/use-watering-can-on-chicken.action';
 import { Position } from '@game/models/position.model';
 import { useChest } from './player/use-chest.action';
+import { Assets } from '@core/utils/assets.utils';
 
 enum Direction {
   UP = 'w',
@@ -531,7 +532,7 @@ export class PlayerObject extends SceneObject {
     let animations = this.isIdle ? this.animationsIdle : this.animations;
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       animations[this.direction][this.animationIndex].x, // sprite x
       animations[this.direction][this.animationIndex].y, // sprite y
       this.transform.position.x,

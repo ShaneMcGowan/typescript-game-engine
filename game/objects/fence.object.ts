@@ -1,5 +1,6 @@
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
+import { Assets } from '@core/utils/assets.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type Interactable } from '@game/models/interactable.model';
 
@@ -40,7 +41,7 @@ export class FenceObject extends SceneObject implements Interactable {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[TILE_SET],
+      Assets.images[TILE_SET],
       this.open ? FenceType.Open.x : this.type.x,
       this.open ? FenceType.Open.y : this.type.y,
       this.transform.position.x,

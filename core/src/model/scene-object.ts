@@ -1,7 +1,6 @@
 import { RenderUtils } from '@core/utils/render.utils';
 import { type Scene } from './scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type Assets } from './assets';
 import { Vector } from './vector';
 
 export interface SceneObjectBoundingBox {
@@ -105,7 +104,6 @@ export abstract class SceneObject {
   height: number = HEIGHT_DEFAULT;
 
   protected mainContext: CanvasRenderingContext2D;
-  protected assets: Assets; // TODO: this shouldn't be on the object, leave it on the scene
 
   children = new Array<SceneObject>(); // TODO: begin parent / child objects
   parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
@@ -115,7 +113,6 @@ export abstract class SceneObject {
     config: SceneObjectBaseConfig
   ) {
     this.mainContext = this.scene.context;
-    this.assets = this.scene.assets;
 
     this.transform.position.x = config.positionX ?? this.transform.position.x;
     this.transform.position.y = config.positionY ?? this.transform.position.y;

@@ -5,6 +5,7 @@ import { type ChestObject } from '@game/objects/chest.object';
 import { type InventoryItemObject } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input } from '@core/utils/input.utils';
+import { Assets } from '@core/utils/assets.utils';
 
 const INVENTORY_INDEX_TO_POSITION_MAP = [
   // hot bar
@@ -161,7 +162,7 @@ export class InventoryObject extends SceneObject {
     const y = 15;
     RenderUtils.renderSprite(
       context,
-      this.assets.images.tileset_ui,
+      Assets.images.tileset_ui,
       9,
       9,
       x,
@@ -229,7 +230,7 @@ export class InventoryObject extends SceneObject {
     for (let i = 0; i < this.scene.globals.hotbar_size; i++) {
       RenderUtils.renderSprite(
         context,
-        this.assets.images.tileset_ui,
+        Assets.images.tileset_ui,
         0.5,
         3.5,
         positionX + (i * 2),
@@ -398,7 +399,7 @@ export class InventoryObject extends SceneObject {
   private renderInventoryItem(context: CanvasRenderingContext2D, tileset: string, stackSize: number, maxStackSize: number, spriteX: number, spriteY: number, positionX: number, positionY: number): void {
     RenderUtils.renderSprite(
       context,
-      this.assets.images[tileset],
+      Assets.images[tileset],
       spriteX,
       spriteY,
       positionX,
