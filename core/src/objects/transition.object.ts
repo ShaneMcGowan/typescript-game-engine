@@ -24,8 +24,6 @@ interface Config extends SceneObjectBaseConfig {
  * An object that performs a transition animation
  */
 export class TransitionObject extends SceneObject {
-  readonly renderLayer = CanvasConstants.UI_RENDER_LAYER;
-
   private animationTimer = 0;
   private readonly animationType: AnimationType;
   private readonly animationDirection: AnimationDirection;
@@ -40,6 +38,7 @@ export class TransitionObject extends SceneObject {
     super(scene, config);
 
     this.renderer.enabled = true;
+    this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
 
     this.animationType = config.animationType ?? DEFAULT_ANIMATION_TYPE;
     this.animationDirection = config.animationDirection ?? DEFAULT_ANIMATION_DIRECTION;

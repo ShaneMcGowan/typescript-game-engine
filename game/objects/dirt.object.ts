@@ -13,7 +13,7 @@ const DIRT_RIGHT = { x: 1.5, y: 3, };
 const TILESET_SOIL = 'tileset_dirt';
 const TILESET_SOIL_DARKER = 'tileset_dirt';
 
-const DEFAULT_RENDER_LAYER = 6;
+const RENDERER_LAYER = 6;
 const DRY_COUNTER_MAX = 15; // seconds until dirt dries up
 const GROW_COUNTER_MAX = 5; // seconds until plant grows
 const SPOIL_COUNTER_MAX = 60 * 60 * 24; // seconds until plant spoils
@@ -52,8 +52,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class DirtObject extends SceneObject implements Interactable {
-  renderLayer = DEFAULT_RENDER_LAYER;
-
   private spriteX: number = DIRT.x;
   private spriteY: number = DIRT.y;
 
@@ -69,6 +67,7 @@ export class DirtObject extends SceneObject implements Interactable {
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
     this.renderer.enabled = true;
+    this.renderer.layer = RENDERER_LAYER;
 
     this.cropStage = CropStage.Empty;
   }

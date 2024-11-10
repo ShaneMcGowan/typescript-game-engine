@@ -3,21 +3,20 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 
 const TILESET = 'tileset_plants';
-const DEFAULT_RENDER_LAYER = 7;
+const RENDERER_LAYER = 7;
 
 interface Config extends SceneObjectBaseConfig {
 
 }
 
 export class SeedsObject extends SceneObject {
-  renderLayer = DEFAULT_RENDER_LAYER;
-
   spriteX: number = 0;
   spriteY: number = 0;
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
     this.renderer.enabled = true;
+    this.renderer.layer = RENDERER_LAYER;
   }
 
   render(context: CanvasRenderingContext2D): void {

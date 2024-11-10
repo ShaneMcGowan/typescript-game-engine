@@ -6,7 +6,6 @@ import { type InventoryItemObject } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input } from '@core/utils/input.utils';
 
-const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
 const INVENTORY_INDEX_TO_POSITION_MAP = [
   // hot bar
@@ -87,7 +86,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class InventoryObject extends SceneObject {
-  renderLayer = DEFAULT_RENDER_LAYER;
   collisionLayer = DEFAULT_COLLISION_LAYER;
 
   private showInventory: boolean = true;
@@ -101,6 +99,7 @@ export class InventoryObject extends SceneObject {
   ) {
     super(scene, config);
     this.renderer.enabled = true;
+    this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
 
     this.scene.globals.disable_player_inputs = true;
     this.chest = config.chest;

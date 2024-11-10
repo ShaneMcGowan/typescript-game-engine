@@ -112,11 +112,6 @@ export abstract class SceneObject {
   width: number = WIDTH_DEFAULT;
   height: number = HEIGHT_DEFAULT;
 
-  // rendering
-  renderLayer: number;
-  renderOpacity: number; // the opacity of the object when rendered (value between 0 and 1)
-  renderScale: number; // the scale of the object when rendered
-
   protected mainContext: CanvasRenderingContext2D;
   protected assets: Assets; // TODO: this shouldn't be on the object, leave it on the scene
 
@@ -147,16 +142,10 @@ export abstract class SceneObject {
       this.height = config.height;
     }
 
-    // NEW
     this.renderer.enabled = config.isRenderable ?? this.renderer.enabled;
     this.renderer.layer = config.renderLayer ?? this.renderer.layer;
     this.renderer.opacity = config.renderOpacity ?? this.renderer.opacity;
     this.renderer.scale = config.renderScale ?? this.renderer.scale;
-
-    // OLD
-    this.renderLayer = config.renderLayer ?? RENDERER_LAYER_DEFAULT;
-    this.renderOpacity = config.renderOpacity ?? RENDERER_OPACITY_DEFAULT;
-    this.renderScale = config.renderScale ?? RENDERER_SCALE_DEFAULT;
 
     this.collision.enabled = config.collisionEnabled ?? COLLISION_ENABLED_DEFAULT;
     this.collision.layer = config.collisionLayer ?? COLLISION_LAYER_DEFAULT;

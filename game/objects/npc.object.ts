@@ -13,7 +13,7 @@ const PORTRAIT: Portrait = {
   y: 0
 }
 
-const DEFAULT_RENDER_LAYER: number = 8;
+const RENDERER_LAYER: number = 8;
 const DEFAULT_CAN_MOVE: boolean = false;
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_chicken', [
@@ -47,8 +47,6 @@ export class NpcObject extends SceneObject implements Interactable {
   targetX: number = -1;
   targetY: number = -1;
 
-  renderLayer = DEFAULT_RENDER_LAYER;
-
   // animation
   animation = {
     index: 0,
@@ -74,10 +72,12 @@ export class NpcObject extends SceneObject implements Interactable {
     config: NpcObjectConfig
   ) {
     super(scene, config);
-    this.targetX = this.transform.position.x;
-    this.targetY = this.transform.position.y;
     this.collision.enabled = true;
     this.renderer.enabled = true;
+    this.renderer.layer = RENDERER_LAYER;
+    
+    this.targetX = this.transform.position.x;
+    this.targetY = this.transform.position.y;
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
     this.following = config.follows;
     this.dialogue = config.dialogue;
@@ -106,8 +106,8 @@ export class NpcObject extends SceneObject implements Interactable {
       undefined,
       undefined,
       {
-        opacity: this.renderOpacity,
-        scale: this.renderScale,
+        opacity: this.renderer.opacity,
+        scale: this.renderer.scale,
         centered: true,
       }
     );

@@ -244,19 +244,19 @@ export abstract class Scene {
 
       if (this.client.debug.object.renderBackground) {
         object.debuggerRenderBackground(
-          this.renderingContext.objects[object.renderLayer]
+          this.renderingContext.objects[object.renderer.layer]
         );
       }
 
       if (object.render && object.renderer.enabled) {
         object.render(
-          this.renderingContext.objects[object.renderLayer]
+          this.renderingContext.objects[object.renderer.layer]
         );
       }
 
       if (this.client.debug.object.renderBoundary) {
         object.debuggerRenderBoundary(
-          this.renderingContext.objects[object.renderLayer]
+          this.renderingContext.objects[object.renderer.layer]
         );
       }
     }

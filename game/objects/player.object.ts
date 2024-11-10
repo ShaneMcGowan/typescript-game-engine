@@ -35,14 +35,12 @@ enum Controls {
 
 const TILE_SET = 'tileset_player';
 
-const DEFAULT_RENDER_LAYER: number = 10;
+const RENDERER_LAYER: number = 10;
 
 interface Config extends SceneObjectBaseConfig {
 }
 
 export class PlayerObject extends SceneObject {
-  renderLayer = DEFAULT_RENDER_LAYER;
-
   targetX: number = -1;
   targetY: number = -1;
 
@@ -87,6 +85,8 @@ export class PlayerObject extends SceneObject {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
+    this.renderer.layer = RENDERER_LAYER;
+
     this.targetX = this.transform.position.x;
     this.targetY = this.transform.position.y;
 

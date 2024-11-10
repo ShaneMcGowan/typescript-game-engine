@@ -15,7 +15,7 @@ const PORTRAIT: Portrait = {
 }
 
 const TILE_SET: string = 'tileset_chicken';
-const DEFAULT_RENDER_LAYER: number = 8;
+const RENDERER_LAYER: number = 8;
 
 const DEFAULT_CAN_LAY_EGGS: boolean = false;
 const DEFAULT_CAN_MOVE: boolean = false;
@@ -30,7 +30,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ChickenObject extends SceneObject implements Interactable {
-  renderLayer = DEFAULT_RENDER_LAYER;
   targetX: number = -1;
   targetY: number = -1;
 
@@ -69,6 +68,8 @@ export class ChickenObject extends SceneObject implements Interactable {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
+    this.renderer.layer = RENDERER_LAYER;
+
     this.targetX = this.transform.position.x;
     this.targetY = this.transform.position.y;
 

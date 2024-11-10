@@ -7,15 +7,13 @@ import { type Interactable } from '@game/models/interactable.model';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 
 const TILE_SET = 'tileset_egg'; // TODO: some sort of enum for tilesets
-const DEFAULT_RENDER_LAYER: number = 7;
+const RENDERER_LAYER: number = 7;
 
 interface Config extends SceneObjectBaseConfig {
 
 }
 
 export class EggObject extends SceneObject implements Interactable {
-  renderLayer = DEFAULT_RENDER_LAYER;
-
   // animation
   animations = {
     idle: [{ x: 0, y: 0, }, { x: 1, y: 0, }],
@@ -35,6 +33,7 @@ export class EggObject extends SceneObject implements Interactable {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
+    this.renderer.layer = RENDERER_LAYER;
   }
 
   update(delta: number): void {

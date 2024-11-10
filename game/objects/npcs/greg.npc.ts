@@ -124,9 +124,10 @@ export class GregNpcObject extends NpcObject {
   private updateStageBye(delta: number): void {
     this.stageByeTimer += delta;
 
-    this.renderScale = 1 - (this.stageByeTimer / this.stageByeDuration);
+    this.renderer.scale = 1 - (this.stageByeTimer / this.stageByeDuration);
     if (this.stageByeTimer >= this.stageByeDuration) {
       this.scene.removeObjectById(this.id);
     }
   }
+
 }

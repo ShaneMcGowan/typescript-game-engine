@@ -7,7 +7,6 @@ import { InventoryItemObject, TYPE_TO_SELL_VALUE_MAP, TYPE_TO_SPRITE_MAP } from 
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input } from "@core/utils/input.utils";
 
-const DEFAULT_RENDER_LAYER: number = CanvasConstants.UI_RENDER_LAYER;
 
 interface Config extends SceneObjectBaseConfig {
   item: InventoryItemObject;
@@ -15,8 +14,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ShopItemSellObject extends SceneObject {
-  renderLayer = DEFAULT_RENDER_LAYER;
-
   width: number = 2;
   height: number = 2;
 
@@ -29,6 +26,7 @@ export class ShopItemSellObject extends SceneObject {
   ) {
     super(scene, config);
     this.renderer.enabled = true;
+    this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
 
     this.item = config.item;
     this.index = config.index;

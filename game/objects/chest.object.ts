@@ -6,14 +6,13 @@ import { type Interactable } from '@game/models/interactable.model';
 import { InventoryObject } from '@game/objects/inventory.object';
 
 const TILE_SET: string = 'tileset_chest';
-const DEFAULT_RENDER_LAYER = 8;
+const RENDERER_LAYER = 8;
 
 interface Config extends SceneObjectBaseConfig {
 
 }
 
 export class ChestObject extends SceneObject implements Interactable {
-  renderLayer = DEFAULT_RENDER_LAYER;
 
   private isOpen: boolean = false;
   inventory: InventoryItemObject[] = [];
@@ -22,6 +21,7 @@ export class ChestObject extends SceneObject implements Interactable {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
+    this.renderer.layer = RENDERER_LAYER;
   }
 
   render(context: CanvasRenderingContext2D): void {
