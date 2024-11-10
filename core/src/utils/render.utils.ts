@@ -3,7 +3,7 @@ import { CanvasConstants } from '../constants/canvas.constants';
 export abstract class RenderUtils {
   static renderSprite(
     context: CanvasRenderingContext2D,
-    spriteSheet: HTMLImageElement,
+    spriteSheet: HTMLImageElement, // TODO(shane): rather than having to call Assets.images[TILE_SET] all over the place when using this, change this to a user defined ENUM and call Assets.images[TILE_SET] internally, allowing for cleaner code and type safety
     spriteX: number,
     spriteY: number,
     positionX: number,
