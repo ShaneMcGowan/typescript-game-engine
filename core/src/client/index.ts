@@ -26,15 +26,18 @@ export class Client {
   private readonly CANVAS_HEIGHT: number = CanvasConstants.CANVAS_HEIGHT;
   private readonly CANVAS_WIDTH: number = CanvasConstants.CANVAS_WIDTH;
 
-  // UI
-  public canvas: HTMLCanvasElement;
-  public context: CanvasRenderingContext2D;
-  public delta: number = 0;
+  // display canvas - used for display, copies the fully rendered frame from the in memory render canvas
+  private readonly displayCanvas: HTMLCanvasElement;
+  private readonly displayContext: CanvasRenderingContext2D;
+
+  // render canvas - in memory canvas used for building a frame that will then be pushed to the display canvas once it is complete
+  private readonly renderCanvas: HTMLCanvasElement;
+  public readonly renderContext: CanvasRenderingContext2D;
+
+  private delta: number = 0;
   private lastRenderTimestamp: number = 0;
 
-  // Data
-  private readonly scenes: SceneConstructorSignature[];
-  currentScene: Scene;
+  scene: Scene;
 
   // Debug
   debug = {
@@ -88,12 +91,16 @@ export class Client {
       this.initialiseDebuggerListeners();
     }
 
-    // initialise canvas
-    this.canvas = this.createCanvas();
-    this.context = RenderUtils.getContext(this.canvas);
+    // initialise display canvas
+    this.displayCanvas = this.createCanvas();
+    this.displayContext = RenderUtils.getContext(this.displayCanvas);
+
+    // initialise render canvas
+    this.renderCanvas = this.createCanvas();
+    this.renderContext = RenderUtils.getContext(this.renderCanvas);
 
     // attach canvas to ui
-    container.append(this.canvas);
+    container.append(this.displayCanvas);
 
     // handle tabbed out state
     document.addEventListener('visibilitychange', (event) => {
@@ -136,7 +143,7 @@ export class Client {
 
   // TODO: need some sort of scene class list type
   changeScene(sceneClass: SceneConstructorSignature): void {
-    this.currentScene = Reflect.construct(sceneClass, [this]);
+    this.scene = Reflect.construct(sceneClass, [this]);
   }
 
   /**
@@ -156,11 +163,15 @@ export class Client {
     // Set Delata
     this.setDelta(timestamp);
 
-    // Clear canvas before render
-    RenderUtils.clearCanvas(this.context);
+    // Clear render canvas before render
+    RenderUtils.clearCanvas(this.renderContext);
 
     // run frame logic
-    this.currentScene.frame(this.delta);
+    this.scene.frame(this.delta);
+
+    // copy full frame from render canvas to display canvas
+    RenderUtils.clearCanvas(this.displayContext);
+    this.displayContext.drawImage(this.renderCanvas, 0, 0);
 
     // Render stats
     if (this.debug.stats.fps) {
@@ -170,15 +181,15 @@ export class Client {
       this.debug.stats.fpsCounter = timestamp;
     }
     if (this.debug.stats.objectCount) {
-      this.renderStats(1, 'Objects', `${this.currentScene.objects.length} objects`);
+      this.renderStats(1, 'Objects', `${this.scene.objects.length} objects`);
     }
 
     // debug grid
     this.renderGrid();
 
     // check for map change
-    if (this.currentScene.flaggedForMapChange) {
-      this.currentScene.changeMap(this.currentScene.flaggedForMapChange);
+    if (this.scene.flaggedForMapChange) {
+      this.scene.changeMap(this.scene.flaggedForMapChange);
     }
 
     // update engine
@@ -203,20 +214,20 @@ export class Client {
   }
 
   private renderStats(index: number, label: string, value: string): void {
-    this.context.fillStyle = 'red';
-    this.context.font = '12px serif';
-    this.context.fillText(value, this.CANVAS_WIDTH - 50, (index + 1) * CanvasConstants.TILE_SIZE);
+    this.renderContext.fillStyle = 'red';
+    this.renderContext.font = '12px serif';
+    this.renderContext.fillText(value, this.CANVAS_WIDTH - 50, (index + 1) * CanvasConstants.TILE_SIZE);
   }
 
   private renderGrid(): void {
     if (this.debug.ui.grid.lines || this.debug.ui.grid.numbers) {
-      RenderUtils.fillRectangle(this.context, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, { colour: 'rgba(0, 0, 0, 0.25)', });
+      RenderUtils.fillRectangle(this.renderContext, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, { colour: 'rgba(0, 0, 0, 0.25)', });
     }
 
     if (this.debug.ui.grid.lines) {
       for (let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE) {
         for (let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE) {
-          RenderUtils.strokeRectangle(this.context, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black', });
+          RenderUtils.strokeRectangle(this.renderContext, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black', });
         }
       }
     }
@@ -224,10 +235,10 @@ export class Client {
     if (this.debug.ui.grid.numbers) {
       for (let x = 0; x < CanvasConstants.CANVAS_TILE_WIDTH; x++) {
         for (let y = 0; y < CanvasConstants.CANVAS_TILE_HEIGHT; y++) {
-          this.context.fillStyle = 'black';
-          this.context.font = '8px helvetica';
-          this.context.fillText(`${x}`, (x * CanvasConstants.TILE_SIZE) + 1, (y * CanvasConstants.TILE_SIZE) + 8); // 8 is 8 px
-          this.context.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
+          this.renderContext.fillStyle = 'black';
+          this.renderContext.font = '8px helvetica';
+          this.renderContext.fillText(`${x}`, (x * CanvasConstants.TILE_SIZE) + 1, (y * CanvasConstants.TILE_SIZE) + 8); // 8 is 8 px
+          this.renderContext.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
         }
       }
     }
@@ -305,7 +316,7 @@ export class Client {
 
     if (this.engineControls.fullscreen) {
       this.engineControls.fullscreen.addEventListener('click', () => {
-        this.canvas.requestFullscreen().catch((error) => {
+        this.displayCanvas.requestFullscreen().catch((error) => {
           throw new Error(error);
         });
       });
@@ -338,13 +349,13 @@ export class Client {
 
   private initialiseMouseListeners(): void {
     console.log('[listener added] mousemove');
-    this.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-      Input.mouse.position = MouseUtils.getMousePosition(this.canvas, event);
+    this.renderCanvas.addEventListener('mousemove', (event: MouseEvent) => {
+      Input.mouse.position = MouseUtils.getMousePosition(this.renderCanvas, event);
       Input.mouse.latestEvent = event;
     });
 
     console.log('[listener added] mousedown');
-    this.canvas.addEventListener('mousedown', (event: MouseEvent) => {
+    this.renderCanvas.addEventListener('mousedown', (event: MouseEvent) => {
       console.log('[mousedown]', event);
       switch (event.button) {
         case 0:
@@ -360,7 +371,7 @@ export class Client {
     });
 
     console.log('[listener added] mouseup');
-    this.canvas.addEventListener('mouseup', (event: MouseEvent) => {
+    this.renderCanvas.addEventListener('mouseup', (event: MouseEvent) => {
       console.log('[mouseup]', event);
       switch (event.button) {
         case 0:
@@ -377,21 +388,21 @@ export class Client {
 
     // touch - this is for mobile only
     console.log('[listener added] touchstart');
-    this.canvas.addEventListener('touchstart', (event: TouchEvent) => {
+    this.renderCanvas.addEventListener('touchstart', (event: TouchEvent) => {
       console.log('[touchstart]', event);
       Input.mouse.click.left = true;
     });
 
     // touch - this is for mobile only
     console.log('[listener added] touchend');
-    this.canvas.addEventListener('touchend', (event: TouchEvent) => {
+    this.renderCanvas.addEventListener('touchend', (event: TouchEvent) => {
       console.log('[touchend]', event);
       Input.mouse.click.left = false;
     });
 
     // for mouse scroll
     console.log('[listener added] wheel');
-    this.canvas.addEventListener('wheel', (event: WheelEvent) => {
+    this.renderCanvas.addEventListener('wheel', (event: WheelEvent) => {
       console.log('[wheel]', event);
       Input.mouse.wheel.event = event;
     });
@@ -442,7 +453,7 @@ export class Client {
     this.engineObjectList.innerHTML = '';
     this.engineObjectList.appendChild(list);
 
-    this.currentScene.objects.forEach((object) => {
+    this.scene.objects.forEach((object) => {
       let item = document.createElement('li');
       item.innerHTML = object.constructor.name;
       list.appendChild(item);
@@ -463,7 +474,7 @@ export class Client {
       return;
     }
 
-    let object = this.currentScene.objects.find((object) => object.id === this.engineSelectedObjectId);
+    let object = this.scene.objects.find((object) => object.id === this.engineSelectedObjectId);
     if (object === undefined) {
       return;
     }

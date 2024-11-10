@@ -38,7 +38,7 @@ export class EditorUtils {
   }
 
   static initHelpers(): void {
-    window.o = (id: string) => { return window.engine.currentScene.objects.find(o => o.id === id); };
+    window.o = (id: string) => { return window.engine.scene.objects.find(o => o.id === id); };
   }
 
   static changeScene(sceneClass: SceneConstructorSignature): void {
@@ -46,6 +46,6 @@ export class EditorUtils {
   }
 
   static changeMap(mapClass: SceneMapConstructorSignature): void {
-    window.engine.currentScene.changeMap(mapClass);
+    window.engine.scene.changeMap(mapClass);
   }
 }

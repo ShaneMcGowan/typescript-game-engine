@@ -63,7 +63,7 @@ export abstract class Scene {
   flaggedForMapChange: SceneMapConstructorSignature | undefined = undefined; // if this is set, the scene will change to the map of the provided class on the next frame
   map: SceneMap; // the current map
 
-  // rendering contexts
+  // store an in memory canvas for each background layer and each rendering layer (based on CanvasConstants.OBJECT_RENDERING_LAYERS)
   renderingContext: SceneRenderingContext = {
     background: [],
     objects: [],
@@ -77,7 +77,7 @@ export abstract class Scene {
   constructor(
     protected client: Client
   ) {
-    this.context = this.client.context;
+    this.context = this.client.renderContext;
   }
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
