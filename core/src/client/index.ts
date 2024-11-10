@@ -214,20 +214,20 @@ export class Client {
   }
 
   private renderStats(index: number, label: string, value: string): void {
-    this.renderContext.fillStyle = 'red';
-    this.renderContext.font = '12px serif';
-    this.renderContext.fillText(value, this.CANVAS_WIDTH - 50, (index + 1) * CanvasConstants.TILE_SIZE);
+    this.displayContext.fillStyle = 'red';
+    this.displayContext.font = '12px serif';
+    this.displayContext.fillText(value, this.CANVAS_WIDTH - 50, (index + 1) * CanvasConstants.TILE_SIZE);
   }
 
   private renderGrid(): void {
     if (this.debug.ui.grid.lines || this.debug.ui.grid.numbers) {
-      RenderUtils.fillRectangle(this.renderContext, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, { colour: 'rgba(0, 0, 0, 0.25)', });
+      RenderUtils.fillRectangle(this.displayContext, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, { colour: 'rgba(0, 0, 0, 0.25)', });
     }
 
     if (this.debug.ui.grid.lines) {
       for (let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE) {
         for (let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE) {
-          RenderUtils.strokeRectangle(this.renderContext, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black', });
+          RenderUtils.strokeRectangle(this.displayContext, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black', });
         }
       }
     }
@@ -235,10 +235,10 @@ export class Client {
     if (this.debug.ui.grid.numbers) {
       for (let x = 0; x < CanvasConstants.CANVAS_TILE_WIDTH; x++) {
         for (let y = 0; y < CanvasConstants.CANVAS_TILE_HEIGHT; y++) {
-          this.renderContext.fillStyle = 'black';
-          this.renderContext.font = '8px helvetica';
-          this.renderContext.fillText(`${x}`, (x * CanvasConstants.TILE_SIZE) + 1, (y * CanvasConstants.TILE_SIZE) + 8); // 8 is 8 px
-          this.renderContext.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
+          this.displayContext.fillStyle = 'black';
+          this.displayContext.font = '8px helvetica';
+          this.displayContext.fillText(`${x}`, (x * CanvasConstants.TILE_SIZE) + 1, (y * CanvasConstants.TILE_SIZE) + 8); // 8 is 8 px
+          this.displayContext.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
         }
       }
     }
@@ -349,13 +349,13 @@ export class Client {
 
   private initialiseMouseListeners(): void {
     console.log('[listener added] mousemove');
-    this.renderCanvas.addEventListener('mousemove', (event: MouseEvent) => {
-      Input.mouse.position = MouseUtils.getMousePosition(this.renderCanvas, event);
+    this.displayCanvas.addEventListener('mousemove', (event: MouseEvent) => {
+      Input.mouse.position = MouseUtils.getMousePosition(this.displayCanvas, event);
       Input.mouse.latestEvent = event;
     });
 
     console.log('[listener added] mousedown');
-    this.renderCanvas.addEventListener('mousedown', (event: MouseEvent) => {
+    this.displayCanvas.addEventListener('mousedown', (event: MouseEvent) => {
       console.log('[mousedown]', event);
       switch (event.button) {
         case 0:
@@ -371,7 +371,7 @@ export class Client {
     });
 
     console.log('[listener added] mouseup');
-    this.renderCanvas.addEventListener('mouseup', (event: MouseEvent) => {
+    this.displayCanvas.addEventListener('mouseup', (event: MouseEvent) => {
       console.log('[mouseup]', event);
       switch (event.button) {
         case 0:
@@ -388,21 +388,21 @@ export class Client {
 
     // touch - this is for mobile only
     console.log('[listener added] touchstart');
-    this.renderCanvas.addEventListener('touchstart', (event: TouchEvent) => {
+    this.displayCanvas.addEventListener('touchstart', (event: TouchEvent) => {
       console.log('[touchstart]', event);
       Input.mouse.click.left = true;
     });
 
     // touch - this is for mobile only
     console.log('[listener added] touchend');
-    this.renderCanvas.addEventListener('touchend', (event: TouchEvent) => {
+    this.displayCanvas.addEventListener('touchend', (event: TouchEvent) => {
       console.log('[touchend]', event);
       Input.mouse.click.left = false;
     });
 
     // for mouse scroll
     console.log('[listener added] wheel');
-    this.renderCanvas.addEventListener('wheel', (event: WheelEvent) => {
+    this.displayCanvas.addEventListener('wheel', (event: WheelEvent) => {
       console.log('[wheel]', event);
       Input.mouse.wheel.event = event;
     });
