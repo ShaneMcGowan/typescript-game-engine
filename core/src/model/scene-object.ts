@@ -72,7 +72,7 @@ const WIDTH_DEFAULT: number = 1;
 const HEIGHT_DEFAULT: number = 1;
 
 export abstract class SceneObject {
-  id: string = crypto.randomUUID();
+  readonly id: string = crypto.randomUUID();
 
   readonly transform: Transform = {
     position: TRANSFORM_POSITION_DEFAULT(),
