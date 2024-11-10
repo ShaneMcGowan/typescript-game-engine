@@ -69,10 +69,6 @@ export abstract class Scene {
     objects: [],
   };
 
-  // for firing events
-  private readonly eventEmitter: Element = document.createElement('eventEmitter');
-  readonly eventTypes: Record<string, string> = {}; // TODO: some way typing this so there is intellisense for event types for a scene
-
   private customRenderer?: CustomRendererSignature;
 
   // from client

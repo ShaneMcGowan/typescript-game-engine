@@ -64,7 +64,6 @@ export class ChickenObject extends SceneObject implements Interactable {
     protected scene: SCENE_GAME,
     config: Config
   ) {
-    console.log('[ChickenObject] created');
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;

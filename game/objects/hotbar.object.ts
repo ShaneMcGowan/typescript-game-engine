@@ -4,15 +4,10 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type InventoryItemObject } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 
-const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
-
 interface Config extends SceneObjectBaseConfig {
-
 }
 
 export class HotbarObject extends SceneObject {
-  collisionLayer = DEFAULT_COLLISION_LAYER;
-
   height: number = 2;
   width: number = 10;
 
@@ -23,6 +18,7 @@ export class HotbarObject extends SceneObject {
     super(scene, config);
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
+    this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
   }
 
   update(delta: number): void { }

@@ -9,8 +9,6 @@ import { InventoryItemType } from '@game/models/inventory-item.model';
 import { ShopItemSellObject } from './shop/shop-item-sell.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
 
-const DEFAULT_COLLISION_LAYER: number = CanvasConstants.UI_COLLISION_LAYER;
-
 enum Controls {
   Close = 'tab',
 }
@@ -32,7 +30,6 @@ const ITEMS_FOR_SALE: Array<{ type: InventoryItemType, price: number }> = [
 
 
 export class ShopObject extends SceneObject {
-  collisionLayer = DEFAULT_COLLISION_LAYER;
 
   onLeave?: () => void;
 
@@ -43,6 +40,7 @@ export class ShopObject extends SceneObject {
     super(scene, config);
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
+    this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
 
     this.onLeave = config.onLeave;
   }

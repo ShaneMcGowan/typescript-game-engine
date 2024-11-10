@@ -3,10 +3,6 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 
 interface Config extends SceneObjectBaseConfig {
-  positionX: number;
-  positionY: number;
-  width: number;
-  height: number;
   tileset: string;
   spriteY: number;
   spriteX: number;
@@ -19,14 +15,12 @@ export class SpriteObject extends SceneObject {
 
   constructor(protected scene: Scene, config: Config) {
     super(scene, config);
+    this.collision.enabled = true;
+    this.renderer.enabled = true;
 
-    this.width = config.width;
-    this.height = config.height;
     this.tileset = config.tileset;
     this.spriteX = config.spriteX;
     this.spriteY = config.spriteY;
-    this.collision.enabled = true;
-    this.renderer.enabled = true;
   }
 
   render(context: CanvasRenderingContext2D): void {

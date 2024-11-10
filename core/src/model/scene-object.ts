@@ -19,7 +19,7 @@ interface Transform {
 
 interface Collision {
   enabled: boolean;
-  layer: number;
+  layer: number; // used to decide whether objects will collide with each other
 }
 
 interface Renderer {
@@ -39,10 +39,11 @@ interface Flags {
 export interface SceneObjectBaseConfig {
   positionX?: number;
   positionY?: number;
+
   width?: number;
   height?: number;
 
-  isRenderable?: boolean;
+  renderEnabled?: boolean;
   renderLayer?: number;
   renderOpacity?: number;
   renderScale?: number;
@@ -99,15 +100,6 @@ export abstract class SceneObject {
     destroy: FLAGS_DESTROY_DEFAULT,
   };
 
-  get boundingBox(): SceneObjectBoundingBox {
-    return SceneObject.calculateBoundingBox(
-      this.transform.position.x,
-      this.transform.position.y,
-      this.width,
-      this.height
-    );
-  }
-
   // dimensions
   width: number = WIDTH_DEFAULT;
   height: number = HEIGHT_DEFAULT;
@@ -125,36 +117,34 @@ export abstract class SceneObject {
     this.mainContext = this.scene.context;
     this.assets = this.scene.assets;
 
-    // position default
-    if (config.positionX !== undefined) {
-      this.transform.position.x = config.positionX;
-    }
+    this.transform.position.x = config.positionX ?? this.transform.position.x;
+    this.transform.position.y = config.positionY ?? this.transform.position.y;
 
-    if (config.positionY !== undefined) {
-      this.transform.position.y = config.positionY;
-    }
+    this.collision.enabled = config.collisionEnabled ?? COLLISION_ENABLED_DEFAULT;
+    this.collision.layer = config.collisionLayer ?? COLLISION_LAYER_DEFAULT;
 
-    if (config.width !== undefined) {
-      this.width = config.width;
-    }
-
-    if (config.height !== undefined) {
-      this.height = config.height;
-    }
-
-    this.renderer.enabled = config.isRenderable ?? this.renderer.enabled;
+    this.renderer.enabled = config.renderEnabled ?? this.renderer.enabled;
     this.renderer.layer = config.renderLayer ?? this.renderer.layer;
     this.renderer.opacity = config.renderOpacity ?? this.renderer.opacity;
     this.renderer.scale = config.renderScale ?? this.renderer.scale;
 
-    this.collision.enabled = config.collisionEnabled ?? COLLISION_ENABLED_DEFAULT;
-    this.collision.layer = config.collisionLayer ?? COLLISION_LAYER_DEFAULT;
+    this.width = config.width ?? this.width;
+    this.height = config.height ?? this.height;
   }
 
   awake?(): void; // called once at start of frame if awakeRan is false
   update?(delta: number): void; // called every frame after awake
   render?(context: CanvasRenderingContext2D): void; // called every frame after update
   destroy?(): void; // called once after render if flaggedForDestroy is true
+
+  get boundingBox(): SceneObjectBoundingBox {
+    return SceneObject.calculateBoundingBox(
+      this.transform.position.x,
+      this.transform.position.y,
+      this.width,
+      this.height
+    );
+  }
 
   /**
    * Used for debugging

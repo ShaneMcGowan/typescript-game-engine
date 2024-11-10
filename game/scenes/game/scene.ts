@@ -4,11 +4,6 @@ import { InventoryItemType } from '@game/models/inventory-item.model';
 import { InventoryItemObject } from '@game/objects/inventory-item.object';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
 
-const EVENT_TYPES: Record<string, string> = {
-  DIRT_PLACED: 'DIRT_PLACED',
-  DIRT_REMOVED: 'DIRT_REMOVED',
-};
-
 interface Globals extends SceneGlobalsBaseConfig {
   inventory: InventoryItemObject[];
   inventory_size: number;
@@ -54,8 +49,6 @@ export class SCENE_GAME extends Scene {
     disable_player_inputs: false,
     gold: 999,
   };
-
-  eventTypes = EVENT_TYPES;
 
   constructor(client: Client) {
     super(client);

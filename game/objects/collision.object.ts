@@ -11,7 +11,6 @@ export class CollisionObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
-
     this.collision.enabled = true;
   }
 }

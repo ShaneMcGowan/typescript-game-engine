@@ -29,7 +29,6 @@ export class FenceObject extends SceneObject implements Interactable {
     config: Config
   ) {
     super(scene, config);
-
     this.collision.enabled = true;
     this.renderer.enabled = true;
 
