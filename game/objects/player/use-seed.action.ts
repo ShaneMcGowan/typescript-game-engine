@@ -8,7 +8,7 @@ export function useSeed(scene: SCENE_GAME): void {
     new TextboxObject(
       scene,
       {
-        text: 'Seeds can only be placed in dirt.',
+        text: 'Seeds can only be placed in watered dirt.',
         onComplete: () => {
           scene.globals.disable_player_inputs = false;
         },

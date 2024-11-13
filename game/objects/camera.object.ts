@@ -28,6 +28,7 @@ export class CameraObject extends SceneObject {
     // TODO: zoom is broken and not sure why
     this.cameraOffsetX = config.zoom ? cameraOffsetX / config.zoom : cameraOffsetX;
     this.cameraOffsetY = config.zoom ? cameraOffsetY / config.zoom : cameraOffsetY;
+
     this.object = config.object;
 
     this.scene.setCustomRenderer(this.customerRenderer);

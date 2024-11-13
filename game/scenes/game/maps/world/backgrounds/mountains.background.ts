@@ -109,47 +109,23 @@ const HILL_CORNER_BOTTOM_RIGHT: BackgroundTile = {
 
 // steps
 
-const HILL_STEPS_TOP_LEFT: BackgroundTile = {
-  ...HILL_TILE,
-  animationFrames: [
-    { spriteX: 9, spriteY: 4, }
-  ],
-};
+const HILL_STEPS_TOP_LEFT: BackgroundTile | undefined = undefined;
 
-const HILL_STEPS_TOP_RIGHT: BackgroundTile = {
-  ...HILL_TILE,
-  animationFrames: [
-    { spriteX: 10, spriteY: 4, }
-  ],
-};
+const HILL_STEPS_TOP_MIDDLE: BackgroundTile | undefined = undefined;
 
-const HILL_STEPS_CENTER_LEFT: BackgroundTile = {
-  ...HILL_TILE,
-  animationFrames: [
-    { spriteX: 9, spriteY: 5, }
-  ],
-};
+const HILL_STEPS_TOP_RIGHT: BackgroundTile | undefined = undefined;
 
-const HILL_STEPS_CENTER_RIGHT: BackgroundTile = {
-  ...HILL_TILE,
-  animationFrames: [
-    { spriteX: 10, spriteY: 5, }
-  ],
-};
+const HILL_STEPS_CENTER_LEFT: BackgroundTile | undefined = undefined;
 
-const HILL_STEPS_BOTTOM_LEFT: BackgroundTile = {
-  ...HILL_TILE,
-  animationFrames: [
-    { spriteX: 9, spriteY: 6, }
-  ],
-};
+const HILL_STEPS_CENTER_MIDDLE: BackgroundTile | undefined = undefined;
 
-const HILL_STEPS_BOTTOM_RIGHT: BackgroundTile = {
-  ...HILL_TILE,
-  animationFrames: [
-    { spriteX: 10, spriteY: 6, }
-  ],
-};
+const HILL_STEPS_CENTER_RIGHT: BackgroundTile | undefined = undefined;
+
+const HILL_STEPS_BOTTOM_LEFT: BackgroundTile | undefined = undefined;
+
+const HILL_STEPS_BOTTOM_MIDDLE: BackgroundTile | undefined = undefined;
+
+const HILL_STEPS_BOTTOM_RIGHT: BackgroundTile | undefined = undefined;
 
 export const SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS: BackgroundLayer = {
   index: 1,
@@ -296,22 +272,8 @@ export const SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS: BackgroundLayer = {
       undefined,
       undefined,
       undefined,
-      HILL_STEPS_TOP_LEFT,
-      HILL_STEPS_CENTER_LEFT,
-      HILL_STEPS_BOTTOM_LEFT,
-
-    ],
-    [
       undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      HILL_STEPS_TOP_LEFT,
-      HILL_STEPS_CENTER_RIGHT,
-      HILL_STEPS_BOTTOM_RIGHT,
+      HILL_BOTTOM_MIDDLE,
     ],
     [
       undefined,
@@ -322,7 +284,18 @@ export const SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS: BackgroundLayer = {
       undefined,
       undefined,
       undefined,
-      HILL_BOTTOM_MIDDLE
+      HILL_BOTTOM_MIDDLE,
+    ],
+    [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      HILL_BOTTOM_MIDDLE,
     ],
     [
       undefined,

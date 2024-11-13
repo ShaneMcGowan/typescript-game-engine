@@ -21,8 +21,13 @@ const RENDERER_LAYER: number = 8;
 const DEFAULT_CAN_LAY_EGGS: boolean = false;
 const DEFAULT_CAN_MOVE: boolean = false;
 
-const TEXT_STANDARD: string = 'bock bock... can i help you? ... cluck cluck ...';
-const TEXT_EDGY: string = 'GET OUT OF MY ROOM MOM! GODDDD!!!!';
+const TEXT_STANDARD: string = 'bock bock ... can i help you? ... cluck cluck ...';
+const TEXT_ANNOYED: string = "cluck cluck ... you're sort of annoying you know that? ... bock bock ...";
+const TEXT_CONFUSED: string = "bock cluck ... is... is this a simulation? ... cluck bock ...";
+
+const TEXT_EDGY_1: string = 'GET OUT OF MY ROOM MOM! GODDDD!!1!';
+const TEXT_EDGY_2: string = 'UGHHHH! YOU ARE LIKE SO EMBARRASSING!1!11!';
+const TEXT_EDGY_3: string = 'OMG!1!1 JUST LIKE LEAVE ME ALONE!1!11!!';
 
 interface Config extends SceneObjectBaseConfig {
   follows?: SceneObject; // object to follow
@@ -60,6 +65,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   // personality
   isEdgyTeen = false;
+  interactionCount = 0;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -235,10 +241,37 @@ export class ChickenObject extends SceneObject implements Interactable {
     // disable inputs
     this.scene.globals.disable_player_inputs = true;
 
+    let text = '';
+    if (this.isEdgyTeen) {
+      switch (this.interactionCount % 3){
+        case 0:
+          text = TEXT_EDGY_1;
+          break;
+        case 1:
+          text = TEXT_EDGY_2;
+          break;
+        case 2:
+          text = TEXT_EDGY_3;
+          break; 
+      }
+    } else {
+      switch (this.interactionCount % 3){
+        case 0:
+          text = TEXT_STANDARD;
+          break;
+        case 1:
+          text = TEXT_ANNOYED;
+          break;
+        case 2:
+          text = TEXT_CONFUSED;
+          break; 
+      }
+    }
+
     let textbox = new TextboxObject(
       this.scene,
       {
-        text: this.isEdgyTeen ? TEXT_EDGY : TEXT_STANDARD,
+        text: text,
         portrait: PORTRAIT,
         name: 'Chicken',
         onComplete: () => {
@@ -248,6 +281,8 @@ export class ChickenObject extends SceneObject implements Interactable {
       }
     );
     this.scene.addObject(textbox);
+
+    this.interactionCount++;
   }
 
   actionGiveItem(): void {

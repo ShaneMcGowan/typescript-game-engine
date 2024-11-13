@@ -5,6 +5,7 @@ import { InventoryItemType } from '@game/models/inventory-item.model';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
+import { InventoryItemObject } from './inventory-item.object';
 
 const DIRT = { x: 1, y: 1, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
@@ -21,7 +22,7 @@ const SPOIL_COUNTER_MAX = 60 * 60 * 24; // seconds until plant spoils
 const PLANTABLE = [InventoryItemType.TomatoSeeds, InventoryItemType.WheatSeeds];
 type PlantableType = InventoryItemType.TomatoSeeds | InventoryItemType.WheatSeeds
 
-enum CropStage {
+export enum CropStage {
   Empty,
   Watered,
   Growing,
@@ -49,7 +50,10 @@ const TYPE_TO_SPRITE_MAP: Record<PlantableType, {
 };
 
 interface Config extends SceneObjectBaseConfig {
-
+  growing?: {
+    stage: CropStage,
+    itemType: InventoryItemType
+  }
 }
 
 export class DirtObject extends SceneObject implements Interactable {
@@ -71,6 +75,13 @@ export class DirtObject extends SceneObject implements Interactable {
     this.renderer.layer = RENDERER_LAYER;
 
     this.cropStage = CropStage.Empty;
+
+    if(config.growing){
+      // preconfigure growing
+      this.collision.enabled = true;
+      this.cropStage = config.growing.stage;
+      this.currentlyGrowing = config.growing.itemType;
+    }
   }
 
   private onDirtPlaced(event: CustomEvent): void {

@@ -256,13 +256,8 @@ export class PlayerObject extends SceneObject {
   }
 
   /**
-  * RIGHT CLICK
-  * 
-  * if object at position
-  *   interact item
-  * else
-  *   use item (or nothing)
-  */
+   * if object player is facing is interactable, run `interact` on that object
+   */
   private updateButtonInteract(): void {
     if (this.scene.globals.disable_player_inputs === true) {
       return;
@@ -278,8 +273,8 @@ export class PlayerObject extends SceneObject {
 
     Input.clearKeyPressed([Controls.Interact, Controls.InteractAlt]);
 
-    let x = this.transform.position.x + this.scene.globals.camera.startX;
-    let y = this.transform.position.y + this.scene.globals.camera.startY;
+    let x = this.transform.position.x;
+    let y = this.transform.position.y;
 
     switch (this.direction) {
       case Direction.UP:
@@ -458,10 +453,25 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
+    // item cannot be placed
+    if(item.radius === InventoryItemRadius.None){
+      return;
+    }
+
+    let x = Math.round(Input.mouse.position.exactX + this.scene.globals.camera.startX);
+    let y = Math.round(Input.mouse.position.exactY + this.scene.globals.camera.startY);
+
+    if (
+      item.radius === InventoryItemRadius.Player && 
+      Math.abs(x - this.transform.position.roundedX) > 1 || 
+      Math.abs(y - this.transform.position.roundedY) > 1
+     ) {
+      return;
+    }
+
     let object = this.scene.getObjectAtPosition(
-      Input.mouse.position.x,
-      Input.mouse.position.y,
-      this,
+      x,
+      y,
     );
 
     if (object === undefined) {
@@ -547,8 +557,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let x = Input.mouse.position.x + this.scene.globals.camera.startX;
-    let y = Input.mouse.position.y + this.scene.globals.camera.startY;
+    let x = Math.round(Input.mouse.position.exactX + this.scene.globals.camera.startX);
+    let y = Math.round(Input.mouse.position.exactY + this.scene.globals.camera.startY);
 
     let item = this.scene.selectedInventoryItem;
     // do not render cursor
@@ -557,54 +567,30 @@ export class PlayerObject extends SceneObject {
     }
 
     // don't render cursor ontop of self
-    if (x === Math.floor(this.transform.position.x) && y === Math.floor(this.transform.position.y)) {
+    if (x === this.transform.position.roundedX && y === this.transform.position.roundedY) {
       return;
     }
 
     // don't render cursor if greater than 1 tile away from user
-    if (item.radius === InventoryItemRadius.Player && (Math.abs(x - Math.floor(this.transform.position.x)) > 1 || Math.abs(y - Math.floor(this.transform.position.y)) > 1)) {
+    if (
+      item.radius === InventoryItemRadius.Player && 
+      Math.abs(x - this.transform.position.roundedX) > 1 || 
+      Math.abs(y - this.transform.position.roundedY) > 1
+     ) {
       return;
     }
 
     RenderUtils.fillRectangle(
       context,
-      x,
-      y,
+      x - 0.5,
+      y - 0.5,
       1,
       1,
       {
-        colour: '#ff000033',
+        colour: '#0000ff33',
         type: 'tile'
       }
     );
   }
 
-  calculateRelativeMousePosition(): Position {
-    // only allow selection of 1 tile radius surrounding player
-    // x
-    let xCalculation = Input.mouse.position.x - this.transform.position.x;
-    let xOffset: number;
-    if (xCalculation === 0) {
-      xOffset = 0
-    } else if (xCalculation > 0) {
-      xOffset = 1
-    } else {
-      xOffset = -1
-    }
-    // y
-    let yCalculation = Input.mouse.position.y - this.transform.position.y;
-    let yOffset: number;
-    if (yCalculation === 0) {
-      yOffset = 0
-    } else if (yCalculation > 0) {
-      yOffset = 1
-    } else {
-      yOffset = -1
-    }
-
-    return {
-      x: this.transform.position.x + xOffset,
-      y: this.transform.position.y + yOffset
-    }
-  }
 }
