@@ -379,8 +379,8 @@ export const SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS: BackgroundLayer = {
       undefined,
       undefined,
       undefined,
-      undefined,
-      undefined,
+      HILL_CORNER_TOP_LEFT,
+      HILL_CENTER_RIGHT,
       HILL_CENTER_RIGHT,
       HILL_CENTER_RIGHT,
       HILL_BOTTOM_RIGHT
@@ -390,8 +390,7 @@ export const SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS: BackgroundLayer = {
       undefined,
       undefined,
       undefined,
-      undefined,
-      HILL_BOTTOM_RIGHT,
+      HILL_BOTTOM_MIDDLE,
     ],
     [
       undefined,

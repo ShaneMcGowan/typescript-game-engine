@@ -124,7 +124,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       animationLength: 3,
     }));
 
-    // 12 17
     this.objects.push(new IntervalObject(this.scene, {
       duration: 4.5,
       onInterval: () => {
