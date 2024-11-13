@@ -177,13 +177,14 @@ export abstract class Scene {
             this.backgroundLayersAnimationTimer[layer.index][x][y] = timer;
           }
 
+          // offsetting x and y by 0.5 in order to center tile on coordinates 
           RenderUtils.renderSprite(
             context,
             Assets.images[tile.tileset],
             animationFrame.spriteX,
             animationFrame.spriteY,
-            x,
-            y
+            x - 0.5,
+            y - 0.5
           );
         }
       }

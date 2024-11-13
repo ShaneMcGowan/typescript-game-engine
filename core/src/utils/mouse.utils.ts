@@ -59,8 +59,8 @@ export abstract class MouseUtils {
     let x = ((adjustedEvent.clientX - boundingRect.left) * scaleX) / CanvasConstants.TILE_SIZE;
     let y = ((adjustedEvent.clientY - boundingRect.top) * scaleY) / CanvasConstants.TILE_SIZE;
     return {
-      x: Math.floor(x),
-      y: Math.floor(y),
+      x: Math.floor(x), // TODO(shane): change to Math.round then replace all instances of Math.round(mouse.exactX)
+      y: Math.floor(y), // TODO(shane): change to Math.round then replace all instances of Math.round(mouse.exactY)
       exactX: x,
       exactY: y,
     };

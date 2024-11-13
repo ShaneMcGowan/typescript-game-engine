@@ -92,8 +92,8 @@ export class TransitionObject extends SceneObject {
     context.fillStyle = 'black';
     context.beginPath();
     context.arc(
-      (animationCenterX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
-      (animationCenterY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      animationCenterX * CanvasConstants.TILE_SIZE,
+      animationCenterY * CanvasConstants.TILE_SIZE,
       CanvasConstants.CANVAS_WIDTH * radiusModifier,
       0,
       2 * Math.PI

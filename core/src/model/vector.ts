@@ -4,6 +4,14 @@ export class Vector {
     public y: number
   ) { }
 
+  get roundedX(): number {
+    return Math.round(this.x);
+  }
+
+  get roundedY(): number {
+    return Math.round(this.y);
+  }
+
   get magnitude(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
