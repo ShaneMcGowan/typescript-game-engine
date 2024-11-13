@@ -28,7 +28,7 @@ export class Client {
 
   // display canvas - used for display, copies the fully rendered frame from the in memory render canvas
   private readonly displayCanvas: HTMLCanvasElement;
-  private readonly displayContext: CanvasRenderingContext2D;
+  public readonly displayContext: CanvasRenderingContext2D;
 
   // render canvas - in memory canvas used for building a frame that will then be pushed to the display canvas once it is complete
   private readonly renderCanvas: HTMLCanvasElement;

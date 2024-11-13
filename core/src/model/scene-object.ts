@@ -112,7 +112,7 @@ export abstract class SceneObject {
     protected scene: Scene,
     config: SceneObjectBaseConfig
   ) {
-    this.mainContext = this.scene.context;
+    this.mainContext = this.scene.renderContext;
 
     this.transform.position.x = config.positionX ?? this.transform.position.x;
     this.transform.position.y = config.positionY ?? this.transform.position.y;

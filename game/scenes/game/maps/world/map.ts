@@ -41,7 +41,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     
     // Set up UI
-    MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
+    MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
     this.objects.push(new HotbarObject(scene, { positionX: 16, positionY: 16, }));
 
     // instanciate objects

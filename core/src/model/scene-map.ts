@@ -11,13 +11,9 @@ export abstract class SceneMap {
   objects: SceneObject[];
   globals: Record<string, any> = {};
 
-  protected context: CanvasRenderingContext2D;
-
   constructor(
     protected scene: Scene
-  ) {
-    this.context = this.scene.context;
-  }
+  ) { }
 
   /**
    * Called when the map is destroyed

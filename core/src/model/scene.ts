@@ -72,12 +72,14 @@ export abstract class Scene {
   private customRenderer?: CustomRendererSignature;
 
   // from client
-  context: CanvasRenderingContext2D;
+  renderContext: CanvasRenderingContext2D;
+  displayContext: CanvasRenderingContext2D;
 
   constructor(
     protected client: Client
   ) {
-    this.context = this.client.renderContext;
+    this.renderContext = this.client.renderContext;
+    this.displayContext = this.client.displayContext;
   }
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
@@ -133,8 +135,9 @@ export abstract class Scene {
       let context = this.renderingContext.background[index];
       RenderUtils.clearCanvas(context);
 
-      for (let x = 0; x < this.map.width; x++) {
-        for (let y = 0; y < this.map.height; y++) {
+      // +1 offset due to the -0.5 offset below
+      for (let x = 0; x < this.map.width + 1; x++) {
+        for (let y = 0; y < this.map.height + 1; y++) {
           let tile = layer.tiles[x] ? layer.tiles[x][y] : undefined;
 
           if (tile === undefined) {
@@ -177,7 +180,7 @@ export abstract class Scene {
             this.backgroundLayersAnimationTimer[layer.index][x][y] = timer;
           }
 
-          // offsetting x and y by 0.5 in order to center tile on coordinates 
+          // offsetting x and y by 0.5 in order to center tile on coordinates
           RenderUtils.renderSprite(
             context,
             Assets.images[tile.tileset],
@@ -293,10 +296,10 @@ export abstract class Scene {
 
     // render
     this.renderingContext.background.forEach((context) => {
-      this.context.drawImage(context.canvas, 0, 0);
+      this.renderContext.drawImage(context.canvas, 0, 0);
     });
     this.renderingContext.objects.forEach((context) => {
-      this.context.drawImage(context.canvas, 0, 0);
+      this.renderContext.drawImage(context.canvas, 0, 0);
     });
   }
 

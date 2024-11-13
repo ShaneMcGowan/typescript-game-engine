@@ -23,7 +23,7 @@ export class SCENE_MAIN_MENU_MAP_MAIN_MENU extends SceneMap {
   constructor(protected scene: Scene) {
     super(scene);
 
-    MouseUtils.setCursor(this.context.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
+    MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
 
     // TODO: object layers so rendering order is correct
     this.objects.push(new StartButtonObject(scene, {

@@ -58,7 +58,8 @@ const WATER_TILE_COLUMN = [
   WATER_TILE,
   WATER_TILE,
   WATER_TILE,
-  WATER_TILE
+  WATER_TILE,
+  WATER_TILE,
 ];
 
 export const SCENE_GAME_MAP_WORLD_BACKGROUND_WATER: BackgroundLayer = {
@@ -103,6 +104,12 @@ export const SCENE_GAME_MAP_WORLD_BACKGROUND_WATER: BackgroundLayer = {
     [...WATER_TILE_COLUMN],
     [...WATER_TILE_COLUMN],
     [...WATER_TILE_COLUMN],
-    [...WATER_TILE_COLUMN]
+    [...WATER_TILE_COLUMN],
+    [...WATER_TILE_COLUMN],
+    [...WATER_TILE_COLUMN],
+    [...WATER_TILE_COLUMN],
+    [...WATER_TILE_COLUMN],
+    [...WATER_TILE_COLUMN],
+    [...WATER_TILE_COLUMN],
   ],
 };
