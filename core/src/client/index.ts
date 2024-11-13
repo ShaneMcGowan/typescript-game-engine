@@ -326,6 +326,8 @@ export class Client {
   private initialiseKeyboardListeners(): void {
     console.log('[listener added] keydown');
     document.addEventListener('keydown', (event: KeyboardEvent) => {
+      event.preventDefault();
+
       if (event.repeat) {
         return;
       }
@@ -337,6 +339,8 @@ export class Client {
 
     console.log('[listener added] keyup');
     document.addEventListener('keyup', (event: KeyboardEvent) => {
+      event.preventDefault();
+
       if (event.repeat) {
         return;
       }
