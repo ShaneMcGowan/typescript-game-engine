@@ -55,6 +55,8 @@ export class FenceObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
+    return;
+    
     if (this.open) {
       this.open = false;
       this.collision.enabled = true;

@@ -19,7 +19,6 @@ export class SCENE_GAME extends Scene {
     inventory: [
       new InventoryItemObject(this, { type: InventoryItemType.Hoe, }),
       new InventoryItemObject(this, { type: InventoryItemType.WateringCan, }),
-      new InventoryItemObject(this, { type: InventoryItemType.TomatoSeeds, currentStackSize: 5, }),
       new InventoryItemObject(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 5, }),
       undefined,
       // new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
@@ -32,7 +31,7 @@ export class SCENE_GAME extends Scene {
     hotbar_size: 5,
     hotbar_selected_index: 0,
     disable_player_inputs: false,
-    gold: 999,
+    gold: 0,
   };
 
   constructor(client: Client) {

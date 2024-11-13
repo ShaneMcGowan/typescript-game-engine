@@ -17,6 +17,10 @@ import { TransitionObject } from '@core/objects/transition.object';
 import { CropStage, DirtObject } from '@game/objects/dirt.object';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { SCENE_GAME_MAP_WORLD_BACKGROUND_STEPS } from './backgrounds/steps.background';
+import { IntervalObject } from '@core/objects/interval.object';
+import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { MathUtils } from '@core/utils/math.utils';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -44,20 +48,32 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
     let player = new PlayerObject(scene, { positionX: 10, positionY: 9, });
     this.objects.push(player);
-    this.objects.push(new ShopKeeperObject(scene, { positionX: 1, positionY: 2, }));
+    this.objects.push(new ShopKeeperObject(scene, { positionX: 2, positionY: 14, }));
 
     // chickens
     this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 13, follows: player, canLayEggs: true, canMove: true, }));
 
     // crops
+    for(let row = 0; row < 5; row++){
+      for(let col = 0; col < 16; col++){
+        this.objects.push(new DirtObject(scene, { positionX: 2 + col, positionY: 2 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
+      }
+    }
+
     for(let row = 0; row < 6; row++){
       for(let col = 0; col < 3; col++){
         this.objects.push(new DirtObject(scene, { positionX: 6 + col, positionY: 10 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
       }
     }
 
+    for(let row = 0; row < 4; row++){
+      for(let col = 0; col < 4; col++){
+        this.objects.push(new DirtObject(scene, { positionX: 21 + col, positionY: 6 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
+      }
+    }
+
     for(let row = 0; row < 6; row++){
-      for(let col = 0; col < 8; col++){
+      for(let col = 0; col < 13; col++){
         this.objects.push(new DirtObject(scene, { positionX: 12 + col, positionY: 10 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
       }
     }
@@ -87,6 +103,10 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }
 
     // fences
+    this.objects.push(new CollisionObject(scene, { positionX: 25, positionY: 1.5, height: 4 }));
+    this.objects.push(new CollisionObject(scene, { positionX: 19, positionY: 5.5, height: 4 }));
+
+    this.objects.push(new CollisionObject(scene, { positionX: 22.5, positionY: 4, width: 6 }));
     this.objects.push(new CollisionObject(scene, { positionX: 6.5, positionY: 8, width: 6 }));
     this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 8, width: 9 }));
     this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 11.5, height: 6 }));
@@ -94,7 +114,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 16, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 17, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 18, type: FenceType.FencePost }));
-    this.objects.push(new CollisionObject(scene, { positionX: 11, positionY: 19, width: 22 }));
     this.objects.push(new CameraObject(scene, { object: player }));
 
     // fade in
@@ -103,6 +122,42 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       animationCenterY: player.transform.position.y,
       animationType: 'circle',
       animationLength: 3,
+    }));
+
+    // 12 17
+    this.objects.push(new IntervalObject(this.scene, {
+      duration: 4.5,
+      onInterval: () => {
+        let randomY = MathUtils.randomIntFromRange(19, 28);
+        
+        let randomItem = MathUtils.randomIntFromRange(0, 2);
+        let tileset = '';
+        let spriteX = 0;
+        let spriteY = 0;
+        if(randomItem === 0 || randomItem === 1){
+          tileset = 'tileset_egg';
+          spriteX = 1;
+          spriteY = 0;
+        } else {
+          tileset = 'tileset_chicken';
+          spriteX = 0;
+          spriteY = -0.25;
+        }
+
+        this.scene.addObject(new GenericSpriteObject(
+          this.scene,
+          { 
+            positionX: 40, 
+            positionY: randomY, 
+            targetX: -1, 
+            targetY: randomY, 
+            tileset: tileset, 
+            spriteX: spriteX, 
+            spriteY: spriteY, 
+            destroyAtTarget: true, 
+          }
+        ));
+      }
     }));
 
   }

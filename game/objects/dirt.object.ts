@@ -113,6 +113,12 @@ export class DirtObject extends SceneObject implements Interactable {
       case CropStage.Empty:
         this.interactStageEmpty();
         return;
+      case CropStage.Watered:
+        this.interactStageWatered();
+        return;
+      case CropStage.Growing:
+        this.interactStageGrowing();
+        return;
       case CropStage.FullyGrown:
         this.interactStageFullyGrown();
         return;
@@ -126,6 +132,32 @@ export class DirtObject extends SceneObject implements Interactable {
       this.scene,
       {
         text: `It's a beautiful patch of dirt, brimming with potential.`,
+        onComplete: () => this.scene.globals.disable_player_inputs = false
+      }
+    );
+    this.scene.addObject(textbox);
+  }
+
+  private interactStageWatered(): void {
+    this.scene.globals.disable_player_inputs = true;
+
+    let textbox = new TextboxObject(
+      this.scene,
+      {
+        text: `The patch of dirt is watered, better plant something before it dries up.`,
+        onComplete: () => this.scene.globals.disable_player_inputs = false
+      }
+    );
+    this.scene.addObject(textbox);
+  }
+
+  private interactStageGrowing(): void {
+    this.scene.globals.disable_player_inputs = true;
+
+    let textbox = new TextboxObject(
+      this.scene,
+      {
+        text: `The plant is growing nicely, it will be ready for harvest soon.`,
         onComplete: () => this.scene.globals.disable_player_inputs = false
       }
     );

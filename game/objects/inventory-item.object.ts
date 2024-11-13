@@ -37,8 +37,8 @@ export const TYPE_TO_SPRITE_MAP: Record<InventoryItemType, InventoryItemSprite> 
 
 const DEFAULT_INVENTORY_ITEM_RADIUS: InventoryItemRadius = InventoryItemRadius.None;
 const TYPE_TO_RADIUS_MAP: Record<InventoryItemType, InventoryItemRadius> = {
-  [InventoryItemType.Chicken]: InventoryItemRadius.Anywhere,
-  [InventoryItemType.Egg]: InventoryItemRadius.Anywhere,
+  [InventoryItemType.Chicken]: InventoryItemRadius.Player,
+  [InventoryItemType.Egg]: InventoryItemRadius.Player,
   [InventoryItemType.WheatSeeds]: InventoryItemRadius.Player,
   [InventoryItemType.Wheat]: InventoryItemRadius.None,
   [InventoryItemType.TomatoSeeds]: InventoryItemRadius.Player,

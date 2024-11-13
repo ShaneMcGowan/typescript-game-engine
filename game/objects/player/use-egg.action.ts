@@ -3,13 +3,15 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { EggObject } from "@game/objects/egg.object";
 
 export function useEgg(scene: SCENE_GAME): void {
-  let position = Input.mouse.position;
+
+  const mouseX = Math.round(Input.mouse.position.exactX + scene.globals.camera.startX);
+  const mouseY = Math.round(Input.mouse.position.exactY + scene.globals.camera.startY);
 
   let object: EggObject = new EggObject(
     scene,
     {
-      positionX: position.x,
-      positionY: position.y
+      positionX: mouseX,
+      positionY: mouseY
     }
   );
 
