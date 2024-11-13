@@ -44,6 +44,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
       tileset_plants: 'assets/sample/Objects/Basic_Plants.png',
       tileset_dialogue_box: 'assets/sample/Dialouge UI/dialog box.png',
       tileset_tools: 'assets/sample/Characters/Tools.png',
+      tileset_fullscreen: 'assets/custom/fullscreen.png',
     },
     audio: {},
   };

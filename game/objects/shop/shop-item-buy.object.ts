@@ -5,7 +5,7 @@ import { InventoryItemType } from "@game/models/inventory-item.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { TYPE_TO_SPRITE_MAP } from "../inventory-item.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input } from "@core/utils/input.utils";
+import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 
 
@@ -52,7 +52,7 @@ export class ShopItemBuyObject extends SceneObject {
       return;
     }
 
-    Input.clearMousePressed();
+    Input.clearMousePressed(MouseKey.Left);
 
     if (this.price > this.scene.globals.gold) {
       return;

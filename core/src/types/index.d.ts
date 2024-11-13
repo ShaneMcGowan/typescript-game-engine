@@ -10,4 +10,8 @@ declare global {
     // helpers
     o: (id: string) => SceneObject | undefined;
   }
+
+  interface Document {
+    webkitIsFullScreen: boolean; // required for fullscreen checks
+  }
 }

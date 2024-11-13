@@ -19,8 +19,8 @@ import { InventoryItemType } from '@game/models/inventory-item.model';
 import { SCENE_GAME_MAP_WORLD_BACKGROUND_STEPS } from './backgrounds/steps.background';
 import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
-import { CanvasConstants } from '@core/constants/canvas.constants';
 import { MathUtils } from '@core/utils/math.utils';
+import { FullscreenToggleObject } from '@game/objects/fullscreen-toggle.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -43,6 +43,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
     this.objects.push(new HotbarObject(scene, { positionX: 16, positionY: 16, }));
+    this.objects.push(new FullscreenToggleObject(scene, { positionX: 31, positionY: 1 }))
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
