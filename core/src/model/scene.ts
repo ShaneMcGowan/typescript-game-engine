@@ -84,7 +84,6 @@ export abstract class Scene {
 
   backgroundLayerAnimationFrame: Record<string, number> = {};
 
-  // TODO: move client rendering code into here
   frame(delta: number): void {
     this.awakeObjects();
     this.renderBackground(delta);
@@ -223,9 +222,6 @@ export abstract class Scene {
   }
 
   renderObjects(delta: number): void {
-    // TODO(shane): currently each object is rendered onto the onto the screen directly
-    // this should be changed to rendering to an offscreen canvas, then copying the full render to a display canvas
-
     if (this.client.debug.timing.frameRender) {
       console.time('[frame] render');
     }

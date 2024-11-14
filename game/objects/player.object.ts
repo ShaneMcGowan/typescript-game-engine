@@ -447,7 +447,7 @@ export class PlayerObject extends SceneObject {
 
     Input.clearMousePressed(MouseKey.Left);
 
-    let item = this.scene.selectedInventoryItem;
+    const item = this.scene.selectedInventoryItem;
     // no item selected
     if (item === undefined) {
       return;
@@ -458,8 +458,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let x = Math.round(Input.mouse.position.exactX + this.scene.globals.camera.startX);
-    let y = Math.round(Input.mouse.position.exactY + this.scene.globals.camera.startY);
+    const x = Math.round(Input.mouse.position.x + this.scene.globals.camera.startX);
+    const y = Math.round(Input.mouse.position.y + this.scene.globals.camera.startY);
 
     if (
       item.radius === InventoryItemRadius.Player && 
@@ -469,7 +469,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let object = this.scene.getObjectAtPosition(
+    const object = this.scene.getObjectAtPosition(
       x,
       y,
     );
@@ -477,7 +477,7 @@ export class PlayerObject extends SceneObject {
     if (object === undefined) {
       switch (item.type) {
         case InventoryItemType.Hoe:
-          useHoe(this.scene, this);
+          useHoe(this.scene);
           return;
         case InventoryItemType.WateringCan:
           useWateringCan(this.scene);
@@ -557,8 +557,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let x = Math.round(Input.mouse.position.exactX + this.scene.globals.camera.startX);
-    let y = Math.round(Input.mouse.position.exactY + this.scene.globals.camera.startY);
+    let x = Math.round(Input.mouse.position.x + this.scene.globals.camera.startX);
+    let y = Math.round(Input.mouse.position.y + this.scene.globals.camera.startY);
 
     let item = this.scene.selectedInventoryItem;
     // do not render cursor

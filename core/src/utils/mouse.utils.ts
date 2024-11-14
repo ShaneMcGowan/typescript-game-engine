@@ -5,8 +5,6 @@ import { Input } from './input.utils';
 export interface MousePosition {
   x: number;
   y: number;
-  exactX: number;
-  exactY: number;
 }
 
 export abstract class MouseUtils {
@@ -59,10 +57,8 @@ export abstract class MouseUtils {
     let x = ((adjustedEvent.clientX - boundingRect.left) * scaleX) / CanvasConstants.TILE_SIZE;
     let y = ((adjustedEvent.clientY - boundingRect.top) * scaleY) / CanvasConstants.TILE_SIZE;
     return {
-      x: Math.floor(x), // TODO(shane): change to Math.round then replace all instances of Math.round(mouse.exactX)
-      y: Math.floor(y), // TODO(shane): change to Math.round then replace all instances of Math.round(mouse.exactY)
-      exactX: x,
-      exactY: y,
+      x,
+      y,
     };
   }
 
@@ -76,10 +72,10 @@ export abstract class MouseUtils {
 
   static isMouseWithinBoundary(mousePosition: MousePosition, x: number, y: number, width: number, height: number): boolean {
     return (
-      mousePosition.exactX >= x &&
-      mousePosition.exactX <= x + width &&
-      mousePosition.exactY >= y &&
-      mousePosition.exactY <= y + height
+      mousePosition.x >= x &&
+      mousePosition.x <= x + width &&
+      mousePosition.y >= y &&
+      mousePosition.y <= y + height
     );
   }
 

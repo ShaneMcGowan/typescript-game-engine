@@ -3,16 +3,18 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { ChickenObject } from "@game/objects/chicken.object";
 
 export function useChicken(scene: SCENE_GAME): void {
-  let position = Input.mouse.position;
 
-  let newObject: ChickenObject = new ChickenObject(
+  const x = Math.round(Input.mouse.position.x + scene.globals.camera.startX);
+  const y = Math.round(Input.mouse.position.y + scene.globals.camera.startY);
+
+  const object = new ChickenObject(
     scene,
     {
-      positionX: position.x,
-      positionY: position.y
+      positionX: x,
+      positionY: y
     }
   );
 
-  scene.addObject(newObject);
+  scene.addObject(object);
   scene.removeFromInventory(scene.selectedInventoryIndex);
 }

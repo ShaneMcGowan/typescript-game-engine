@@ -13,8 +13,6 @@ interface Mouse {
   position: {
     x: number;
     y: number;
-    exactX: number; // not rounded to tile
-    exactY: number; // not rounded to tile
   };
   wheel: {
     event: WheelEvent;
@@ -33,8 +31,6 @@ export abstract class Input {
     position: {
       x: 0,
       y: 0,
-      exactX: 0,
-      exactY: 0,
     },
     wheel: {
       event: new WheelEvent(''), // TODO: ensure this is a valid default event

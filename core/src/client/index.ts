@@ -141,7 +141,6 @@ export class Client {
     return canvas;
   }
 
-  // TODO: need some sort of scene class list type
   changeScene(sceneClass: SceneConstructorSignature): void {
     this.scene = Reflect.construct(sceneClass, [this]);
   }

@@ -275,8 +275,8 @@ export class InventoryObject extends SceneObject {
       item.maxStackSize,
       item.sprite.spriteX,
       item.sprite.spriteY,
-      Input.mouse.position.exactX - 0.5,
-      Input.mouse.position.exactY - 0.5
+      Input.mouse.position.x - 0.5,
+      Input.mouse.position.y - 0.5
     );
   }
 

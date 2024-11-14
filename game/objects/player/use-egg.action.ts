@@ -4,14 +4,14 @@ import { EggObject } from "@game/objects/egg.object";
 
 export function useEgg(scene: SCENE_GAME): void {
 
-  const mouseX = Math.round(Input.mouse.position.exactX + scene.globals.camera.startX);
-  const mouseY = Math.round(Input.mouse.position.exactY + scene.globals.camera.startY);
+  const x = Math.round(Input.mouse.position.x + scene.globals.camera.startX);
+  const y = Math.round(Input.mouse.position.y + scene.globals.camera.startY);
 
-  let object: EggObject = new EggObject(
+  const object = new EggObject(
     scene,
     {
-      positionX: mouseX,
-      positionY: mouseY
+      positionX: x,
+      positionY: y
     }
   );
 

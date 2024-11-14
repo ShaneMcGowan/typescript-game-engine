@@ -4,14 +4,14 @@ import { ChestObject } from "../chest.object";
 
 export function useChest(scene: SCENE_GAME): void {
 
-  const mouseX = Input.mouse.position.x;
-  const mouseY = Input.mouse.position.y;
+  const x = Math.round(Input.mouse.position.x + scene.globals.camera.startX);
+  const y = Math.round(Input.mouse.position.y + scene.globals.camera.startY);
 
   const object = new ChestObject(
     scene,
     {
-      positionX: mouseX,
-      positionY: mouseY,
+      positionX: x,
+      positionY: y,
     }
   );
 
