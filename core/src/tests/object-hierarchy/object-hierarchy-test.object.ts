@@ -28,8 +28,8 @@ export class ObjectHierarchyTestObject extends SceneObject {
       this.timer = 0;
     }
 
-    this.transform.positionLocal.x += ((this.grow ? MOVEMENT_SPEED : MOVEMENT_SPEED * -1) * delta);
-    this.transform.positionLocal.y += ((this.grow ? MOVEMENT_SPEED : MOVEMENT_SPEED * -1) * delta);
+    this.transform.position.local.x += ((this.grow ? MOVEMENT_SPEED : MOVEMENT_SPEED * -1) * delta);
+    this.transform.position.local.y += ((this.grow ? MOVEMENT_SPEED : MOVEMENT_SPEED * -1) * delta);
   }
 
   render(context: CanvasRenderingContext2D): void {

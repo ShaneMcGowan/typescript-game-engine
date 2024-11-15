@@ -492,8 +492,8 @@ export class Client {
     // details
     Object.keys(object).forEach((key) => {
       if (key === 'transform') {
-        content.innerHTML += generateDebuggerLine(object.transform.positionLocal, 'x');
-        content.innerHTML += generateDebuggerLine(object.transform.positionLocal, 'y');
+        content.innerHTML += generateDebuggerLine(object.transform.position.local, 'x');
+        content.innerHTML += generateDebuggerLine(object.transform.position.local, 'y');
       } else {
         content.innerHTML += generateDebuggerLine(object, key);
       }

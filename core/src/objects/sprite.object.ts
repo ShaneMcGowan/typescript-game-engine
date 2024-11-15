@@ -30,8 +30,8 @@ export class SpriteObject extends SceneObject {
       Assets.images['sprites'],
       this.spriteX,
       this.spriteY,
-      this.transform.positionLocal.x,
-      this.transform.positionLocal.y,
+      this.transform.position.local.x,
+      this.transform.position.local.y,
       this.width,
       this.height,
       { centered: true, }

@@ -87,8 +87,8 @@ export class PlayerObject extends SceneObject {
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
 
-    this.targetX = this.transform.positionLocal.x;
-    this.targetY = this.transform.positionLocal.y;
+    this.targetX = this.transform.position.local.x;
+    this.targetY = this.transform.position.local.y;
 
     this.enableMovement();
     this.enableInteractKeys();
@@ -145,7 +145,7 @@ export class PlayerObject extends SceneObject {
 
   private determineNextMovement(delta: number): void {
     // check if we are moving
-    if (this.targetX !== this.transform.positionLocal.x || this.targetY !== this.transform.positionLocal.y) {
+    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
       return;
     }
 
@@ -154,7 +154,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let movement = new Movement(this.transform.positionLocal.x, this.transform.positionLocal.y, this.targetX, this.targetY);
+    let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
     let direction;
 
     // determine next position and set direction
@@ -208,7 +208,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateAnimations(delta: number): void {
-    if (this.targetX !== this.transform.positionLocal.x || this.targetY !== this.transform.positionLocal.y) {
+    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
       this.isIdle = false;
     } else {
       this.isIdle = true;
@@ -237,12 +237,12 @@ export class PlayerObject extends SceneObject {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.positionLocal.x || this.targetY !== this.transform.positionLocal.y) {
-      let movement = new Movement(this.transform.positionLocal.x, this.transform.positionLocal.y, this.targetX, this.targetY);
+    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
+      let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.positionLocal.x = updatedMovement.positionX;
-      this.transform.positionLocal.y = updatedMovement.positionY;
+      this.transform.position.local.x = updatedMovement.positionX;
+      this.transform.position.local.y = updatedMovement.positionY;
     }
   }
 
@@ -264,8 +264,8 @@ export class PlayerObject extends SceneObject {
 
     Input.clearKeyPressed([Controls.Interact, Controls.InteractAlt]);
 
-    let x = this.transform.positionLocal.x;
-    let y = this.transform.positionLocal.y;
+    let x = this.transform.position.local.x;
+    let y = this.transform.position.local.y;
 
     switch (this.direction) {
       case Direction.UP:
@@ -304,8 +304,8 @@ export class PlayerObject extends SceneObject {
    * @returns
    */
   getPositionFacing(): { x: number; y: number; } {
-    let x: number = Math.floor(this.transform.positionLocal.x);
-    let y: number = Math.floor(this.transform.positionLocal.y);
+    let x: number = Math.floor(this.transform.position.local.x);
+    let y: number = Math.floor(this.transform.position.local.y);
 
     if (this.direction === Direction.RIGHT) {
       return { x: x + 1, y, };
@@ -454,8 +454,8 @@ export class PlayerObject extends SceneObject {
 
     if (
       item.radius === InventoryItemRadius.Player && 
-      Math.abs(x - this.transform.positionLocal.roundedX) > 1 || 
-      Math.abs(y - this.transform.positionLocal.roundedY) > 1
+      Math.abs(x - this.transform.position.local.roundedX) > 1 || 
+      Math.abs(y - this.transform.position.local.roundedY) > 1
      ) {
       return;
     }
@@ -533,8 +533,8 @@ export class PlayerObject extends SceneObject {
       Assets.images[TILE_SET],
       animations[this.direction][this.animationIndex].x, // sprite x
       animations[this.direction][this.animationIndex].y, // sprite y
-      this.transform.positionLocal.x,
-      this.transform.positionLocal.y,
+      this.transform.position.local.x,
+      this.transform.position.local.y,
       undefined,
       undefined,
       {
@@ -558,15 +558,15 @@ export class PlayerObject extends SceneObject {
     }
 
     // don't render cursor ontop of self
-    if (x === this.transform.positionLocal.roundedX && y === this.transform.positionLocal.roundedY) {
+    if (x === this.transform.position.local.roundedX && y === this.transform.position.local.roundedY) {
       return;
     }
 
     // don't render cursor if greater than 1 tile away from user
     if (
       item.radius === InventoryItemRadius.Player && 
-      Math.abs(x - this.transform.positionLocal.roundedX) > 1 || 
-      Math.abs(y - this.transform.positionLocal.roundedY) > 1
+      Math.abs(x - this.transform.position.local.roundedX) > 1 || 
+      Math.abs(y - this.transform.position.local.roundedY) > 1
      ) {
       return;
     }

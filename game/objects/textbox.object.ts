@@ -80,10 +80,10 @@ export class TextboxObject extends SceneObject {
     this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
 
     if (config.positionX === undefined) {
-      this.transform.positionLocal.x = 0;
+      this.transform.position.local.x = 0;
     }
     if (config.positionY === undefined) {
-      this.transform.positionLocal.y = CanvasConstants.CANVAS_TILE_HEIGHT - this.height; // bottom of canvas
+      this.transform.position.local.y = CanvasConstants.CANVAS_TILE_HEIGHT - this.height; // bottom of canvas
     }
 
     this.showOverlay = config.showOverlay ?? DEFAULT_OVERLAY;

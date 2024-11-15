@@ -57,8 +57,8 @@ export class ChestObject extends SceneObject implements Interactable {
         Assets.images[TILE_SET],
         13,
         0.5,
-        this.transform.positionLocal.x,
-        this.transform.positionLocal.y - 0.5,
+        this.transform.position.local.x,
+        this.transform.position.local.y - 0.5,
         1,
         2,
         {
@@ -71,8 +71,8 @@ export class ChestObject extends SceneObject implements Interactable {
         Assets.images[TILE_SET],
         1,
         0.5,
-        this.transform.positionLocal.x,
-        this.transform.positionLocal.y - 0.5,
+        this.transform.position.local.x,
+        this.transform.position.local.y - 0.5,
         1,
         2,
         {

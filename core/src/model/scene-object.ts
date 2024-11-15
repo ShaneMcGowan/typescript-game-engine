@@ -21,8 +21,10 @@ export interface SceneObjectBoundingBox {
 //    }
 //  }
 interface Transform {
-  readonly positionLocal: Vector;
-  readonly positionWorld: Vector;
+  readonly position: {
+    local: Vector;
+    world: Vector;
+  };
   scale: number;
   rotation: number; // rotation in degrees
 }
@@ -108,9 +110,11 @@ export abstract class SceneObject {
     this.mainContext = this.scene.renderContext;
 
     this.transform = {
-      positionLocal: TRANSFORM_POSITION_DEFAULT(),
-      get positionWorld() {
-        return _this.calculateWorldPosition();
+      position: {
+        local: TRANSFORM_POSITION_DEFAULT(),
+        get world() {
+          return _this.calculateWorldPosition();
+        },
       },
       scale: TRANSFORM_SCALE_DEFAULT,
       rotation: TRANSFORM_ROTATION_DEFAULT,
@@ -135,8 +139,8 @@ export abstract class SceneObject {
       destroy: FLAGS_DESTROY_DEFAULT,
     };
 
-    this.transform.positionLocal.x = config.positionX ?? this.transform.positionLocal.x;
-    this.transform.positionLocal.y = config.positionY ?? this.transform.positionLocal.y;
+    this.transform.position.local.x = config.positionX ?? this.transform.position.local.x;
+    this.transform.position.local.y = config.positionY ?? this.transform.position.local.y;
 
     this.collision.enabled = config.collisionEnabled ?? COLLISION_ENABLED_DEFAULT;
     this.collision.layer = config.collisionLayer ?? COLLISION_LAYER_DEFAULT;
@@ -161,14 +165,14 @@ export abstract class SceneObject {
   } {
     return {
       local: SceneObject.calculateBoundingBox(
-        this.transform.positionLocal.x,
-        this.transform.positionLocal.y,
+        this.transform.position.local.x,
+        this.transform.position.local.y,
         this.width,
         this.height
       ),
       world: SceneObject.calculateBoundingBox(
-        this.transform.positionWorld.x,
-        this.transform.positionWorld.y,
+        this.transform.position.world.x,
+        this.transform.position.world.y,
         this.width,
         this.height
       ),
@@ -177,8 +181,8 @@ export abstract class SceneObject {
 
   get boundingBoxLocal(): SceneObjectBoundingBox {
     return SceneObject.calculateBoundingBox(
-      this.transform.positionLocal.x,
-      this.transform.positionLocal.y,
+      this.transform.position.local.x,
+      this.transform.position.local.y,
       this.width,
       this.height
     );
@@ -186,8 +190,8 @@ export abstract class SceneObject {
 
   get boundingBoxWorld(): SceneObjectBoundingBox {
     return SceneObject.calculateBoundingBox(
-      this.transform.positionWorld.x,
-      this.transform.positionWorld.y,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
       this.width,
       this.height
     );
@@ -276,17 +280,21 @@ export abstract class SceneObject {
     object.parent = undefined;
   }
 
+  /**
+   * calculate world position based on local position and parent's position
+   * @returns Vector
+   */
   calculateWorldPosition(): Vector {
     if (this.parent === undefined) {
       return new Vector(
-        this.transform.positionLocal.x,
-        this.transform.positionLocal.y
+        this.transform.position.local.x,
+        this.transform.position.local.y
       );
     }
 
     return new Vector(
-      this.transform.positionLocal.x + this.parent.transform.positionWorld.x,
-      this.transform.positionLocal.y + this.parent.transform.positionWorld.y
+      this.transform.position.local.x + this.parent.transform.position.world.x,
+      this.transform.position.local.y + this.parent.transform.position.world.y
     );
   }
 }

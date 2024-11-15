@@ -93,8 +93,8 @@ export class ShopItemSellObject extends SceneObject {
       Assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
-      this.transform.positionLocal.x,
-      this.transform.positionLocal.y,
+      this.transform.position.local.x,
+      this.transform.position.local.y,
       undefined,
       undefined,
       {

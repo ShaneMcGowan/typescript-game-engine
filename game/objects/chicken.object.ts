@@ -76,8 +76,8 @@ export class ChickenObject extends SceneObject implements Interactable {
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
 
-    this.targetX = this.transform.positionLocal.x;
-    this.targetY = this.transform.positionLocal.y;
+    this.targetX = this.transform.position.local.x;
+    this.targetY = this.transform.position.local.y;
 
     this.canLayEggs = config.canLayEggs ?? DEFAULT_CAN_LAY_EGGS;
     this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
@@ -99,8 +99,8 @@ export class ChickenObject extends SceneObject implements Interactable {
       Assets.images[TILE_SET],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
-      this.transform.positionLocal.x,
-      this.transform.positionLocal.y,
+      this.transform.position.local.x,
+      this.transform.position.local.y,
       undefined,
       undefined,
       {
@@ -143,22 +143,22 @@ export class ChickenObject extends SceneObject implements Interactable {
       // TODO: add some randomness to movement, can be done later
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
-          this.transform.positionLocal.x,
-          this.transform.positionLocal.y,
+          this.transform.position.local.x,
+          this.transform.position.local.y,
           this.targetX,
           this.targetY
         ),
         {
-          positionX: this.following.transform.positionLocal.x,
-          positionY: this.following.transform.positionLocal.y,
+          positionX: this.following.transform.position.local.x,
+          positionY: this.following.transform.position.local.y,
         }
       );
     } else {
       // move in a random direction
       movement = MovementUtils.moveInRandomDirection(
         new Movement(
-          this.transform.positionLocal.x,
-          this.transform.positionLocal.y,
+          this.transform.position.local.x,
+          this.transform.position.local.y,
           this.targetX,
           this.targetY
         )
@@ -184,12 +184,12 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.positionLocal.x || this.targetY !== this.transform.positionLocal.y) {
-      let movement = new Movement(this.transform.positionLocal.x, this.transform.positionLocal.y, this.targetX, this.targetY);
+    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
+      let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.positionLocal.x = updatedMovement.positionX;
-      this.transform.positionLocal.y = updatedMovement.positionY;
+      this.transform.position.local.x = updatedMovement.positionX;
+      this.transform.position.local.y = updatedMovement.positionY;
 
       // set flag
       this.isMovingThisFrame = true;
@@ -221,13 +221,13 @@ export class ChickenObject extends SceneObject implements Interactable {
 
     // check direction travelling to ensure that egg is always beneath chicken as they walk away
     let roundDirection;
-    if (this.transform.positionLocal.x > this.targetX || this.transform.positionLocal.y > this.targetY) {
+    if (this.transform.position.local.x > this.targetX || this.transform.position.local.y > this.targetY) {
       roundDirection = Math.ceil;
     } else {
       roundDirection = Math.floor;
     }
     this.scene.addObject(
-      new EggObject(this.scene, { positionX: roundDirection(this.transform.positionLocal.x), positionY: roundDirection(this.transform.positionLocal.y), })
+      new EggObject(this.scene, { positionX: roundDirection(this.transform.position.local.x), positionY: roundDirection(this.transform.position.local.y), })
     );
 
     this.eggTimer = 0;

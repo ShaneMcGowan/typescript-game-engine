@@ -41,8 +41,8 @@ export class StartButtonObject extends SceneObject {
       Assets.images.tileset_button,
       this.clicked ? 6 : 0, // sprite x
       2, // sprite y
-      this.transform.positionLocal.x,
-      this.transform.positionLocal.y,
+      this.transform.position.local.x,
+      this.transform.position.local.y,
       this.width,
       this.height,
       {

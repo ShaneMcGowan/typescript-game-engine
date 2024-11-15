@@ -425,7 +425,7 @@ export abstract class Scene {
   getAllObjectsAtPosition(positionX: number, positionY: number, type?: any): SceneObject[] {
     // TODO: add optional type check
     // TODO: this is a very heavy operation
-    return this.objects.filter(o => o.transform.positionLocal.x === positionX && o.transform.positionLocal.y === positionY && o.collision.layer !== CanvasConstants.UI_COLLISION_LAYER);
+    return this.objects.filter(o => o.transform.position.local.x === positionX && o.transform.position.local.y === positionY && o.collision.layer !== CanvasConstants.UI_COLLISION_LAYER);
   }
 
   private removeAllObjects(): void {

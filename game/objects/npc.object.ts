@@ -77,8 +77,8 @@ export class NpcObject extends SceneObject implements Interactable {
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
     
-    this.targetX = this.transform.positionLocal.x;
-    this.targetY = this.transform.positionLocal.y;
+    this.targetX = this.transform.position.local.x;
+    this.targetY = this.transform.position.local.y;
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
     this.following = config.follows;
     this.dialogue = config.dialogue;
@@ -102,8 +102,8 @@ export class NpcObject extends SceneObject implements Interactable {
       Assets.images[animation.tileset],
       frame.spriteX,
       frame.spriteY,
-      this.transform.positionLocal.x,
-      this.transform.positionLocal.y,
+      this.transform.position.local.x,
+      this.transform.position.local.y,
       undefined,
       undefined,
       {
@@ -144,22 +144,22 @@ export class NpcObject extends SceneObject implements Interactable {
       // TODO: this logic is dumb and can get stuck if no clear path
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
-          this.transform.positionLocal.x,
-          this.transform.positionLocal.y,
+          this.transform.position.local.x,
+          this.transform.position.local.y,
           this.targetX,
           this.targetY
         ),
         {
-          positionX: this.following.transform.positionLocal.x,
-          positionY: this.following.transform.positionLocal.y,
+          positionX: this.following.transform.position.local.x,
+          positionY: this.following.transform.position.local.y,
         }
       );
     } else {
       // move in a random direction
       movement = MovementUtils.moveInRandomDirection(
         new Movement(
-          this.transform.positionLocal.x,
-          this.transform.positionLocal.y,
+          this.transform.position.local.x,
+          this.transform.position.local.y,
           this.targetX,
           this.targetY
         )
@@ -185,12 +185,12 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.positionLocal.x || this.targetY !== this.transform.positionLocal.y) {
-      let movement = new Movement(this.transform.positionLocal.x, this.transform.positionLocal.y, this.targetX, this.targetY);
+    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
+      let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.positionLocal.x = updatedMovement.positionX;
-      this.transform.positionLocal.y = updatedMovement.positionY;
+      this.transform.position.local.x = updatedMovement.positionX;
+      this.transform.position.local.y = updatedMovement.positionY;
     }
   }
 
