@@ -106,5 +106,4 @@ export class TransitionObject extends SceneObject {
     );
     context.fill();
   }
-
 }

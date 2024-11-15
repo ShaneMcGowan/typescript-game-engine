@@ -17,7 +17,6 @@ import { ChickenObject } from '@game/objects/chicken.object';
 import { useCropOnChicken } from '@game/objects/player/crop/use-crop-on-chicken.action';
 import { InventoryObject } from '@game/objects/inventory.object';
 import { useWateringCanOnChicken } from './player/watering-can/use-watering-can-on-chicken.action';
-import { Position } from '@game/models/position.model';
 import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
 
@@ -189,8 +188,6 @@ export class PlayerObject extends SceneObject {
     }
 
     // check if can move to position
-    // TODO: why isn't this working?
-
     const targetBoundingBox = SceneObject.calculateBoundingBox(
       movement.target.x,
       movement.target.y,
@@ -201,12 +198,6 @@ export class PlayerObject extends SceneObject {
     if (this.scene.hasCollisionAtBoundingBox(targetBoundingBox, this)) {
       return;
     }
-
-    // TODO: for now I will disable this but we could end up in the same position as another object if they are both moving
-    // TODO: need to do this in a way that doesn't add targetX and targetY to the engine models
-    // if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY)) {
-    //   return;
-    // }
 
     if (this.scene.isOutOfBounds(movement.targetX, movement.targetY)) {
       return;

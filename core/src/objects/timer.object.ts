@@ -35,5 +35,4 @@ export class TimerObject extends SceneObject {
       this.scene.removeObjectById(this.id);
     }
   }
-
 }

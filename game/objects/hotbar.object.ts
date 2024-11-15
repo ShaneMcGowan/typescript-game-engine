@@ -32,8 +32,8 @@ export class HotbarObject extends SceneObject {
   }
 
   private renderHotbarSelector(context: CanvasRenderingContext2D): void {
-    const x = this.boundingBox.left + 1 + (this.hotbarSelectedIndex * 2);
-    const y = this.boundingBox.top + 1;
+    const x = this.boundingBoxLocal.left + 1 + (this.hotbarSelectedIndex * 2);
+    const y = this.boundingBoxLocal.top + 1;
 
     RenderUtils.renderSprite(
       context,
@@ -53,8 +53,8 @@ export class HotbarObject extends SceneObject {
   private renderBackground(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.boundingBox.left,
-      this.boundingBox.top,
+      this.boundingBoxLocal.left,
+      this.boundingBoxLocal.top,
       this.width,
       this.height,
       { colour: 'saddlebrown', type: 'tile' }
@@ -68,8 +68,8 @@ export class HotbarObject extends SceneObject {
         Assets.images.tileset_ui,
         0.5,
         3.5,
-        this.boundingBox.left + 1 + (i * 2),
-        this.boundingBox.top + 1,
+        this.boundingBoxLocal.left + 1 + (i * 2),
+        this.boundingBoxLocal.top + 1,
         2,
         2,
         {
@@ -93,8 +93,8 @@ export class HotbarObject extends SceneObject {
         item.maxStackSize,
         item.sprite.spriteX,
         item.sprite.spriteY,
-        (this.boundingBox.left + 1) + (i * 2),
-        (this.boundingBox.top + 1)
+        (this.boundingBoxLocal.left + 1) + (i * 2),
+        (this.boundingBoxLocal.top + 1)
       );
     }
   }

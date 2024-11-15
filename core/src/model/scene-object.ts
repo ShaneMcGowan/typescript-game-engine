@@ -10,8 +10,19 @@ export interface SceneObjectBoundingBox {
   left: number;
 }
 
+// TODO:
+//  in order to enable child and parent objects, position needs to be updated
+//  for now we will place worldPosition on the `transform` object
+//  but later we will want to update transform to be
+//  {
+//    position: {
+//      readonly local: Vector
+//      readonly world: Vector
+//    }
+//  }
 interface Transform {
-  position: Vector;
+  readonly position: Vector;
+  readonly worldPosition: Vector;
   scale: number;
   rotation: number; // rotation in degrees
 }
@@ -73,31 +84,10 @@ const HEIGHT_DEFAULT: number = 1;
 
 export abstract class SceneObject {
   readonly id: string = crypto.randomUUID();
-
-  readonly transform: Transform = {
-    position: TRANSFORM_POSITION_DEFAULT(),
-    scale: TRANSFORM_SCALE_DEFAULT,
-    rotation: TRANSFORM_ROTATION_DEFAULT,
-  };
-
-  readonly collision: Collision = {
-    enabled: COLLISION_ENABLED_DEFAULT,
-    layer: COLLISION_LAYER_DEFAULT,
-  };
-
-  readonly renderer: Renderer = {
-    enabled: RENDERER_ENABLED_DEFAULT,
-    layer: RENDERER_LAYER_DEFAULT,
-    opacity: RENDERER_OPACITY_DEFAULT,
-    scale: RENDERER_SCALE_DEFAULT,
-  };
-
-  readonly flags: Flags = {
-    awake: FLAGS_AWAKE_DEFAULT,
-    update: FLAGS_UPDATE_DEFAULT,
-    render: FLAGS_RENDER_DEFAULT,
-    destroy: FLAGS_DESTROY_DEFAULT,
-  };
+  readonly transform: Transform;
+  readonly collision: Collision;
+  readonly renderer: Renderer;
+  readonly flags: Flags;
 
   // dimensions
   width: number = WIDTH_DEFAULT;
@@ -105,14 +95,45 @@ export abstract class SceneObject {
 
   protected mainContext: CanvasRenderingContext2D;
 
-  children = new Array<SceneObject>(); // TODO: begin parent / child objects
+  readonly children: Map<string, SceneObject> = new Map<string, SceneObject>();
   parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
 
   constructor(
     protected scene: Scene,
     config: SceneObjectBaseConfig
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const _this = this;
+
     this.mainContext = this.scene.renderContext;
+
+    this.transform = {
+      position: TRANSFORM_POSITION_DEFAULT(),
+      get worldPosition() {
+        return _this.calculateWorldPosition();
+      },
+      scale: TRANSFORM_SCALE_DEFAULT,
+      rotation: TRANSFORM_ROTATION_DEFAULT,
+    };
+
+    this.collision = {
+      enabled: COLLISION_ENABLED_DEFAULT,
+      layer: COLLISION_LAYER_DEFAULT,
+    };
+
+    this.renderer = {
+      enabled: RENDERER_ENABLED_DEFAULT,
+      layer: RENDERER_LAYER_DEFAULT,
+      opacity: RENDERER_OPACITY_DEFAULT,
+      scale: RENDERER_SCALE_DEFAULT,
+    };
+
+    this.flags = {
+      awake: FLAGS_AWAKE_DEFAULT,
+      update: FLAGS_UPDATE_DEFAULT,
+      render: FLAGS_RENDER_DEFAULT,
+      destroy: FLAGS_DESTROY_DEFAULT,
+    };
 
     this.transform.position.x = config.positionX ?? this.transform.position.x;
     this.transform.position.y = config.positionY ?? this.transform.position.y;
@@ -134,10 +155,19 @@ export abstract class SceneObject {
   render?(context: CanvasRenderingContext2D): void; // called every frame after update
   destroy?(): void; // called once after render if flaggedForDestroy is true
 
-  get boundingBox(): SceneObjectBoundingBox {
+  get boundingBoxLocal(): SceneObjectBoundingBox {
     return SceneObject.calculateBoundingBox(
       this.transform.position.x,
       this.transform.position.y,
+      this.width,
+      this.height
+    );
+  }
+
+  get boundingBoxWorld(): SceneObjectBoundingBox {
+    return SceneObject.calculateBoundingBox(
+      this.transform.worldPosition.x,
+      this.transform.worldPosition.y,
       this.width,
       this.height
     );
@@ -150,8 +180,8 @@ export abstract class SceneObject {
   debuggerRenderBoundary(context: CanvasRenderingContext2D): void {
     RenderUtils.strokeRectangle(
       context,
-      this.boundingBox.left,
-      this.boundingBox.top,
+      this.boundingBoxWorld.left,
+      this.boundingBoxWorld.top,
       this.width,
       this.height,
       {
@@ -168,28 +198,12 @@ export abstract class SceneObject {
   debuggerRenderBackground(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.boundingBox.left,
-      this.boundingBox.top,
+      this.boundingBoxLocal.left,
+      this.boundingBoxLocal.top,
       Math.floor(this.width * CanvasConstants.TILE_SIZE),
       Math.floor(this.height * CanvasConstants.TILE_SIZE),
       { colour: 'red', }
     );
-  }
-
-  get cameraRelativePositionX(): number {
-    return this.transform.position.x + this.scene.globals.camera.startX;
-  }
-
-  get cameraRelativePositionY(): number {
-    return this.transform.position.y + this.scene.globals.camera.startY;
-  }
-
-  get pixelWidth(): number {
-    return this.width * CanvasConstants.TILE_SIZE;
-  }
-
-  get pixelHeight(): number {
-    return this.height * CanvasConstants.TILE_SIZE;
   }
 
   isCollidingWith(object: SceneObject): boolean {
@@ -197,11 +211,11 @@ export abstract class SceneObject {
   }
 
   isWithinHorizontalBounds(object: SceneObject): boolean {
-    if (object.boundingBox.left >= this.boundingBox.left && object.boundingBox.left <= this.boundingBox.right) {
+    if (object.boundingBoxLocal.left >= this.boundingBoxLocal.left && object.boundingBoxLocal.left <= this.boundingBoxLocal.right) {
       return true;
     }
 
-    if (object.boundingBox.right >= this.boundingBox.left && object.boundingBox.right <= this.boundingBox.right) {
+    if (object.boundingBoxLocal.right >= this.boundingBoxLocal.left && object.boundingBoxLocal.right <= this.boundingBoxLocal.right) {
       return true;
     }
 
@@ -209,11 +223,11 @@ export abstract class SceneObject {
   }
 
   isWithinVerticalBounds(object: SceneObject): boolean {
-    if (object.boundingBox.top >= this.boundingBox.top && object.boundingBox.top <= this.boundingBox.bottom) {
+    if (object.boundingBoxLocal.top >= this.boundingBoxLocal.top && object.boundingBoxLocal.top <= this.boundingBoxLocal.bottom) {
       return true;
     }
 
-    if (object.boundingBox.bottom >= this.boundingBox.top && object.boundingBox.bottom <= this.boundingBox.bottom) {
+    if (object.boundingBoxLocal.bottom >= this.boundingBoxLocal.top && object.boundingBoxLocal.bottom <= this.boundingBoxLocal.bottom) {
       return true;
     }
 
@@ -230,5 +244,29 @@ export abstract class SceneObject {
       bottom: y + yOffset,
       left: x - xOffset,
     };
+  }
+
+  addChild(object: SceneObject): void {
+    this.children.set(object.id, object);
+    object.parent = this;
+  }
+
+  removeChild(object: SceneObject): void {
+    this.children.delete(object.id);
+    object.parent = undefined;
+  }
+
+  calculateWorldPosition(): Vector {
+    if (this.parent === undefined) {
+      return new Vector(
+        this.transform.position.x,
+        this.transform.position.y
+      );
+    }
+
+    return new Vector(
+      this.transform.position.x + this.parent.transform.worldPosition.x,
+      this.transform.position.y + this.parent.transform.worldPosition.y
+    );
   }
 }

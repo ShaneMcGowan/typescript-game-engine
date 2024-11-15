@@ -1,10 +1,12 @@
 import { type SceneConstructorSignature } from '@core/model/scene';
 import { type SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_TEST_COLLISION } from '@core/tests/collision/map';
+import { SCENE_GAME_MAP_TEST_OBJECT_HIERARCHY } from '@core/tests/object-hierarchy/map';
 
 export class EditorUtils {
   static readonly TEST_MAPS: Array<{ name: string; map: SceneMapConstructorSignature; }> = [
-    { name: 'collision test', map: SCENE_GAME_MAP_TEST_COLLISION, }
+    { name: 'collision test', map: SCENE_GAME_MAP_TEST_COLLISION, },
+    { name: 'object hierarchy test', map: SCENE_GAME_MAP_TEST_OBJECT_HIERARCHY, }
   ];
 
   static get engineMapList(): any {

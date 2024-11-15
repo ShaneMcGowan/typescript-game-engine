@@ -3,3 +3,4 @@
 /core/*.tgz
 /core/dist
 .DS_Store
+/.vscode/

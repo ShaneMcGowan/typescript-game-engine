@@ -50,8 +50,8 @@ export class FullscreenToggleObject extends SceneObject {
       Assets.images['tileset_fullscreen'],
       this.isFullscreen ? 1 : 0,
       0,
-      this.boundingBox.left,
-      this.boundingBox.top,
+      this.boundingBoxLocal.left,
+      this.boundingBoxLocal.top,
     )
   }
 
