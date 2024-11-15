@@ -346,10 +346,10 @@ export abstract class Scene {
       }
 
       if (
-        positionX < object.boundingBoxLocal.right &&
-        positionX > object.boundingBoxLocal.left &&
-        positionY < object.boundingBoxLocal.bottom &&
-        positionY > object.boundingBoxLocal.top
+        positionX < object.boundingBox.world.right &&
+        positionX > object.boundingBox.world.left &&
+        positionY < object.boundingBox.world.bottom &&
+        positionY > object.boundingBox.world.top
       ) {
         return true;
       }
@@ -375,10 +375,10 @@ export abstract class Scene {
       }
 
       if (
-        boundingBox.left < object.boundingBoxLocal.right &&
-        boundingBox.right > object.boundingBoxLocal.left &&
-        boundingBox.top < object.boundingBoxLocal.bottom &&
-        boundingBox.bottom > object.boundingBoxLocal.top
+        boundingBox.left < object.boundingBox.world.right &&
+        boundingBox.right > object.boundingBox.world.left &&
+        boundingBox.top < object.boundingBox.world.bottom &&
+        boundingBox.bottom > object.boundingBox.world.top
       ) {
         return object;
       }
@@ -403,10 +403,10 @@ export abstract class Scene {
       }
 
       if (
-        positionX < object.boundingBoxLocal.right &&
-        positionX > object.boundingBoxLocal.left &&
-        positionY < object.boundingBoxLocal.bottom &&
-        positionY > object.boundingBoxLocal.top
+        positionX < object.boundingBox.world.right &&
+        positionX > object.boundingBox.world.left &&
+        positionY < object.boundingBox.world.bottom &&
+        positionY > object.boundingBox.world.top
       ) {
         return object;
       }

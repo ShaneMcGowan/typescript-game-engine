@@ -80,7 +80,7 @@ export abstract class MouseUtils {
   }
 
   static isMouseWithinObject(object: SceneObject): boolean {
-    if (!this.isMouseWithinBoundary(Input.mouse.position, object.boundingBoxLocal.left, object.boundingBoxLocal.top, object.width, object.height)) {
+    if (!this.isMouseWithinBoundary(Input.mouse.position, object.boundingBox.world.left, object.boundingBox.world.top, object.width, object.height)) {
       return false;
     }
 

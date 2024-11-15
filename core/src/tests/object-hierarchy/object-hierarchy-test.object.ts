@@ -35,8 +35,8 @@ export class ObjectHierarchyTestObject extends SceneObject {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.boundingBoxWorld.left,
-      this.boundingBoxWorld.top,
+      this.boundingBox.world.left,
+      this.boundingBox.world.top,
       this.width,
       this.height,
       {

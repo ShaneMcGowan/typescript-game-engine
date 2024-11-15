@@ -33,8 +33,8 @@ export class CollisionTestObject extends SceneObject {
 
     RenderUtils.fillRectangle(
       context,
-      this.boundingBoxLocal.left,
-      this.boundingBoxLocal.top,
+      this.boundingBox.world.left,
+      this.boundingBox.world.top,
       this.width,
       this.height,
       {
@@ -55,10 +55,10 @@ export class CollisionTestObject extends SceneObject {
       }
 
       if (
-        this.boundingBoxLocal.left < object.boundingBoxLocal.right &&
-        this.boundingBoxLocal.right > object.boundingBoxLocal.left &&
-        this.boundingBoxLocal.top < object.boundingBoxLocal.bottom &&
-        this.boundingBoxLocal.bottom > object.boundingBoxLocal.top
+        this.boundingBox.world.left < object.boundingBox.world.right &&
+        this.boundingBox.world.right > object.boundingBox.world.left &&
+        this.boundingBox.world.top < object.boundingBox.world.bottom &&
+        this.boundingBox.world.bottom > object.boundingBox.world.top
       ) {
         this.isColliding = true;
         return;

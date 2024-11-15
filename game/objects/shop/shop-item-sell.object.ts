@@ -76,8 +76,8 @@ export class ShopItemSellObject extends SceneObject {
   private renderContainer(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.boundingBoxLocal.left,
-      this.boundingBoxLocal.top,
+      this.boundingBox.world.left,
+      this.boundingBox.world.top,
       this.width,
       this.height,
       {
@@ -107,8 +107,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `$${this.price}`,
-      this.boundingBoxLocal.right - 0.75,
-      this.boundingBoxLocal.bottom,
+      this.boundingBox.world.right - 0.75,
+      this.boundingBox.world.bottom,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
@@ -117,8 +117,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `${this.item.currentStackSize}`,
-      this.boundingBoxLocal.right - 0.75,
-      this.boundingBoxLocal.top + 0.75,
+      this.boundingBox.world.right - 0.75,
+      this.boundingBox.world.top + 0.75,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }

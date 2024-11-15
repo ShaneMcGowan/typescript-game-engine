@@ -22,8 +22,8 @@ export interface SceneObjectBoundingBox {
 //  }
 interface Transform {
   readonly position: {
-    local: Vector;
-    world: Vector;
+    readonly local: Vector;
+    readonly world: Vector;
   };
   scale: number;
   rotation: number; // rotation in degrees
@@ -179,24 +179,6 @@ export abstract class SceneObject {
     };
   }
 
-  get boundingBoxLocal(): SceneObjectBoundingBox {
-    return SceneObject.calculateBoundingBox(
-      this.transform.position.local.x,
-      this.transform.position.local.y,
-      this.width,
-      this.height
-    );
-  }
-
-  get boundingBoxWorld(): SceneObjectBoundingBox {
-    return SceneObject.calculateBoundingBox(
-      this.transform.position.world.x,
-      this.transform.position.world.y,
-      this.width,
-      this.height
-    );
-  }
-
   /**
    * Used for debugging
    * @param context
@@ -204,8 +186,8 @@ export abstract class SceneObject {
   debuggerRenderBoundary(context: CanvasRenderingContext2D): void {
     RenderUtils.strokeRectangle(
       context,
-      this.boundingBoxWorld.left,
-      this.boundingBoxWorld.top,
+      this.boundingBox.world.left,
+      this.boundingBox.world.top,
       this.width,
       this.height,
       {
@@ -222,8 +204,8 @@ export abstract class SceneObject {
   debuggerRenderBackground(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.boundingBoxLocal.left,
-      this.boundingBoxLocal.top,
+      this.boundingBox.world.left,
+      this.boundingBox.world.top,
       Math.floor(this.width * CanvasConstants.TILE_SIZE),
       Math.floor(this.height * CanvasConstants.TILE_SIZE),
       { colour: 'red', }
@@ -235,11 +217,11 @@ export abstract class SceneObject {
   }
 
   isWithinHorizontalBounds(object: SceneObject): boolean {
-    if (object.boundingBoxLocal.left >= this.boundingBoxLocal.left && object.boundingBoxLocal.left <= this.boundingBoxLocal.right) {
+    if (object.boundingBox.world.left >= this.boundingBox.world.left && object.boundingBox.world.left <= this.boundingBox.world.right) {
       return true;
     }
 
-    if (object.boundingBoxLocal.right >= this.boundingBoxLocal.left && object.boundingBoxLocal.right <= this.boundingBoxLocal.right) {
+    if (object.boundingBox.world.right >= this.boundingBox.world.left && object.boundingBox.world.right <= this.boundingBox.world.right) {
       return true;
     }
 
@@ -247,11 +229,11 @@ export abstract class SceneObject {
   }
 
   isWithinVerticalBounds(object: SceneObject): boolean {
-    if (object.boundingBoxLocal.top >= this.boundingBoxLocal.top && object.boundingBoxLocal.top <= this.boundingBoxLocal.bottom) {
+    if (object.boundingBox.world.top >= this.boundingBox.world.top && object.boundingBox.world.top <= this.boundingBox.world.bottom) {
       return true;
     }
 
-    if (object.boundingBoxLocal.bottom >= this.boundingBoxLocal.top && object.boundingBoxLocal.bottom <= this.boundingBoxLocal.bottom) {
+    if (object.boundingBox.world.bottom >= this.boundingBox.world.top && object.boundingBox.world.bottom <= this.boundingBox.world.bottom) {
       return true;
     }
 
