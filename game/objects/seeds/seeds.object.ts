@@ -26,8 +26,8 @@ export class SeedsObject extends SceneObject {
       Assets.images[TILESET],
       this.spriteX,
       this.spriteY,
-      this.transform.position.x,
-      this.transform.position.y
+      this.transform.positionLocal.x,
+      this.transform.positionLocal.y
     );
   }
 }

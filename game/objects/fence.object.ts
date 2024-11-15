@@ -44,8 +44,8 @@ export class FenceObject extends SceneObject implements Interactable {
       Assets.images[TILE_SET],
       this.open ? FenceType.Open.x : this.type.x,
       this.open ? FenceType.Open.y : this.type.y,
-      this.transform.position.x,
-      this.transform.position.y,
+      this.transform.positionLocal.x,
+      this.transform.positionLocal.y,
       1,
       1,
       {

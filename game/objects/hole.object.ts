@@ -22,7 +22,7 @@ export class HoleObject extends SceneObject {
 
   update(delta: number): void {
     // the hole consumes
-    let objects = this.scene.getAllObjectsAtPosition(this.transform.position.x, this.transform.position.y);
+    let objects = this.scene.getAllObjectsAtPosition(this.transform.positionLocal.x, this.transform.positionLocal.y);
     if (objects.length === 1) {
       return;
     }
@@ -52,8 +52,8 @@ export class HoleObject extends SceneObject {
         this.scene.addObject(new TransitionObject(this.scene, {
           animationType: 'circle',
           animationDirection: 'out',
-          animationCenterX: this.transform.position.x,
-          animationCenterY: this.transform.position.y,
+          animationCenterX: this.transform.positionLocal.x,
+          animationCenterY: this.transform.positionLocal.y,
           animationLength: duration,
         }));
 
@@ -69,8 +69,8 @@ export class HoleObject extends SceneObject {
   render(context: CanvasRenderingContext2D): void {
     RenderUtils.renderCircle(
       context,
-      this.transform.position.x,
-      this.transform.position.y
+      this.transform.positionLocal.x,
+      this.transform.positionLocal.y
     );
   }
 }

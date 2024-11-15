@@ -36,10 +36,10 @@ export class CameraObject extends SceneObject {
 
   customerRenderer: CustomRendererSignature = (renderingContext: SceneRenderingContext) => {
     // follow scene object
-    let startX = this.object.transform.position.x - this.cameraOffsetX;
-    let startY = this.object.transform.position.y - this.cameraOffsetY;
-    let endX = this.object.transform.position.x + (this.cameraOffsetX + 1);
-    let endY = this.object.transform.position.y + (this.cameraOffsetY + 1);
+    let startX = this.object.transform.positionLocal.x - this.cameraOffsetX;
+    let startY = this.object.transform.positionLocal.y - this.cameraOffsetY;
+    let endX = this.object.transform.positionLocal.x + (this.cameraOffsetX + 1);
+    let endY = this.object.transform.positionLocal.y + (this.cameraOffsetY + 1);
 
     // if the camera is at the edge of the map, don't render outside of the map
     if (startX < 0) {

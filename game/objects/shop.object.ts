@@ -51,8 +51,8 @@ export class ShopObject extends SceneObject {
     for (let i = 0; i < ITEMS_FOR_SALE.length; i++) {
       const item = ITEMS_FOR_SALE[i];
       this.items.push(new ShopItemBuyObject(this.scene, {
-        positionX: this.transform.position.x + 2 + (i * 2.5),
-        positionY: this.transform.position.y + 2,
+        positionX: this.transform.positionLocal.x + 2 + (i * 2.5),
+        positionY: this.transform.positionLocal.y + 2,
         price: item.price,
         type: item.type,
       }));
@@ -73,8 +73,8 @@ export class ShopObject extends SceneObject {
         }
 
         this.items.push(new ShopItemSellObject(this.scene, {
-          positionX: this.transform.position.x + 19 + (col * 2.5),
-          positionY: this.transform.position.y + 3 + (row * 2.5),
+          positionX: this.transform.positionLocal.x + 19 + (col * 2.5),
+          positionY: this.transform.positionLocal.y + 3 + (row * 2.5),
           item: item,
           index: index,
         }));
