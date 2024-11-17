@@ -303,15 +303,14 @@ export abstract class Scene {
     this.objects.push(sceneObject);
   }
 
-  // TODO: I am rethinking the concept of removing the object from the scene during another object's update.
-  // I think it would be better to have a flag that is checked during the scene's update loop to rmove the obejct before it's next update
-  // perhaps using flaggedForDestroy
   removeObjectById(sceneObjectId: string): void {
     // TODO: review this later, loops are inefficient
     let object = this.objects.find(o => o.id === sceneObjectId);
     if (object === undefined) {
       return;
     }
+
+    object.removeAllChildren();
 
     if (object.destroy) {
       object.destroy();
@@ -432,7 +431,6 @@ export abstract class Scene {
     while (this.objects.length > 0) {
       this.removeObjectById(this.objects[0].id);
     }
-    // this.objects = [];
   }
 
   private removeAllBackgroundLayers(): void {

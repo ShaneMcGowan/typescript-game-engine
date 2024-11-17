@@ -56,8 +56,5 @@ export class WarpObject extends SceneObject {
       })
     );
   }
-
-  destroy(): void {
-
-  }
+ 
 }

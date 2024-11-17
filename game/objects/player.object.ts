@@ -294,10 +294,6 @@ export class PlayerObject extends SceneObject {
     object.interact();
   }
 
-  destroy(): void {
-    // TODO: what needs to be cleaned up here? are we sure the object is being properly released?
-  }
-
   /**
    * TODO: make 'Direction' a generic concept
    * TODO: this needs to be rounded down

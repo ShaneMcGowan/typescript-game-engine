@@ -7,6 +7,7 @@ import { InventoryItemObject, TYPE_TO_SELL_VALUE_MAP, TYPE_TO_SPRITE_MAP } from 
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
+import { ShopObject } from "../shop.object";
 
 
 interface Config extends SceneObjectBaseConfig {
@@ -67,10 +68,7 @@ export class ShopItemSellObject extends SceneObject {
 
     this.scene.removeFromInventory(this.index);
 
-    // last of an item being sold, remove from ui
-    if (this.item.currentStackSize === 0) {
-      this.scene.removeObjectById(this.id);
-    }
+    (this.parent as ShopObject).refreshShopState();
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {
@@ -107,8 +105,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `$${this.price}`,
-      this.boundingBox.world.right - 0.75,
-      this.boundingBox.world.bottom,
+      this.transform.position.local.x - 1,
+      this.transform.position.local.y,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
@@ -117,8 +115,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `${this.item.currentStackSize}`,
-      this.boundingBox.world.right - 0.75,
-      this.boundingBox.world.top + 0.75,
+      this.transform.position.local.x,
+      this.transform.position.local.y + 1,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }

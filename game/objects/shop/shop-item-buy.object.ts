@@ -7,6 +7,7 @@ import { TYPE_TO_SPRITE_MAP } from "../inventory-item.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
+import { ShopObject } from "../shop.object";
 
 
 interface Config extends SceneObjectBaseConfig {
@@ -61,13 +62,15 @@ export class ShopItemBuyObject extends SceneObject {
     this.scene.globals.gold -= this.price;
 
     this.scene.addToInventory(this.type);
+
+    (this.parent as ShopObject).refreshShopState();
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.transform.position.local.x,
-      this.transform.position.local.y,
+      this.boundingBox.world.left,
+      this.boundingBox.world.top,
       this.width,
       this.height,
       {
@@ -78,27 +81,17 @@ export class ShopItemBuyObject extends SceneObject {
   }
 
   private renderItem(context: CanvasRenderingContext2D): void {
-    RenderUtils.fillRectangle(
-      context,
-      this.transform.position.local.x,
-      this.transform.position.local.y,
-      this.width,
-      this.height,
-      {
-        colour: 'white',
-        type: 'tile'
-      }
-    );
 
     RenderUtils.renderSprite(
       context,
       Assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
-      this.transform.position.local.x,
-      this.transform.position.local.y,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
       undefined,
       undefined,
+      {centered: true}
     );
   }
 
@@ -106,8 +99,8 @@ export class ShopItemBuyObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `$${this.price}`,
-      this.transform.position.local.x + 1,
-      this.transform.position.local.y + 2,
+      this.transform.position.world.x,
+      this.transform.position.world.y + 1,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }

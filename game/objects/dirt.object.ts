@@ -207,8 +207,6 @@ export class DirtObject extends SceneObject implements Interactable {
     this.renderCrop(context);
   }
 
-  destroy(): void { }
-
   private renderDirt(context: CanvasRenderingContext2D): void {
     let tileset = this.cropStage === CropStage.Empty ? TILESET_SOIL : TILESET_SOIL_DARKER;
     RenderUtils.renderSprite(

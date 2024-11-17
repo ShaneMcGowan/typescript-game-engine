@@ -20,13 +20,10 @@ export class SCENE_GAME_MAP_TEST_OBJECT_HIERARCHY extends SceneMap {
     const grandchild = new ObjectHierarchyTestObject(this.scene, { positionX: 1, positionY: 1, });
     const greatGrandChild = new ObjectHierarchyTestObject(this.scene, { positionX: 1, positionY: 1, });
 
+    this.scene.addObject(parent);
+
     parent.addChild(child);
     child.addChild(grandchild);
     grandchild.addChild(greatGrandChild);
-
-    this.scene.addObject(parent);
-    this.scene.addObject(child);
-    this.scene.addObject(grandchild);
-    this.scene.addObject(greatGrandChild);
   }
 }

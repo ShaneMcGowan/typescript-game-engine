@@ -113,7 +113,7 @@ Ran every frame after `Awake` is ran for all objects.
 Ran every frame after `Update` is ran for all objects.
 
 #### Destory
-Ran every frame after `Render` if the object has `flaggedForDestroy` set to true.
+Ran every frame after `Render` if the object has `flags.destroy` set to true.
 After this is ran, then the object is removed from the Scene.
 
 # All APIs are incomplete and subject to massive change

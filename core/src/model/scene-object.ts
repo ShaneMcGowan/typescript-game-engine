@@ -157,7 +157,7 @@ export abstract class SceneObject {
   awake?(): void; // called once at start of frame if awakeRan is false
   update?(delta: number): void; // called every frame after awake
   render?(context: CanvasRenderingContext2D): void; // called every frame after update
-  destroy?(): void; // called once after render if flaggedForDestroy is true
+  destroy?(): void; // called once after render if flags.destroy is true
 
   get boundingBox(): {
     local: SceneObjectBoundingBox;
@@ -255,11 +255,17 @@ export abstract class SceneObject {
   addChild(object: SceneObject): void {
     this.children.set(object.id, object);
     object.parent = this;
+    this.scene.addObject(object);
   }
 
   removeChild(object: SceneObject): void {
     this.children.delete(object.id);
     object.parent = undefined;
+    this.scene.removeObjectById(object.id);
+  }
+
+  removeAllChildren(): void {
+    this.children.forEach(child => { this.removeChild(child); });
   }
 
   /**

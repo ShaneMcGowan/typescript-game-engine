@@ -21,6 +21,7 @@ import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
 import { FullscreenToggleObject } from '@game/objects/fullscreen-toggle.object';
+import { ShopObject } from '@game/objects/shop.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -49,7 +50,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
     let player = new PlayerObject(scene, { positionX: 10, positionY: 9, });
     this.objects.push(player);
-    this.objects.push(new ShopKeeperObject(scene, { positionX: 2, positionY: 14, }));
+    // this.objects.push(new ShopKeeperObject(scene, { positionX: 2, positionY: 14, }));
+    this.objects.push(new ShopKeeperObject(scene, { positionX: 10, positionY: 10, }));
 
     // chickens
     this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 13, follows: player, canLayEggs: true, canMove: true, }));

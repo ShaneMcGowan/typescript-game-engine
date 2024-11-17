@@ -58,9 +58,6 @@ export class EggObject extends SceneObject implements Interactable {
     );
   }
 
-  // TODO: what needs to be cleaned up here? are we sure the object is being properly released?
-  destroy(): void { }
-
   private updateAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 1;
     this.animationIndex = 0;

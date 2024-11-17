@@ -21,7 +21,33 @@ export class SCENE_GAME extends Scene {
       new InventoryItemObject(this, { type: InventoryItemType.WateringCan, }),
       new InventoryItemObject(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 5, }),
       undefined,
-      // new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      undefined,
+
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+
+
       // new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
       // new InventoryItemObject(this, { type: InventoryItemType.Tomato, currentStackSize: 10, }),
       // new InventoryItemObject(this, { type: InventoryItemType.Wheat, currentStackSize: 10, }),
@@ -31,7 +57,7 @@ export class SCENE_GAME extends Scene {
     hotbar_size: 5,
     hotbar_selected_index: 0,
     disable_player_inputs: false,
-    gold: 0,
+    gold: 999,
   };
 
   constructor(client: Client) {
