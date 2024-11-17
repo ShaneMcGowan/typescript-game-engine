@@ -49,7 +49,7 @@ export class CollisionTestObject extends SceneObject {
       return;
     }
 
-    for (const object of this.scene.objects) {
+    for (const [, object] of this.scene.objects) {
       if (object === this) {
         continue;
       }

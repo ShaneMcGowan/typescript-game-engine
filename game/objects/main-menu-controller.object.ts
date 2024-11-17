@@ -32,7 +32,7 @@ export class MainMenuControllerObject extends SceneObject {
       return;
     }
 
-    if (this.scene.objects.length > MAX_ITEMS) {
+    if (this.scene.objects.size > MAX_ITEMS) {
       return;
     }
 

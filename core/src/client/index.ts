@@ -180,7 +180,7 @@ export class Client {
       this.debug.stats.fpsCounter = timestamp;
     }
     if (this.debug.stats.objectCount) {
-      this.renderStats(1, 'Objects', `${this.scene.objects.length} objects`);
+      this.renderStats(1, 'Objects', `${this.scene.objects.size} objects`);
     }
 
     // debug grid
@@ -477,7 +477,7 @@ export class Client {
       return;
     }
 
-    let object = this.scene.objects.find((object) => object.id === this.engineSelectedObjectId);
+    let object = this.scene.objects.get(this.engineSelectedObjectId);
     if (object === undefined) {
       return;
     }

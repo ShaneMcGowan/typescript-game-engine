@@ -46,7 +46,7 @@ export abstract class Scene {
   backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations
 
   // objects
-  objects: SceneObject[] = [];
+  objects: Map<string, SceneObject> = new Map<string, SceneObject>();
   // TODO: how do we access types for this from the scene object?
 
   // a place to store flags for the scene
@@ -104,9 +104,7 @@ export abstract class Scene {
       console.time('[frame] awake');
     }
 
-    for (let i = 0; i < this.objects.length; i++) {
-      const object = this.objects[i];
-
+    for (let [, object] of this.objects) {
       if (object.flags.awake) {
         continue;
       }
@@ -202,9 +200,7 @@ export abstract class Scene {
       console.time('[frame] update');
     }
 
-    for (let i = 0; i < this.objects.length; i++) {
-      const object = this.objects[i];
-
+    for (let [, object] of this.objects) {
       if (!object.flags.update) {
         continue;
       }
@@ -232,9 +228,7 @@ export abstract class Scene {
     });
 
     // render objects
-    for (let i = 0; i < this.objects.length; i++) {
-      const object = this.objects[i];
-
+    for (let [, object] of this.objects) {
       if (!object.flags.render) {
         continue;
       }
@@ -268,9 +262,7 @@ export abstract class Scene {
       console.time('[frame] destroy');
     }
 
-    for (let i = 0; i < this.objects.length; i++) {
-      const object = this.objects[i];
-
+    for (let [, object] of this.objects) {
       if (!object.flags.destroy) {
         continue;
       }
@@ -300,12 +292,12 @@ export abstract class Scene {
   }
 
   addObject(sceneObject: SceneObject): void {
-    this.objects.push(sceneObject);
+    this.objects.set(sceneObject.id, sceneObject);
   }
 
   removeObjectById(sceneObjectId: string): void {
     // TODO: review this later, loops are inefficient
-    let object = this.objects.find(o => o.id === sceneObjectId);
+    let object = this.objects.get(sceneObjectId);
     if (object === undefined) {
       return;
     }
@@ -315,7 +307,8 @@ export abstract class Scene {
     if (object.destroy) {
       object.destroy();
     }
-    this.objects.splice(this.objects.indexOf(object), 1);
+
+    this.objects.delete(sceneObjectId);
   }
 
   /**
@@ -325,7 +318,15 @@ export abstract class Scene {
    */
   getObjectsByType(type: any): SceneObject[] {
     // TODO: horribly underperformant, perhaps use a hash on object type instead?
-    return this.objects.filter(o => o instanceof type);
+    const response: SceneObject[] = [];
+
+    this.objects.forEach(o => {
+      if (o instanceof type) {
+        response.push(o);
+      }
+    });
+
+    return response;
   }
 
   /**
@@ -335,7 +336,7 @@ export abstract class Scene {
    * @returns
    */
   hasCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
-    for (const object of this.objects) {
+    for (const [, object] of this.objects) {
       if (!object.collision.enabled) {
         continue;
       }
@@ -364,7 +365,7 @@ export abstract class Scene {
  * @returns
  */
   hasCollisionAtBoundingBox(boundingBox: SceneObjectBoundingBox, sceneObject?: SceneObject): SceneObject | undefined {
-    for (const object of this.objects) {
+    for (const [, object] of this.objects) {
       if (!object.collision.enabled) {
         continue;
       }
@@ -396,8 +397,13 @@ export abstract class Scene {
  * @returns
  */
   getObjectAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): SceneObject | undefined {
-    for (const object of this.objects) {
+    for (const [, object] of this.objects) {
       if (object === sceneObject) {
+        continue;
+      }
+
+      // ignore ui objects
+      if (object.collision.layer === CanvasConstants.UI_COLLISION_LAYER) {
         continue;
       }
 
@@ -424,12 +430,30 @@ export abstract class Scene {
   getAllObjectsAtPosition(positionX: number, positionY: number, type?: any): SceneObject[] {
     // TODO: add optional type check
     // TODO: this is a very heavy operation
-    return this.objects.filter(o => o.transform.position.local.x === positionX && o.transform.position.local.y === positionY && o.collision.layer !== CanvasConstants.UI_COLLISION_LAYER);
+    const response: SceneObject[] = [];
+
+    for (const [, object] of this.objects) {
+      if (object.transform.position.local.x !== positionX) {
+        continue;
+      }
+
+      if (object.transform.position.local.y !== positionY) {
+        continue;
+      }
+
+      if (object.collision.layer !== CanvasConstants.UI_COLLISION_LAYER) {
+        continue;
+      }
+
+      response.push(object);
+    }
+
+    return response;
   }
 
   private removeAllObjects(): void {
-    while (this.objects.length > 0) {
-      this.removeObjectById(this.objects[0].id);
+    for (const [id] of this.objects) {
+      this.removeObjectById(id);
     }
   }
 
@@ -482,7 +506,8 @@ export abstract class Scene {
     console.log('[Scene] changing map to', mapClass);
     this.map = Reflect.construct(mapClass, [this]);
     this.backgroundLayers.push(...this.map.backgroundLayers);
-    this.objects.push(...this.map.objects);
+
+    this.map.objects.forEach(o => this.objects.set(o.id, o));
 
     // set up rendering contexts
     // custom renderers in objects for maps require this

@@ -40,7 +40,7 @@ export class EditorUtils {
   }
 
   static initHelpers(): void {
-    window.o = (id: string) => { return window.engine.scene.objects.find(o => o.id === id); };
+    window.o = (id: string) => { return window.engine.scene.objects.get(id); };
   }
 
   static changeScene(sceneClass: SceneConstructorSignature): void {
