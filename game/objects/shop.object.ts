@@ -53,16 +53,16 @@ export class ShopObject extends SceneObject {
     this.onLeave = config.onLeave;
   }
 
-  awake(): void {
+  onAwake(): void {
     this.refreshShopState();
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateButtonClose();
     this.updateClickClose();
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     this.renderBackground(context);
     this.renderShopBackground(context);
     this.renderShopTitle(context);
@@ -111,7 +111,7 @@ export class ShopObject extends SceneObject {
   }
 
   private close(): void {
-    this.flagForDestroy();
+    this.destroy();
 
     if (this.onLeave) {
       this.onLeave();

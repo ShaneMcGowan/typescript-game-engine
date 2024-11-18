@@ -21,7 +21,7 @@ export class MainMenuControllerObject extends SceneObject {
     super(scene, config);
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateGenerateNewItem(delta);
   }
 

@@ -52,14 +52,14 @@ export class GenericSpriteObject extends SceneObject {
     this.movementSpeed = config.movementSpeed ?? DEFAULT_MOVEMENT_SPEED;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updatePosition(delta);
   }
 
   private updatePosition(delta: number): void {
     if (this.transform.position.local.x === this.targetX && this.transform.position.local.y === this.targetY) {
       if (this.destroyAtTarget) {
-        this.flagForDestroy();
+        this.destroy();
       }
       return;
     }
@@ -72,7 +72,7 @@ export class GenericSpriteObject extends SceneObject {
     this.transform.position.local.y = updatedMovement.positionY;
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images[this.tileset],

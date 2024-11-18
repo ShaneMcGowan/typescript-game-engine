@@ -34,11 +34,11 @@ export class ShopItemBuyObject extends SceneObject {
     this.type = config.type;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateClicked();
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     this.renderContainer(context);
     this.renderItem(context);
     this.renderPrice(context);

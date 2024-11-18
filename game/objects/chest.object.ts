@@ -25,7 +25,7 @@ export class ChestObject extends SceneObject implements Interactable {
     this.renderer.layer = RENDERER_LAYER;
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     this.renderSprite(context);
   }
 

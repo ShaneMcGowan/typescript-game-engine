@@ -24,11 +24,11 @@ export class CollisionTestObject extends SceneObject {
     }
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateCollision();
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     let colour = this.isColliding ? 'green' : 'red';
 
     RenderUtils.fillRectangle(

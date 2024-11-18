@@ -38,7 +38,7 @@ export class FenceObject extends SceneObject implements Interactable {
     }
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images[TILE_SET],

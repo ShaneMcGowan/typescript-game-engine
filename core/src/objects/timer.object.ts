@@ -27,12 +27,12 @@ export class TimerObject extends SceneObject {
     this.onComplete = config.onComplete ?? DEFAULT_ON_COMPLETE;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.timer += delta;
 
     if (this.timer >= this.duration) {
       this.onComplete();
-      this.flagForDestroy();
+      this.destroy();
     }
   }
 }

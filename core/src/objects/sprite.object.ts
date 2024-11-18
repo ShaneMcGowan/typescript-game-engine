@@ -24,7 +24,7 @@ export class SpriteObject extends SceneObject {
     this.spriteY = config.spriteY;
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images['sprites'],

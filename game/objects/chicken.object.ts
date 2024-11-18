@@ -83,9 +83,11 @@ export class ChickenObject extends SceneObject implements Interactable {
     this.isEdgyTeen = MathUtils.randomIntFromRange(0, 3) === 3; // 25% chance to be grumpy
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
     this.following = config.follows;
+
+    console.log(this.onRender);
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.isMovingThisFrame = false;
 
     this.updateMovement(delta);
@@ -93,7 +95,7 @@ export class ChickenObject extends SceneObject implements Interactable {
     this.updateEgg(delta);
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images[TILE_SET],

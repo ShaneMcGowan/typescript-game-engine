@@ -88,12 +88,12 @@ export class NpcObject extends SceneObject implements Interactable {
     this.name = config.name ?? DEFAULT_NAME;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateMovement(delta);
     this.updateAnimationTimer(delta);
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     let animation = this.animations[this.state];
     let frame = animation.currentFrame(this.animation.timer);
 

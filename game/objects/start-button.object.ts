@@ -26,12 +26,12 @@ export class StartButtonObject extends SceneObject {
     this.renderer.enabled = true;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateClickStart();
     this.updateClickEnd();
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     this.renderStartButton(context);
   }
 

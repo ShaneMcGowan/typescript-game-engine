@@ -36,8 +36,8 @@ export class ShopKeeperObject extends NpcObject {
     super(scene, config);
   }
 
-  update(delta: number): void {
-    super.update(delta);
+  onUpdate(delta: number): void {
+    super.onUpdate(delta);
   }
 
   interact(): void {

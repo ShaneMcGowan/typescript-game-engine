@@ -31,8 +31,8 @@ export class GregNpcObject extends NpcObject {
     super(scene, config);
   }
 
-  update(delta: number): void {
-    super.update(delta);
+  onUpdate(delta: number): void {
+    super.onUpdate(delta);
 
     switch (this.stage) {
       case 'idle':
@@ -124,7 +124,7 @@ export class GregNpcObject extends NpcObject {
 
     this.renderer.scale = 1 - (this.stageByeTimer / this.stageByeDuration);
     if (this.stageByeTimer >= this.stageByeDuration) {
-      this.flagForDestroy();
+      this.destroy();
     }
   }
 

@@ -112,7 +112,7 @@ export class PlayerObject extends SceneObject {
     this.interactButtonEnabled = true;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateMovement(delta);
     this.updateAnimations(delta);
     this.updateHotbarViaKey();
@@ -125,7 +125,7 @@ export class PlayerObject extends SceneObject {
     this.latestScrollTimestamp = Input.mouse.wheel.event.timeStamp;
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     this.renderSprite(context);
     this.renderCursor(context);
   }

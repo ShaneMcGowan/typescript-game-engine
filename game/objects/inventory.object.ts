@@ -104,13 +104,13 @@ export class InventoryObject extends SceneObject {
     this.chest = config.chest;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updatePickUpItem();
     this.updateDropItem();
     this.updateClose();
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     // hotbar
     if (this.showHotbar) {
       let x = 11;
@@ -150,7 +150,7 @@ export class InventoryObject extends SceneObject {
     }
   }
 
-  destroy(): void {
+  onDestroy(): void {
     this.scene.globals.disable_player_inputs = false;
     if (this.chest) {
       this.chest.actionClose();
@@ -393,7 +393,7 @@ export class InventoryObject extends SceneObject {
 
     Input.clearKeyPressed(Controls.Close);
 
-    this.flagForDestroy();
+    this.destroy();
   }
 
   private renderInventoryItem(context: CanvasRenderingContext2D, tileset: string, stackSize: number, maxStackSize: number, spriteX: number, spriteY: number, positionX: number, positionY: number): void {

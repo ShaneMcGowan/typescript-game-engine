@@ -22,9 +22,9 @@ export class HotbarObject extends SceneObject {
     this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
   }
 
-  update(delta: number): void { }
+  onUpdate(delta: number): void { }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     this.renderBackground(context);
     this.renderContainers(context);
     this.renderItems(context, this.inventory.slice(0, this.hotbarSize));

@@ -28,8 +28,8 @@ export class UnknownNpcObject extends NpcObject {
     super(scene, config);
   }
 
-  update(delta: number): void {
-    super.update(delta);
+  onUpdate(delta: number): void {
+    super.onUpdate(delta);
 
     switch (this.stage) {
       case 'idle':
@@ -77,7 +77,7 @@ export class UnknownNpcObject extends NpcObject {
 
     this.renderer.opacity = 1 - (this.stageOutroTimer / this.stageOutroDuration);
     if (this.stageOutroTimer >= this.stageOutroDuration) {
-      this.flagForDestroy();
+      this.destroy();
     }
   }
 }

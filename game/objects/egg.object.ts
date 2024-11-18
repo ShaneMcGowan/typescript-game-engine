@@ -37,12 +37,12 @@ export class EggObject extends SceneObject implements Interactable {
     this.renderer.layer = RENDERER_LAYER;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.updateAnimation(delta);
     this.updateHatch(delta);
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images[TILE_SET],
@@ -73,13 +73,13 @@ export class EggObject extends SceneObject implements Interactable {
     let player = this.scene.getObjectsByType(PlayerObject)[0] as PlayerObject;
     let chicken = new ChickenObject(this.scene, { positionX: this.transform.position.local.x, positionY: this.transform.position.local.y, follows: player, });
 
-    this.flagForDestroy();
+    this.destroy();
     this.scene.addObject(chicken);
   }
 
   interact(): void {
     // TODO: check if room in inventory
     this.scene.addToInventory(InventoryItemType.Egg);
-    this.flagForDestroy();
+    this.destroy();
   }
 }

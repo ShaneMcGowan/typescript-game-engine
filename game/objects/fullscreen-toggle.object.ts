@@ -21,7 +21,7 @@ export class FullscreenToggleObject extends SceneObject {
     this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
   }
 
-  update(delta: number): void { 
+  onUpdate(delta: number): void { 
     if (!MouseUtils.wasObjectClicked(this)) {
       return;
     }
@@ -44,7 +44,7 @@ export class FullscreenToggleObject extends SceneObject {
     }
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images['tileset_fullscreen'],

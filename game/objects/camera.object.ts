@@ -77,7 +77,7 @@ export class CameraObject extends SceneObject {
     });
   };
 
-  destroy(): void {
+  onDestroy(): void {
     this.scene.removeCustomerRenderer();
   }
 }

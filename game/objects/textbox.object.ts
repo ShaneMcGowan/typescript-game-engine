@@ -103,7 +103,7 @@ export class TextboxObject extends SceneObject {
     this.textSegments = RenderUtils.textToArray(this.text, (this.textboxWidth - 4) * CanvasConstants.TILE_SIZE, { size: this.textSize, });
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     if (this.completionDuration !== undefined) {
       this.updateTimer(delta);
     } else {
@@ -117,7 +117,7 @@ export class TextboxObject extends SceneObject {
     this.updatePortraitAnimation(delta);
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     if (this.showOverlay) {
       this.renderOverlay(context);
     }
@@ -142,7 +142,7 @@ export class TextboxObject extends SceneObject {
       if (this.onComplete) {
         this.onComplete();
       }
-      this.flagForDestroy();
+      this.destroy();
     }
   }
 
@@ -177,7 +177,7 @@ export class TextboxObject extends SceneObject {
       if (this.onComplete) {
         this.onComplete();
       }
-      this.flagForDestroy();
+      this.destroy();
     }
 
     Input.clearKeyPressed([Controls.Confirm, Controls.ConfirmAlt]);

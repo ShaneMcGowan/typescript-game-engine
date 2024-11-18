@@ -85,10 +85,10 @@ export abstract class Scene {
   backgroundLayerAnimationFrame: Record<string, number> = {};
 
   frame(delta: number): void {
-    this.awakeObjects();
-    this.renderBackground(delta);
-    this.updateObjects(delta);
-    this.renderObjects(delta);
+    this.awake();
+    this.background(delta);
+    this.update(delta);
+    this.render(delta);
 
     if (this.customRenderer) {
       this.customRenderer(this.renderingContext);
@@ -96,25 +96,15 @@ export abstract class Scene {
       this.defaultRenderer();
     }
 
-    this.destroyObjects(delta);
+    this.destroy(delta);
   }
 
-  private awakeObjects(): void {
+  private awake(): void {
     if (this.client.debug.timing.frameUpdate) {
       console.time('[frame] awake');
     }
 
     for (let [, object] of this.objects) {
-      if (object.flags.awake) {
-        continue;
-      }
-
-      object.flags.awake = true;
-
-      if (object.awake === undefined) {
-        continue;
-      }
-
       object.awake();
     }
 
@@ -123,7 +113,7 @@ export abstract class Scene {
     }
   }
 
-  renderBackground(delta: number): void {
+  private background(delta: number): void {
     if (this.client.debug.timing.frameBackground) {
       console.time('[frame] background');
     }
@@ -195,20 +185,12 @@ export abstract class Scene {
     }
   }
 
-  updateObjects(delta: number): void {
+  private update(delta: number): void {
     if (this.client.debug.timing.frameUpdate) {
       console.time('[frame] update');
     }
 
     for (let [, object] of this.objects) {
-      if (!object.flags.update) {
-        continue;
-      }
-
-      if (object.update === undefined) {
-        continue;
-      }
-
       object.update(delta);
     }
 
@@ -217,7 +199,7 @@ export abstract class Scene {
     }
   }
 
-  renderObjects(delta: number): void {
+  private render(delta: number): void {
     if (this.client.debug.timing.frameRender) {
       console.time('[frame] render');
     }
@@ -229,21 +211,15 @@ export abstract class Scene {
 
     // render objects
     for (let [, object] of this.objects) {
-      if (!object.flags.render) {
-        continue;
-      }
-
       if (this.client.debug.object.renderBackground) {
         object.debuggerRenderBackground(
           this.renderingContext.objects[object.renderer.layer]
         );
       }
 
-      if (object.render && object.renderer.enabled) {
-        object.render(
-          this.renderingContext.objects[object.renderer.layer]
-        );
-      }
+      object.render(
+        this.renderingContext.objects[object.renderer.layer]
+      );
 
       if (this.client.debug.object.renderBoundary) {
         object.debuggerRenderBoundary(
@@ -257,7 +233,7 @@ export abstract class Scene {
     }
   }
 
-  destroyObjects(delta: number): void {
+  private destroy(delta: number): void {
     if (this.client.debug.timing.frameDestroy) {
       console.time('[frame] destroy');
     }
@@ -301,8 +277,8 @@ export abstract class Scene {
       return;
     }
 
-    if (object.destroy) {
-      object.destroy();
+    if (object.onDestroy) {
+      object.onDestroy();
     }
 
     this.objects.delete(sceneObjectId);

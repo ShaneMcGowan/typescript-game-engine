@@ -20,7 +20,7 @@ export class ObjectHierarchyTestObject extends SceneObject {
     this.renderer.enabled = true;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.timer += delta;
 
     if (this.timer > MAX_TIMER) {
@@ -32,7 +32,7 @@ export class ObjectHierarchyTestObject extends SceneObject {
     this.transform.position.local.y += ((this.grow ? MOVEMENT_SPEED : MOVEMENT_SPEED * -1) * delta);
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
       this.boundingBox.world.left,

@@ -20,7 +20,7 @@ export class SeedsObject extends SceneObject {
     this.renderer.layer = RENDERER_LAYER;
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images[TILESET],

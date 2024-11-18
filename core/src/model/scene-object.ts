@@ -62,6 +62,11 @@ export interface SceneObjectBaseConfig {
 
   collisionEnabled?: boolean;
   collisionLayer?: number;
+
+  onAwake?: () => void;
+  onUpdate?: (delta: number) => void;
+  onRender?: (context: CanvasRenderingContext2D) => void;
+  onDestroy?: () => void;
 }
 
 const TRANSFORM_POSITION_DEFAULT = (): Vector => new Vector(0, 0);
@@ -94,6 +99,12 @@ export abstract class SceneObject {
   // dimensions
   width: number = WIDTH_DEFAULT;
   height: number = HEIGHT_DEFAULT;
+
+  // callbacks
+  onAwake?(): void; // called once at start of frame if awakeRan is false
+  onUpdate?(delta: number): void; // called every frame after awake
+  onRender?(context: CanvasRenderingContext2D): void; // called every frame after update
+  onDestroy?(): void; // called once after render if flags.destroy is true
 
   protected mainContext: CanvasRenderingContext2D;
 
@@ -152,17 +163,72 @@ export abstract class SceneObject {
 
     this.width = config.width ?? this.width;
     this.height = config.height ?? this.height;
+
+    if (config.onAwake !== undefined) {
+      this.onAwake = config.onAwake;
+    };
+    if (config.onUpdate !== undefined) {
+      this.onUpdate = config.onUpdate;
+    };
+    if (config.onRender !== undefined) {
+      this.onRender = config.onRender;
+    };
+    if (config.onDestroy !== undefined) {
+      this.onDestroy = config.onDestroy;
+    };
   }
 
-  awake?(): void; // called once at start of frame if awakeRan is false
-  update?(delta: number): void; // called every frame after awake
-  render?(context: CanvasRenderingContext2D): void; // called every frame after update
-  destroy?(): void; // called once after render if flags.destroy is true
-  flagForDestroy(): void {
+  awake(): void {
+    if (this.flags.awake) {
+      return;
+    }
+
+    // set flag to true as awake has been ran and should only ever be ran once
+    this.flags.awake = true;
+
+    if (this.onAwake === undefined) {
+      return;
+    }
+
+    this.onAwake();
+  }
+
+  update(delta: number): void {
+    if (!this.flags.update) {
+      return;
+    }
+
+    if (this.onUpdate === undefined) {
+      return;
+    }
+
+    this.onUpdate(delta);
+  }
+
+  render(context: CanvasRenderingContext2D): void {
+    if (!this.renderer.enabled) {
+      return;
+    }
+
+    if (!this.flags.render) {
+      return;
+    }
+
+    if (this.onRender === undefined) {
+      return;
+    }
+
+    this.onRender(context);
+  }
+
+  /**
+   * Flags this object for destruction this frame. The object will be destroyed after the update loop ends.
+   */
+  destroy(): void {
     this.flags.destroy = true;
 
     // flag children for destroy
-    this.children.forEach(child => { child.flagForDestroy(); });
+    this.children.forEach(child => { child.destroy(); });
   }
 
   get boundingBox(): {
@@ -271,7 +337,7 @@ export abstract class SceneObject {
     }
 
     // references will be cleaned up as part of destroy so no need to do anything more here
-    object.flagForDestroy();
+    object.destroy();
   }
 
   removeAllChildren(): void {

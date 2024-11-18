@@ -21,7 +21,7 @@ export class WarpObject extends SceneObject {
     this.player = config.player;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     if (this.isWarping) {
       return;
     }

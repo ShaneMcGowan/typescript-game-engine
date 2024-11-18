@@ -20,7 +20,7 @@ export class HoleObject extends SceneObject {
     this.renderer.enabled = true;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     // the hole consumes
     let objects = this.scene.getAllObjectsAtPosition(this.transform.position.local.x, this.transform.position.local.y);
     if (objects.length === 1) {
@@ -62,11 +62,11 @@ export class HoleObject extends SceneObject {
       }
 
       // otherwise remove object from scene
-      this.flagForDestroy();
+      this.destroy();
     });
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderCircle(
       context,
       this.transform.position.local.x,

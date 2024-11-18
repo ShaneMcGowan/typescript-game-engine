@@ -47,10 +47,10 @@ export class TransitionObject extends SceneObject {
     this.animationCenterY = config.animationCenterY ?? DEFAULT_ANIMATION_CENTER_Y;
   }
 
-  update(delta: number): void {
+  onUpdate(delta: number): void {
     this.animationTimer += delta;
     if (this.animationTimer > this.animationLength) {
-      this.flagForDestroy();
+      this.destroy();
     }
   }
 
@@ -58,7 +58,7 @@ export class TransitionObject extends SceneObject {
     return this.animationTimer / this.animationLength;
   }
 
-  render(context: CanvasRenderingContext2D): void {
+  onRender(context: CanvasRenderingContext2D): void {
     switch (this.animationType) {
       case 'block':
         this.renderAnimationBlock(context);
