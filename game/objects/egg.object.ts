@@ -78,8 +78,12 @@ export class EggObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    // TODO: check if room in inventory
-    this.scene.addToInventory(InventoryItemType.Egg);
+    const item = this.scene.addToInventory(InventoryItemType.Egg);
+    if(item === undefined){
+      // TODO: some sort of indication the player's inventory is full
+      return;
+    }
+
     this.destroy();
   }
 }

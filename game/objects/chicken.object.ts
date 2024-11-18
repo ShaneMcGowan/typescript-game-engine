@@ -316,7 +316,7 @@ export class ChickenObject extends SceneObject implements Interactable {
     );
 
     let index = this.scene.globals.inventory.indexOf(this.scene.selectedInventoryItem);
-    this.scene.removeFromInventory(index)
+    this.scene.removeFromInventoryByIndex(index, 1);
     this.scene.addObject(textbox);
   }
 

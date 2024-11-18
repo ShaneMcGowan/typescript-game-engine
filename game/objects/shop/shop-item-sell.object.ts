@@ -65,7 +65,7 @@ export class ShopItemSellObject extends SceneObject {
 
     this.scene.globals.gold += this.price;
 
-    this.scene.removeFromInventory(this.index);
+    this.scene.removeFromInventoryByIndex(this.index, 1);
 
     (this.parent as ShopObject).refreshShopState();
   }

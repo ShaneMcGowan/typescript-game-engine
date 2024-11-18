@@ -59,9 +59,15 @@ export class ShopItemBuyObject extends SceneObject {
       return;
     }
 
-    this.scene.globals.gold -= this.price;
 
-    this.scene.addToInventory(this.type);
+    const item = this.scene.addToInventory(this.type);
+
+    if(item){
+      this.scene.globals.gold -= this.price;
+    } else {
+      // TODO: some sort of indication that the player has no room
+    }
+
 
     (this.parent as ShopObject).refreshShopState();
   }

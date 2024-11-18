@@ -16,5 +16,5 @@ export function useChicken(scene: SCENE_GAME): void {
   );
 
   scene.addObject(object);
-  scene.removeFromInventory(scene.selectedInventoryIndex);
+  scene.removeFromInventoryByIndex(scene.selectedInventoryIndex, 1);
 }

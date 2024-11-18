@@ -65,9 +65,40 @@ export class SCENE_GAME extends Scene {
     this.changeMap(SCENE_GAME_MAP_WORLD);
   }
 
-  get firstFreeInventorySpaceIndex(): number | undefined {
+  /**
+   * returns index of first slot with room in stack (ignoring empty slots)
+   * @param type 
+   * @returns 
+   */
+  inventoryFirstStackWithRoom(type: InventoryItemType): number | undefined {
     for (let i = 0; i < this.globals.inventory_size; i++) {
-      if (this.globals.inventory[i] === undefined) {
+      const item = this.globals.inventory[i];
+      
+      if(item === undefined){
+        continue;
+      }
+      
+      if(item.type !== type){
+        continue;
+      }
+
+      if(item.currentStackSize >= item.maxStackSize){
+        continue
+      }
+      
+      return i;
+    }
+
+    return undefined;
+  }
+
+  /**
+   * returns index of first empty slot
+   * @returns 
+   */
+  inventoryFirstFreeSlot(): number | undefined {
+    for (let i = 0; i < this.globals.inventory_size; i++) {
+      if(this.globals.inventory[i] === undefined){
         return i;
       }
     }
@@ -75,47 +106,73 @@ export class SCENE_GAME extends Scene {
     return undefined;
   }
 
-  getFirstInventoryItemWithRoomInStack(type: string): InventoryItemObject | undefined {
-    for (let i = 0; i < this.globals.inventory_size; i++) {
-      let item = this.globals.inventory[i];
-      if (item !== undefined && item.type === type && item.currentStackSize < item.maxStackSize) {
-        return item;
-      }
-    }
-  }
+  /**
+   * Adds an item to an existing stack if there is room, returning the stack
+   * Failing that, create a new stack, returning the new stack
+   * Failing that, returns undefined if item was not added to inventory
+   * TODO(shane): handle passing a number also (i.e. more than one of an item)
+   * @param type 
+   * @returns 
+   */
+  addToInventory(type: InventoryItemType): InventoryItemObject | undefined {
 
-  addToInventory(type: InventoryItemType): void {
-    // check if there is already an item of this type in the inventory with room in the stack
-    let item = this.getFirstInventoryItemWithRoomInStack(type);
-    if (item !== undefined) {
+    // existing stack
+    const stackIndex = this.inventoryFirstStackWithRoom(type);
+    if(stackIndex !== undefined){
+      const item = this.globals.inventory[stackIndex];
       item.currentStackSize++;
-      return;
+      return item;
     }
 
-    let index = this.firstFreeInventorySpaceIndex;
-    // no free space
-    if (index === undefined) {
-      // TODO: this is techically an error state so should an error be thrown here instead of silently returning?
-      return;
+    // blank slot
+    const blankIndex = this.inventoryFirstFreeSlot();
+    if(blankIndex !== undefined){
+      const item = new InventoryItemObject(this, { type, });
+      this.globals.inventory[blankIndex] = item;
+      return item;
     }
 
-    // create a new item
-    let newItem = new InventoryItemObject(this, { type, });
-    this.globals.inventory[index] = newItem;
+    // no room
+    return undefined;
   }
 
-  removeFromInventory(index: number): void {
-    let item = this.globals.inventory[index];
+  inventoryHasRoom(type: InventoryItemType): boolean {
+    if(this.inventoryFirstStackWithRoom(type)){
+      return true;
+    }
+
+    if(this.inventoryFirstFreeSlot()){
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Removes the specified amount from item stack at given index.
+   * Failing that, returns undefined.
+   * @param index 
+   * @returns 
+   */
+  removeFromInventoryByIndex(index: number, amount: number): InventoryItemObject | undefined {
+    const item = this.globals.inventory[index];
+    
     if (item === undefined) {
       return;
     }
 
-    item.currentStackSize--;
+    if(item.currentStackSize < amount){
+      return;
+    }
 
-    // remove if stack is empty
-    if (item.currentStackSize <= 0) {
+    item.currentStackSize -= amount;
+
+    if (item.currentStackSize === 0) {
+      // remove empty stack
       this.globals.inventory[index] = undefined;
     }
+
+    return item;
   }
 
   get selectedInventoryItem(): InventoryItemObject | undefined {

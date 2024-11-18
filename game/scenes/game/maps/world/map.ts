@@ -126,6 +126,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       animationLength: 3,
     }));
 
+    // ambient floating items
     this.objects.push(new IntervalObject(this.scene, {
       duration: 4.5,
       onInterval: () => {
@@ -160,6 +161,11 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
         ));
       }
     }));
+
+    // load test
+    // for(let i = 0; i < 4000; i++){
+    //   this.objects.push(new ChickenObject(scene, { follows: player, canMove: true, positionX: 1, positionY: 2}));
+    // }
 
   }
 }

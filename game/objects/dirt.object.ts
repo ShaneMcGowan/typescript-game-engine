@@ -165,16 +165,23 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   private interactStageFullyGrown(): void {
+    let success = false;
+
     switch (this.currentlyGrowing) {
       case InventoryItemType.TomatoSeeds:
-        this.scene.addToInventory(InventoryItemType.Tomato);
+        success = !!this.scene.addToInventory(InventoryItemType.Tomato);
         break;
       case InventoryItemType.WheatSeeds:
-        this.scene.addToInventory(InventoryItemType.Wheat);
+        success = !!this.scene.addToInventory(InventoryItemType.Wheat);
         break;
     }
+
+    if(!success){
+      // TODO: some sort of indication the player's inventory is full
+      return;
+    }
+
     this.destroy();
-    return;
   }
 
   private get isEmpty(): boolean {
@@ -221,6 +228,23 @@ export class DirtObject extends SceneObject implements Interactable {
       1,
       {
         centered: true,
+      }
+    );
+
+    if(this.cropStage === CropStage.Empty){
+      return;
+    }
+
+    // watered dirt
+    RenderUtils.fillRectangle(
+      context,
+      this.boundingBox.local.left,
+      this.boundingBox.local.top,
+      1,
+      1,
+      {
+        colour: '#00000011',
+        type: 'tile'
       }
     );
   }
@@ -285,7 +309,7 @@ export class DirtObject extends SceneObject implements Interactable {
     this.currentlyGrowing = item.type;
     this.cropStage = CropStage.Growing;
 
-    this.scene.removeFromInventory(this.scene.globals.hotbar_selected_index);
+    this.scene.removeFromInventoryByIndex(this.scene.globals.hotbar_selected_index, 1);
   }
 
 }
