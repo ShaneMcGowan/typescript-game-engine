@@ -50,7 +50,7 @@ export class TransitionObject extends SceneObject {
   update(delta: number): void {
     this.animationTimer += delta;
     if (this.animationTimer > this.animationLength) {
-      this.scene.removeObjectById(this.id);
+      this.flagForDestroy();
     }
   }
 

@@ -124,7 +124,7 @@ export class GregNpcObject extends NpcObject {
 
     this.renderer.scale = 1 - (this.stageByeTimer / this.stageByeDuration);
     if (this.stageByeTimer >= this.stageByeDuration) {
-      this.scene.removeObjectById(this.id);
+      this.flagForDestroy();
     }
   }
 

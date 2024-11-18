@@ -77,7 +77,7 @@ export class UnknownNpcObject extends NpcObject {
 
     this.renderer.opacity = 1 - (this.stageOutroTimer / this.stageOutroDuration);
     if (this.stageOutroTimer >= this.stageOutroDuration) {
-      this.scene.removeObjectById(this.id);
+      this.flagForDestroy();
     }
   }
 }

@@ -173,7 +173,7 @@ export class DirtObject extends SceneObject implements Interactable {
         this.scene.addToInventory(InventoryItemType.Wheat);
         break;
     }
-    this.scene.removeObjectById(this.id);
+    this.flagForDestroy();
     return;
   }
 
@@ -192,7 +192,8 @@ export class DirtObject extends SceneObject implements Interactable {
 
     if (this.isEmpty && this.counterDry > DRY_COUNTER_MAX) {
       // dirt dried out
-      this.scene.removeObjectById(this.id);
+      this.flagForDestroy();
+      return;
     } else if (this.cropStage === CropStage.Growing && this.counterGrow > GROW_COUNTER_MAX) {
       // plant fully grown
       this.cropStage = CropStage.FullyGrown;

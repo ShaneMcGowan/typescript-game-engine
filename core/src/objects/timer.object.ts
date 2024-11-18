@@ -32,7 +32,7 @@ export class TimerObject extends SceneObject {
 
     if (this.timer >= this.duration) {
       this.onComplete();
-      this.scene.removeObjectById(this.id);
+      this.flagForDestroy();
     }
   }
 }

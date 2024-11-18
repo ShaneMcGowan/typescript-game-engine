@@ -295,20 +295,22 @@ export abstract class Scene {
     this.objects.set(sceneObject.id, sceneObject);
   }
 
-  removeObjectById(sceneObjectId: string): void {
-    // TODO: review this later, loops are inefficient
-    let object = this.objects.get(sceneObjectId);
+  private removeObjectById(sceneObjectId: string): void {
+    const object = this.objects.get(sceneObjectId);
     if (object === undefined) {
       return;
     }
-
-    object.removeAllChildren();
 
     if (object.destroy) {
       object.destroy();
     }
 
     this.objects.delete(sceneObjectId);
+
+    // remove reference to child from parent
+    if (object.parent) {
+      object.parent.children.delete(object.id);
+    }
   }
 
   /**

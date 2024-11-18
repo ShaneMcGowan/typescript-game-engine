@@ -142,7 +142,7 @@ export class TextboxObject extends SceneObject {
       if (this.onComplete) {
         this.onComplete();
       }
-      this.scene.removeObjectById(this.id);
+      this.flagForDestroy();
     }
   }
 
@@ -177,7 +177,7 @@ export class TextboxObject extends SceneObject {
       if (this.onComplete) {
         this.onComplete();
       }
-      this.scene.removeObjectById(this.id);
+      this.flagForDestroy();
     }
 
     Input.clearKeyPressed([Controls.Confirm, Controls.ConfirmAlt]);

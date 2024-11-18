@@ -158,6 +158,12 @@ export abstract class SceneObject {
   update?(delta: number): void; // called every frame after awake
   render?(context: CanvasRenderingContext2D): void; // called every frame after update
   destroy?(): void; // called once after render if flags.destroy is true
+  flagForDestroy(): void {
+    this.flags.destroy = true;
+
+    // flag children for destroy
+    this.children.forEach(child => { child.flagForDestroy(); });
+  }
 
   get boundingBox(): {
     local: SceneObjectBoundingBox;
@@ -259,9 +265,13 @@ export abstract class SceneObject {
   }
 
   removeChild(object: SceneObject): void {
-    this.children.delete(object.id);
-    object.parent = undefined;
-    this.scene.removeObjectById(object.id);
+    // ensure provided object is a child of this object
+    if (this.children.get(object.id) === undefined) {
+      return;
+    }
+
+    // references will be cleaned up as part of destroy so no need to do anything more here
+    object.flagForDestroy();
   }
 
   removeAllChildren(): void {

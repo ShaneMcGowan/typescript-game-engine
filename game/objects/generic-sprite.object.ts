@@ -59,7 +59,7 @@ export class GenericSpriteObject extends SceneObject {
   private updatePosition(delta: number): void {
     if (this.transform.position.local.x === this.targetX && this.transform.position.local.y === this.targetY) {
       if (this.destroyAtTarget) {
-        this.scene.removeObjectById(this.id);
+        this.flagForDestroy();
       }
       return;
     }

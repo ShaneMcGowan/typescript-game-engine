@@ -73,12 +73,13 @@ export class EggObject extends SceneObject implements Interactable {
     let player = this.scene.getObjectsByType(PlayerObject)[0] as PlayerObject;
     let chicken = new ChickenObject(this.scene, { positionX: this.transform.position.local.x, positionY: this.transform.position.local.y, follows: player, });
 
-    this.scene.removeObjectById(this.id);
+    this.flagForDestroy();
     this.scene.addObject(chicken);
   }
 
   interact(): void {
+    // TODO: check if room in inventory
     this.scene.addToInventory(InventoryItemType.Egg);
-    this.scene.removeObjectById(this.id);
+    this.flagForDestroy();
   }
 }

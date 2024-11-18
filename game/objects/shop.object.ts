@@ -72,11 +72,6 @@ export class ShopObject extends SceneObject {
     this.renderLeaveButton(context);
   }
 
-  destroy(): void {
-    // TODO: destroy all shop items, ideally this would be done via SceneObject.children and having them all be destroyed
-    this.children.forEach(item => this.scene.removeObjectById(item.id));
-  }
-
   get inventory(): InventoryItemObject[] {
     return this.scene.globals['inventory'];
   }
@@ -116,7 +111,7 @@ export class ShopObject extends SceneObject {
   }
 
   private close(): void {
-    this.scene.removeObjectById(this.id);
+    this.flagForDestroy();
 
     if (this.onLeave) {
       this.onLeave();

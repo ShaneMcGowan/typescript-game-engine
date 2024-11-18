@@ -393,7 +393,7 @@ export class InventoryObject extends SceneObject {
 
     Input.clearKeyPressed(Controls.Close);
 
-    this.scene.removeObjectById(this.id);
+    this.flagForDestroy();
   }
 
   private renderInventoryItem(context: CanvasRenderingContext2D, tileset: string, stackSize: number, maxStackSize: number, spriteX: number, spriteY: number, positionX: number, positionY: number): void {
