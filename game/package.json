@@ -41,5 +41,8 @@
     "build-local-watch": "webpack serve --open --config webpack.prod-local.js",
     "build-npm-watch": "webpack serve --open --config webpack.prod-npm.js",
     "lint": "eslint --fix --ext .ts ."
+  },
+  "engines": {
+    "node": 22
   }
 }

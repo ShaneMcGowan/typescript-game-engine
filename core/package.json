@@ -40,5 +40,8 @@
   "scripts": {
     "dev": "tsc",
     "lint": "eslint --fix --ext .ts ."
+  },
+  "engines": {
+    "node": 22
   }
 }
