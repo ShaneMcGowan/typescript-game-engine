@@ -40,9 +40,9 @@ const TYPE_TO_RADIUS_MAP: Record<InventoryItemType, InventoryItemRadius> = {
   [InventoryItemType.Chicken]: InventoryItemRadius.Player,
   [InventoryItemType.Egg]: InventoryItemRadius.Player,
   [InventoryItemType.WheatSeeds]: InventoryItemRadius.Player,
-  [InventoryItemType.Wheat]: InventoryItemRadius.None,
+  [InventoryItemType.Wheat]: InventoryItemRadius.Player,
   [InventoryItemType.TomatoSeeds]: InventoryItemRadius.Player,
-  [InventoryItemType.Tomato]: InventoryItemRadius.None,
+  [InventoryItemType.Tomato]: InventoryItemRadius.Player,
   [InventoryItemType.Hoe]: InventoryItemRadius.Player,
   [InventoryItemType.WateringCan]: InventoryItemRadius.Player,
   [InventoryItemType.Chest]: InventoryItemRadius.Anywhere
