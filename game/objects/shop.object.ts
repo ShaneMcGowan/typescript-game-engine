@@ -283,7 +283,8 @@ export class ShopObject extends SceneObject {
         const object = new ShopItemSellObject(this.scene, {
           positionX: this.transform.position.world.x + 19 + (col * 2.5),
           positionY: this.transform.position.world.y + 3 + (row * 2.5),
-          item: item,
+          type: item.type,
+          count: item.currentStackSize,
           index: index,
         });
         this.addChild(object);

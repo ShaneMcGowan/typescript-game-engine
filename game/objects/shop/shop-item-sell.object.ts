@@ -11,7 +11,8 @@ import { ShopObject } from "../shop.object";
 
 
 interface Config extends SceneObjectBaseConfig {
-  item: InventoryItemObject;
+  type: InventoryItemType;
+  count: number;
   index: number;
 }
 
@@ -19,7 +20,8 @@ export class ShopItemSellObject extends SceneObject {
   width: number = 2;
   height: number = 2;
 
-  item: InventoryItemObject;
+  type: InventoryItemType;
+  count: number;
   index: number;
 
   constructor(
@@ -30,7 +32,8 @@ export class ShopItemSellObject extends SceneObject {
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
 
-    this.item = config.item;
+    this.type = config.type;
+    this.count = config.count;
     this.index = config.index;
   }
 
@@ -43,10 +46,6 @@ export class ShopItemSellObject extends SceneObject {
     this.renderItem(context);
     this.renderPrice(context);
     this.renderStackSize(context);
-  }
-
-  get type(): InventoryItemType {
-    return this.item.type;
   }
 
   get price(): number {
@@ -114,7 +113,7 @@ export class ShopItemSellObject extends SceneObject {
   private renderStackSize(context: CanvasRenderingContext2D): void {
     RenderUtils.renderText(
       context,
-      `${this.item.currentStackSize}`,
+      `${this.count}`,
       this.transform.position.local.x,
       this.transform.position.local.y + 1,
       { size: 12, colour: 'black', font: 'MS Gothic' }
