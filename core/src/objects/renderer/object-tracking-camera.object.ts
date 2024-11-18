@@ -5,7 +5,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 
 const DEFAULT_ZOOM: number = 1;
 
-interface Config extends SceneObjectBaseConfig {
+export interface ObjectTrackingCameraObjectConfig extends SceneObjectBaseConfig {
   object: SceneObject;
   zoom?: number;
 }
@@ -15,15 +15,15 @@ interface Config extends SceneObjectBaseConfig {
  * Upon being destroyed, removes the custom renderer from the Scene
  */
 export class ObjectTrackingCameraObject extends SceneObject {
-  private cameraOffsetX: number;
-  private cameraOffsetY: number;
+  private readonly cameraOffsetX: number;
+  private readonly cameraOffsetY: number;
   private readonly object: SceneObject;
 
   zoom: number;
 
   constructor(
     protected scene: Scene,
-    config: Config
+    config: ObjectTrackingCameraObjectConfig
   ) {
     super(scene, config);
 
@@ -40,14 +40,14 @@ export class ObjectTrackingCameraObject extends SceneObject {
 
   customerRenderer: CustomRendererSignature = (renderingContext: SceneRenderingContext) => {
     // TODO: zoom is broken and not sure why
-    this.cameraOffsetX = this.cameraOffsetX / this.zoom;
-    this.cameraOffsetY = this.cameraOffsetY / this.zoom;
+    const adjustedCameraOffsetX = this.cameraOffsetX / this.zoom;
+    const adjustedCameraOffsetY = this.cameraOffsetY / this.zoom;
 
     // follow scene object
-    let startX = this.object.transform.position.local.x - this.cameraOffsetX;
-    let startY = this.object.transform.position.local.y - this.cameraOffsetY;
-    let endX = this.object.transform.position.local.x + (this.cameraOffsetX + 1);
-    let endY = this.object.transform.position.local.y + (this.cameraOffsetY + 1);
+    let startX = this.object.transform.position.local.x - adjustedCameraOffsetX;
+    let startY = this.object.transform.position.local.y - adjustedCameraOffsetY;
+    let endX = this.object.transform.position.local.x + (adjustedCameraOffsetX + 1);
+    let endY = this.object.transform.position.local.y + (adjustedCameraOffsetY + 1);
 
     // if the camera is at the edge of the map, don't render outside of the map
     if (startX < 0) {
