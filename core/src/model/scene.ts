@@ -5,6 +5,7 @@ import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { type Client } from '@core/client';
 import { Assets } from '@core/utils/assets.utils';
+import { defaultRenderer } from '@core/objects/renderer/default.renderer';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
@@ -93,7 +94,7 @@ export abstract class Scene {
     if (this.customRenderer) {
       this.customRenderer(this.renderingContext);
     } else {
-      this.defaultRenderer();
+      defaultRenderer(this);
     }
 
     this.destroy(delta);
@@ -249,22 +250,6 @@ export abstract class Scene {
     if (this.client.debug.timing.frameDestroy) {
       console.timeEnd('[frame] destroy');
     }
-  }
-
-  defaultRenderer(): void {
-    // set camera positions
-    this.globals.camera.startX = 0;
-    this.globals.camera.startY = 0;
-    this.globals.camera.endX = 0;
-    this.globals.camera.endY = 0;
-
-    // render
-    this.renderingContext.background.forEach((context) => {
-      this.renderContext.drawImage(context.canvas, 0, 0);
-    });
-    this.renderingContext.objects.forEach((context) => {
-      this.renderContext.drawImage(context.canvas, 0, 0);
-    });
   }
 
   addObject(sceneObject: SceneObject): void {

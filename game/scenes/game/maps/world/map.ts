@@ -9,7 +9,6 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND } from './backgrounds/ground.background';
-import { CameraObject } from '@game/objects/camera.object';
 import { HotbarObject } from '@game/objects/hotbar.object';
 import { ShopKeeperObject } from '@game/objects/npcs/shop-keeper.npc';
 import { FenceObject, FenceType } from '@game/objects/fence.object';
@@ -21,7 +20,7 @@ import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
 import { FullscreenToggleObject } from '@game/objects/fullscreen-toggle.object';
-import { ShopObject } from '@game/objects/shop.object';
+import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -117,7 +116,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 16, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 17, type: FenceType.FencePost }));
     this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 18, type: FenceType.FencePost }));
-    this.objects.push(new CameraObject(scene, { object: player }));
+    this.objects.push(new ObjectTrackingCameraObject(scene, { object: player }));
 
     // fade in
     this.objects.push(new TransitionObject(scene, {

@@ -3,16 +3,23 @@ import { type Scene, type CustomRendererSignature, type SceneRenderingContext } 
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
 
+const DEFAULT_ZOOM: number = 1;
+
 interface Config extends SceneObjectBaseConfig {
   object: SceneObject;
   zoom?: number;
 }
 
-// TODO: this object is generic enough to be included at the engine level
-export class CameraObject extends SceneObject {
-  private readonly cameraOffsetX: number;
-  private readonly cameraOffsetY: number;
+/**
+ * A helper object that attaches a custom renderer to the Scene that follows the provided SceneObject
+ * Upon being destroyed, removes the custom renderer from the Scene
+ */
+export class ObjectTrackingCameraObject extends SceneObject {
+  private cameraOffsetX: number;
+  private cameraOffsetY: number;
   private readonly object: SceneObject;
+
+  zoom: number;
 
   constructor(
     protected scene: Scene,
@@ -22,19 +29,20 @@ export class CameraObject extends SceneObject {
 
     // calculation for centering a tile on the screen
     // -0.5 to center the tile (e.g 16 / 2 is 8, which is the center of the tile, but we want to render the player half on either side of this value)
-    let cameraOffsetX = (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 0.5;
-    let cameraOffsetY = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.5;
-
-    // TODO: zoom is broken and not sure why
-    this.cameraOffsetX = config.zoom ? cameraOffsetX / config.zoom : cameraOffsetX;
-    this.cameraOffsetY = config.zoom ? cameraOffsetY / config.zoom : cameraOffsetY;
+    this.cameraOffsetX = (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 0.5;
+    this.cameraOffsetY = (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 0.5;
 
     this.object = config.object;
+    this.zoom = config.zoom ?? DEFAULT_ZOOM;
 
     this.scene.setCustomRenderer(this.customerRenderer);
   }
 
   customerRenderer: CustomRendererSignature = (renderingContext: SceneRenderingContext) => {
+    // TODO: zoom is broken and not sure why
+    this.cameraOffsetX = this.cameraOffsetX / this.zoom;
+    this.cameraOffsetY = this.cameraOffsetY / this.zoom;
+
     // follow scene object
     let startX = this.object.transform.position.local.x - this.cameraOffsetX;
     let startY = this.object.transform.position.local.y - this.cameraOffsetY;
