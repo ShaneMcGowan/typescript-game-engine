@@ -9,8 +9,12 @@ export class FenceType {
   static TopRight = { x: 3, y: 0, };
   static BottomLeft = { x: 1, y: 2, };
   static BottomRight = { x: 3, y: 2, };
+  static LeftHorizontal = { x: 1, y: 3, };
   static MiddleHorizontal = { x: 2, y: 3, };
+  static RightHorizontal = { x: 3, y: 3, };
+  static TopVertical = { x: 0, y: 0, };
   static MiddleVertical = { x: 0, y: 1, };
+  static BottomVertical = { x: 0, y: 2, };
   static FencePost = { x: 0, y: 3, };
   static Open = { x: 0.5, y: 3, };
 }
@@ -57,12 +61,5 @@ export class FenceObject extends SceneObject implements Interactable {
   interact(): void {
     return;
     
-    if (this.open) {
-      this.open = false;
-      this.collision.enabled = true;
-    } else {
-      this.open = true;
-      this.collision.enabled = false;
-    }
   }
 }

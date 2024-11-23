@@ -56,7 +56,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 13, follows: player, canLayEggs: true, canMove: true, }));
 
     // crops
-    for(let row = 0; row < 5; row++){
+    for(let row = 0; row < 4; row++){
       for(let col = 0; col < 16; col++){
         this.objects.push(new DirtObject(scene, { positionX: 2 + col, positionY: 2 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
       }
@@ -81,9 +81,18 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }
 
     // fences
-    this.objects.push(
-      new FenceObject(scene, { positionX: 26, positionY: 0, type: FenceType.FencePost })
-    )
+ 
+
+    for(let row = 0; row < 8; row++){
+      for(let col = 0; col < 1; col++){
+        let type = (row === 7 || row === 0) ? FenceType.FencePost : FenceType.MiddleVertical; 
+
+        this.objects.push(
+          new FenceObject(scene, { positionX: 4 + col, positionY: 7 + row, type: type })
+        );
+      }
+    }
+
     for(let row = 0; row < 19; row++){
       for(let col = 0; col < 1; col++){
         let type = row === 18 ? FenceType.FencePost : FenceType.MiddleVertical 
@@ -104,7 +113,96 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       }
     }
 
+
     // fences
+
+    // 0
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 25, positionY: 0, type: FenceType.MiddleVertical }),
+      new FenceObject(scene, { positionX: 26, positionY: 0, type: FenceType.FencePost }),
+    ]);
+    // 1
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 25, positionY: 2, type: FenceType.MiddleVertical })
+    ]);
+    // 2
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 25, positionY: 1, type: FenceType.MiddleVertical })
+    ]);
+    // 3
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 19, positionY: 3, type: FenceType.TopLeft }),
+      new FenceObject(scene, { positionX: 20, positionY: 3, type: FenceType.MiddleHorizontal}),
+      new FenceObject(scene, { positionX: 21, positionY: 3, type: FenceType.MiddleHorizontal}),
+      new FenceObject(scene, { positionX: 22, positionY: 3, type: FenceType.MiddleHorizontal}),
+      new FenceObject(scene, { positionX: 23, positionY: 3, type: FenceType.MiddleHorizontal}),
+      new FenceObject(scene, { positionX: 24, positionY: 3, type: FenceType.MiddleHorizontal}),
+      new FenceObject(scene, { positionX: 25, positionY: 3, type: FenceType.BottomRight}),
+    ]);
+    // 4
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 19, positionY: 4, type: FenceType.MiddleVertical })
+    ]);
+    // 5
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 19, positionY: 5, type: FenceType.MiddleVertical })
+    ]);
+    // 6
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 19, positionY: 6, type: FenceType.MiddleVertical })
+    ]);
+    // 7
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 4, positionY: 7, type: FenceType.TopLeft }),
+      new FenceObject(scene, { positionX: 5, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 6, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 7, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 8, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 9, positionY: 7, type: FenceType.RightHorizontal }),
+      //
+      new FenceObject(scene, { positionX: 11, positionY: 7, type: FenceType.LeftHorizontal }),
+      new FenceObject(scene, { positionX: 12, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 13, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 14, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 15, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 16, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 17, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 18, positionY: 7, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 19, positionY: 7, type: FenceType.BottomRight }),
+    ]);
+    // 8
+    this.objects.push(...[]);
+    // 9
+    this.objects.push(...[]);
+    // 10
+    this.objects.push(...[]);
+    // 11
+    this.objects.push(...[]);
+    // 12
+    this.objects.push(...[]);
+    // 13
+    this.objects.push(...[]);
+    // 14
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 0, positionY: 14, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 1, positionY: 14, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 2, positionY: 14, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 3, positionY: 14, type: FenceType.MiddleHorizontal }),
+    ]);
+    // 15
+    this.objects.push(...[]);
+    // 16
+    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 16, type: FenceType.FencePost }));
+    // 17
+    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 17, type: FenceType.FencePost }));
+    // 18
+    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 18, type: FenceType.FencePost }));
+    // 19
+    this.objects.push(...[]);
+    // 20
+    this.objects.push(...[]);
+
+
     this.objects.push(new CollisionObject(scene, { positionX: 25, positionY: 1.5, height: 4 }));
     this.objects.push(new CollisionObject(scene, { positionX: 19, positionY: 5.5, height: 4 }));
 
@@ -113,9 +211,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.objects.push(new CollisionObject(scene, { positionX: 15, positionY: 8, width: 9 }));
     this.objects.push(new CollisionObject(scene, { positionX: 4, positionY: 11.5, height: 6 }));
     this.objects.push(new CollisionObject(scene, { positionX: 2.25, positionY: 15, width: 4.5 }));
-    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 16, type: FenceType.FencePost }));
-    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 17, type: FenceType.FencePost }));
-    this.objects.push(new FenceObject(scene, { positionX: 0, positionY: 18, type: FenceType.FencePost }));
+
     this.objects.push(new ObjectTrackingCameraObject(scene, { object: player }));
 
     // fade in
