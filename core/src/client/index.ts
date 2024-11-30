@@ -21,6 +21,12 @@ interface DebugButtons {
   renderBackground?: HTMLElement;
 }
 
+interface Flags {
+  frame: {
+    interrupted: boolean;
+  };
+}
+
 export class Client {
   // Constants
   private readonly CANVAS_HEIGHT: number = CanvasConstants.CANVAS_HEIGHT;
@@ -36,6 +42,11 @@ export class Client {
 
   private delta: number = 0;
   private lastRenderTimestamp: number = 0;
+  private readonly flags: Flags = {
+    frame: {
+      interrupted: false,
+    },
+  };
 
   scene: Scene;
 
@@ -105,12 +116,19 @@ export class Client {
     // handle tabbed out state
     document.addEventListener('visibilitychange', (event) => {
       if (document.visibilityState === 'visible') {
-        // TODO: pause frame execution
         console.log('tab is active');
+        this.flags.frame.interrupted = true;
       } else {
-        // TODO: continue frame execution
         console.log('tab is inactive');
       }
+    });
+
+    document.addEventListener('fullscreenchange', (event) => {
+      // TODO: callback to handle this in a frame friendly way
+    });
+
+    document.addEventListener('fullscreenerror', (event) => {
+      // TODO: callback to handle this in a frame friendly way
     });
 
     // intialise mouse listeners
@@ -126,7 +144,7 @@ export class Client {
     this.changeScene(openingScene);
 
     // Run game logic
-    this.frame(0);
+    window.requestAnimationFrame(this.firstFrame.bind(this));
   }
 
   private createCanvas(): HTMLCanvasElement {
@@ -146,7 +164,34 @@ export class Client {
   }
 
   /**
-   * One frame of game logic
+   * Starts our frame loop with a valid starting delta,
+   * @param timestamp
+   */
+  private firstFrame(timestamp: number): void {
+    this.setDelta(timestamp);
+
+    window.requestAnimationFrame(this.frame.bind(this));
+  }
+
+  /**
+   * When tabbing out, window.requestAnimationFrame will stop being executed.
+   * This will lead to a massive delta between frames.
+   * To resolve this, we set a new timestamp on tab back in, effectively pausing the game when tabbed out and pretending no time has passed since then
+   * @param timestamp
+   */
+  private interruptedFrame(timestamp: number): void {
+    console.log('frameInterrupted');
+
+    // create a new updated timestamp to base delta off
+    this.lastRenderTimestamp = timestamp;
+    // remove flag for frame interrupted
+    this.flags.frame.interrupted = false;
+
+    window.requestAnimationFrame(this.frame.bind(this));
+  }
+
+  /**
+   * One frame of game logic, calls the next frame on completion
    * @param timestamp
    */
   private frame(timestamp: number): void {
@@ -155,12 +200,18 @@ export class Client {
       debugger;
     }
 
-    if (this.debug.timing.frame) {
-      console.log(`[frame] ${this.delta}`);
+    if (this.flags.frame.interrupted) {
+      window.requestAnimationFrame(this.interruptedFrame.bind(this));
+      return;
     }
 
     // Set Delata
     this.setDelta(timestamp);
+
+    if (this.debug.timing.frame) {
+      console.log(`[timestamp] ${timestamp}`);
+      console.log(`[delta] ${this.delta}`);
+    }
 
     // Clear render canvas before render
     RenderUtils.clearCanvas(this.renderContext);
