@@ -101,7 +101,7 @@ export abstract class Scene {
   }
 
   private awake(): void {
-    if (this.client.debug.timing.frameUpdate) {
+    if (this.client.flags.frame.log.awakeDuration) {
       console.time('[frame] awake');
     }
 
@@ -109,13 +109,13 @@ export abstract class Scene {
       object.awake();
     }
 
-    if (this.client.debug.timing.frameUpdate) {
+    if (this.client.flags.frame.log.awakeDuration) {
       console.timeEnd('[frame] awake');
     }
   }
 
   private background(delta: number): void {
-    if (this.client.debug.timing.frameBackground) {
+    if (this.client.flags.frame.log.backgroundDuration) {
       console.time('[frame] background');
     }
 
@@ -181,13 +181,13 @@ export abstract class Scene {
       }
     });
 
-    if (this.client.debug.timing.frameBackground) {
+    if (this.client.flags.frame.log.backgroundDuration) {
       console.timeEnd('[frame] background');
     }
   }
 
   private update(delta: number): void {
-    if (this.client.debug.timing.frameUpdate) {
+    if (this.client.flags.frame.log.updateDuration) {
       console.time('[frame] update');
     }
 
@@ -195,13 +195,13 @@ export abstract class Scene {
       object.update(delta);
     }
 
-    if (this.client.debug.timing.frameUpdate) {
+    if (this.client.flags.frame.log.updateDuration) {
       console.timeEnd('[frame] update');
     }
   }
 
   private render(delta: number): void {
-    if (this.client.debug.timing.frameRender) {
+    if (this.client.flags.frame.log.renderDuration) {
       console.time('[frame] render');
     }
 
@@ -229,13 +229,13 @@ export abstract class Scene {
       }
     }
 
-    if (this.client.debug.timing.frameRender) {
+    if (this.client.flags.frame.log.renderDuration) {
       console.timeEnd('[frame] render');
     }
   }
 
   private destroy(delta: number): void {
-    if (this.client.debug.timing.frameDestroy) {
+    if (this.client.flags.frame.log.destroyDuration) {
       console.time('[frame] destroy');
     }
 
@@ -247,7 +247,7 @@ export abstract class Scene {
       this.removeObjectById(object.id);
     }
 
-    if (this.client.debug.timing.frameDestroy) {
+    if (this.client.flags.frame.log.destroyDuration) {
       console.timeEnd('[frame] destroy');
     }
   }

@@ -24,6 +24,17 @@ interface DebugButtons {
 interface Flags {
   frame: {
     interrupted: boolean;
+    log: {
+      start: boolean;
+      end: boolean;
+      delta: boolean;
+      timestamp: boolean;
+      backgroundDuration: boolean;
+      awakeDuration: boolean;
+      updateDuration: boolean;
+      renderDuration: boolean;
+      destroyDuration: boolean;
+    };
   };
 }
 
@@ -42,9 +53,20 @@ export class Client {
 
   private delta: number = 0;
   private lastRenderTimestamp: number = 0;
-  private readonly flags: Flags = {
+  readonly flags: Flags = {
     frame: {
       interrupted: false,
+      log: {
+        start: false,
+        end: false,
+        delta: false,
+        timestamp: false,
+        backgroundDuration: false,
+        awakeDuration: false,
+        updateDuration: false,
+        renderDuration: false,
+        destroyDuration: false,
+      },
     },
   };
 
@@ -60,13 +82,6 @@ export class Client {
     },
     breakpoint: {
       frame: false,
-    },
-    timing: {
-      frame: false,
-      frameBackground: false,
-      frameUpdate: false,
-      frameRender: false,
-      frameDestroy: false,
     },
     ui: {
       grid: {
@@ -195,6 +210,10 @@ export class Client {
    * @param timestamp
    */
   private frame(timestamp: number): void {
+    if (this.flags.frame.log.start) {
+      console.log('[frame] start');
+    }
+
     if (this.debug.breakpoint.frame) {
       // eslint-disable-next-line no-debugger
       debugger;
@@ -208,8 +227,11 @@ export class Client {
     // Set Delata
     this.setDelta(timestamp);
 
-    if (this.debug.timing.frame) {
+    if (this.flags.frame.log.timestamp) {
       console.log(`[timestamp] ${timestamp}`);
+    }
+
+    if (this.flags.frame.log.delta) {
       console.log(`[delta] ${this.delta}`);
     }
 
@@ -252,6 +274,10 @@ export class Client {
     // Call next frame
     // (we set `this` context for when using window.requestAnimationFrame)
     window.requestAnimationFrame(this.frame.bind(this));
+
+    if (this.flags.frame.log.end) {
+      console.log('[frame] end');
+    }
   }
 
   /**
@@ -334,19 +360,19 @@ export class Client {
     }
 
     if (this.engineControls.timingFrame) {
-      this.engineControls.timingFrame.addEventListener('click', () => { this.debug.timing.frame = !this.debug.timing.frame; });
+      this.engineControls.timingFrame.addEventListener('click', () => { this.flags.frame.log.delta = !this.flags.frame.log.delta; });
     }
 
     if (this.engineControls.timingFrameBackground) {
-      this.engineControls.timingFrameBackground.addEventListener('click', () => { this.debug.timing.frameBackground = !this.debug.timing.frameBackground; });
+      this.engineControls.timingFrameBackground.addEventListener('click', () => { this.flags.frame.log.backgroundDuration = !this.flags.frame.log.backgroundDuration; });
     }
 
     if (this.engineControls.timingFrameRender) {
-      this.engineControls.timingFrameRender.addEventListener('click', () => { this.debug.timing.frameRender = !this.debug.timing.frameRender; });
+      this.engineControls.timingFrameRender.addEventListener('click', () => { this.flags.frame.log.renderDuration = !this.flags.frame.log.renderDuration; });
     }
 
     if (this.engineControls.timingFrameUpdate) {
-      this.engineControls.timingFrameUpdate.addEventListener('click', () => { this.debug.timing.frameUpdate = !this.debug.timing.frameUpdate; });
+      this.engineControls.timingFrameUpdate.addEventListener('click', () => { this.flags.frame.log.updateDuration = !this.flags.frame.log.updateDuration; });
     }
 
     if (this.engineControls.canvasLayers) {
