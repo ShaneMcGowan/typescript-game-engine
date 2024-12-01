@@ -10,7 +10,6 @@ export interface FullscreenToggleObjectConfig extends SceneObjectBaseConfig {
 }
 
 export class FullscreenToggleObject extends SceneObject {
-  private isFullscreen: boolean = false;
 
   constructor(
     protected scene: Scene,
@@ -31,12 +30,10 @@ export class FullscreenToggleObject extends SceneObject {
     // fullscreen enabled
     if (document.fullscreenElement || document.webkitIsFullScreen) { 
       document.exitFullscreen();
-      this.isFullscreen = false;
     }
     else { 
       this.scene.displayContext.canvas.requestFullscreen()
       .then(() => {
-        this.isFullscreen = true;
       })
       .catch((error) => {
         throw new Error(error);
@@ -54,5 +51,13 @@ export class FullscreenToggleObject extends SceneObject {
       this.boundingBox.world.top,
     )
   }
+
+  private get isFullscreen(): boolean {
+    if(document.fullscreenElement || document.webkitIsFullScreen){
+      return true;
+    }
+
+    return false;
+  } 
 
 }
