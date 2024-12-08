@@ -77,7 +77,7 @@ export class ObjectTrackingCameraObject extends SceneObject {
       RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
     });
     renderingContext.objects.forEach((context, index) => {
-      if (index === CanvasConstants.UI_RENDER_LAYER) {
+      if (index >= CanvasConstants.FIRST_UI_RENDER_LAYER) {
         RenderUtils.renderSubsection(context, this.mainContext, 0, 0, CanvasConstants.CANVAS_TILE_WIDTH, CanvasConstants.CANVAS_TILE_HEIGHT);
       } else {
         RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);

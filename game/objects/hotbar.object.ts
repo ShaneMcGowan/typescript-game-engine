@@ -18,7 +18,7 @@ export class HotbarObject extends SceneObject {
   ) {
     super(scene, config);
     this.renderer.enabled = true;
-    this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
+    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
     this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
   }
 

@@ -81,7 +81,7 @@ export abstract class Scene {
   flaggedForMapChange: SceneMapConstructorSignature | undefined = undefined; // if this is set, the scene will change to the map of the provided class on the next frame
   map: SceneMap; // the current map
 
-  // store an in memory canvas for each background layer and each rendering layer (based on CanvasConstants.OBJECT_RENDERING_LAYERS)
+  // store an in memory canvas for each background layer and each rendering layer (based on CanvasConstants.TOTAL_RENDER_LAYERS)
   renderingContext: SceneRenderingContext = {
     background: [],
     objects: [],
@@ -349,7 +349,7 @@ export abstract class Scene {
       let canvas = this.createCanvas();
       this.renderingContext.background[i] = RenderUtils.getContext(canvas);
     }
-    for (let i = 0; i < CanvasConstants.OBJECT_RENDERING_LAYERS; i++) {
+    for (let i = 0; i < CanvasConstants.TOTAL_RENDERING_LAYERS; i++) {
       let canvas = this.createCanvas();
       this.renderingContext.objects[i] = RenderUtils.getContext(canvas);
     }

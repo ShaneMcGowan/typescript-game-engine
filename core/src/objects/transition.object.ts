@@ -38,7 +38,7 @@ export class TransitionObject extends SceneObject {
     super(scene, config);
 
     this.renderer.enabled = true;
-    this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
+    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
 
     this.animationType = config.animationType ?? DEFAULT_ANIMATION_TYPE;
     this.animationDirection = config.animationDirection ?? DEFAULT_ANIMATION_DIRECTION;

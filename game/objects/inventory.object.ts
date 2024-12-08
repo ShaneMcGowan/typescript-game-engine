@@ -27,7 +27,7 @@ export class InventoryObject extends SceneObject {
   ) {
     super(scene, config);
     this.renderer.enabled = true;
-    this.renderer.layer = CanvasConstants.UI_RENDER_LAYER;
+    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
     this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
 
     this.scene.globals.disable_player_inputs = true;
@@ -94,11 +94,18 @@ export class InventoryObject extends SceneObject {
       typeMatch: [InventorySlotObject]
     };
 
-    const item = this.scene.getObject(filter)
+    const slot = this.scene.getObject(filter) as InventorySlotObject;
+    if(slot) {
+      // swap
+      const item1 = this.scene.globals.inventory[this.itemDraggingIndex];
+      const item2 = this.scene.globals.inventory[slot.inventoryIndex];
 
-    alert(item);
-    // this.scene.hasCollisionAtPosition()
-    // this.stopDraggingItem();
+      this.scene.globals.inventory[this.itemDraggingIndex] = item2;
+      this.scene.globals.inventory[slot.inventoryIndex] = item1;
+    } else {
+      // don't swap
+    }
+
     this.itemDraggingIndex = undefined;
   }
 
@@ -169,12 +176,5 @@ export class InventoryObject extends SceneObject {
 
   startDraggingItem(inventoryIndex: number): void {
     this.itemDraggingIndex = inventoryIndex;
-  }
-
-  stopDraggingItem(inventoryIndex: number): void {
-    if(this.itemDraggingIndex === undefined){
-      return;
-    }
-
   }
 }

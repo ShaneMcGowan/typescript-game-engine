@@ -3,6 +3,7 @@ export abstract class CanvasConstants {
   static CANVAS_TILE_WIDTH = 32; // total width in tiles
   static TILE_SIZE: number = 16; // e.g. 32 means a pixel size of tile (32px x 32px)
   static OBJECT_RENDERING_LAYERS: number = 16; // number of layers to render objects on. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
+  static UI_RENDERING_LAYERS: number = 16; // number of layers to render ui on e.g. for a value of 16, these are after the OBJECT_RENDERING_LAYERS, so the first index is after those
   static OBJECT_COLLISION_LAYERS: number = 16; // number of layers on which objects can collide. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
   static CONTEXT_IMAGE_SMOOTHING_ENABLED: boolean = false; // whether to enable image smoothing on the canvas context
 
@@ -21,11 +22,22 @@ export abstract class CanvasConstants {
     return CanvasConstants.CANVAS_TILE_HEIGHT / CanvasConstants.CANVAS_TILE_WIDTH;
   }
 
+  static get TOTAL_RENDERING_LAYERS(): number {
+    return CanvasConstants.OBJECT_RENDERING_LAYERS + CanvasConstants.UI_RENDERING_LAYERS;
+  }
+
   /**
-   * The layer that UI elements should be rendered on
+   * The first layer that UI elements should be rendered on
    */
-  static get UI_RENDER_LAYER(): number {
-    return CanvasConstants.OBJECT_RENDERING_LAYERS - 1;
+  static get FIRST_UI_RENDER_LAYER(): number {
+    return CanvasConstants.OBJECT_RENDERING_LAYERS;
+  }
+
+  /**
+   * The last layer that UI elements should be rendered on
+   */
+  static get LAST_UI_RENDER_LAYER(): number {
+    return CanvasConstants.OBJECT_RENDERING_LAYERS + CanvasConstants.UI_RENDERING_LAYERS - 1;
   }
 
   /**
