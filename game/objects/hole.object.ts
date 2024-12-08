@@ -5,6 +5,7 @@ import { TransitionObject } from '@core/objects/transition.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { TimerObject } from '@core/objects/timer.object';
 import { SCENE_GAME_MAP_UNDERGROUND } from '@game/scenes/game/maps/underground/map';
+import { ObjectFilter } from '@core/model/scene';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -22,16 +23,18 @@ export class HoleObject extends SceneObject {
 
   onUpdate(delta: number): void {
     // the hole consumes
-    let objects = this.scene.getAllObjectsAtPosition(this.transform.position.local.x, this.transform.position.local.y);
+    const filter: ObjectFilter = {
+      boundingBox: this.boundingBox.world,
+      objectIgnore: new Map([
+        [this, true]
+      ])
+    };
+    let objects = this.scene.getObjects(filter);
     if (objects.length === 1) {
       return;
     }
 
     objects.forEach(o => {
-      if (o === this) {
-        return;
-      }
-
       // if player, change map
       if (o instanceof PlayerObject) {
         if (this.playerConsumed) {

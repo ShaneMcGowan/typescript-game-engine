@@ -8,6 +8,7 @@ import { type Interactable } from '@game/models/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { InventoryItemType } from '@game/models/inventory-item.model';
 import { Assets } from '@core/utils/assets.utils';
+import { ObjectFilter } from '@core/model/scene';
 
 const PORTRAIT: Portrait = {
   tileset: 'tileset_chicken',
@@ -167,8 +168,18 @@ export class ChickenObject extends SceneObject implements Interactable {
       );
     }
 
+    const filter: ObjectFilter = {
+      position: {
+        x: movement.targetX,
+        y: movement.targetY
+      },
+      objectIgnore: new Map([
+        [this, true]
+      ])
+    };
+
     // cancel if next position would be on top of another entity
-    if (this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY, this)) {
+    if (this.scene.getObject(filter)) {
       return;
     }
 
@@ -215,9 +226,11 @@ export class ChickenObject extends SceneObject implements Interactable {
     }
 
     // only lay egg if there are less than 10 chickens
-    let totalChickens = this.scene.getObjectsByType(ChickenObject).length;
-    let totalEggs = this.scene.getObjectsByType(EggObject).length;
-    if ((totalChickens + totalEggs) > this.eggMax) {
+    const totalObjects = this.scene.getObjects({
+      typeMatch: [ChickenObject, EggObject]
+    }).length;
+
+    if ((totalObjects) > this.eggMax) {
       return;
     }
 

@@ -34,6 +34,10 @@ const ITEMS_FOR_SALE: Array<{ type: InventoryItemType, price: number }> = [
     type: InventoryItemType.WateringCan,
     price: 50
   },
+  {
+    type: InventoryItemType.Chest,
+    price: 500
+  },
 ];
 
 

@@ -109,7 +109,7 @@ export abstract class SceneObject {
   protected mainContext: CanvasRenderingContext2D;
 
   readonly children: Map<string, SceneObject> = new Map<string, SceneObject>();
-  parent: SceneObject | undefined = undefined; // TODO: begin parent / child objects
+  parent: SceneObject | undefined = undefined;
 
   constructor(
     protected scene: Scene,

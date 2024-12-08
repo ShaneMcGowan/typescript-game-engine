@@ -7,6 +7,7 @@ import { type Interactable } from '@game/models/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 import { Assets } from '@core/utils/assets.utils';
+import { ObjectFilter } from '@core/model/scene';
 
 const PORTRAIT: Portrait = {
   tileset: 'tileset_chicken',
@@ -167,7 +168,16 @@ export class NpcObject extends SceneObject implements Interactable {
     }
 
     // cancel if next position would be on top of another entity
-    if (this.scene.hasCollisionAtPosition(movement.targetX, movement.targetY, this)) {
+    const filter: ObjectFilter = {
+      position: {
+        x: movement.targetX,
+        y: movement.targetY
+      },
+      objectIgnore: new Map([
+        [this, true]
+      ])
+    }
+    if (this.scene.getObject(filter)) {
       return;
     }
 

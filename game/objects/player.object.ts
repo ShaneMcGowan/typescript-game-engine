@@ -19,6 +19,9 @@ import { InventoryObject } from '@game/objects/inventory.object';
 import { useWateringCanOnChicken } from './player/watering-can/use-watering-can-on-chicken.action';
 import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
+import { HotbarObject } from './hotbar.object';
+import { ObjectFilter } from '@core/model/scene';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 
 enum Direction {
   UP = 'w',
@@ -60,6 +63,8 @@ export class PlayerObject extends SceneObject {
     [Direction.UP]: [{ x: 1, y: 4, }, { x: 4, y: 4, }],
     [Direction.DOWN]: [{ x: 1, y: 1, }, { x: 4, y: 1, }],
   };
+
+  private hotbar: SceneObject | undefined = undefined;
 
   // direction state
   direction: Direction = Direction.DOWN;
@@ -110,6 +115,10 @@ export class PlayerObject extends SceneObject {
 
   private enableInteractKeys(): void {
     this.interactButtonEnabled = true;
+  }
+
+  onAwake(): void {
+    this.addHotbar();
   }
 
   onUpdate(delta: number): void {
@@ -195,7 +204,13 @@ export class PlayerObject extends SceneObject {
       this.height
     );
 
-    if (this.scene.hasCollisionAtBoundingBox(targetBoundingBox, this)) {
+    const filter: ObjectFilter = {
+      boundingBox: targetBoundingBox,
+      objectIgnore: new Map([
+        [this, true]
+      ]),
+    }
+    if (this.scene.getObject(filter)) {
       return;
     }
 
@@ -282,7 +297,16 @@ export class PlayerObject extends SceneObject {
         break;
     }
 
-    let object = this.scene.getObjectAtPosition(x, y, this);
+    const filter: ObjectFilter = {
+      position: {
+        x, 
+        y,
+      },
+      objectIgnore: new Map([
+        [this, true]
+      ]),
+    }
+    let object = this.scene.getObject(filter);
     if (object === undefined) {
       return;
     }
@@ -402,8 +426,8 @@ export class PlayerObject extends SceneObject {
       new InventoryObject(
         this.scene,
         {
-          positionX: 0,
-          positionY: 0,
+          positionX: 12,
+          positionY: 5,
         }
       )
     );
@@ -456,10 +480,13 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    const object = this.scene.getObjectAtPosition(
-      x,
-      y,
-    );
+    const filter: ObjectFilter = {
+      position: {
+        x, 
+        y,
+      },
+    }
+    const object = this.scene.getObject(filter);
 
     if (object === undefined) {
       switch (item.type) {
@@ -540,6 +567,10 @@ export class PlayerObject extends SceneObject {
   }
 
   private renderCursor(context: CanvasRenderingContext2D): void {
+    if (this.scene.globals.disable_player_inputs === true) {
+      return;
+    }
+
     if (!this.leftClickEnabled) {
       return;
     }
@@ -578,6 +609,24 @@ export class PlayerObject extends SceneObject {
         type: 'tile'
       }
     );
+  }
+
+  private addHotbar(): void {
+    if(this.hotbar){
+      return;
+    }
+
+    this.hotbar = new HotbarObject(this.scene, { positionX: 16, positionY: 16, });
+
+    this.scene.addObject(this.hotbar);
+  }
+
+  private removeHotbar(): void {
+    if(this.hotbar === undefined){
+      return;
+    }
+
+    this.hotbar.destroy();
   }
 
 }

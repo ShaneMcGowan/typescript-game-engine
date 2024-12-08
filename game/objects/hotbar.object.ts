@@ -25,6 +25,10 @@ export class HotbarObject extends SceneObject {
   onUpdate(delta: number): void { }
 
   onRender(context: CanvasRenderingContext2D): void {
+    if(this.scene.globals.disable_player_inputs === true){
+      return;
+    }
+    
     this.renderBackground(context);
     this.renderContainers(context);
     this.renderItems(context, this.inventory.slice(0, this.hotbarSize));

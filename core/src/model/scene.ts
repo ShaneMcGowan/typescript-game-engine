@@ -24,6 +24,23 @@ export interface SceneGlobalsBaseConfig {
   };
 }
 
+export interface ObjectFilter {
+  boundingBox?: SceneObjectBoundingBox;
+  position?: {
+    x: number;
+    y: number;
+  };
+  objectIgnore?: Map<SceneObject, boolean>;
+  objectMatch?: Map<SceneObject, boolean>;
+  typeMatch?: any[];
+  typeIgnore?: any[];
+  collision?: {
+    enabled?: boolean;
+    layerMatch?: Map<number, boolean>;
+    layerIgnore?: Map<number, boolean>;
+  };
+}
+
 export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
 /**
 
@@ -275,143 +292,41 @@ export abstract class Scene {
   }
 
   /**
-   * Returns all instances of the provided class
-   * @param type
+   * Gets the first object based on the provided filter values
+   * @param filter
+   * @param enableDefaults applies some smart defaults
    * @returns
    */
-  getObjectsByType(type: any): SceneObject[] {
-    // TODO: horribly underperformant, perhaps use a hash on object type instead?
-    const response: SceneObject[] = [];
-
-    this.objects.forEach(o => {
-      if (o instanceof type) {
-        response.push(o);
-      }
-    });
-
-    return response;
-  }
-
-  /**
-   * Checks if an object exists at the provided position and has collision
-   * @param x
-   * @param y
-   * @returns
-   */
-  hasCollisionAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): boolean {
+  getObject(filter: ObjectFilter = {}, enableDefaults: boolean = true): SceneObject | undefined {
     for (const [, object] of this.objects) {
-      if (!object.collision.enabled) {
-        continue;
-      }
-
-      if (object === sceneObject) {
-        continue;
-      }
-
-      if (
-        positionX < object.boundingBox.world.right &&
-        positionX > object.boundingBox.world.left &&
-        positionY < object.boundingBox.world.bottom &&
-        positionY > object.boundingBox.world.top
-      ) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
- * Checks if an object exists at the provided position and has collision
- * @param x
- * @param y
- * @returns
- */
-  hasCollisionAtBoundingBox(boundingBox: SceneObjectBoundingBox, sceneObject?: SceneObject): SceneObject | undefined {
-    for (const [, object] of this.objects) {
-      if (!object.collision.enabled) {
-        continue;
-      }
-
-      if (object === sceneObject) {
-        continue;
-      }
-
-      if (
-        boundingBox.left < object.boundingBox.world.right &&
-        boundingBox.right > object.boundingBox.world.left &&
-        boundingBox.top < object.boundingBox.world.bottom &&
-        boundingBox.bottom > object.boundingBox.world.top
-      ) {
+      if (match(object, filter, enableDefaults)) {
         return object;
       }
     }
+
     return undefined;
+  }
+
+  /**
+ * Gets the first object based on the provided filter values
+ * @param filter
+ * @param enableDefaults applies some smart defaults
+ * @returns
+ */
+  getObjects(filter: ObjectFilter = {}, enableDefaults: boolean = true): SceneObject[] {
+    const objects = [];
+
+    for (const [, object] of this.objects) {
+      if (match(object, filter, enableDefaults)) {
+        objects.push(object);
+      }
+    }
+
+    return objects;
   }
 
   isOutOfBounds(positionX: number, positionY: number): boolean {
     return (positionX > this.map.width - 1 || positionY > this.map.height - 1 || positionX < 0 || positionY < 0);
-  }
-
-  /**
- * Checks if an object exists at the provided position and has collision
- * @param x
- * @param y
- * @returns
- */
-  getObjectAtPosition(positionX: number, positionY: number, sceneObject?: SceneObject): SceneObject | undefined {
-    for (const [, object] of this.objects) {
-      if (object === sceneObject) {
-        continue;
-      }
-
-      // ignore ui objects
-      if (object.collision.layer === CanvasConstants.UI_COLLISION_LAYER) {
-        continue;
-      }
-
-      if (
-        positionX < object.boundingBox.world.right &&
-        positionX > object.boundingBox.world.left &&
-        positionY < object.boundingBox.world.bottom &&
-        positionY > object.boundingBox.world.top
-      ) {
-        return object;
-      }
-    }
-
-    return undefined;
-  }
-
-  /**
-   * returns all objects found at the provided position
-   * @param positionX
-   * @param positionY
-   * @param type
-   * @returns
-   */
-  getAllObjectsAtPosition(positionX: number, positionY: number, type?: any): SceneObject[] {
-    // TODO: add optional type check
-    // TODO: this is a very heavy operation
-    const response: SceneObject[] = [];
-
-    for (const [, object] of this.objects) {
-      if (object.transform.position.local.x !== positionX) {
-        continue;
-      }
-
-      if (object.transform.position.local.y !== positionY) {
-        continue;
-      }
-
-      if (object.collision.layer !== CanvasConstants.UI_COLLISION_LAYER) {
-        continue;
-      }
-
-      response.push(object);
-    }
-
-    return response;
   }
 
   private removeAllObjects(): void {
@@ -503,4 +418,88 @@ export abstract class Scene {
   dispatchEvent(eventName: string, detail?: any): void {
     console.log('dispatchEvent is deprecated. refactor your code.');
   }
+}
+
+function match(object: SceneObject, filter: ObjectFilter, enableDefaults = true): SceneObject | undefined {
+  // collision enabled
+  if (filter.collision?.enabled !== undefined) {
+    if (object.collision.enabled !== filter.collision.enabled) {
+      return;
+    }
+  }
+
+  // collision - layer match
+  if (filter.collision?.layerMatch && !filter.collision.layerMatch.get(object.collision.layer)) {
+    return;
+  }
+
+  // collision - layer ignore
+  if (filter.collision?.layerIgnore === undefined && enableDefaults && object.collision.layer === CanvasConstants.UI_COLLISION_LAYER) {
+    // by default, ignore CanvasConstants.UI_COLLISION_LAYER
+    return;
+  } else if (filter.collision?.layerIgnore && filter.collision.layerIgnore.get(object.collision.layer)) {
+    return;
+  }
+
+  // type - match
+  if (filter.typeMatch && !filter.typeMatch.some(type => object instanceof type)) {
+    return;
+  }
+
+  // type - ignore
+  if (filter.typeIgnore && filter.typeIgnore.some(type => object instanceof type)) {
+    return;
+  }
+
+  // object - match
+  if (filter.objectMatch && !filter.objectMatch.get(object)) {
+    return;
+  }
+
+  // object - ignore
+  if (filter.objectIgnore && filter.objectIgnore.get(object)) {
+    return;
+  }
+
+  // boundingBox
+  if (
+    filter.boundingBox && !isBoundingBoxWithinBoundingBox(object, filter)
+  ) {
+    return;
+  }
+
+  // position
+  if (
+    filter.position && !isPositionWithinBoundingBox(object, filter)
+  ) {
+    return;
+  }
+
+  return object;
+}
+
+function isPositionWithinBoundingBox(object: SceneObject, filter: ObjectFilter): boolean {
+  if (
+    filter.position.x < object.boundingBox.world.right &&
+      filter.position.x > object.boundingBox.world.left &&
+      filter.position.y < object.boundingBox.world.bottom &&
+      filter.position.y > object.boundingBox.world.top
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function isBoundingBoxWithinBoundingBox(object: SceneObject, filter: ObjectFilter): boolean {
+  if (
+    filter.boundingBox.left < object.boundingBox.world.right &&
+      filter.boundingBox.right > object.boundingBox.world.left &&
+      filter.boundingBox.top < object.boundingBox.world.bottom &&
+      filter.boundingBox.bottom > object.boundingBox.world.top
+  ) {
+    return true;
+  }
+
+  return false;
 }

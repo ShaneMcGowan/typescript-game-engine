@@ -1,8 +1,7 @@
-import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { InventoryItemRadius, InventoryItemType } from '@game/models/inventory-item.model';
 
-interface InventoryItemSprite {
+export interface InventoryItemSprite {
   tileset: string;
   spriteX: number;
   spriteY: number;
@@ -60,12 +59,12 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<InventoryItemType, number> = {
   [InventoryItemType.Chest]: 0
 }
 
-interface Config extends SceneObjectBaseConfig {
+interface Config {
   type: InventoryItemType;
   currentStackSize?: number;
 }
 
-export class InventoryItemObject extends SceneObject {
+export class InventoryItemObject {
   type: InventoryItemType;
   currentStackSize: number;
   maxStackSize: number;
@@ -73,7 +72,6 @@ export class InventoryItemObject extends SceneObject {
   radius: InventoryItemRadius;
 
   constructor(protected scene: SCENE_GAME, config: Config) {
-    super(scene, config);
 
     this.type = config.type;
     this.maxStackSize = TYPE_TO_MAX_STACK_MAP[this.type] ?? DEFAULT_MAX_STACK;

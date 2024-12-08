@@ -86,8 +86,8 @@ export class DirtObject extends SceneObject implements Interactable {
 
   private onDirtPlaced(event: CustomEvent): void {
     // update sprite based on surrounding dirt
-    let left = this.scene.getAllObjectsAtPosition(this.transform.position.local.x - 1, this.transform.position.local.y);
-    let right = this.scene.getAllObjectsAtPosition(this.transform.position.local.x + 1, this.transform.position.local.y);
+    let left = this.scene.getObjects({ position: { x: this.transform.position.local.x - 1, y: this.transform.position.local.y}});
+    let right = this.scene.getObjects({ position: { x: this.transform.position.local.x + 1, y: this.transform.position.local.y}});
 
     let hasLeft = left.filter(object => object instanceof DirtObject).length > 0;
     let hasRight = right.filter(object => object instanceof DirtObject).length > 0;

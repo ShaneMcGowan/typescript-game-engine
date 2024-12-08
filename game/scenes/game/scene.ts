@@ -5,7 +5,7 @@ import { InventoryItemObject } from '@game/objects/inventory-item.object';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
 
 interface Globals extends SceneGlobalsBaseConfig {
-  inventory: InventoryItemObject[];
+  inventory: Array<InventoryItemObject | undefined>;
   inventory_size: number;
   hotbar_size: number;
   hotbar_selected_index: number;
