@@ -8,6 +8,7 @@ import { Input } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
 import { InventorySlotObject } from './inventory-slot.object';
 import { ObjectFilter } from '@core/model/scene';
+import { InventoryButtonCloseObject } from './inventory-button-close.object';
 
 enum Controls {
   Close = 'tab',
@@ -56,6 +57,8 @@ export class InventoryObject extends SceneObject {
     }
 
     slots.forEach(slot => this.addChild(slot));
+
+    this.addChild(new InventoryButtonCloseObject(this.scene, { positionX: 8, positionY: -2 }));
   }
 
   onUpdate(delta: number): void {

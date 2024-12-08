@@ -45,6 +45,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
       tileset_dialogue_box: 'assets/sample/Dialouge UI/dialog box.png',
       tileset_tools: 'assets/sample/Characters/Tools.png',
       tileset_fullscreen: 'assets/custom/fullscreen.png',
+      tileset_basic: 'assets/sample/Sprite sheet for Basic Pack.png'
     },
     audio: {},
   };

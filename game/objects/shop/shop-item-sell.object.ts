@@ -90,8 +90,8 @@ export class ShopItemSellObject extends SceneObject {
       Assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
-      this.transform.position.local.x,
-      this.transform.position.local.y,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
       undefined,
       undefined,
       {
@@ -104,8 +104,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `$${this.price}`,
-      this.transform.position.local.x - 1,
-      this.transform.position.local.y,
+      this.transform.position.world.x - 1,
+      this.transform.position.world.y,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
@@ -114,8 +114,8 @@ export class ShopItemSellObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `${this.count}`,
-      this.transform.position.local.x,
-      this.transform.position.local.y + 1,
+      this.transform.position.world.x,
+      this.transform.position.world.y + 1,
       { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }

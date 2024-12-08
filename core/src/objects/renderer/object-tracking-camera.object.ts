@@ -44,10 +44,10 @@ export class ObjectTrackingCameraObject extends SceneObject {
     const adjustedCameraOffsetY = this.cameraOffsetY / this.zoom;
 
     // follow scene object
-    let startX = this.object.transform.position.local.x - adjustedCameraOffsetX;
-    let startY = this.object.transform.position.local.y - adjustedCameraOffsetY;
-    let endX = this.object.transform.position.local.x + (adjustedCameraOffsetX + 1);
-    let endY = this.object.transform.position.local.y + (adjustedCameraOffsetY + 1);
+    let startX = this.object.transform.position.world.x - adjustedCameraOffsetX;
+    let startY = this.object.transform.position.world.y - adjustedCameraOffsetY;
+    let endX = this.object.transform.position.world.x + (adjustedCameraOffsetX + 1);
+    let endY = this.object.transform.position.world.y + (adjustedCameraOffsetY + 1);
 
     // if the camera is at the edge of the map, don't render outside of the map
     if (startX < 0) {

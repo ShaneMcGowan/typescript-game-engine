@@ -48,8 +48,8 @@ export class EggObject extends SceneObject implements Interactable {
       Assets.images[TILE_SET],
       this.animations.idle[this.animationIndex].x, // sprite x
       this.animations.idle[this.animationIndex].y, // sprite y
-      this.transform.position.local.x,
-      this.transform.position.local.y,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
       1,
       1,
       {
@@ -73,7 +73,7 @@ export class EggObject extends SceneObject implements Interactable {
     const player = this.scene.getObject({
       typeMatch: [PlayerObject]
     })
-    const chicken = new ChickenObject(this.scene, { positionX: this.transform.position.local.x, positionY: this.transform.position.local.y, follows: player, });
+    const chicken = new ChickenObject(this.scene, { positionX: this.transform.position.world.x, positionY: this.transform.position.world.y, follows: player, });
 
     this.destroy();
     this.scene.addObject(chicken);

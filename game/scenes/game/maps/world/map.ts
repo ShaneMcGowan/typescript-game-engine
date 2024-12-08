@@ -216,8 +216,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // fade in
     this.objects.push(new TransitionObject(scene, {
-      animationCenterX: player.transform.position.local.x,
-      animationCenterY: player.transform.position.local.y,
+      animationCenterX: player.transform.position.world.x,
+      animationCenterY: player.transform.position.world.y,
       animationType: 'circle',
       animationLength: 3,
     }));

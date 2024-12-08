@@ -36,6 +36,7 @@ export class InventorySlotObject extends SceneObject {
   onRender(context: CanvasRenderingContext2D): void {
     this.renderContainer(context);
     this.renderItem(context);
+    this.renderStackSize(context);
   }
 
   private updateClicked(): void {
@@ -90,6 +91,24 @@ export class InventorySlotObject extends SceneObject {
       undefined,
       undefined,
       {centered: true}
+    );
+  }
+
+  private renderStackSize(context: CanvasRenderingContext2D): void {
+    if(this.item === undefined){
+      return;
+    }
+
+    if(this.item.maxStackSize === 1){
+      return;
+    }
+
+    RenderUtils.renderText(
+      context,
+      `${this.item.currentStackSize}`,
+      this.transform.position.world.x + 0.25,
+      this.transform.position.world.y + 0.75,
+      { size: 12, colour: 'black', }
     );
   }
 

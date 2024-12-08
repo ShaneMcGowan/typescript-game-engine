@@ -55,8 +55,8 @@ export class HoleObject extends SceneObject {
         this.scene.addObject(new TransitionObject(this.scene, {
           animationType: 'circle',
           animationDirection: 'out',
-          animationCenterX: this.transform.position.local.x,
-          animationCenterY: this.transform.position.local.y,
+          animationCenterX: this.transform.position.world.x,
+          animationCenterY: this.transform.position.world.y,
           animationLength: duration,
         }));
 
@@ -72,8 +72,8 @@ export class HoleObject extends SceneObject {
   onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderCircle(
       context,
-      this.transform.position.local.x,
-      this.transform.position.local.y
+      this.transform.position.world.x,
+      this.transform.position.world.y
     );
   }
 }

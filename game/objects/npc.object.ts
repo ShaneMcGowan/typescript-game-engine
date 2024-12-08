@@ -103,8 +103,8 @@ export class NpcObject extends SceneObject implements Interactable {
       Assets.images[animation.tileset],
       frame.spriteX,
       frame.spriteY,
-      this.transform.position.local.x,
-      this.transform.position.local.y,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
       undefined,
       undefined,
       {
@@ -145,22 +145,22 @@ export class NpcObject extends SceneObject implements Interactable {
       // TODO: this logic is dumb and can get stuck if no clear path
       movement = MovementUtils.moveTowardsOtherEntity(
         new Movement(
-          this.transform.position.local.x,
-          this.transform.position.local.y,
+          this.transform.position.world.x,
+          this.transform.position.world.y,
           this.targetX,
           this.targetY
         ),
         {
-          positionX: this.following.transform.position.local.x,
-          positionY: this.following.transform.position.local.y,
+          positionX: this.following.transform.position.world.x,
+          positionY: this.following.transform.position.world.y,
         }
       );
     } else {
       // move in a random direction
       movement = MovementUtils.moveInRandomDirection(
         new Movement(
-          this.transform.position.local.x,
-          this.transform.position.local.y,
+          this.transform.position.world.x,
+          this.transform.position.world.y,
           this.targetX,
           this.targetY
         )
@@ -195,12 +195,12 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
-      let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
+    if (this.targetX !== this.transform.position.world.x || this.targetY !== this.transform.position.world.y) {
+      let movement = new Movement(this.transform.position.world.x, this.transform.position.world.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.position.local.x = updatedMovement.positionX;
-      this.transform.position.local.y = updatedMovement.positionY;
+      this.transform.position.world.x = updatedMovement.positionX;
+      this.transform.position.world.y = updatedMovement.positionY;
     }
   }
 
