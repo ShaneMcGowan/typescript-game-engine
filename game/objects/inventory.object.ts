@@ -2,7 +2,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type ChestObject } from '@game/objects/chest.object';
-import { type InventoryItemObject } from '@game/objects/inventory-item.object';
+import { type InventoryItem } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
@@ -19,6 +19,7 @@ interface Config extends SceneObjectBaseConfig {
 
 export class InventoryObject extends SceneObject {
   private chest: ChestObject | undefined = undefined;
+  itemDragging: InventoryItem | undefined;
   itemDraggingIndex: number | undefined;
 
   constructor(
@@ -73,7 +74,7 @@ export class InventoryObject extends SceneObject {
     }
   }
 
-  get inventory(): InventoryItemObject[] {
+  get inventory(): InventoryItem[] {
     return this.scene.globals['inventory'];
   }
 
@@ -97,15 +98,14 @@ export class InventoryObject extends SceneObject {
     const slot = this.scene.getObject(filter) as InventorySlotObject;
     if(slot) {
       // swap
-      const item1 = this.scene.globals.inventory[this.itemDraggingIndex];
-      const item2 = this.scene.globals.inventory[slot.inventoryIndex];
-
-      this.scene.globals.inventory[this.itemDraggingIndex] = item2;
-      this.scene.globals.inventory[slot.inventoryIndex] = item1;
+      this.scene.globals.inventory[this.itemDraggingIndex] = this.scene.globals.inventory[slot.inventoryIndex];
+      this.scene.globals.inventory[slot.inventoryIndex] = this.itemDragging;
     } else {
       // don't swap
+      this.scene.globals.inventory[this.itemDraggingIndex] = this.itemDragging;
     }
 
+    this.itemDragging = undefined;
     this.itemDraggingIndex = undefined;
   }
 
@@ -120,19 +120,17 @@ export class InventoryObject extends SceneObject {
   }
 
   private renderInventoryItemGrabbed(context: CanvasRenderingContext2D): void {
-    if (this.itemDraggingIndex === undefined) {
+    if (this.itemDragging === undefined) {
       return;
     }
 
-    const item = this.inventory[this.itemDraggingIndex];
-
     this.renderInventoryItem(
       context,
-      item.sprite.tileset,
-      item.currentStackSize,
-      item.maxStackSize,
-      item.sprite.spriteX,
-      item.sprite.spriteY,
+      this.itemDragging.sprite.tileset,
+      this.itemDragging.currentStackSize,
+      this.itemDragging.maxStackSize,
+      this.itemDragging.sprite.spriteX,
+      this.itemDragging.sprite.spriteY,
       Input.mouse.position.x - 0.5,
       Input.mouse.position.y - 0.5
     );
@@ -175,6 +173,9 @@ export class InventoryObject extends SceneObject {
   }
 
   startDraggingItem(inventoryIndex: number): void {
+    this.itemDragging = this.scene.globals.inventory[inventoryIndex];
     this.itemDraggingIndex = inventoryIndex;
+
+    this.scene.globals.inventory[inventoryIndex] = undefined;
   }
 }

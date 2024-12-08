@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type InventoryItemObject } from '@game/objects/inventory-item.object';
+import { type InventoryItem } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Assets } from '@core/utils/assets.utils';
 
@@ -83,7 +83,7 @@ export class HotbarObject extends SceneObject {
     }
   }
 
-  private renderItems(context: CanvasRenderingContext2D, inventory: InventoryItemObject[]): void {
+  private renderItems(context: CanvasRenderingContext2D, inventory: InventoryItem[]): void {
     for (let i = 0; i < 5; i++) {
       let item = inventory[i];
       if (item === undefined) {
@@ -129,7 +129,7 @@ export class HotbarObject extends SceneObject {
     }
   }
 
-  get inventory(): InventoryItemObject[] {
+  get inventory(): InventoryItem[] {
     return this.scene.globals['inventory'];
   }
 

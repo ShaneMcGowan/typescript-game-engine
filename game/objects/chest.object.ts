@@ -1,7 +1,7 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type InventoryItemObject } from '@game/objects/inventory-item.object';
+import { type InventoryItem } from '@game/objects/inventory-item.object';
 import { type Interactable } from '@game/models/interactable.model';
 import { InventoryObject } from '@game/objects/inventory.object';
 import { Assets } from '@core/utils/assets.utils';
@@ -16,7 +16,7 @@ interface Config extends SceneObjectBaseConfig {
 export class ChestObject extends SceneObject implements Interactable {
 
   private isOpen: boolean = false;
-  inventory: InventoryItemObject[] = [];
+  inventory: InventoryItem[] = [];
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);

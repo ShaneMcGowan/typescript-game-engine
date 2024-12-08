@@ -64,7 +64,7 @@ interface Config {
   currentStackSize?: number;
 }
 
-export class InventoryItemObject {
+export class InventoryItem {
   type: InventoryItemType;
   currentStackSize: number;
   maxStackSize: number;

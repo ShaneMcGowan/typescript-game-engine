@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type InventoryItemObject } from '@game/objects/inventory-item.object';
+import { type InventoryItem } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { ShopItemBuyObject } from './shop/shop-item-buy.object';
@@ -76,7 +76,7 @@ export class ShopObject extends SceneObject {
     this.renderLeaveButton(context);
   }
 
-  get inventory(): InventoryItemObject[] {
+  get inventory(): InventoryItem[] {
     return this.scene.globals['inventory'];
   }
 

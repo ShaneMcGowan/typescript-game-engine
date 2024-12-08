@@ -1,11 +1,11 @@
 import { type Client } from '@core/client';
 import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 import { InventoryItemType } from '@game/models/inventory-item.model';
-import { InventoryItemObject } from '@game/objects/inventory-item.object';
+import { InventoryItem } from '@game/objects/inventory-item.object';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
 
 interface Globals extends SceneGlobalsBaseConfig {
-  inventory: Array<InventoryItemObject | undefined>;
+  inventory: Array<InventoryItem | undefined>;
   inventory_size: number;
   hotbar_size: number;
   hotbar_selected_index: number;
@@ -17,35 +17,35 @@ export class SCENE_GAME extends Scene {
   globals: Globals = {
     ...this.globals,
     inventory: [
-      new InventoryItemObject(this, { type: InventoryItemType.Hoe, }),
-      new InventoryItemObject(this, { type: InventoryItemType.WateringCan, }),
-      new InventoryItemObject(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 5, }),
+      new InventoryItem(this, { type: InventoryItemType.Hoe, }),
+      new InventoryItem(this, { type: InventoryItemType.WateringCan, }),
+      new InventoryItem(this, { type: InventoryItemType.WheatSeeds, currentStackSize: 5, }),
       undefined,
       undefined,
 
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
 
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
 
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
 
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
-      new InventoryItemObject(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
+      new InventoryItem(this, { type: InventoryItemType.Chicken, }),
 
 
       // new InventoryItemObject(this, { type: InventoryItemType.Egg, }),
@@ -114,7 +114,7 @@ export class SCENE_GAME extends Scene {
    * @param type 
    * @returns 
    */
-  addToInventory(type: InventoryItemType): InventoryItemObject | undefined {
+  addToInventory(type: InventoryItemType): InventoryItem | undefined {
 
     // existing stack
     const stackIndex = this.inventoryFirstStackWithRoom(type);
@@ -127,7 +127,7 @@ export class SCENE_GAME extends Scene {
     // blank slot
     const blankIndex = this.inventoryFirstFreeSlot();
     if(blankIndex !== undefined){
-      const item = new InventoryItemObject(this, { type, });
+      const item = new InventoryItem(this, { type, });
       this.globals.inventory[blankIndex] = item;
       return item;
     }
@@ -154,7 +154,7 @@ export class SCENE_GAME extends Scene {
    * @param index 
    * @returns 
    */
-  removeFromInventoryByIndex(index: number, amount: number): InventoryItemObject | undefined {
+  removeFromInventoryByIndex(index: number, amount: number): InventoryItem | undefined {
     const item = this.globals.inventory[index];
     
     if (item === undefined) {
@@ -175,7 +175,7 @@ export class SCENE_GAME extends Scene {
     return item;
   }
 
-  get selectedInventoryItem(): InventoryItemObject | undefined {
+  get selectedInventoryItem(): InventoryItem | undefined {
     return this.globals.inventory[this.globals.hotbar_selected_index];
   }
 

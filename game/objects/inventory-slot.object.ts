@@ -5,7 +5,7 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
-import { InventoryItemObject, InventoryItemSprite, TYPE_TO_SPRITE_MAP } from "./inventory-item.object";
+import { InventoryItem, InventoryItemSprite, TYPE_TO_SPRITE_MAP } from "./inventory-item.object";
 import { InventoryObject } from "./inventory.object";
 
 
@@ -93,7 +93,7 @@ export class InventorySlotObject extends SceneObject {
     );
   }
 
-  get item(): InventoryItemObject | undefined {
+  get item(): InventoryItem | undefined {
     return this.scene.globals.inventory[this.inventoryIndex];
   }
 

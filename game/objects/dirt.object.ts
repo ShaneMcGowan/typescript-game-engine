@@ -5,7 +5,7 @@ import { InventoryItemType } from '@game/models/inventory-item.model';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
-import { InventoryItemObject } from './inventory-item.object';
+import { InventoryItem } from './inventory-item.object';
 
 const DIRT = { x: 1, y: 1, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
