@@ -57,19 +57,19 @@ export class GenericSpriteObject extends SceneObject {
   }
 
   private updatePosition(delta: number): void {
-    if (this.transform.position.world.x === this.targetX && this.transform.position.world.y === this.targetY) {
+    if (this.transform.position.local.x === this.targetX && this.transform.position.local.y === this.targetY) {
       if (this.destroyAtTarget) {
         this.destroy();
       }
       return;
     }
 
-    let movement = new Movement(this.transform.position.world.x, this.transform.position.world.y, this.targetX, this.targetY);
+    let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
     let velocity = this.movementSpeed * delta;
     let updatedMovement = MovementUtils.moveTowardsPosition(movement, velocity);
 
-    this.transform.position.world.x = updatedMovement.positionX;
-    this.transform.position.world.y = updatedMovement.positionY;
+    this.transform.position.local.x = updatedMovement.positionX;
+    this.transform.position.local.y = updatedMovement.positionY;
   }
 
   onRender(context: CanvasRenderingContext2D): void {

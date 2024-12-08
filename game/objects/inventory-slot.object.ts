@@ -25,7 +25,7 @@ export class InventorySlotObject extends SceneObject {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
-    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
+    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
     this.inventoryIndex = config.inventoryIndex;
   }
 

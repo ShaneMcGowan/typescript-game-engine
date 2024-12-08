@@ -344,6 +344,10 @@ export abstract class SceneObject {
     this.children.forEach(child => { this.removeChild(child); });
   }
 
+  get rootParent(): SceneObject {
+    return getRootParent(this);
+  }
+
   /**
    * calculate world position based on local position and parent's position
    * @returns Vector
@@ -361,4 +365,12 @@ export abstract class SceneObject {
       this.transform.position.local.y + this.parent.transform.position.world.y
     );
   }
+}
+
+function getRootParent(object: SceneObject): SceneObject {
+  if (object.parent === undefined) {
+    return object;
+  }
+
+  return getRootParent(object.parent);
 }

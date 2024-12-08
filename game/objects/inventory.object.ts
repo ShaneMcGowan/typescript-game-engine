@@ -8,6 +8,7 @@ import { Input } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
 import { InventorySlotObject } from './inventory-slot.object';
 import { ObjectFilter } from '@core/model/scene';
+import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
 
 enum Controls {
@@ -29,7 +30,7 @@ export class InventoryObject extends SceneObject {
   ) {
     super(scene, config);
     this.renderer.enabled = true;
-    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
+    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 2;
     this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
 
     this.scene.globals.disable_player_inputs = true;
@@ -59,6 +60,13 @@ export class InventoryObject extends SceneObject {
     slots.forEach(slot => this.addChild(slot));
 
     this.addChild(new InventoryButtonCloseObject(this.scene, { positionX: 8, positionY: -2 }));
+    this.addChild(new FillObject(this.scene, {
+      positionX: -this.rootParent.transform.position.world.x, // offset to corner of screen
+      positionY: -this.rootParent.transform.position.world.y, // offset to corner of screen
+      hexColourCode: '#00000099', 
+      width: CanvasConstants.CANVAS_TILE_WIDTH,
+      height: CanvasConstants.CANVAS_TILE_HEIGHT 
+    }));
   }
 
   onUpdate(delta: number): void {
@@ -157,22 +165,6 @@ export class InventoryObject extends SceneObject {
         { size: 8, colour: 'black', }
       );
     }
-  }
-
-  private getIndexFromPositionMap(mousePosition: { x: number; y: number; }, map: Array<{ x: number; y: number; }>): number | undefined {
-    for (let i = 0; i < map.length; i++) {
-      let position = map[i];
-      if (
-        mousePosition.x >= position.x &&
-        mousePosition.x <= (position.x + 1) &&
-        mousePosition.y >= position.y &&
-        mousePosition.y <= (position.y + 1)
-      ) {
-        return i;
-      }
-    }
-
-    return undefined;
   }
 
   startDraggingItem(inventoryIndex: number): void {

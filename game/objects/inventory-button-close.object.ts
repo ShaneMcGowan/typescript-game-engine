@@ -29,7 +29,7 @@ export class InventoryButtonCloseObject extends SceneObject {
   ) {
     super(scene, config);
     this.renderer.enabled = true;
-    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
+    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
   }
 
   onUpdate(delta: number): void {

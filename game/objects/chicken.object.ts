@@ -197,12 +197,12 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.position.world.x || this.targetY !== this.transform.position.world.y) {
-      let movement = new Movement(this.transform.position.world.x, this.transform.position.world.y, this.targetX, this.targetY);
+    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
+      let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.position.world.x = updatedMovement.positionX;
-      this.transform.position.world.y = updatedMovement.positionY;
+      this.transform.position.local.x = updatedMovement.positionX;
+      this.transform.position.local.y = updatedMovement.positionY;
 
       // set flag
       this.isMovingThisFrame = true;
