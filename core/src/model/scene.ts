@@ -406,18 +406,6 @@ export abstract class Scene {
   removeCustomerRenderer(): void {
     this.customRenderer = undefined;
   }
-
-  addEventListener(eventName: string, callback: any): void {
-    console.log('addEventListener is deprecated. refactor your code.');
-  }
-
-  removeEventListener(eventName: string, callback: any): void {
-    console.log('removeEventListener is deprecated. refactor your code.');
-  }
-
-  dispatchEvent(eventName: string, detail?: any): void {
-    console.log('dispatchEvent is deprecated. refactor your code.');
-  }
 }
 
 function match(object: SceneObject, filter: ObjectFilter, enableDefaults = true): SceneObject | undefined {
