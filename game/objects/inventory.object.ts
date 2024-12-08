@@ -79,6 +79,7 @@ export class InventoryObject extends SceneObject {
   }
 
   onDestroy(): void {
+    this.stopDraggingItem();
     this.scene.globals.disable_player_inputs = false;
     if (this.chest) {
       this.chest.actionClose();
@@ -113,7 +114,7 @@ export class InventoryObject extends SceneObject {
       this.scene.globals.inventory[slot.inventoryIndex] = this.itemDragging;
     } else {
       // don't swap
-      this.scene.globals.inventory[this.itemDraggingIndex] = this.itemDragging;
+      this.stopDraggingItem();
     }
 
     this.itemDragging = undefined;
@@ -172,5 +173,13 @@ export class InventoryObject extends SceneObject {
     this.itemDraggingIndex = inventoryIndex;
 
     this.scene.globals.inventory[inventoryIndex] = undefined;
+  }
+
+  private stopDraggingItem(): void {
+    if(this.itemDragging === undefined){
+      return;
+    }
+
+    this.scene.globals.inventory[this.itemDraggingIndex] = this.itemDragging;
   }
 }

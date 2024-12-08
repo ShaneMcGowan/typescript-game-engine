@@ -81,18 +81,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }
 
     // fences
- 
-
-    for(let row = 0; row < 8; row++){
-      for(let col = 0; col < 1; col++){
-        let type = (row === 7 || row === 0) ? FenceType.FencePost : FenceType.MiddleVertical; 
-
-        this.objects.push(
-          new FenceObject(scene, { positionX: 4 + col, positionY: 7 + row, type: type })
-        );
-      }
-    }
-
     for(let row = 0; row < 19; row++){
       for(let col = 0; col < 1; col++){
         let type = row === 18 ? FenceType.FencePost : FenceType.MiddleVertical 
@@ -171,23 +159,36 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       new FenceObject(scene, { positionX: 19, positionY: 7, type: FenceType.BottomRight }),
     ]);
     // 8
-    this.objects.push(...[]);
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 4, positionY: 8, type: FenceType.MiddleVertical })
+    ]);
     // 9
-    this.objects.push(...[]);
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 4, positionY: 9, type: FenceType.MiddleVertical })
+    ]);
     // 10
-    this.objects.push(...[]);
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 4, positionY: 10, type: FenceType.MiddleVertical })
+    ]);
     // 11
-    this.objects.push(...[]);
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 4, positionY: 11, type: FenceType.MiddleVertical })
+    ]);
     // 12
-    this.objects.push(...[]);
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 4, positionY: 12, type: FenceType.MiddleVertical })
+    ]);
     // 13
-    this.objects.push(...[]);
+    this.objects.push(...[
+      new FenceObject(scene, { positionX: 4, positionY: 13, type: FenceType.MiddleVertical })
+    ]);
     // 14
     this.objects.push(...[
       new FenceObject(scene, { positionX: 0, positionY: 14, type: FenceType.MiddleHorizontal }),
       new FenceObject(scene, { positionX: 1, positionY: 14, type: FenceType.MiddleHorizontal }),
       new FenceObject(scene, { positionX: 2, positionY: 14, type: FenceType.MiddleHorizontal }),
       new FenceObject(scene, { positionX: 3, positionY: 14, type: FenceType.MiddleHorizontal }),
+      new FenceObject(scene, { positionX: 4, positionY: 14, type: FenceType.BottomRight })
     ]);
     // 15
     this.objects.push(...[]);
