@@ -34,11 +34,10 @@ const ITEMS_FOR_SALE: Array<{ type: InventoryItemType, price: number }> = [
     type: InventoryItemType.WateringCan,
     price: 50
   },
-  // TODO: add back once chests are fixed to work with new inventory
-  // {
-  //   type: InventoryItemType.Chest,
-  //   price: 500
-  // },
+  {
+    type: InventoryItemType.Chest,
+    price: 500
+  },
 ];
 
 

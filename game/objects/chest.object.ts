@@ -18,6 +18,9 @@ export class ChestObject extends SceneObject implements Interactable {
   private isOpen: boolean = false;
   inventory: InventoryItem[] = [];
 
+  rows: number = 5;
+  columns: number = 5;
+
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
     this.collision.enabled = true;
@@ -58,7 +61,7 @@ export class ChestObject extends SceneObject implements Interactable {
         13,
         0.5,
         this.transform.position.world.x,
-        this.transform.position.world.y - 0.5,
+        this.transform.position.world.y,
         1,
         2,
         {
@@ -72,7 +75,7 @@ export class ChestObject extends SceneObject implements Interactable {
         1,
         0.5,
         this.transform.position.world.x,
-        this.transform.position.world.y - 0.5,
+        this.transform.position.world.y,
         1,
         2,
         {

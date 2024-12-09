@@ -21,7 +21,7 @@ import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
 import { FullscreenToggleObject } from '@game/objects/fullscreen-toggle.object';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
-import { InventorySlotObject } from '@game/objects/inventory-slot.object';
+import { ChestObject } from '@game/objects/chest.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -50,7 +50,10 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     let player = new PlayerObject(scene, { positionX: 10, positionY: 9, });
     this.objects.push(player);
     // this.objects.push(new ShopKeeperObject(scene, { positionX: 2, positionY: 14, }));
-    this.objects.push(new ShopKeeperObject(scene, { positionX: 10, positionY: 10, }));
+    this.objects.push(new ShopKeeperObject(scene, { positionX: 10, positionY: 8, }));
+
+    this.objects.push(new ChestObject(scene, { positionX: 10, positionY: 10, }));
+
 
     // chickens
     this.objects.push(new ChickenObject(scene, { positionX: 10, positionY: 13, follows: player, canLayEggs: true, canMove: true, }));

@@ -7,16 +7,20 @@ import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { InventoryItem, InventoryItemSprite, TYPE_TO_SPRITE_MAP } from "./inventory-item.object";
 import { InventoryObject } from "./inventory.object";
+import { ChestObject } from "./chest.object";
 
 
 interface Config extends SceneObjectBaseConfig {
-  inventoryIndex: number;
+  chest?: ChestObject;
+  index: number;
 }
 
 export class InventorySlotObject extends SceneObject {
   width: number = 2;
   height: number = 2;
-  inventoryIndex: number;
+
+  chest?: ChestObject;
+  index: number;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -26,7 +30,9 @@ export class InventorySlotObject extends SceneObject {
     this.collision.enabled = true;
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
-    this.inventoryIndex = config.inventoryIndex;
+
+    this.chest = config.chest;
+    this.index = config.index;
   }
 
   onUpdate(delta: number): void {
@@ -41,7 +47,7 @@ export class InventorySlotObject extends SceneObject {
 
   private updateClicked(): void {
     // currently dragging
-    if((this.parent as InventoryObject).itemDraggingIndex !== undefined){
+    if((this.parent as InventoryObject).dragging !== undefined){
       return;
     }
 
@@ -57,7 +63,7 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    (this.parent as InventoryObject).startDraggingItem(this.inventoryIndex);
+    (this.parent as InventoryObject).startDraggingItem(this.chest ? 'chest' : 'inventory', this.index);
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {
@@ -112,7 +118,11 @@ export class InventorySlotObject extends SceneObject {
   }
 
   get item(): InventoryItem | undefined {
-    return this.scene.globals.inventory[this.inventoryIndex];
+    if(this.chest){
+      return this.chest.inventory[this.index];
+    }
+
+    return this.scene.globals.inventory[this.index];
   }
 
   get sprite(): InventoryItemSprite | undefined {

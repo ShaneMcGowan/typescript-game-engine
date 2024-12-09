@@ -426,8 +426,8 @@ export class PlayerObject extends SceneObject {
       new InventoryObject(
         this.scene,
         {
-          positionX: 12,
-          positionY: 5,
+          positionX: 0,
+          positionY: 0,
         }
       )
     );
