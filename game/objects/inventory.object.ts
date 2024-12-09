@@ -75,7 +75,8 @@ export class InventoryObject extends SceneObject {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    this.renderInventoryItemGrabbed(context);
+    this.renderInventoryItem(context);
+    this.renderInventoryItemStackSize(context);
   }
 
   onDestroy(): void {
@@ -131,40 +132,36 @@ export class InventoryObject extends SceneObject {
     this.destroy();
   }
 
-  private renderInventoryItemGrabbed(context: CanvasRenderingContext2D): void {
+  private renderInventoryItem(context: CanvasRenderingContext2D): void {
     if (this.itemDragging === undefined) {
       return;
     }
 
-    this.renderInventoryItem(
+    RenderUtils.renderSprite(
       context,
-      this.itemDragging.sprite.tileset,
-      this.itemDragging.currentStackSize,
-      this.itemDragging.maxStackSize,
+      Assets.images[this.itemDragging.sprite.tileset],
       this.itemDragging.sprite.spriteX,
       this.itemDragging.sprite.spriteY,
       Input.mouse.position.x - 0.5,
-      Input.mouse.position.y - 0.5
+      Input.mouse.position.y - 0.5,
     );
   }
 
-  private renderInventoryItem(context: CanvasRenderingContext2D, tileset: string, stackSize: number, maxStackSize: number, spriteX: number, spriteY: number, positionX: number, positionY: number): void {
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[tileset],
-      spriteX,
-      spriteY,
-      positionX,
-      positionY
-    );
-    if (maxStackSize > 1) {
-      RenderUtils.renderText(
-        context,
-        `${stackSize}`,
-        positionX + 0.75,
-        positionY + 1,
-      );
+  private renderInventoryItemStackSize(context: CanvasRenderingContext2D): void {
+    if (this.itemDragging === undefined) {
+      return;
     }
+
+    if (this.itemDragging.maxStackSize === 1) {
+      return;
+    }
+
+    RenderUtils.renderText(
+      context,
+      `${this.itemDragging.currentStackSize}`,
+      Input.mouse.position.x + 0.25,
+      Input.mouse.position.y + 0.75,
+    );
   }
 
   startDraggingItem(inventoryIndex: number): void {
