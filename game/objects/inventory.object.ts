@@ -163,7 +163,6 @@ export class InventoryObject extends SceneObject {
         `${stackSize}`,
         positionX + 0.75,
         positionY + 1,
-        { size: 8, colour: 'black', }
       );
     }
   }

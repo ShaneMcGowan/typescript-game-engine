@@ -108,7 +108,6 @@ export class InventorySlotObject extends SceneObject {
       `${this.item.currentStackSize}`,
       this.transform.position.world.x + 0.25,
       this.transform.position.world.y + 0.75,
-      { size: 12, colour: 'black', }
     );
   }
 

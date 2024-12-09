@@ -107,7 +107,6 @@ export class ShopItemBuyObject extends SceneObject {
       `$${this.price}`,
       this.transform.position.world.x,
       this.transform.position.world.y + 1,
-      { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
 

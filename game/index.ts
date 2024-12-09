@@ -4,12 +4,14 @@ import { Assets, AssetsConfig } from '@core/utils/assets.utils';
 import { type SceneConstructorSignature } from '@core/model/scene';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
 import { SCENE_GAME } from '@game/scenes/game/scene';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 
 (function () {
   /**
    * Declare your canvas constants here
    */
   // e.g. CanvasConstants.CANVAS_TILE_HEIGHT = 18;
+  CanvasConstants.DEFAULT_FONT_FAMILY = 'bookxel';
 
   /**
   * Add your scenes here, the first scene will be loaded on startup
@@ -48,6 +50,9 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
       tileset_basic: 'assets/sample/Sprite sheet for Basic Pack.png'
     },
     audio: {},
+    fonts: {
+      bookxel: 'assets/fonts/bookxel.woff'
+    },
   };
   Assets.initialise(config);
 

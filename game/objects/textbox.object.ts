@@ -41,7 +41,7 @@ export class TextboxObject extends SceneObject {
   // text box specific
   private readonly textboxWidth: number = CanvasConstants.CANVAS_TILE_WIDTH - 8;
   private readonly textboxBorder: number = 2;
-  private readonly textSize: number = 10;
+  private readonly textSize: number = 16;
   private readonly text: string;
   private textSegments: string[] = [];
   private textIndex: number = 0; // index of textSegments
@@ -313,7 +313,7 @@ export class TextboxObject extends SceneObject {
         text,
         ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
         CanvasConstants.CANVAS_TILE_HEIGHT - 2 - 0.25,
-        { size: this.textSize, }
+        { size: this.textSize }
       );
     }
 

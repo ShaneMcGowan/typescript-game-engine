@@ -169,7 +169,6 @@ export class ShopObject extends SceneObject {
       `Shop (buy)`,
       6,
       1.25,
-      { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
 
@@ -205,7 +204,6 @@ export class ShopObject extends SceneObject {
       `Inventory (sell)`,
       21,
       1.25,
-      { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
 
@@ -227,7 +225,6 @@ export class ShopObject extends SceneObject {
       `Gold: ${this.scene.globals.gold}`,
       27,
       13,
-      { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
 
@@ -249,7 +246,6 @@ export class ShopObject extends SceneObject {
       `Leave`,
       22.5,
       13,
-      { size: 12, colour: 'black', font: 'MS Gothic' }
     );
   }
 
