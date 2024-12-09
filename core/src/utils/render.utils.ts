@@ -183,9 +183,9 @@ export abstract class RenderUtils {
     positionY: number,
     options: { size?: number; colour?: string; font?: string; } = {}
   ): void {
-    let size = options.size ? options.size : 16;
-    let colour = options.colour ? options.colour : 'black';
-    let font = options.font ? options.font : 'Helvetica';
+    let size = options.size ? options.size : CanvasConstants.DEFAULT_FONT_SIZE;
+    let colour = options.colour ? options.colour : CanvasConstants.DEFAULT_FONT_COLOUR;
+    let font = options.font ? options.font : CanvasConstants.DEFAULT_FONT_FAMILY;
 
     context.font = `${size}px ${font}`;
     context.fillStyle = `${colour}`;

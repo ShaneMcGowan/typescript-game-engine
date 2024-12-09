@@ -7,6 +7,10 @@ export abstract class CanvasConstants {
   static OBJECT_COLLISION_LAYERS: number = 16; // number of layers on which objects can collide. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
   static CONTEXT_IMAGE_SMOOTHING_ENABLED: boolean = false; // whether to enable image smoothing on the canvas context
 
+  static DEFAULT_FONT_SIZE: number = 16;
+  static DEFAULT_FONT_COLOUR: string = 'black';
+  static DEFAULT_FONT_FAMILY: string = 'Helvetica';
+
   /**
    * Keep an eye on this and any getters, don't run it on hot code paths
    */
