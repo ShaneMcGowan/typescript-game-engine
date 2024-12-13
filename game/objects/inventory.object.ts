@@ -9,7 +9,8 @@ import { InventorySlotObject } from './inventory-slot.object';
 import { ObjectFilter } from '@core/model/scene';
 import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
-import { Item } from '@game/models/inventory.model';
+import { Inventory, Item } from '@game/models/inventory.model';
+import { InventoryButtonTrashObject } from './inventory/inventory-button-trash.object';
 
 
 type DraggingSource = 'inventory' | 'chest';
@@ -102,6 +103,12 @@ export class InventoryObject extends SceneObject {
       positionX: 30, 
       positionY: 2 
     }));
+
+    this.addChild(new InventoryButtonTrashObject(this.scene, { 
+      positionX: 28, 
+      positionY: 2 
+    }));
+
     this.addChild(new FillObject(this.scene, {
       positionX: 0,
       positionY: 0,
@@ -129,8 +136,12 @@ export class InventoryObject extends SceneObject {
     }
   }
 
-  get inventory(): Item[] {
-    return this.scene.globals.inventory.items;
+  get isDragging(): boolean {
+    return this.dragging !== undefined;
+  }
+
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
   }
 
   private updateDragging(): void {
@@ -147,20 +158,22 @@ export class InventoryObject extends SceneObject {
         x: Input.mouse.position.x,
         y: Input.mouse.position.y
       },
-      typeMatch: [InventorySlotObject]
+      typeMatch: [InventorySlotObject, InventoryButtonTrashObject]
     };
 
-    const slot = this.scene.getObject(filter) as InventorySlotObject;
-    if(slot) {
+    const slot = this.scene.getObject(filter);
+    if(slot === undefined){
+      this.stopDraggingItem();
+    } else if(slot instanceof InventoryButtonTrashObject){
+      // destroy
+      this.dragging = undefined;
+    } else if(slot instanceof InventorySlotObject) {
       // swap
       const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
       const target = slot.chest === undefined ? this.inventory : this.chest.inventory;
       
-      source[this.dragging.index] = target[slot.index];
-      target[slot.index] = this.dragging.item;
-    } else {
-      // don't swap
-      this.stopDraggingItem();
+      source.items[this.dragging.index] = target.items[slot.index];
+      target.items[slot.index] = this.dragging.item;
     }
 
     this.dragging = undefined;
@@ -210,19 +223,30 @@ export class InventoryObject extends SceneObject {
 
   startDraggingItem(source: DraggingSource, inventoryIndex: number): void {
     this.dragging = {
-      item: this.getInventoryFromSource(source)[inventoryIndex],
+      item: this.getInventoryFromSource(source).items[inventoryIndex],
       index: inventoryIndex,
       source: source,
     }
 
-    this.getInventoryFromSource(this.dragging.source)[inventoryIndex] = undefined;
+    this.getInventoryFromSource(this.dragging.source).items[inventoryIndex] = undefined;
   }
 
   quickMove(source: DraggingSource, inventoryIndex: number): void {
-    const target: DraggingSource = source !== 'chest' ? 'chest' : 'inventory';
+    if(this.chest === undefined){
+      return;
+    }
 
-    const item = this.getInventoryFromSource(source)[inventoryIndex];
-    
+    const sourceInventory = source === 'inventory' ? this.inventory : this.chest.inventory;
+    const targetInventory = source === 'inventory' ? this.chest.inventory : this.inventory;
+
+    // no slot to move to
+    const index = targetInventory.getFirstFreeSlot();
+    if(index === undefined){
+      return;
+    }
+
+    targetInventory.items[index] = sourceInventory.items[inventoryIndex];
+    sourceInventory.items[inventoryIndex] = undefined;
   }
 
   private stopDraggingItem(): void {
@@ -231,13 +255,13 @@ export class InventoryObject extends SceneObject {
     }
 
     if(this.dragging.source === 'inventory'){
-      this.inventory[this.dragging.index] = this.dragging.item;
+      this.inventory.items[this.dragging.index] = this.dragging.item;
     } else if(this.dragging.source === 'chest') {
-      this.chest.inventory[this.dragging.index] = this.dragging.item;
+      this.chest.inventory.items[this.dragging.index] = this.dragging.item;
     }
   }
 
-  private getInventoryFromSource(source: DraggingSource): Item[] {
+  private getInventoryFromSource(source: DraggingSource): Inventory {
     switch(source){
       case 'chest':
         return this.chest.inventory;

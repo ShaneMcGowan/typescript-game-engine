@@ -29,9 +29,8 @@ export class HotbarObject extends SceneObject {
       return;
     }
     
-    this.renderBackground(context);
     this.renderContainers(context);
-    this.renderItems(context, this.inventory.items.slice(0, this.hotbarSize));
+    this.renderItems(context, this.inventory.items.slice(0, this.hotbar.size));
     this.renderHotbarSelector(context);
   }
 
@@ -54,16 +53,6 @@ export class HotbarObject extends SceneObject {
     );
   }
 
-  private renderBackground(context: CanvasRenderingContext2D): void {
-    RenderUtils.fillRectangle(
-      context,
-      this.boundingBox.world.left,
-      this.boundingBox.world.top,
-      this.width,
-      this.height,
-      { colour: 'saddlebrown', type: 'tile' }
-    );
-  }
 
   private renderContainers(context: CanvasRenderingContext2D): void {
     for (let i = 0; i < 5; i++) {
@@ -133,12 +122,8 @@ export class HotbarObject extends SceneObject {
     return this.scene.globals.inventory;
   }
 
-  get inventorySize(): number {
-    return this.scene.globals['inventory_size'];
-  }
-
-  get hotbarSize(): number {
-    return this.scene.globals['hotbar_size'];
+  get hotbar(): Inventory {
+    return this.scene.globals.hotbar;
   }
 
   get hotbarSelectedIndex(): number {

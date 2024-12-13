@@ -135,7 +135,7 @@ export class Inventory {
    * finds the index of the first free slot, if none available, returns undefined
    * @returns 
    */
-   firstFreeSlot(): number | undefined {
+   getFirstFreeSlot(): number | undefined {
     for (let i = 0; i < this.size; i++) {
       if(this.items[i] === undefined){
         return i;
@@ -165,7 +165,7 @@ export class Inventory {
     }
 
     // blank slot
-    const blankIndex = this.firstFreeSlot();
+    const blankIndex = this.getFirstFreeSlot();
     if(blankIndex !== undefined){
       const item = this.createItem(type);
       this.items[blankIndex] = item;

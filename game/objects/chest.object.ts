@@ -4,7 +4,7 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { InventoryObject } from '@game/objects/inventory.object';
 import { Assets } from '@core/utils/assets.utils';
-import { Item } from '@game/models/inventory.model';
+import { Inventory } from '@game/models/inventory.model';
 
 const TILE_SET: string = 'tileset_chest';
 const RENDERER_LAYER = 8;
@@ -15,17 +15,19 @@ interface Config extends SceneObjectBaseConfig {
 
 export class ChestObject extends SceneObject implements Interactable {
 
-  private isOpen: boolean = false;
-  inventory: Item[] = [];
-
+  inventory: Inventory;
   rows: number = 5;
   columns: number = 5;
+  
+  private isOpen: boolean = false;
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
+
+    this.inventory = new Inventory(this.rows, this.columns);
   }
 
   onRender(context: CanvasRenderingContext2D): void {

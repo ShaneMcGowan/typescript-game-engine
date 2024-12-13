@@ -8,7 +8,11 @@ import { Assets } from "@core/utils/assets.utils";
 import { InventoryObject } from "./inventory.object";
 import { ChestObject } from "./chest.object";
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
+import { TilesetUI } from "@game/constants/tileset-ui.constants";
 
+enum Controls {
+  QuickMove = 'shift'
+}
 
 interface Config extends SceneObjectBaseConfig {
   chest?: ChestObject;
@@ -63,19 +67,26 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    (this.parent as InventoryObject).startDraggingItem(this.chest ? 'chest' : 'inventory', this.index);
+    if(Input.isKeyPressed(Controls.QuickMove)){
+      (this.parent as InventoryObject).quickMove(this.chest ? 'chest' : 'inventory', this.index);
+    } else {
+      (this.parent as InventoryObject).startDraggingItem(this.chest ? 'chest' : 'inventory', this.index);
+    }
+
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {
+    const tile = MouseUtils.isMouseWithinObject(this) ? TilesetUI.Container.Darker.Default : TilesetUI.Container.Default.Default;
+
     RenderUtils.renderSprite(
       context,
-      Assets.images.tileset_ui,
-      0.5,
-      3.5,
+      Assets.images[TilesetUI.id],
+      tile.x,
+      tile.y,
       this.transform.position.world.x,
       this.transform.position.world.y,
-      this.width,
-      this.height,
+      tile.width,
+      tile.height,
       {
         centered: true,
       }
@@ -119,7 +130,7 @@ export class InventorySlotObject extends SceneObject {
 
   get item(): Item | undefined {
     if(this.chest){
-      return this.chest.inventory[this.index];
+      return this.chest.inventory.items[this.index];
     }
 
     return this.inventory.items[this.index];

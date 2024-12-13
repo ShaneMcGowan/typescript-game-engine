@@ -2,26 +2,19 @@ import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { TilesetBasic } from "@game/constants/tileset-basic.constants";
-
-enum ButtonState {
-  Default,// not pressed && colliding
-  Down, // pressed && colliding
-  Up, // not pressed and colliding
-}
+import { InventoryObject } from "../inventory.object";
+import { MouseUtils } from "@core/utils/mouse.utils";
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class InventoryButtonCloseObject extends SceneObject {
+export class InventoryButtonTrashObject extends SceneObject {
   width: number = 2;
   height: number = 2;
   inventoryIndex: number;
 
-  state: ButtonState = ButtonState.Default;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -33,17 +26,7 @@ export class InventoryButtonCloseObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {
-    switch(this.state) {
-      case ButtonState.Default:
-        this.updateDefault();
-        break;
-      case ButtonState.Down:
-        this.updateDown();
-        break;
-      case ButtonState.Up:
-        this.updateUp();
-        break;
-    }
+    
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -51,37 +34,14 @@ export class InventoryButtonCloseObject extends SceneObject {
     this.renderButtonIcon(context);
   }
 
-  private updateDefault(): void {
-    if (!Input.isMousePressed()) {
-      return;
-    }
-
-    if (!MouseUtils.isMouseWithinObject(this)) {
-      return;
-    }
-
-    this.state = ButtonState.Down;
-  }
-
-  private updateDown(): void {
-    if (Input.isMousePressed()) {
-      return;
-    }
-
-    if (!MouseUtils.isMouseWithinObject(this)) {
-      this.state = ButtonState.Default;
-      return;
-    }
-
-    this.state = ButtonState.Up;
-  }
-
-  private updateUp(): void {
-    this.parent.destroy();
-  }
-
   private renderButtonContainer(context: CanvasRenderingContext2D): void {
-    const tileset = this.state === ButtonState.Default ? TilesetBasic.Button.White.Default : TilesetBasic.Button.White.Pressed;
+    let tileset;
+
+    if((this.parent as InventoryObject).isDragging && MouseUtils.isMouseWithinObject(this)){
+      tileset = TilesetBasic.Button.White.Pressed;
+    } else {
+      tileset = TilesetBasic.Button.White.Default;
+    }
 
     RenderUtils.renderSprite(
       context,
@@ -97,7 +57,7 @@ export class InventoryButtonCloseObject extends SceneObject {
   }
 
   private renderButtonIcon(context: CanvasRenderingContext2D): void {
-    const tileset = this.state === ButtonState.Default ? TilesetBasic.Cross.Red.Default : TilesetBasic.Cross.Red.Pressed;
+    const tileset = TilesetBasic.Skull.Dark.Default;
 
     RenderUtils.renderSprite(
       context,

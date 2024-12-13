@@ -20,8 +20,7 @@ import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { ItemRadius, ItemType } from '@game/models/inventory.model';
+import { Inventory, ItemRadius, ItemType } from '@game/models/inventory.model';
 
 enum Direction {
   UP = 'w',
@@ -64,7 +63,7 @@ export class PlayerObject extends SceneObject {
     [Direction.DOWN]: [{ x: 1, y: 1, }, { x: 4, y: 1, }],
   };
 
-  private hotbar: SceneObject | undefined = undefined;
+  private hotbarObject: SceneObject | undefined = undefined;
 
   // direction state
   direction: Direction = Direction.DOWN;
@@ -139,6 +138,10 @@ export class PlayerObject extends SceneObject {
     this.renderCursor(context);
   }
 
+  get hotbar(): Inventory {
+    return this.scene.globals.hotbar;
+  }
+
   updateMovement(delta: number): void {
     if (this.scene.globals.disable_player_inputs === true) {
       return;
@@ -209,6 +212,9 @@ export class PlayerObject extends SceneObject {
       objectIgnore: new Map([
         [this, true]
       ]),
+      collision: {
+        enabled: true
+      }
     }
     if (this.scene.getObject(filter)) {
       return;
@@ -392,14 +398,14 @@ export class PlayerObject extends SceneObject {
     // wrap hotbar if at end
     const index = this.scene.globals['hotbar_selected_index'];
     if (Input.mouse.wheel.event.deltaY > 0) {
-      if (index === this.scene.globals.hotbar_size - 1) {
+      if (index === this.hotbar.size - 1) {
         this.scene.globals['hotbar_selected_index'] = 0;
       } else {
         this.scene.globals['hotbar_selected_index']++;
       }
     } else if (Input.mouse.wheel.event.deltaY < 0) {
       if (index === 0) {
-        this.scene.globals['hotbar_selected_index'] = this.scene.globals.hotbar_size - 1;
+        this.scene.globals['hotbar_selected_index'] = this.hotbar.size - 1;
       } else {
         this.scene.globals['hotbar_selected_index']--;
       }
@@ -612,21 +618,21 @@ export class PlayerObject extends SceneObject {
   }
 
   private addHotbar(): void {
-    if(this.hotbar){
+    if(this.hotbarObject){
       return;
     }
 
-    this.hotbar = new HotbarObject(this.scene, { positionX: 16, positionY: 16, });
+    this.hotbarObject = new HotbarObject(this.scene, { positionX: 16, positionY: 16, });
 
-    this.scene.addObject(this.hotbar);
+    this.scene.addObject(this.hotbarObject);
   }
 
   private removeHotbar(): void {
-    if(this.hotbar === undefined){
+    if(this.hotbarObject === undefined){
       return;
     }
 
-    this.hotbar.destroy();
+    this.hotbarObject.destroy();
   }
 
 }

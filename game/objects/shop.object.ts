@@ -6,7 +6,7 @@ import { Input, MouseKey } from '@core/utils/input.utils';
 import { ShopItemBuyObject } from './shop/shop-item-buy.object';
 import { ShopItemSellObject } from './shop/shop-item-sell.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
-import { Item, ItemType } from '@game/models/inventory.model';
+import { Inventory, ItemType } from '@game/models/inventory.model';
 
 enum Controls {
   Close = 'tab',
@@ -75,12 +75,12 @@ export class ShopObject extends SceneObject {
     this.renderLeaveButton(context);
   }
 
-  get inventory(): Item[] {
-    return this.scene.globals.inventory.items;
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
   }
 
-  get inventorySize(): number {
-    return this.scene.globals['inventory_size'];
+  get hotbar(): Inventory {
+    return this.scene.globals.hotbar;
   }
 
   private updateButtonClose(): void {
@@ -266,7 +266,7 @@ export class ShopObject extends SceneObject {
 
     // items to sell
     // hotbar offset so player can't sell hotbar items
-    const hotbarOffset = this.scene.globals.hotbar_size;
+    const hotbarOffset = this.hotbar.size;
     const columnsPerRow = 5;
     const totalRows = 4;
     for (let col = 0; col < columnsPerRow; col++) {
@@ -274,7 +274,7 @@ export class ShopObject extends SceneObject {
 
         const index = col + (row * columnsPerRow) + hotbarOffset;
 
-        const item = this.inventory[index];
+        const item = this.inventory.items[index];
         if (item === undefined) {
           continue;
         }

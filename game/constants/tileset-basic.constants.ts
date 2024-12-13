@@ -1,14 +1,10 @@
-type TileConfig = {
-  x: number;
-  y: number;
-  width?: number;
-  height?: number;
-}
-
-type Tile = Record<string, Record<string, TileConfig>>;
+import { Tile } from "@game/models/tile.model";
 
 export class TilesetBasic {
-  static ArrowRight = { 
+
+  static readonly id: string = 'tileset_basic';
+
+  static readonly ArrowRight: Tile<'White', 'Default' | 'Pressed'> = { 
     White: {
       Default: {
         x: 15, y: 0,
@@ -19,7 +15,7 @@ export class TilesetBasic {
     }
    };
 
-   static ArrowLeft = { 
+   static readonly ArrowLeft = { 
     White: {
       Default: {
         x: 15, y: 1,
@@ -30,7 +26,7 @@ export class TilesetBasic {
     }
    };
 
-  static ArrowUp = { 
+  static readonly ArrowUp = { 
     White: {
       Default: {
         x: 15, y: 2,
@@ -41,7 +37,7 @@ export class TilesetBasic {
     }
   };
 
-  static ArrowDown = { 
+  static readonly ArrowDown = { 
     White: {
       Default: {
         x: 15, y: 3,
@@ -52,7 +48,7 @@ export class TilesetBasic {
     }
   };
 
-  static CheckMark = { 
+  static readonly CheckMark = { 
     Green: {
       Default: {
         x: 15, y: 4,
@@ -63,7 +59,7 @@ export class TilesetBasic {
     }
   };
 
-  static Cross = { 
+  static readonly Cross = { 
     Red: {
       Default: {
         x: 15, 
@@ -80,7 +76,7 @@ export class TilesetBasic {
     }
   };
 
-  static Button: Tile = { 
+  static readonly Button: Tile<'White', 'Default' | 'Pressed'> = { 
     White: {
       Default: {
         x: 3.5, 
@@ -96,4 +92,13 @@ export class TilesetBasic {
       }
     }
   };
+
+  static readonly Skull: Tile<'Dark', 'Default'> = {
+    Dark: {
+      Default: {
+        x: 55,
+        y: 12
+      }
+    }
+  }
 }
