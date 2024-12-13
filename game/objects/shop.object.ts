@@ -1,13 +1,12 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type InventoryItem } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { ShopItemBuyObject } from './shop/shop-item-buy.object';
-import { InventoryItemType } from '@game/models/inventory-item.model';
 import { ShopItemSellObject } from './shop/shop-item-sell.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
+import { Item, ItemType } from '@game/models/inventory.model';
 
 enum Controls {
   Close = 'tab',
@@ -17,25 +16,25 @@ interface Config extends SceneObjectBaseConfig {
   onLeave?: () => void;
 }
 
-const ITEMS_FOR_SALE: Array<{ type: InventoryItemType, price: number }> = [
+const ITEMS_FOR_SALE: Array<{ type: ItemType, price: number }> = [
   {
-    type: InventoryItemType.TomatoSeeds,
+    type: ItemType.TomatoSeeds,
     price: 5
   },
   {
-    type: InventoryItemType.WheatSeeds,
+    type: ItemType.WheatSeeds,
     price: 5
   },
   {
-    type: InventoryItemType.Hoe,
+    type: ItemType.Hoe,
     price: 50
   },
   {
-    type: InventoryItemType.WateringCan,
+    type: ItemType.WateringCan,
     price: 50
   },
   {
-    type: InventoryItemType.Chest,
+    type: ItemType.Chest,
     price: 500
   },
 ];
@@ -76,8 +75,8 @@ export class ShopObject extends SceneObject {
     this.renderLeaveButton(context);
   }
 
-  get inventory(): InventoryItem[] {
-    return this.scene.globals['inventory'];
+  get inventory(): Item[] {
+    return this.scene.globals.inventory.items;
   }
 
   get inventorySize(): number {

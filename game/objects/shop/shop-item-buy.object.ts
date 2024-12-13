@@ -1,17 +1,16 @@
 import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
-import { InventoryItemType } from "@game/models/inventory-item.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { TYPE_TO_SPRITE_MAP } from "../inventory-item.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { ShopObject } from "../shop.object";
+import { Inventory, ItemType, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
 
 
 interface Config extends SceneObjectBaseConfig {
-  type: InventoryItemType;
+  type: ItemType;
   price: number;
 }
 
@@ -20,7 +19,7 @@ export class ShopItemBuyObject extends SceneObject {
   height: number = 2;
 
   price: number;
-  type: InventoryItemType;
+  type: ItemType;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -60,7 +59,7 @@ export class ShopItemBuyObject extends SceneObject {
     }
 
 
-    const item = this.scene.addToInventory(this.type);
+    const item = this.inventory.addToInventory(this.type);
 
     if(item){
       this.scene.globals.gold -= this.price;
@@ -108,6 +107,10 @@ export class ShopItemBuyObject extends SceneObject {
       this.transform.position.world.x,
       this.transform.position.world.y + 1,
     );
+  }
+
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
   }
 
   get sprite() {

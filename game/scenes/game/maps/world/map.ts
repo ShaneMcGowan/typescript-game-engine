@@ -9,12 +9,10 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND } from './backgrounds/ground.background';
-import { HotbarObject } from '@game/objects/hotbar.object';
 import { ShopKeeperObject } from '@game/objects/npcs/shop-keeper.npc';
 import { FenceObject, FenceType } from '@game/objects/fence.object';
 import { TransitionObject } from '@core/objects/transition.object';
 import { CropStage, DirtObject } from '@game/objects/dirt.object';
-import { InventoryItemType } from '@game/models/inventory-item.model';
 import { SCENE_GAME_MAP_WORLD_BACKGROUND_STEPS } from './backgrounds/steps.background';
 import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
@@ -22,6 +20,7 @@ import { MathUtils } from '@core/utils/math.utils';
 import { FullscreenToggleObject } from '@game/objects/fullscreen-toggle.object';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { ChestObject } from '@game/objects/chest.object';
+import { ItemType } from '@game/models/inventory.model';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -61,25 +60,25 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // crops
     for(let row = 0; row < 4; row++){
       for(let col = 0; col < 16; col++){
-        this.objects.push(new DirtObject(scene, { positionX: 2 + col, positionY: 2 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
+        this.objects.push(new DirtObject(scene, { positionX: 2 + col, positionY: 2 + row, growing: { stage: CropStage.FullyGrown, itemType: ItemType.WheatSeeds} }));
       }
     }
 
     for(let row = 0; row < 6; row++){
       for(let col = 0; col < 3; col++){
-        this.objects.push(new DirtObject(scene, { positionX: 6 + col, positionY: 10 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
+        this.objects.push(new DirtObject(scene, { positionX: 6 + col, positionY: 10 + row, growing: { stage: CropStage.FullyGrown, itemType: ItemType.WheatSeeds} }));
       }
     }
 
     for(let row = 0; row < 4; row++){
       for(let col = 0; col < 4; col++){
-        this.objects.push(new DirtObject(scene, { positionX: 21 + col, positionY: 6 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
+        this.objects.push(new DirtObject(scene, { positionX: 21 + col, positionY: 6 + row, growing: { stage: CropStage.FullyGrown, itemType: ItemType.WheatSeeds} }));
       }
     }
 
     for(let row = 0; row < 6; row++){
       for(let col = 0; col < 13; col++){
-        this.objects.push(new DirtObject(scene, { positionX: 12 + col, positionY: 10 + row, growing: { stage: CropStage.FullyGrown, itemType: InventoryItemType.WheatSeeds} }));
+        this.objects.push(new DirtObject(scene, { positionX: 12 + col, positionY: 10 + row, growing: { stage: CropStage.FullyGrown, itemType: ItemType.WheatSeeds} }));
       }
     }
 

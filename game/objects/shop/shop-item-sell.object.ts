@@ -1,17 +1,16 @@
 import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
-import { InventoryItemType } from "@game/models/inventory-item.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { InventoryItem, TYPE_TO_SELL_VALUE_MAP, TYPE_TO_SPRITE_MAP } from "../inventory-item.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { ShopObject } from "../shop.object";
+import { Inventory, ItemType, TYPE_TO_SELL_VALUE_MAP, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
 
 
 interface Config extends SceneObjectBaseConfig {
-  type: InventoryItemType;
+  type: ItemType;
   count: number;
   index: number;
 }
@@ -20,7 +19,7 @@ export class ShopItemSellObject extends SceneObject {
   width: number = 2;
   height: number = 2;
 
-  type: InventoryItemType;
+  type: ItemType;
   count: number;
   index: number;
 
@@ -52,6 +51,14 @@ export class ShopItemSellObject extends SceneObject {
     return TYPE_TO_SELL_VALUE_MAP[this.type];
   }
 
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
+  }
+
+  get sprite() {
+    return TYPE_TO_SPRITE_MAP[this.type];
+  }
+
   private updateClicked(): void {
     if (!Input.isMousePressed()) {
       return;
@@ -65,7 +72,7 @@ export class ShopItemSellObject extends SceneObject {
 
     this.scene.globals.gold += this.price;
 
-    this.scene.removeFromInventoryByIndex(this.index, 1);
+    this.inventory.removeFromInventoryByIndex(this.index, 1);
 
     (this.parent as ShopObject).refreshShopState();
   }
@@ -118,7 +125,4 @@ export class ShopItemSellObject extends SceneObject {
     );
   }
 
-  get sprite() {
-    return TYPE_TO_SPRITE_MAP[this.type];
-  }
 }

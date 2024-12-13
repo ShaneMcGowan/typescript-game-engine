@@ -1,9 +1,9 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type InventoryItem } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Assets } from '@core/utils/assets.utils';
+import { Inventory, Item } from '@game/models/inventory.model';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -31,7 +31,7 @@ export class HotbarObject extends SceneObject {
     
     this.renderBackground(context);
     this.renderContainers(context);
-    this.renderItems(context, this.inventory.slice(0, this.hotbarSize));
+    this.renderItems(context, this.inventory.items.slice(0, this.hotbarSize));
     this.renderHotbarSelector(context);
   }
 
@@ -83,7 +83,7 @@ export class HotbarObject extends SceneObject {
     }
   }
 
-  private renderItems(context: CanvasRenderingContext2D, inventory: InventoryItem[]): void {
+  private renderItems(context: CanvasRenderingContext2D, inventory: Item[]): void {
     for (let i = 0; i < 5; i++) {
       let item = inventory[i];
       if (item === undefined) {
@@ -129,8 +129,8 @@ export class HotbarObject extends SceneObject {
     }
   }
 
-  get inventory(): InventoryItem[] {
-    return this.scene.globals['inventory'];
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
   }
 
   get inventorySize(): number {

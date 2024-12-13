@@ -2,7 +2,6 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type ChestObject } from '@game/objects/chest.object';
-import { type InventoryItem } from '@game/objects/inventory-item.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
@@ -10,6 +9,7 @@ import { InventorySlotObject } from './inventory-slot.object';
 import { ObjectFilter } from '@core/model/scene';
 import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
+import { Item } from '@game/models/inventory.model';
 
 
 type DraggingSource = 'inventory' | 'chest';
@@ -26,7 +26,7 @@ export class InventoryObject extends SceneObject {
   private chest: ChestObject | undefined = undefined;
 
   dragging: {
-    item: InventoryItem;
+    item: Item;
     index: number;
     source: DraggingSource;
   } | undefined
@@ -129,8 +129,8 @@ export class InventoryObject extends SceneObject {
     }
   }
 
-  get inventory(): InventoryItem[] {
-    return this.scene.globals['inventory'];
+  get inventory(): Item[] {
+    return this.scene.globals.inventory.items;
   }
 
   private updateDragging(): void {
@@ -153,8 +153,8 @@ export class InventoryObject extends SceneObject {
     const slot = this.scene.getObject(filter) as InventorySlotObject;
     if(slot) {
       // swap
-      const source = this.dragging.source === 'inventory' ? this.scene.globals.inventory : this.chest.inventory;
-      const target = slot.chest === undefined ? this.scene.globals.inventory : this.chest.inventory;
+      const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
+      const target = slot.chest === undefined ? this.inventory : this.chest.inventory;
       
       source[this.dragging.index] = target[slot.index];
       target[slot.index] = this.dragging.item;
@@ -209,7 +209,6 @@ export class InventoryObject extends SceneObject {
   }
 
   startDraggingItem(source: DraggingSource, inventoryIndex: number): void {
-    
     this.dragging = {
       item: this.getInventoryFromSource(source)[inventoryIndex],
       index: inventoryIndex,
@@ -219,25 +218,32 @@ export class InventoryObject extends SceneObject {
     this.getInventoryFromSource(this.dragging.source)[inventoryIndex] = undefined;
   }
 
+  quickMove(source: DraggingSource, inventoryIndex: number): void {
+    const target: DraggingSource = source !== 'chest' ? 'chest' : 'inventory';
+
+    const item = this.getInventoryFromSource(source)[inventoryIndex];
+    
+  }
+
   private stopDraggingItem(): void {
     if(this.dragging === undefined){
       return;
     }
 
     if(this.dragging.source === 'inventory'){
-      this.scene.globals.inventory[this.dragging.index] = this.dragging.item;
+      this.inventory[this.dragging.index] = this.dragging.item;
     } else if(this.dragging.source === 'chest') {
       this.chest.inventory[this.dragging.index] = this.dragging.item;
     }
   }
 
-  private getInventoryFromSource(source: DraggingSource): InventoryItem[] {
+  private getInventoryFromSource(source: DraggingSource): Item[] {
     switch(source){
       case 'chest':
         return this.chest.inventory;
       case 'inventory':
       default: ''
-        return this.scene.globals.inventory;
+        return this.inventory;
     }
   }
 }

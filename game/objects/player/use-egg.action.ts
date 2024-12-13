@@ -16,5 +16,5 @@ export function useEgg(scene: SCENE_GAME): void {
   );
 
   scene.addObject(object);
-  scene.removeFromInventoryByIndex(scene.selectedInventoryIndex, 1);
+  scene.globals.inventory.removeFromInventoryByIndex(scene.selectedInventoryIndex, 1);
 }

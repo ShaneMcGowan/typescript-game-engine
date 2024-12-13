@@ -3,11 +3,11 @@ import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input, MouseKey } from "@core/utils/input.utils";
+import { Input } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
-import { InventoryItem, InventoryItemSprite, TYPE_TO_SPRITE_MAP } from "./inventory-item.object";
 import { InventoryObject } from "./inventory.object";
 import { ChestObject } from "./chest.object";
+import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 
 
 interface Config extends SceneObjectBaseConfig {
@@ -117,15 +117,19 @@ export class InventorySlotObject extends SceneObject {
     );
   }
 
-  get item(): InventoryItem | undefined {
+  get item(): Item | undefined {
     if(this.chest){
       return this.chest.inventory[this.index];
     }
 
-    return this.scene.globals.inventory[this.index];
+    return this.inventory.items[this.index];
   }
 
-  get sprite(): InventoryItemSprite | undefined {
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
+  }
+
+  get sprite(): ItemSprite | undefined {
     if(this.item === undefined){
       return undefined;
     }

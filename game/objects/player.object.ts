@@ -3,7 +3,6 @@ import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { DirtObject } from '@game/objects/dirt.object';
-import { InventoryItemRadius, InventoryItemType } from '@game/models/inventory-item.model';
 import { isInteractable } from '@game/models/interactable.model';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { useHoe } from '@game/objects/player/use-hoe.action';
@@ -22,6 +21,7 @@ import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
+import { ItemRadius, ItemType } from '@game/models/inventory.model';
 
 enum Direction {
   UP = 'w',
@@ -465,7 +465,7 @@ export class PlayerObject extends SceneObject {
     }
 
     // item cannot be placed
-    if(item.radius === InventoryItemRadius.None){
+    if(item.radius === ItemRadius.None){
       return;
     }
 
@@ -473,7 +473,7 @@ export class PlayerObject extends SceneObject {
     const y = Math.round(Input.mouse.position.y + this.scene.globals.camera.startY);
 
     if (
-      item.radius === InventoryItemRadius.Player && 
+      item.radius === ItemRadius.Player && 
       Math.abs(x - this.transform.position.world.roundedX) > 1 || 
       Math.abs(y - this.transform.position.world.roundedY) > 1
      ) {
@@ -490,23 +490,23 @@ export class PlayerObject extends SceneObject {
 
     if (object === undefined) {
       switch (item.type) {
-        case InventoryItemType.Hoe:
+        case ItemType.Hoe:
           useHoe(this.scene);
           return;
-        case InventoryItemType.WateringCan:
+        case ItemType.WateringCan:
           useWateringCan(this.scene);
           return;
-        case InventoryItemType.Chicken:
+        case ItemType.Chicken:
           useChicken(this.scene);
           return;
-        case InventoryItemType.Egg:
+        case ItemType.Egg:
           useEgg(this.scene);
           return;
-        case InventoryItemType.TomatoSeeds:
-        case InventoryItemType.WheatSeeds:
+        case ItemType.TomatoSeeds:
+        case ItemType.WheatSeeds:
           useSeed(this.scene);
           return;
-        case InventoryItemType.Chest:
+        case ItemType.Chest:
           useChest(this.scene);
           return;
         default:
@@ -514,7 +514,7 @@ export class PlayerObject extends SceneObject {
       }
     } else {
       switch (item.type) {
-        case InventoryItemType.WateringCan:
+        case ItemType.WateringCan:
           switch (true) {
             case object instanceof DirtObject:
               useWateringCanOnDirt(this.scene, object);
@@ -525,8 +525,8 @@ export class PlayerObject extends SceneObject {
             default:
               return;
           }
-        case InventoryItemType.TomatoSeeds:
-        case InventoryItemType.WheatSeeds:
+        case ItemType.TomatoSeeds:
+        case ItemType.WheatSeeds:
           switch (true) {
             case object instanceof DirtObject:
               useSeedOnDirt(this.scene, object);
@@ -534,8 +534,8 @@ export class PlayerObject extends SceneObject {
             default:
               return;
           }
-        case InventoryItemType.Tomato:
-        case InventoryItemType.Wheat:
+        case ItemType.Tomato:
+        case ItemType.Wheat:
           switch (true) {
             case object instanceof ChickenObject:
               useCropOnChicken(this.scene, object);
@@ -580,7 +580,7 @@ export class PlayerObject extends SceneObject {
 
     let item = this.scene.selectedInventoryItem;
     // do not render cursor
-    if (item === undefined || item.radius === InventoryItemRadius.None) {
+    if (item === undefined || item.radius === ItemRadius.None) {
       return;
     }
 
@@ -591,7 +591,7 @@ export class PlayerObject extends SceneObject {
 
     // don't render cursor if greater than 1 tile away from user
     if (
-      item.radius === InventoryItemRadius.Player && 
+      item.radius === ItemRadius.Player && 
       Math.abs(x - this.transform.position.world.roundedX) > 1 || 
       Math.abs(y - this.transform.position.world.roundedY) > 1
      ) {

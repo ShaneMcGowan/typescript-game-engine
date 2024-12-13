@@ -4,8 +4,8 @@ import { ChickenObject } from '@game/objects/chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
-import { InventoryItemType } from '@game/models/inventory-item.model';
 import { Assets } from '@core/utils/assets.utils';
+import { Inventory, ItemType } from '@game/models/inventory.model';
 
 const TILE_SET = 'tileset_egg'; // TODO: some sort of enum for tilesets
 const RENDERER_LAYER: number = 7;
@@ -58,6 +58,10 @@ export class EggObject extends SceneObject implements Interactable {
     );
   }
 
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
+  }
+
   private updateAnimation(delta: number): void {
     this.animationTimer = (this.animationTimer + delta) % 1;
     this.animationIndex = 0;
@@ -80,7 +84,7 @@ export class EggObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    const item = this.scene.addToInventory(InventoryItemType.Egg);
+    const item = this.inventory.addToInventory(ItemType.Egg);
     if(item === undefined){
       // TODO: some sort of indication the player's inventory is full
       return;

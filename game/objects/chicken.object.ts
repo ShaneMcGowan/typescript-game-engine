@@ -6,9 +6,9 @@ import { EggObject } from '@game/objects/egg.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
-import { InventoryItemType } from '@game/models/inventory-item.model';
 import { Assets } from '@core/utils/assets.utils';
 import { ObjectFilter } from '@core/model/scene';
+import { Inventory, ItemType } from '@game/models/inventory.model';
 
 const PORTRAIT: Portrait = {
   tileset: 'tileset_chicken',
@@ -110,6 +110,10 @@ export class ChickenObject extends SceneObject implements Interactable {
         centered: true,
       }
     );
+  }
+
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
   }
 
   private updateAnimation(delta: number): void {
@@ -302,10 +306,10 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   actionGiveItem(): void {
     switch (this.scene.selectedInventoryItem.type) {
-      case InventoryItemType.Tomato:
+      case ItemType.Tomato:
         this.actionGiveTomato();
         return;
-      case InventoryItemType.Wheat:
+      case ItemType.Wheat:
         this.actionGiveWheat();
         return;
     }
@@ -328,8 +332,8 @@ export class ChickenObject extends SceneObject implements Interactable {
       }
     );
 
-    let index = this.scene.globals.inventory.indexOf(this.scene.selectedInventoryItem);
-    this.scene.removeFromInventoryByIndex(index, 1);
+    let index = this.inventory.items.indexOf(this.scene.selectedInventoryItem);
+    this.inventory.removeFromInventoryByIndex(index, 1);
     this.scene.addObject(textbox);
   }
 

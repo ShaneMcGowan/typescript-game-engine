@@ -1,11 +1,10 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
-import { InventoryItemType } from '@game/models/inventory-item.model';
 import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
-import { InventoryItem } from './inventory-item.object';
+import { Inventory, ItemType } from '@game/models/inventory.model';
 
 const DIRT = { x: 1, y: 1, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
@@ -19,8 +18,8 @@ const RENDERER_LAYER = 6;
 const DRY_COUNTER_MAX = 15; // seconds until dirt dries up
 const GROW_COUNTER_MAX = 5; // seconds until plant grows
 const SPOIL_COUNTER_MAX = 60 * 60 * 24; // seconds until plant spoils
-const PLANTABLE = [InventoryItemType.TomatoSeeds, InventoryItemType.WheatSeeds];
-type PlantableType = InventoryItemType.TomatoSeeds | InventoryItemType.WheatSeeds
+const PLANTABLE = [ItemType.TomatoSeeds, ItemType.WheatSeeds];
+type PlantableType = ItemType.TomatoSeeds | ItemType.WheatSeeds
 
 export enum CropStage {
   Empty,
@@ -37,12 +36,12 @@ const TYPE_TO_SPRITE_MAP: Record<PlantableType, {
   [CropStage.FullyGrown]: CropStageSprite | undefined,
   [CropStage.Spoiled]: CropStageSprite | undefined,
 }> = {
-  [InventoryItemType.WheatSeeds]: {
+  [ItemType.WheatSeeds]: {
     [CropStage.Growing]: { tileset: 'tileset_plants', spriteX: 1, spriteY: 0, },
     [CropStage.FullyGrown]: { tileset: 'tileset_plants', spriteX: 4, spriteY: 0, },
     [CropStage.Spoiled]: undefined
   },
-  [InventoryItemType.TomatoSeeds]: {
+  [ItemType.TomatoSeeds]: {
     [CropStage.Growing]: { tileset: 'tileset_plants', spriteX: 1, spriteY: 1, },
     [CropStage.FullyGrown]: { tileset: 'tileset_plants', spriteX: 4, spriteY: 1, },
     [CropStage.Spoiled]: undefined
@@ -52,7 +51,7 @@ const TYPE_TO_SPRITE_MAP: Record<PlantableType, {
 interface Config extends SceneObjectBaseConfig {
   growing?: {
     stage: CropStage,
-    itemType: InventoryItemType
+    itemType: ItemType
   }
 }
 
@@ -64,7 +63,7 @@ export class DirtObject extends SceneObject implements Interactable {
   counterGrow: number = 0;
   counterSpoil: number = 0;
 
-  currentlyGrowing: InventoryItemType | undefined = undefined;
+  currentlyGrowing: ItemType | undefined = undefined;
 
   cropStage: CropStage;
 
@@ -82,6 +81,10 @@ export class DirtObject extends SceneObject implements Interactable {
       this.cropStage = config.growing.stage;
       this.currentlyGrowing = config.growing.itemType;
     }
+  }
+
+  get inventory(): Inventory {
+    return this.scene.globals.inventory;
   }
 
   private onDirtPlaced(event: CustomEvent): void {
@@ -168,11 +171,11 @@ export class DirtObject extends SceneObject implements Interactable {
     let success = false;
 
     switch (this.currentlyGrowing) {
-      case InventoryItemType.TomatoSeeds:
-        success = !!this.scene.addToInventory(InventoryItemType.Tomato);
+      case ItemType.TomatoSeeds:
+        success = !!this.inventory.addToInventory(ItemType.Tomato);
         break;
-      case InventoryItemType.WheatSeeds:
-        success = !!this.scene.addToInventory(InventoryItemType.Wheat);
+      case ItemType.WheatSeeds:
+        success = !!this.inventory.addToInventory(ItemType.Wheat);
         break;
     }
 
@@ -255,7 +258,7 @@ export class DirtObject extends SceneObject implements Interactable {
     }
 
     // TODO: this is a messy check, whole system could be greatly improved
-    if (this.currentlyGrowing !== InventoryItemType.TomatoSeeds && this.currentlyGrowing !== InventoryItemType.WheatSeeds) {
+    if (this.currentlyGrowing !== ItemType.TomatoSeeds && this.currentlyGrowing !== ItemType.WheatSeeds) {
       return;
     }
 
@@ -309,7 +312,7 @@ export class DirtObject extends SceneObject implements Interactable {
     this.currentlyGrowing = item.type;
     this.cropStage = CropStage.Growing;
 
-    this.scene.removeFromInventoryByIndex(this.scene.globals.hotbar_selected_index, 1);
+    this.inventory.removeFromInventoryByIndex(this.scene.globals.hotbar_selected_index, 1);
   }
 
 }
