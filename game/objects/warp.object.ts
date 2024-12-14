@@ -2,15 +2,18 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type PlayerObject } from '@game/objects/player.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { TransitionObject } from '@core/objects/transition.object';
-import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 import { SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneMapConstructorSignature } from '@core/model/scene-map';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
+  map: SceneMapConstructorSignature;
 }
 
 export class WarpObject extends SceneObject {
   private readonly player: PlayerObject;
+  private readonly map: SceneMapConstructorSignature;
+
   private isWarping: boolean = false;
 
   constructor(
@@ -19,6 +22,7 @@ export class WarpObject extends SceneObject {
   ) {
     super(scene, config);
     this.player = config.player;
+    this.map = config.map;
   }
 
   onUpdate(delta: number): void {
@@ -42,7 +46,7 @@ export class WarpObject extends SceneObject {
         onComplete: () => {
           // enable input
           this.scene.globals.disable_player_inputs = false;
-          this.scene.changeMap(SCENE_GAME_MAP_WORLD);
+          this.scene.flagForMapChange(this.map);
         },
       })
     );

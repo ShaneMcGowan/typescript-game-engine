@@ -1,6 +1,5 @@
 import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
-import { type SceneObject } from '@core/model/scene-object';
 import { type Scene } from '@core/model/scene';
 import { ObjectHierarchyTestObject } from './object-hierarchy-test.object';
 
@@ -9,8 +8,6 @@ export class SCENE_GAME_MAP_TEST_OBJECT_HIERARCHY extends SceneMap {
   width = 30;
 
   backgroundLayers: BackgroundLayer[] = [];
-
-  objects: SceneObject[] = [];
 
   constructor(protected scene: Scene) {
     super(scene);

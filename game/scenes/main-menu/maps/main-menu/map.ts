@@ -2,7 +2,6 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type BackgroundLayer } from '@core/model/background-layer';
 import { type Scene } from '@core/model/scene';
 import { SceneMap } from '@core/model/scene-map';
-import { type SceneObject } from '@core/model/scene-object';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { SCENE_MAIN_MENU_MAP_MAIN_MENU_BACKGROUND_WATER } from './backgrounds/water.background';
 import { MainMenuControllerObject } from '@game/objects/main-menu-controller.object';
@@ -18,7 +17,6 @@ export class SCENE_MAIN_MENU_MAP_MAIN_MENU extends SceneMap {
     SCENE_MAIN_MENU_MAP_MAIN_MENU_BACKGROUND_WATER
   ];
 
-  objects: SceneObject[] = [];
 
   constructor(protected scene: Scene) {
     super(scene);
@@ -26,11 +24,11 @@ export class SCENE_MAIN_MENU_MAP_MAIN_MENU extends SceneMap {
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png');
 
     // TODO: object layers so rendering order is correct
-    this.objects.push(new StartButtonObject(scene, {
+    this.scene.addObject(new StartButtonObject(scene, {
       renderLayer: 15,
       positionX: 16,
       positionY: 9,
     }));
-    this.objects.push(new MainMenuControllerObject(scene, {}));
+    this.scene.addObject(new MainMenuControllerObject(scene, {}));
   }
 }

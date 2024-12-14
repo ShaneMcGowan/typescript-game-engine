@@ -462,6 +462,11 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
+    console.log({
+      x: Math.round(Input.mouse.position.x + this.scene.globals.camera.startX),
+      y: Math.round(Input.mouse.position.y + this.scene.globals.camera.startY)
+    });
+
     Input.clearMousePressed(MouseKey.Left);
 
     const item = this.scene.selectedInventoryItem;

@@ -16,7 +16,7 @@ export class SpriteObject extends SceneObject {
 
   constructor(protected scene: Scene, config: Config) {
     super(scene, config);
-    this.collision.enabled = true;
+    this.collision.enabled = false;
     this.renderer.enabled = true;
 
     this.tileset = config.tileset;
@@ -27,7 +27,7 @@ export class SpriteObject extends SceneObject {
   onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      Assets.images['sprites'],
+      Assets.images[this.tileset],
       this.spriteX,
       this.spriteY,
       this.transform.position.world.x,

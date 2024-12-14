@@ -46,6 +46,7 @@ interface Flags {
   update: boolean; // flag to check if update should be ran for the object this frame, TODO: implement the usage of this flag to improve engine performance
   render: boolean; // flag to check if render should be ran for the object this frame, TODO: implement the usage of this flag to improve engine performance
   destroy: boolean; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
+  save: boolean; // used to check if an object should be saved
 }
 
 export interface SceneObjectBaseConfig {
@@ -85,6 +86,7 @@ const FLAGS_AWAKE_DEFAULT: boolean = false;
 const FLAGS_UPDATE_DEFAULT: boolean = true;
 const FLAGS_RENDER_DEFAULT: boolean = true;
 const FLAGS_DESTROY_DEFAULT: boolean = false;
+const FLAGS_SAVE_DEFAULT: boolean = false;
 
 const WIDTH_DEFAULT: number = 1;
 const HEIGHT_DEFAULT: number = 1;
@@ -105,6 +107,9 @@ export abstract class SceneObject {
   onUpdate?(delta: number): void; // called every frame after awake
   onRender?(context: CanvasRenderingContext2D): void; // called every frame after update
   onDestroy?(): void; // called once after render if flags.destroy is true
+
+  fromJson?(json: string): void; // used to populate a SceneObject with state from JSON
+  toJson?(): string; // used to convert the state of a SceneIbject to JSON
 
   protected mainContext: CanvasRenderingContext2D;
 
@@ -148,6 +153,7 @@ export abstract class SceneObject {
       update: FLAGS_UPDATE_DEFAULT,
       render: FLAGS_RENDER_DEFAULT,
       destroy: FLAGS_DESTROY_DEFAULT,
+      save: FLAGS_SAVE_DEFAULT,
     };
 
     this.transform.position.local.x = config.positionX ?? this.transform.position.local.x;

@@ -50,6 +50,7 @@ export class TransitionObject extends SceneObject {
   onUpdate(delta: number): void {
     this.animationTimer += delta;
     if (this.animationTimer > this.animationLength) {
+      this.animationTimer = this.animationLength;
       this.destroy();
     }
   }

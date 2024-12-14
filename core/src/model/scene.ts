@@ -78,8 +78,9 @@ export abstract class Scene {
   };
 
   // maps
-  flaggedForMapChange: SceneMapConstructorSignature | undefined = undefined; // if this is set, the scene will change to the map of the provided class on the next frame
-  map: SceneMap; // the current map
+  private flaggedForMapChange: SceneMapConstructorSignature | undefined = undefined; // if this is set, the scene will change to the map of the provided class on the next frame
+  private activeMap: SceneMapConstructorSignature;
+  private readonly maps: Map<SceneMapConstructorSignature, SceneMap> = new Map<SceneMapConstructorSignature, SceneMap>(); // Yo dawg, I heard you like maps, so we put your maps in a map so you can map while you map
 
   // store an in memory canvas for each background layer and each rendering layer (based on CanvasConstants.TOTAL_RENDER_LAYERS)
   renderingContext: SceneRenderingContext = {
@@ -115,6 +116,10 @@ export abstract class Scene {
     }
 
     this.destroy(delta);
+
+    if (this.flaggedForMapChange) {
+      this.changeMap(this.flaggedForMapChange);
+    }
   }
 
   private awake(): void {
@@ -269,6 +274,14 @@ export abstract class Scene {
     }
   }
 
+  get map(): SceneMap {
+    return this.maps.get(this.activeMap);
+  }
+
+  addObjects(sceneObjects: SceneObject[]): void {
+    sceneObjects.forEach(o => { this.addObject(o); });
+  }
+
   addObject(sceneObject: SceneObject): void {
     this.objects.set(sceneObject.id, sceneObject);
   }
@@ -371,7 +384,7 @@ export abstract class Scene {
 
   changeMap(mapClass: SceneMapConstructorSignature): void {
     // clean up map
-    if (this.map !== undefined) {
+    if (this.map?.destroy !== undefined) {
       this.map.destroy();
     }
 
@@ -382,7 +395,9 @@ export abstract class Scene {
 
     // set up new map
     console.log('[Scene] changing map to', mapClass);
-    this.map = Reflect.construct(mapClass, [this]);
+    this.maps.set(mapClass, Reflect.construct(mapClass, [this]));
+    this.activeMap = mapClass;
+
     this.backgroundLayers.push(...this.map.backgroundLayers);
 
     this.map.objects.forEach(o => this.objects.set(o.id, o));

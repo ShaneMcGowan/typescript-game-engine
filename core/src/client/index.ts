@@ -259,11 +259,6 @@ export class Client {
     // debug grid
     this.renderGrid();
 
-    // check for map change
-    if (this.scene.flaggedForMapChange) {
-      this.scene.changeMap(this.scene.flaggedForMapChange);
-    }
-
     // update engine
     this.editorTimer += this.delta;
     if (this.editorTimer > 1) {

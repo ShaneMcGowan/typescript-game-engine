@@ -42,10 +42,16 @@ export class UnknownNpcObject extends NpcObject {
     }
   }
 
+  onDestroy(): void {
+    this.scene.globals.disable_player_inputs = false;
+  }
+
   interact(): void {
     if (this.stage !== 'idle') {
       return;
     }
+
+    this.scene.globals.disable_player_inputs = true;
 
     this.startStageIntro();
   };

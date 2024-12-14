@@ -115,6 +115,10 @@ export class NpcObject extends SceneObject implements Interactable {
     );
   }
 
+  onDestroy(): void {
+    this.scene.globals.disable_player_inputs = false;
+  }
+
   private updateAnimationTimer(delta: number): void {
     this.animation.timer = (this.animation.timer + delta) % this.animations[this.state].duration;
   }
@@ -209,6 +213,8 @@ export class NpcObject extends SceneObject implements Interactable {
       return;
     }
 
+    this.scene.globals.disable_player_inputs = true;
+    
     let textbox = new TextboxObject(
       this.scene,
       {
