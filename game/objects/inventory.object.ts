@@ -126,6 +126,7 @@ export class InventoryObject extends SceneObject {
   onRender(context: CanvasRenderingContext2D): void {
     this.renderInventoryItem(context);
     this.renderInventoryItemStackSize(context);
+    this.renderTooltip(context);
   }
 
   onDestroy(): void {
@@ -219,6 +220,60 @@ export class InventoryObject extends SceneObject {
       Input.mouse.position.x + 0.25,
       Input.mouse.position.y + 0.75,
     );
+  }
+
+  private renderTooltip(context: CanvasRenderingContext2D): void {
+    if(this.isDragging){
+      return;
+    }
+
+    const filter: ObjectFilter = {
+      position: {
+        x: Input.mouse.position.x,
+        y: Input.mouse.position.y
+      },
+      typeMatch: [InventorySlotObject]
+    };
+    
+    const slot = (this.scene.getObject(filter) as InventorySlotObject);
+    if(slot === undefined){
+      return;
+    }
+    
+    if(slot.item === undefined){
+      return;
+    }
+    
+    RenderUtils.fillRectangle(
+      context,
+      Input.mouse.position.x + 0.5,
+      Input.mouse.position.y + 0.25,
+      20,
+      5,
+      {
+        type: 'tile',
+        colour: '#ffffffcc'
+      }
+    );
+    
+    RenderUtils.renderText(
+      context,
+      `${Inventory.getItemName(slot.item)}`,
+      Input.mouse.position.x + 1,
+      Input.mouse.position.y + 1
+    );
+    
+    const description = Inventory.getItemDescription(slot.item);
+    description.split('\n').forEach((line, index) => {
+      RenderUtils.renderText(
+        context,
+        `${line}`,
+        Input.mouse.position.x + 1,
+        Input.mouse.position.y + 2 + (index * 0.75)
+      );
+    });
+
+    
   }
 
   startDraggingItem(source: DraggingSource, inventoryIndex: number): void {

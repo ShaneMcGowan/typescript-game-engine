@@ -76,6 +76,32 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.ShopKey]: 0,
 }
 
+export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
+  [ItemType.Chicken]: 'Chicken',
+  [ItemType.Egg]: 'Egg',
+  [ItemType.WheatSeeds]: 'Wheat Seeds',
+  [ItemType.Wheat]: 'Wheat',
+  [ItemType.TomatoSeeds]: 'Tomato Seeds',
+  [ItemType.Tomato]: 'Tomato',
+  [ItemType.Hoe]: 'Hoe',
+  [ItemType.WateringCan]: 'Watering Can',
+  [ItemType.Chest]: 'Chest',
+  [ItemType.ShopKey]: 'Shop Key',
+}
+
+export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
+  [ItemType.Chicken]: 'The thing that comes out of an Egg.',
+  [ItemType.Egg]: 'The thing that comes out of a Chicken.',
+  [ItemType.WheatSeeds]: 'If I plant these they will grow into Wheat.',
+  [ItemType.Wheat]: 'Wheat, can be made into things like\n bread (not in this game though, sorry pal).',
+  [ItemType.TomatoSeeds]: 'If I plant these they will grow into a Tomato.',
+  [ItemType.Tomato]: 'Like an Orange but red (trust me on this one).',
+  [ItemType.Hoe]: `A long-handled gardening tool with a thin metal blade.\nI can use this to prepare the ground for planting seeds.\nSome bearded guy in a red jacket is always raving on about these.`,
+  [ItemType.WateringCan]: 'I can use this to water dirt',
+  [ItemType.Chest]: 'I can pu my treasures in here,\nor maybe just my socks or something.',
+  [ItemType.ShopKey]: `A key that opens the Shop door,\nit's old and rusty looking.\nIt tastes kinda funny too.`,
+}
+
 export interface ItemSprite {
   tileset: string;
   spriteX: number;
@@ -247,5 +273,13 @@ export class Inventory {
       radius : TYPE_TO_RADIUS_MAP[type] ?? DEFAULT_INVENTORY_ITEM_RADIUS,
       currentStackSize: currentStackSize
     }
+  }
+
+  static getItemName(item: Item): string {
+    return TYPE_TO_NAME_MAP[item.type];
+  }
+
+  static getItemDescription(item: Item): string {
+    return TYPE_TO_DESCRIPTION_MAP[item.type];
   }
 }
