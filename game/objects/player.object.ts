@@ -143,15 +143,16 @@ export class PlayerObject extends SceneObject {
   }
 
   updateMovement(delta: number): void {
-    if (this.scene.globals.disable_player_inputs === true) {
-      return;
-    }
+
 
     if (this.movementEnabled === false) {
       return;
     }
 
-    this.determineNextMovement(delta);
+    if (this.scene.globals.disable_player_inputs === false) {
+      this.determineNextMovement(delta);
+    }
+
     this.processMovement(delta);
   }
 
@@ -305,7 +306,7 @@ export class PlayerObject extends SceneObject {
 
     const filter: ObjectFilter = {
       position: {
-        x, 
+        x,
         y,
       },
       objectIgnore: new Map([
@@ -476,7 +477,7 @@ export class PlayerObject extends SceneObject {
     }
 
     // item cannot be placed
-    if(item.radius === ItemRadius.None){
+    if (item.radius === ItemRadius.None) {
       return;
     }
 
@@ -484,16 +485,16 @@ export class PlayerObject extends SceneObject {
     const y = Math.round(Input.mouse.position.y + this.scene.globals.camera.startY);
 
     if (
-      item.radius === ItemRadius.Player && 
-      Math.abs(x - this.transform.position.world.roundedX) > 1 || 
+      item.radius === ItemRadius.Player &&
+      Math.abs(x - this.transform.position.world.roundedX) > 1 ||
       Math.abs(y - this.transform.position.world.roundedY) > 1
-     ) {
+    ) {
       return;
     }
 
     const filter: ObjectFilter = {
       position: {
-        x, 
+        x,
         y,
       },
     }
@@ -602,10 +603,10 @@ export class PlayerObject extends SceneObject {
 
     // don't render cursor if greater than 1 tile away from user
     if (
-      item.radius === ItemRadius.Player && 
-      Math.abs(x - this.transform.position.world.roundedX) > 1 || 
+      item.radius === ItemRadius.Player &&
+      Math.abs(x - this.transform.position.world.roundedX) > 1 ||
       Math.abs(y - this.transform.position.world.roundedY) > 1
-     ) {
+    ) {
       return;
     }
 
@@ -623,7 +624,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private addHotbar(): void {
-    if(this.hotbarObject){
+    if (this.hotbarObject) {
       return;
     }
 
@@ -633,7 +634,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private removeHotbar(): void {
-    if(this.hotbarObject === undefined){
+    if (this.hotbarObject === undefined) {
       return;
     }
 

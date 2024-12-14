@@ -2,6 +2,7 @@ import { type Client } from '@core/client';
 import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
 import { Inventory, Item, ItemType } from '@game/models/inventory.model';
+import { SCENE_GAME_MAP_SHOP } from './maps/shop/map';
 
 interface Globals extends SceneGlobalsBaseConfig {
   inventory: Inventory;
@@ -29,7 +30,7 @@ export class SCENE_GAME extends Scene {
     this.globals.inventory.addToInventory(ItemType.WheatSeeds);
     this.globals.inventory.addToInventory(ItemType.ShopKey);
 
-    this.changeMap(SCENE_GAME_MAP_WORLD);
+    this.changeMap(SCENE_GAME_MAP_SHOP);
   }
 
   get selectedInventoryItem(): Item | undefined {

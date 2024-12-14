@@ -495,9 +495,9 @@ function match(object: SceneObject, filter: ObjectFilter, enableDefaults = true)
 function isPositionWithinBoundingBox(object: SceneObject, filter: ObjectFilter): boolean {
   if (
     filter.position.x < object.boundingBox.world.right &&
-      filter.position.x > object.boundingBox.world.left &&
-      filter.position.y < object.boundingBox.world.bottom &&
-      filter.position.y > object.boundingBox.world.top
+    filter.position.x > object.boundingBox.world.left &&
+    filter.position.y < object.boundingBox.world.bottom &&
+    filter.position.y > object.boundingBox.world.top
   ) {
     return true;
   }
@@ -508,9 +508,9 @@ function isPositionWithinBoundingBox(object: SceneObject, filter: ObjectFilter):
 function isBoundingBoxWithinBoundingBox(object: SceneObject, filter: ObjectFilter): boolean {
   if (
     filter.boundingBox.left < object.boundingBox.world.right &&
-      filter.boundingBox.right > object.boundingBox.world.left &&
-      filter.boundingBox.top < object.boundingBox.world.bottom &&
-      filter.boundingBox.bottom > object.boundingBox.world.top
+    filter.boundingBox.right > object.boundingBox.world.left &&
+    filter.boundingBox.top < object.boundingBox.world.bottom &&
+    filter.boundingBox.bottom > object.boundingBox.world.top
   ) {
     return true;
   }
