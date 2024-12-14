@@ -342,12 +342,6 @@ export abstract class Scene {
     return (positionX > this.map.width - 1 || positionY > this.map.height - 1 || positionX < 0 || positionY < 0);
   }
 
-  private removeAllObjects(): void {
-    for (const [id] of this.objects) {
-      this.removeObjectById(id);
-    }
-  }
-
   private removeAllBackgroundLayers(): void {
     this.backgroundLayers = [];
   }
@@ -388,18 +382,35 @@ export abstract class Scene {
       this.map.destroy();
     }
 
-    // clean up scene
-    // TODO: some sort of scene reset function
-    this.removeAllObjects();
+    if (this.map !== undefined) {
+      // cache map
+
+      // clear previous object cache
+      this.map.objects.clear();
+      // cache current map objects
+      this.objects.forEach(o => this.map.objects.set(o.id, o));
+
+      // TODO: do we need to cache anything else?
+    }
+
+    // remove objects from scene
+    this.objects.clear();
+
     this.removeAllBackgroundLayers();
 
     // set up new map
-    console.log('[Scene] changing map to', mapClass);
-    this.maps.set(mapClass, Reflect.construct(mapClass, [this]));
+    if (this.maps.get(mapClass) === undefined) {
+      console.log('[Scene] changing map to new instance of', mapClass.name);
+      this.maps.set(mapClass, Reflect.construct(mapClass, [this]));
+    } else {
+      console.log('[Scene] changing map to cached instance of', mapClass.name);
+    }
+
     this.activeMap = mapClass;
 
     this.backgroundLayers.push(...this.map.backgroundLayers);
 
+    // copy objects from map cache to scene
     this.map.objects.forEach(o => this.objects.set(o.id, o));
 
     // set up rendering contexts
