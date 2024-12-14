@@ -27,28 +27,7 @@ export class SCENE_GAME extends Scene {
     this.globals.inventory.addToInventory(ItemType.Hoe);
     this.globals.inventory.addToInventory(ItemType.WateringCan);
     this.globals.inventory.addToInventory(ItemType.WheatSeeds);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-    this.globals.inventory.addToInventory(ItemType.Chicken);
-
-    
+    this.globals.inventory.addToInventory(ItemType.ShopKey);
 
     this.changeMap(SCENE_GAME_MAP_WORLD);
   }

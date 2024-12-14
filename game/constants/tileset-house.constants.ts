@@ -18,13 +18,13 @@ export class TilesetHouse {
         width: 1,
         height: 1
       },
-      AlmostClosed: {
+      AlmostOpen: {
         x: 3, 
         y: 2,
         width: 1,
         height: 1
       },
-      AlmostOpen: {
+      AlmostClosed: {
         x: 3, 
         y: 3,
         width: 1,

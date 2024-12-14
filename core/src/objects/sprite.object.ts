@@ -16,7 +16,6 @@ export class SpriteObject extends SceneObject {
 
   constructor(protected scene: Scene, config: Config) {
     super(scene, config);
-    this.collision.enabled = false;
     this.renderer.enabled = true;
 
     this.tileset = config.tileset;

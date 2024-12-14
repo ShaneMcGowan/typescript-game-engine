@@ -7,7 +7,8 @@ export enum ItemType {
   Tomato = 'Tomato',
   Hoe = 'Hoe',
   WateringCan = 'WateringCan',
-  Chest = 'Chest'
+  Chest = 'Chest',
+  ShopKey = 'ShopKey',
 }
 
 /**
@@ -32,7 +33,8 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.Tomato]: ItemRadius.Player,
   [ItemType.Hoe]: ItemRadius.Player,
   [ItemType.WateringCan]: ItemRadius.Player,
-  [ItemType.Chest]: ItemRadius.Anywhere
+  [ItemType.Chest]: ItemRadius.Anywhere,
+  [ItemType.ShopKey]: ItemRadius.None,
 }
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
@@ -45,6 +47,7 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.Hoe]: { tileset: 'tileset_tools', spriteX: 4, spriteY: 4, },
   [ItemType.WateringCan]: { tileset: 'tileset_tools', spriteX: 0, spriteY: 0, },
   [ItemType.Chest]: { tileset: 'tileset_chest', spriteX: 1, spriteY: 1, },
+  [ItemType.ShopKey]: { tileset: 'tileset_shop_key', spriteX: 0, spriteY: 0, },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -56,7 +59,8 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.Tomato]: 9,
   [ItemType.Hoe]: 1,
   [ItemType.WateringCan]: 1,
-  [ItemType.Chest]: 1
+  [ItemType.Chest]: 1,
+  [ItemType.ShopKey]: 1,
 };
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
@@ -68,7 +72,8 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Tomato]: 10,
   [ItemType.Hoe]: 0,
   [ItemType.WateringCan]: 0,
-  [ItemType.Chest]: 0
+  [ItemType.Chest]: 0,
+  [ItemType.ShopKey]: 0,
 }
 
 export interface ItemSprite {
@@ -138,6 +143,26 @@ export class Inventory {
    getFirstFreeSlot(): number | undefined {
     for (let i = 0; i < this.size; i++) {
       if(this.items[i] === undefined){
+        return i;
+      }
+    }
+
+    return undefined;
+  }
+
+   /**
+   * finds the index of the first slot for a given type, if none found, returns undefined
+   * @returns 
+   */
+   getFirstIndexForType(type: ItemType): number | undefined {
+    for (let i = 0; i < this.size; i++) {
+      const item = this.items[i];
+
+      if(item === undefined){
+        continue;
+      }
+      
+      if(item.type === type){
         return i;
       }
     }

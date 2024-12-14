@@ -100,6 +100,7 @@ export class TextboxObject extends SceneObject {
 
   initText(): void {
     // generate text segments
+    // TODO: what is 4 here?
     this.textSegments = RenderUtils.textToArray(this.text, (this.textboxWidth - 4) * CanvasConstants.TILE_SIZE, { size: this.textSize, });
   }
 

@@ -25,6 +25,7 @@ import { WarpObject } from '@game/objects/warp.object';
 import { SCENE_GAME_MAP_UNDERGROUND } from '../underground/map';
 import { TilesetBasic } from '@game/constants/tileset-basic.constants';
 import { TilesetHouse } from '@game/constants/tileset-house.constants';
+import { LockedDoorObject } from '@game/objects/world/locked-door.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   height = 100;
@@ -55,15 +56,16 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // building
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 8, 
-      positionY: 0.5, 
+      positionY: 0.375, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Roof.Default.BottomLeft.x,
       spriteY: TilesetHouse.Roof.Default.BottomLeft.y,
-      renderLayer: player.renderer.layer + 1
+      renderLayer: player.renderer.layer + 1,
+      collisionEnabled: true,
     }));
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 9, 
-      positionY: 0.5, 
+      positionY: 0.375, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Roof.Default.Bottom.x,
       spriteY: TilesetHouse.Roof.Default.Bottom.y,
@@ -71,7 +73,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 10, 
-      positionY: 0.5, 
+      positionY: 0.375, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Roof.Default.Bottom.x,
       spriteY: TilesetHouse.Roof.Default.Bottom.y,
@@ -79,7 +81,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 11, 
-      positionY: 0.5, 
+      positionY: 0.375, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Roof.Default.Bottom.x,
       spriteY: TilesetHouse.Roof.Default.Bottom.y,
@@ -87,11 +89,12 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 12, 
-      positionY: 0.5, 
+      positionY: 0.375, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Roof.Default.BottomRight.x,
       spriteY: TilesetHouse.Roof.Default.BottomRight.y,
-      renderLayer: player.renderer.layer + 1
+      renderLayer: player.renderer.layer + 1,
+      collisionEnabled: true,
     }));
 
     this.scene.addObject(new SpriteObject(scene, { 
@@ -99,36 +102,32 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       positionY: 1, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Wall.Default.BottomLeft.x,
-      spriteY: TilesetHouse.Wall.Default.BottomLeft.y, 
+      spriteY: TilesetHouse.Wall.Default.BottomLeft.y,
+      collisionEnabled: true,
     }));
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 9, 
       positionY: 1, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Wall.Default.Bottom.x,
-      spriteY: TilesetHouse.Wall.Default.Bottom.y, 
-    }));
-    this.scene.addObject(new WarpObject(scene, { positionX: 10, positionY: 1, player: player, map: SCENE_GAME_MAP_UNDERGROUND }))
-    this.scene.addObject(new SpriteObject(scene, { 
-      positionX: 10, 
-      positionY: 1, 
-      tileset: TilesetHouse.id, 
-      spriteX: TilesetHouse.Door.Default.Closed.x,
-      spriteY: TilesetHouse.Door.Default.Closed.y, 
+      spriteY: TilesetHouse.Wall.Default.Bottom.y,
+      collisionEnabled: true,
     }));
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 11, 
       positionY: 1, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Wall.Default.Bottom.x,
-      spriteY: TilesetHouse.Wall.Default.Bottom.y, 
+      spriteY: TilesetHouse.Wall.Default.Bottom.y,
+      collisionEnabled: true,
     }));
     this.scene.addObject(new SpriteObject(scene, { 
       positionX: 12, 
       positionY: 1, 
       tileset: TilesetHouse.id, 
       spriteX: TilesetHouse.Wall.Default.BottomRight.x,
-      spriteY: TilesetHouse.Wall.Default.BottomRight.y, 
+      spriteY: TilesetHouse.Wall.Default.BottomRight.y,
+      collisionEnabled: true,
     }));
     
     // chickens
@@ -337,11 +336,21 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       }
     }));
 
-    // load test
-    // for(let i = 0; i < 4000; i++){
-    //   this.objects.push(new ChickenObject(scene, { follows: player, canMove: true, positionX: 1, positionY: 2}));
-    // }
-
-    // testing
+    // mission - 
+    // TODO: perhaps move these into some sort of Story Controller scene object
+    this.scene.addObject(new LockedDoorObject(this.scene, { 
+      positionX: 10, 
+      positionY: 1,
+      onDestroy: () => {
+        this.scene.addObject(new WarpObject(scene, { positionX: 10, positionY: 1, player: player, map: SCENE_GAME_MAP_UNDERGROUND }))
+        this.scene.addObject(new SpriteObject(scene, { 
+          positionX: 10, 
+          positionY: 1, 
+          tileset: TilesetHouse.id, 
+          spriteX: TilesetHouse.Door.Default.AlmostClosed.x,
+          spriteY: TilesetHouse.Door.Default.AlmostClosed.y,
+        }));
+      } 
+    }));
   }
 }
