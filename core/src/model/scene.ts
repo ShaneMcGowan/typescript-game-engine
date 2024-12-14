@@ -399,7 +399,7 @@ export abstract class Scene {
     this.removeAllBackgroundLayers();
 
     // set up new map
-    if (this.maps.get(mapClass) === undefined) {
+    if (this.maps.get(mapClass) === undefined || !this.maps.get(mapClass).flags.suspend) {
       console.log('[Scene] changing map to new instance of', mapClass.name);
       this.maps.set(mapClass, Reflect.construct(mapClass, [this]));
     } else {

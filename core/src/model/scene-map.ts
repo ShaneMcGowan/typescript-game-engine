@@ -4,7 +4,7 @@ import { type SceneObject } from './scene-object';
 
 export type SceneMapConstructorSignature = new (client: Scene) => SceneMap;
 
-const FLAGS_SUSPEND_DEFAULT: boolean = false;
+const FLAGS_SUSPEND_DEFAULT: boolean = true;
 
 interface Flags {
   suspend: boolean;
