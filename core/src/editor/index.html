@@ -75,11 +75,35 @@
     </div>
   </div>
 
+  <!-- Map Editor -->
+  <div id="map-editor" class="map-editor">
+    <div class="layers">
+      <div class="layers-header">
+        Layers <button id="map-editor-add-layer">+</button>
+      </div>
+      <div id="map-editor-layer-list">
+
+      </div>
+    </div>
+    <canvas></canvas>
+    <div class="add-layer">
+      <!-- Index -->
+      <label for="map-editor-add-layer-index">Index</label>
+      <input id="map-editor-add-layer-index" type="text" />
+
+      <!-- Tileset -->
+      <label for="map-editor-add-layer-tileset">Tileset</label>
+      <input id="map-editor-add-layer-tileset" type="text" />
+
+      <div style="display: flex;">
+        <button style="margin-left: auto;">Cancel</button>
+        <button style="margin-left: 1rem;">Add</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 <script>
-
-
-
   (function () {
     function resize() {
       let container = document.getElementById('render-area');

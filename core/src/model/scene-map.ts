@@ -1,3 +1,4 @@
+import { type Background } from './background';
 import { type BackgroundLayer } from './background-layer';
 import { type Scene } from './scene';
 import { type SceneObject } from './scene-object';
@@ -21,6 +22,7 @@ export abstract class SceneMap {
   store: Map<string, any> = new Map<string, any>();
 
   backgroundLayers: BackgroundLayer[];
+  backgroundLayers2: Background[];
 
   objects: Map<string, SceneObject> = new Map<string, SceneObject>(); // used for storing objects when map is suspended
 
