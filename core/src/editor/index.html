@@ -79,25 +79,35 @@
   <div id="map-editor" class="map-editor">
     <div class="layers">
       <div class="layers-header">
-        Layers <button id="map-editor-add-layer">+</button>
+        Layers <button id="map-editor-add-layer-open-modal">+</button>
       </div>
       <div id="map-editor-layer-list">
 
       </div>
     </div>
     <canvas></canvas>
-    <div class="add-layer">
-      <!-- Index -->
-      <label for="map-editor-add-layer-index">Index</label>
-      <input id="map-editor-add-layer-index" type="text" />
+    <div id="modal-add-layer" class="add-layer">
+      <div class="add-layer-conatiner">
 
-      <!-- Tileset -->
-      <label for="map-editor-add-layer-tileset">Tileset</label>
-      <input id="map-editor-add-layer-tileset" type="text" />
+        <!-- Name -->
+        <label for="map-editor-add-layer-name">Name</label>
+        <input id="map-editor-add-layer-name" type="text" />
 
-      <div style="display: flex;">
-        <button style="margin-left: auto;">Cancel</button>
-        <button style="margin-left: 1rem;">Add</button>
+        <!-- Index -->
+        <label for="map-editor-add-layer-index">Index</label>
+        <input id="map-editor-add-layer-index" type="text" />
+
+        <!-- Tileset -->
+        <label for="map-editor-add-layer-tileset">Tileset</label>
+        <select id="map-editor-add-layer-tileset" type="text">
+
+        </select>
+
+        <!-- Button -->
+        <div style="display: flex;">
+          <button id="map-editor-add-layer-button-cancel" style="margin-left: auto;">Cancel</button>
+          <button id="map-editor-add-layer-button-add" style="margin-left: 1rem;">Add</button>
+        </div>
       </div>
     </div>
   </div>

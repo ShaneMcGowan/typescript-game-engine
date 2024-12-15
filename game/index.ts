@@ -60,7 +60,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 
   EditorUtils.initHelpers();
 
-  if(params.get('map-editor')){
+  if (params.get('map-editor')) {
     window.mapEditor = new MapEditor();
   } else {
     window.engine = new Client(

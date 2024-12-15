@@ -11,8 +11,20 @@ interface Tile {
 
 export class Background {
   index: number;
+  name: string;
   tileset: string;
   tiles: Map<string, Tile>;
+
+  constructor(
+    name: string,
+    index: number,
+    tileset: string,
+  ) {
+    this.name = name;
+    this.index = index;
+    this.tileset = tileset;
+    this.tiles = new Map();
+  }
 
   addTile(tile: Tile): void {
     this.tiles.set(
