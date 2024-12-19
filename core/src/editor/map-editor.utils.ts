@@ -1,16 +1,16 @@
-import { Map, type Background } from '@core/model/background';
+import { EditorMap, type EditorLayer } from '@core/model/background';
 import { Assets } from '@core/utils/assets.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 
 export class MapEditor {
-  maps: Map[] = [];
+  maps: EditorMap[] = [];
 
   // config
   tileSize: number = 16;
 
   // state
-  selectedMap: Map;
-  selectedLayer: Background;
+  selectedMap: EditorMap;
+  selectedLayer: EditorLayer;
   tool: 'add' | 'delete' | 'select' = 'add';
   sprite: {
     x: number;
@@ -19,6 +19,10 @@ export class MapEditor {
       x: 0,
       y: 0,
     };
+
+  // import / export
+  buttonImport: HTMLButtonElement;
+  buttonExport: HTMLButtonElement;
 
   // maps
   mapList: HTMLElement;
@@ -61,6 +65,10 @@ export class MapEditor {
   canvasTileset: HTMLCanvasElement;
 
   constructor() {
+    // buttons
+    this.buttonImport = document.getElementById('map-editor-import') as HTMLButtonElement;
+    this.buttonExport = document.getElementById('map-editor-export') as HTMLButtonElement;
+
     // section map
     this.mapList = document.getElementById('map-editor-map-list');
     this.mapControlNew = document.getElementById('map-editor-add-map-open-modal') as HTMLButtonElement;
@@ -96,6 +104,7 @@ export class MapEditor {
     this.canvasMapPreview = document.getElementById('map-editor-canvas-preview') as HTMLCanvasElement;
     this.canvasTileset = document.getElementById('map-editor-canvas-tileset') as HTMLCanvasElement;
 
+    this.initButtonsImportExport();
     this.initControlsMap();
     this.initControlsLayer();
     this.initFormAddMap();
@@ -140,6 +149,20 @@ export class MapEditor {
     });
     this.canvasTileset.addEventListener('click', (event) => {
       this.onCanvasTilesetClick(event.offsetX, event.offsetY);
+    });
+
+    // canvas fullscreen
+    this.canvasMapPreview.addEventListener('click', () => {
+      void this.canvasMapPreview.requestFullscreen();
+    });
+  }
+
+  private initButtonsImportExport(): void {
+    this.buttonImport.addEventListener('click', () => {
+      this.import();
+    });
+    this.buttonExport.addEventListener('click', () => {
+      this.export();
     });
   }
 
@@ -246,7 +269,7 @@ export class MapEditor {
   }
 
   // map
-  private openModalAddMap(map?: Map): void {
+  private openModalAddMap(map?: EditorMap): void {
     if (map) {
       this.formMapInputName.value = `${map.name}`;
       this.formMapInputWidth.value = `${map.width}`;
@@ -311,7 +334,7 @@ export class MapEditor {
     });
   }
 
-  private openModalAddLayer(background?: Background): void {
+  private openModalAddLayer(background?: EditorLayer): void {
     if (background) {
       this.formLayerInputName.value = `${background.name}`;
       this.formLayerInputIndex.value = `${background.index}`;
@@ -329,8 +352,8 @@ export class MapEditor {
     this.formLayerModal.classList.add('hidden');
   }
 
-  private addMap(name: string, width: number, height: number): Map {
-    const map = new Map(
+  private addMap(name: string, width: number, height: number): EditorMap {
+    const map = new EditorMap(
       name,
       width,
       height
@@ -341,7 +364,7 @@ export class MapEditor {
     return map;
   }
 
-  private removeMap(map: Map): void {
+  private removeMap(map: EditorMap): void {
     this.maps = this.maps.filter(m => m !== map);
   }
 
@@ -469,7 +492,7 @@ export class MapEditor {
           }
         );
 
-        if (tile === undefined) {
+        if (tile === null) {
           continue;
         }
 
@@ -497,7 +520,7 @@ export class MapEditor {
         for (let column = 0; column < this.selectedMap.width; column++) {
           const tile = layer.tiles[row][column];
 
-          if (tile === undefined) {
+          if (tile === null) {
             continue;
           }
 
@@ -562,7 +585,7 @@ export class MapEditor {
   }
 
   private sampleData(): void {
-    const map = new Map(
+    const map = new EditorMap(
       'Shop',
       32,
       18
@@ -629,12 +652,12 @@ export class MapEditor {
         break;
       }
       case 'delete': {
-        this.selectedLayer.tiles[y][x] = undefined;
+        this.selectedLayer.tiles[y][x] = null;
         break;
       }
       case 'select': {
         const tile = this.selectedLayer.tiles[y][x];
-        if (tile === undefined) {
+        if (tile === null) {
           break;
         }
         this.sprite = {
@@ -664,5 +687,24 @@ export class MapEditor {
     };
 
     this.render();
+  }
+
+  private import(): void {
+    alert('import');
+  }
+
+  private export(): void {
+    const data = this.selectedMap.toJson();
+    const blob = new Blob([data], { type: 'application/json', });
+    const url = URL.createObjectURL(blob);
+
+    const download = document.createElement('a');
+    download.href = url;
+    download.download = `${this.selectedMap.name}.json`;
+    download.rel = 'noopener';
+    download.target = '_blank';
+
+    download.click();
+    download.remove();
   }
 }

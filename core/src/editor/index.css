@@ -282,3 +282,7 @@ body {
   max-height: 288px; /* default canvas height for game */
   overflow: auto;
 }
+
+.map-editor canvas {
+  image-rendering: pixelated;
+}

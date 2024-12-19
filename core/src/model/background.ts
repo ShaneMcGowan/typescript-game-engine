@@ -1,4 +1,18 @@
-export interface Tile {
+export interface JsonEditorMap {
+  name: string;
+  width: number;
+  height: number;
+  layers: JsonEditorLayer[];
+}
+
+export interface JsonEditorLayer {
+  index: number;
+  name: string;
+  tileset: string;
+  tiles: Array<Array<JsonEditorTile | null>>; // [y][x]
+}
+
+export interface JsonEditorTile {
   x: number;
   y: number;
   sprite: {
@@ -9,11 +23,11 @@ export interface Tile {
   };
 }
 
-export class Map {
+export class EditorMap {
   name: string;
   width: number;
   height: number;
-  layers: Background[];
+  layers: EditorLayer[];
 
   constructor(name: string, width: number, height: number) {
     this.name = name;
@@ -22,8 +36,8 @@ export class Map {
     this.layers = [];
   }
 
-  addLayer(name: string, index: number, tileset: string): Background {
-    const layer = new Background(
+  addLayer(name: string, index: number, tileset: string): EditorLayer {
+    const layer = new EditorLayer(
       this,
       name,
       index,
@@ -35,19 +49,45 @@ export class Map {
     return layer;
   }
 
-  removeLayer(background: Background): void {
+  removeLayer(background: EditorLayer): void {
     this.layers = this.layers.filter(layer => layer !== background);
+  }
+
+  toJson(): string {
+    const data: JsonEditorMap = {
+      name: this.name,
+      width: this.width,
+      height: this.height,
+      layers: this.layers.map(layer => {
+        return {
+          index: layer.index,
+          name: layer.name,
+          tileset: layer.tileset,
+          tiles: layer.tiles,
+        };
+      }).sort((a, b) => a.index - b.index),
+    };
+
+    return JSON.stringify(data);
+  }
+
+  static fromJson(): EditorMap {
+    return new EditorMap(
+      'TODO',
+      0,
+      0
+    );
   }
 }
 
-export class Background {
+export class EditorLayer {
   index: number;
   name: string;
   tileset: string;
-  tiles: Tile[][]; // [y][x]
+  tiles: Array<Array<JsonEditorTile | null>>; // [y][x]
 
   constructor(
-    map: Map,
+    map: EditorMap,
     name: string,
     index: number,
     tileset: string
@@ -60,23 +100,21 @@ export class Background {
     // populate tiles
     for (let col = 0; col < map.height; col++) {
       this.tiles[col] = [];
+      for (let row = 0; row < map.width; row++) {
+        this.tiles[col][row] = null; // using null over undefined for easier mapping back and forth via Json
+      }
     }
   }
 
-  addTile(tile: Tile): void {
+  addTile(tile: JsonEditorTile): void {
     this.tiles[tile.y][tile.x] = tile;
   }
 
-  removeTile(tile: Tile): void {
+  removeTile(tile: JsonEditorTile): void {
     this.tiles[tile.y][tile.x] = undefined;
   }
 
-  getTileKey(tile: Tile): string {
+  getTileKey(tile: JsonEditorTile): string {
     return `${tile.x} , ${tile.y}`;
-  }
-
-  fromJson(json: string): void {
-    const tiles: Tile[] = JSON.parse(json);
-    tiles.forEach(tile => { this.addTile(tile); });
   }
 }
