@@ -77,7 +77,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.collision.enabled = true;
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
-    
+
     this.targetX = this.transform.position.local.x;
     this.targetY = this.transform.position.local.y;
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
@@ -173,10 +173,12 @@ export class NpcObject extends SceneObject implements Interactable {
 
     // cancel if next position would be on top of another entity
     const filter: ObjectFilter = {
-      position: {
-        x: movement.targetX,
-        y: movement.targetY
-      },
+      boundingBox: SceneObject.calculateBoundingBox(
+        movement.targetX,
+        movement.targetY,
+        this.width,
+        this.height
+      ),
       objectIgnore: new Map([
         [this, true]
       ])
@@ -214,7 +216,7 @@ export class NpcObject extends SceneObject implements Interactable {
     }
 
     this.scene.globals.disable_player_inputs = true;
-    
+
     let textbox = new TextboxObject(
       this.scene,
       {

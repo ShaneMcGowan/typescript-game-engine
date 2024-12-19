@@ -173,10 +173,12 @@ export class ChickenObject extends SceneObject implements Interactable {
     }
 
     const filter: ObjectFilter = {
-      position: {
-        x: movement.targetX,
-        y: movement.targetY
-      },
+      boundingBox: SceneObject.calculateBoundingBox(
+        movement.targetX,
+        movement.targetY,
+        this.width,
+        this.height
+      ),
       objectIgnore: new Map([
         [this, true]
       ])
@@ -262,7 +264,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
     let text = '';
     if (this.isEdgyTeen) {
-      switch (this.interactionCount % 3){
+      switch (this.interactionCount % 3) {
         case 0:
           text = TEXT_EDGY_1;
           break;
@@ -271,10 +273,10 @@ export class ChickenObject extends SceneObject implements Interactable {
           break;
         case 2:
           text = TEXT_EDGY_3;
-          break; 
+          break;
       }
     } else {
-      switch (this.interactionCount % 3){
+      switch (this.interactionCount % 3) {
         case 0:
           text = TEXT_STANDARD;
           break;
@@ -283,7 +285,7 @@ export class ChickenObject extends SceneObject implements Interactable {
           break;
         case 2:
           text = TEXT_CONFUSED;
-          break; 
+          break;
       }
     }
 

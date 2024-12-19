@@ -46,7 +46,7 @@ export abstract class RenderUtils {
     let translateY = Math.floor(height / 2);
 
     if (options.centered) {
-      context.translate(-translateX, -translateY);
+      // context.translate(-translateX, -translateY);
     }
 
     context.drawImage(
@@ -62,7 +62,7 @@ export abstract class RenderUtils {
     );
 
     if (options.centered) {
-      context.translate(translateX, translateY);
+      // context.translate(translateX, translateY);
     }
 
     if (shouldSave) {

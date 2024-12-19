@@ -319,14 +319,11 @@ export abstract class SceneObject {
   }
 
   static calculateBoundingBox(x: number, y: number, width: number, height: number): SceneObjectBoundingBox {
-    let xOffset = width / 2;
-    let yOffset = height / 2;
-
     return {
-      top: y - yOffset,
-      right: x + xOffset,
-      bottom: y + yOffset,
-      left: x - xOffset,
+      top: y,
+      right: x + width,
+      bottom: y + height,
+      left: x,
     };
   }
 

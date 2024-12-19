@@ -25,18 +25,18 @@ export class HotbarObject extends SceneObject {
   onUpdate(delta: number): void { }
 
   onRender(context: CanvasRenderingContext2D): void {
-    if(this.scene.globals.disable_player_inputs === true){
+    if (this.scene.globals.disable_player_inputs === true) {
       return;
     }
-    
+
     this.renderContainers(context);
     this.renderItems(context, this.inventory.items.slice(0, this.hotbar.size));
     this.renderHotbarSelector(context);
   }
 
   private renderHotbarSelector(context: CanvasRenderingContext2D): void {
-    const x = this.boundingBox.world.left + 1 + (this.hotbarSelectedIndex * 2);
-    const y = this.boundingBox.world.top + 1;
+    const x = this.boundingBox.world.left + (this.hotbarSelectedIndex * 2);
+    const y = this.boundingBox.world.top
 
     RenderUtils.renderSprite(
       context,
@@ -61,8 +61,8 @@ export class HotbarObject extends SceneObject {
         Assets.images.tileset_ui,
         0.5,
         3.5,
-        this.boundingBox.world.left + 1 + (i * 2),
-        this.boundingBox.world.top + 1,
+        this.boundingBox.world.left + (i * 2),
+        this.boundingBox.world.top,
         2,
         2,
         {

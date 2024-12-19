@@ -305,15 +305,18 @@ export class PlayerObject extends SceneObject {
     }
 
     const filter: ObjectFilter = {
-      position: {
-        x,
-        y,
-      },
+      boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
       objectIgnore: new Map([
         [this, true]
       ]),
     }
-    let object = this.scene.getObject(filter);
+
+    console.log(x, y)
+
+    const object = this.scene.getObject(filter);
+
+    console.log(object);
+
     if (object === undefined) {
       return;
     }
@@ -464,8 +467,8 @@ export class PlayerObject extends SceneObject {
     }
 
     console.log({
-      x: Math.round(Input.mouse.position.x + this.scene.globals.camera.startX),
-      y: Math.round(Input.mouse.position.y + this.scene.globals.camera.startY)
+      x: Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX),
+      y: Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY)
     });
 
     Input.clearMousePressed(MouseKey.Left);
@@ -481,8 +484,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    const x = Math.round(Input.mouse.position.x + this.scene.globals.camera.startX);
-    const y = Math.round(Input.mouse.position.y + this.scene.globals.camera.startY);
+    const x = Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX);
+    const y = Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY);
 
     if (
       item.radius === ItemRadius.Player &&
@@ -493,12 +496,11 @@ export class PlayerObject extends SceneObject {
     }
 
     const filter: ObjectFilter = {
-      position: {
-        x,
-        y,
-      },
+      boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
     }
     const object = this.scene.getObject(filter);
+
+    console.log(object);
 
     if (object === undefined) {
       switch (item.type) {
@@ -570,11 +572,6 @@ export class PlayerObject extends SceneObject {
       animations[this.direction][this.animationIndex].y, // sprite y
       this.transform.position.world.x,
       this.transform.position.world.y,
-      undefined,
-      undefined,
-      {
-        centered: true,
-      }
     );
   }
 
@@ -587,8 +584,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let x = Math.round(Input.mouse.position.x + this.scene.globals.camera.startX);
-    let y = Math.round(Input.mouse.position.y + this.scene.globals.camera.startY);
+    let x = Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX);
+    let y = Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY);
 
     let item = this.scene.selectedInventoryItem;
     // do not render cursor
@@ -612,8 +609,8 @@ export class PlayerObject extends SceneObject {
 
     RenderUtils.fillRectangle(
       context,
-      x - 0.5,
-      y - 0.5,
+      x,
+      y,
       1,
       1,
       {
@@ -628,7 +625,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    this.hotbarObject = new HotbarObject(this.scene, { positionX: 16, positionY: 16, });
+    this.hotbarObject = new HotbarObject(this.scene, { positionX: 11, positionY: 14, });
 
     this.scene.addObject(this.hotbarObject);
   }

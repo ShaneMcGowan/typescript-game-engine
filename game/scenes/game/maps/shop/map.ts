@@ -25,7 +25,7 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
 
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
-    this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 31, positionY: 1 }))
+    this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 30, positionY: 1 }))
 
     // player
     let player = new PlayerObject(scene, { positionX: 16, positionY: 12, });
@@ -35,17 +35,17 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
 
     // walls
     // top
-    this.scene.addObject(new CollisionObject(scene, { positionX: 16, positionY: 3, width: 9 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 10, positionY: 2, width: 12 }));
     // left
-    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 8, height: 9 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 10, positionY: 3, height: 12 }));
     // right
-    this.scene.addObject(new CollisionObject(scene, { positionX: 21, positionY: 8, height: 9 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 21, positionY: 3, height: 12 }));
     // bottom
-    this.scene.addObject(new CollisionObject(scene, { positionX: 13.5, positionY: 13, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 18.5, positionY: 13, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 16, positionY: 14 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 10, positionY: 15, width: 6 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 17, positionY: 15, width: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 16, positionY: 16 }));
 
     // exit door
-    this.scene.addObject(new WarpObject(scene, { positionX: 16, positionY: 13, player: player, map: SCENE_GAME_MAP_WORLD }))
+    this.scene.addObject(new WarpObject(scene, { positionX: 16, positionY: 15, player: player, map: SCENE_GAME_MAP_WORLD }))
   }
 }
