@@ -27,8 +27,8 @@ import { HoleObject } from '@game/objects/world/hole.object';
 import { SCENE_GAME_MAP_SHOP } from '../shop/map';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
-  height = 100;
-  width = 100;
+  // height = 100;
+  // width = 100;
 
   backgroundLayers: BackgroundLayer[] = [
     SCENE_GAME_MAP_WORLD_BACKGROUND_WATER,

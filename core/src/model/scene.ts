@@ -60,7 +60,7 @@ export type CustomRendererSignature = (renderingContext: SceneRenderingContext) 
 
 export abstract class Scene {
   // background
-  backgroundLayers: BackgroundLayer[];
+  // backgroundLayers: BackgroundLayer[];
   backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations
 
   // objects
@@ -141,19 +141,25 @@ export abstract class Scene {
       console.time('[frame] background');
     }
 
-    this.backgroundLayers.forEach((layer, index) => {
+    this.map.background.layers.forEach((layer, index) => {
       let context = this.renderingContext.background[index];
       RenderUtils.clearCanvas(context);
 
-      // +1 offset due to the -0.5 offset below
-      for (let x = 0; x < this.map.width + 1; x++) {
-        for (let y = 0; y < this.map.height + 1; y++) {
-          let tile = layer.tiles[x] ? layer.tiles[x][y] : undefined;
+      // TODO(shane): add back in the -0.5 offset to position of background if can't figure out a good way to position objects
+      for (let y = 0; y < this.map.height; y++) {
+        for (let x = 0; x < this.map.width; x++) {
+          const tile = layer.tiles[y][x];
 
-          if (tile === undefined) {
+          if (tile === null) {
             continue;
           }
 
+          if (Assets.images[layer.tileset] === undefined) {
+            console.error(`${layer.tileset} tileset is missing`);
+            continue;
+          }
+
+          /*
           let animationFrame;
           if (tile.animationFrames.length === 1) {
             // skip animations if only 1 sprite
@@ -199,6 +205,18 @@ export abstract class Scene {
             x - 0.5,
             y - 0.5
           );
+            */
+          RenderUtils.renderSprite(
+            context,
+            Assets.images[layer.tileset],
+            tile.sprite.x,
+            tile.sprite.y,
+            x,
+            y,
+            tile.sprite.width,
+            tile.sprite.height
+          );
+
         }
       }
     });
@@ -342,17 +360,13 @@ export abstract class Scene {
     return (positionX > this.map.width - 1 || positionY > this.map.height - 1 || positionX < 0 || positionY < 0);
   }
 
-  private removeAllBackgroundLayers(): void {
-    this.backgroundLayers = [];
-  }
-
   setUpRenderingContexts(): void {
     this.renderingContext = {
       background: [],
       objects: [],
     };
 
-    for (let i = 0; i < this.backgroundLayers.length; i++) {
+    for (let i = 0; i < this.map.background.layers.length; i++) {
       let canvas = this.createCanvas();
       this.renderingContext.background[i] = RenderUtils.getContext(canvas);
     }
@@ -396,8 +410,6 @@ export abstract class Scene {
     // remove objects from scene
     this.objects.clear();
 
-    this.removeAllBackgroundLayers();
-
     // set up new map
     if (this.maps.get(mapClass) === undefined || !this.maps.get(mapClass).flags.suspend) {
       console.log('[Scene] changing map to new instance of', mapClass.name);
@@ -407,8 +419,6 @@ export abstract class Scene {
     }
 
     this.activeMap = mapClass;
-
-    this.backgroundLayers.push(...this.map.backgroundLayers);
 
     // copy objects from map cache to scene
     this.map.objects.forEach(o => this.objects.set(o.id, o));

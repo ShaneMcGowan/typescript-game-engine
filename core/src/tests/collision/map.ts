@@ -4,8 +4,8 @@ import { type Scene } from '@core/model/scene';
 import { CollisionTestObject } from './collision-test.object';
 
 export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
-  height = 18;
-  width = 30;
+  // height = 18;
+  // width = 30;
 
   backgroundLayers: BackgroundLayer[] = [];
 

@@ -11,8 +11,9 @@ const MAP_HEIGHT: number = CanvasConstants.CANVAS_TILE_HEIGHT;
 const MAP_WIDTH: number = CanvasConstants.CANVAS_TILE_WIDTH;
 
 export class SCENE_MAIN_MENU_MAP_MAIN_MENU extends SceneMap {
-  height = MAP_HEIGHT;
-  width = MAP_WIDTH;
+  // height = MAP_HEIGHT;
+  // width = MAP_WIDTH;
+
   backgroundLayers: BackgroundLayer[] = [
     SCENE_MAIN_MENU_MAP_MAIN_MENU_BACKGROUND_WATER
   ];

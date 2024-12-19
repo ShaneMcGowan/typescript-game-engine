@@ -14,8 +14,9 @@ import { UnknownNpcObject } from '@game/objects/npcs/unknown.npc';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
 
 export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
-  height = 40;
-  width = 40;
+  // height = 40;
+  // width = 40;
+
   backgroundLayers: BackgroundLayer[] = [
     SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_DIRT,
     SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_OTHER

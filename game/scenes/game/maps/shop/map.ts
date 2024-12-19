@@ -9,14 +9,14 @@ import { WarpObject } from '@game/objects/warp.object';
 import { SCENE_GAME_MAP_SHOP_BACKGROUND_FLOOR } from './backgrounds/floor.background';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
+import { JsonBackgroundMap } from '@core/model/background';
+import * as background from './background.json'
 
 export class SCENE_GAME_MAP_SHOP extends SceneMap {
-  height = 100;
-  width = 100;
-
   backgroundLayers: BackgroundLayer[] = [
-    SCENE_GAME_MAP_SHOP_BACKGROUND_FLOOR
+
   ];
+  background: JsonBackgroundMap = background;
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);

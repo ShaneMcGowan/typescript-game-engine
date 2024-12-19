@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": false,
     "baseUrl": "./",
+    "resolveJsonModule": true,
     "paths": {
       "@core/*": [
         "../core/src/*"

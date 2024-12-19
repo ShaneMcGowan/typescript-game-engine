@@ -1,18 +1,18 @@
-export interface JsonEditorMap {
+export interface JsonBackgroundMap {
   name: string;
   width: number;
   height: number;
-  layers: JsonEditorLayer[];
+  layers: JsonBackgroundMapLayer[];
 }
 
-export interface JsonEditorLayer {
+export interface JsonBackgroundMapLayer {
   index: number;
   name: string;
   tileset: string;
-  tiles: Array<Array<JsonEditorTile | null>>; // [y][x]
+  tiles: Array<Array<JsonBackgroundMapTile | null>>; // [y][x]
 }
 
-export interface JsonEditorTile {
+export interface JsonBackgroundMapTile {
   x: number;
   y: number;
   sprite: {
@@ -74,7 +74,7 @@ export class EditorMap {
   }
 
   toJson(): string {
-    const data: JsonEditorMap = {
+    const data: JsonBackgroundMap = {
       name: this.name,
       width: this.width,
       height: this.height,
@@ -97,7 +97,7 @@ export class EditorMap {
    * @returns
    */
   static fromJson(json: string): EditorMap {
-    const data: JsonEditorMap = JSON.parse(json);
+    const data: JsonBackgroundMap = JSON.parse(json);
 
     const map = new EditorMap(
       data.name,
@@ -117,7 +117,7 @@ export class EditorLayer {
   index: number;
   name: string;
   tileset: string;
-  tiles: Array<Array<JsonEditorTile | null>>; // [y][x]
+  tiles: Array<Array<JsonBackgroundMapTile | null>>; // [y][x]
 
   constructor(
     map: EditorMap,
@@ -139,15 +139,15 @@ export class EditorLayer {
     }
   }
 
-  addTile(tile: JsonEditorTile): void {
+  addTile(tile: JsonBackgroundMapTile): void {
     this.tiles[tile.y][tile.x] = tile;
   }
 
-  removeTile(tile: JsonEditorTile): void {
+  removeTile(tile: JsonBackgroundMapTile): void {
     this.tiles[tile.y][tile.x] = undefined;
   }
 
-  getTileKey(tile: JsonEditorTile): string {
+  getTileKey(tile: JsonBackgroundMapTile): string {
     return `${tile.x} , ${tile.y}`;
   }
 
@@ -157,7 +157,7 @@ export class EditorLayer {
    * @param data
    * @returns
    */
-  static fromJson(map: EditorMap, data: JsonEditorLayer): EditorLayer {
+  static fromJson(map: EditorMap, data: JsonBackgroundMapLayer): EditorLayer {
     const layer = new EditorLayer(
       map,
       data.name,

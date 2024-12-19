@@ -69,6 +69,8 @@ export class MapEditor {
   formTilesetInputHeight: HTMLInputElement;
 
   constructor() {
+    document.getElementById('map-editor').classList.remove('hidden');
+
     // buttons
     this.buttonImport = document.getElementById('map-editor-import') as HTMLButtonElement;
     this.buttonExport = document.getElementById('map-editor-export') as HTMLButtonElement;
@@ -117,8 +119,6 @@ export class MapEditor {
     this.initControlsLayer();
     this.initFormAddMap();
     this.initFormAddLayer();
-
-    this.sampleData();
 
     // canvas
     this.canvasControlAdd = document.getElementById('map-editor-canvas-add') as HTMLButtonElement;
@@ -641,6 +641,9 @@ export class MapEditor {
     }
   }
 
+  /**
+   * Used for populating a sample background with layers
+   */
   private sampleData(): void {
     const map = new EditorMap(
       'Shop',
