@@ -140,7 +140,14 @@
           Tileset
         </div>
         <div>
-          <button>Export</button>
+          <label>
+            Width
+            <input id="map-editor-canvas-tileset-width" type="number" inputmode="decimal" value="1" />
+          </label>
+          <label>
+            Height
+            <input id="map-editor-canvas-tileset-height" type="number" inputmode="decimal" value="1" />
+          </label>
         </div>
       </div>
       <div class="section-body" id="map-editor-layer-list">
@@ -157,11 +164,11 @@
 
         <!-- Width -->
         <label for="map-editor-add-map-width">width</label>
-        <input id="map-editor-add-map-width" type="text" />
+        <input id="map-editor-add-map-width" type="number" />
 
         <!-- Height -->
         <label for="map-editor-add-map-height">height</label>
-        <input id="map-editor-add-map-height" type="text" />
+        <input id="map-editor-add-map-height" type="number" />
 
         <!-- Button -->
         <div style="display: flex;">
@@ -183,7 +190,7 @@
 
         <!-- Index -->
         <label for="map-editor-add-layer-index">Index</label>
-        <input id="map-editor-add-layer-index" type="text" />
+        <input id="map-editor-add-layer-index" type="number" />
 
         <!-- Tileset -->
         <label for="map-editor-add-layer-tileset">Tileset</label>

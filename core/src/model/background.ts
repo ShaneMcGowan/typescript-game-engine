@@ -36,6 +36,13 @@ export class EditorMap {
     this.layers = [];
   }
 
+  /**
+   * Creating a new layer
+   * @param name
+   * @param index
+   * @param tileset
+   * @returns
+   */
   addLayer(name: string, index: number, tileset: string): EditorLayer {
     const layer = new EditorLayer(
       this,
@@ -49,6 +56,19 @@ export class EditorMap {
     return layer;
   }
 
+  // copyLayer(layer: EditorLayer): EditorLayer {
+  // const layer = new EditorLayer(
+  //   this,
+  //   name,
+  //   index,
+  //   tileset
+  // );
+  // }
+
+  /**
+   * Remove a layer
+   * @param background
+   */
   removeLayer(background: EditorLayer): void {
     this.layers = this.layers.filter(layer => layer !== background);
   }
@@ -71,12 +91,25 @@ export class EditorMap {
     return JSON.stringify(data);
   }
 
-  static fromJson(): EditorMap {
-    return new EditorMap(
-      'TODO',
-      0,
-      0
+  /**
+   * import from Json
+   * @param json
+   * @returns
+   */
+  static fromJson(json: string): EditorMap {
+    const data: JsonEditorMap = JSON.parse(json);
+
+    const map = new EditorMap(
+      data.name,
+      data.width,
+      data.height
     );
+
+    map.layers = data.layers
+      .map(layer => EditorLayer.fromJson(map, layer))
+      .sort((a, b) => a.index - b.index);
+
+    return map;
   }
 }
 
@@ -116,5 +149,24 @@ export class EditorLayer {
 
   getTileKey(tile: JsonEditorTile): string {
     return `${tile.x} , ${tile.y}`;
+  }
+
+  /**
+   * import from Json
+   * @param map
+   * @param data
+   * @returns
+   */
+  static fromJson(map: EditorMap, data: JsonEditorLayer): EditorLayer {
+    const layer = new EditorLayer(
+      map,
+      data.name,
+      data.index,
+      data.tileset
+    );
+
+    layer.tiles = data.tiles;
+
+    return layer;
   }
 }

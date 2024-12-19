@@ -38,6 +38,7 @@ export class MapEditor {
   formMapInputName: HTMLInputElement;
   formMapInputWidth: HTMLInputElement;
   formMapInputHeight: HTMLInputElement;
+  formMapCurretlyEditting: EditorMap | undefined;
 
   // layers
   layerList: HTMLElement;
@@ -53,6 +54,7 @@ export class MapEditor {
   formLayerInputName: HTMLInputElement;
   formLayerInputIndex: HTMLInputElement;
   formLayerInputTileset: HTMLSelectElement;
+  formLayerCurretlyEditting: EditorLayer | undefined;
 
   // canvas - map
   canvasMap: HTMLCanvasElement;
@@ -63,6 +65,8 @@ export class MapEditor {
 
   // canvas - tileset
   canvasTileset: HTMLCanvasElement;
+  formTilesetInputWidth: HTMLInputElement;
+  formTilesetInputHeight: HTMLInputElement;
 
   constructor() {
     // buttons
@@ -102,7 +106,11 @@ export class MapEditor {
     // canvas
     this.canvasMap = document.getElementById('map-editor-canvas') as HTMLCanvasElement;
     this.canvasMapPreview = document.getElementById('map-editor-canvas-preview') as HTMLCanvasElement;
+
+    // canvas - tileset
     this.canvasTileset = document.getElementById('map-editor-canvas-tileset') as HTMLCanvasElement;
+    this.formTilesetInputWidth = document.getElementById('map-editor-canvas-tileset-width') as HTMLInputElement;
+    this.formTilesetInputHeight = document.getElementById('map-editor-canvas-tileset-height') as HTMLInputElement;
 
     this.initButtonsImportExport();
     this.initControlsMap();
@@ -111,9 +119,6 @@ export class MapEditor {
     this.initFormAddLayer();
 
     this.sampleData();
-
-    this.renderListMaps();
-    this.renderListLayers();
 
     // canvas
     this.canvasControlAdd = document.getElementById('map-editor-canvas-add') as HTMLButtonElement;
@@ -155,6 +160,8 @@ export class MapEditor {
     this.canvasMapPreview.addEventListener('click', () => {
       void this.canvasMapPreview.requestFullscreen();
     });
+
+    this.render();
   }
 
   private initButtonsImportExport(): void {
@@ -184,17 +191,13 @@ export class MapEditor {
         return;
       }
 
-      this.selectedMap = this.addMap(
+      const map = this.addMap(
         this.selectedMap.name,
         this.selectedMap.width,
         this.selectedMap.height
       );
-      this.selectedLayer = undefined;
 
-      // TODO: copy tiles
-
-      this.renderListMaps();
-      this.renderListLayers();
+      this.changeMap(map);
     });
 
     this.mapControlDelete.addEventListener('click', () => {
@@ -203,10 +206,7 @@ export class MapEditor {
       }
 
       this.removeMap(this.selectedMap);
-      this.selectedMap = undefined;
-
-      this.renderListMaps();
-      this.renderListLayers();
+      this.changeMap(undefined);
     });
   }
 
@@ -246,9 +246,7 @@ export class MapEditor {
         this.selectedLayer.tileset
       );
 
-      this.selectedLayer = layer;
-
-      this.renderListLayers();
+      this.changeLayer(layer);
     });
 
     this.layerControlDelete.addEventListener('click', () => {
@@ -261,16 +259,14 @@ export class MapEditor {
       }
 
       this.selectedMap.removeLayer(this.selectedLayer);
-      this.selectedLayer = undefined;
-
-      this.renderListLayers();
-      this.render();
+      this.changeLayer(undefined);
     });
   }
 
   // map
   private openModalAddMap(map?: EditorMap): void {
     if (map) {
+      this.formMapCurretlyEditting = map;
       this.formMapInputName.value = `${map.name}`;
       this.formMapInputWidth.value = `${map.width}`;
       this.formMapInputHeight.value = `${map.height}`;
@@ -280,6 +276,7 @@ export class MapEditor {
   }
 
   private closeModalAddMap(): void {
+    this.formMapCurretlyEditting = undefined;
     this.formMapInputName.value = '';
     this.formMapInputWidth.value = '0';
     this.formMapInputHeight.value = '0';
@@ -293,14 +290,28 @@ export class MapEditor {
     });
 
     this.formMapButtonSave.addEventListener('click', () => {
-      this.selectedMap = this.addMap(
-        this.formMapInputName.value,
-        Number(this.formMapInputWidth.value),
-        Number(this.formMapInputHeight.value)
-      );
+      const name = this.formMapInputName.value.trim();
+      const width = Number(this.formMapInputWidth.value);
+      const height = Number(this.formMapInputHeight.value);
 
-      this.renderListMaps();
-      this.renderListLayers();
+      if (isNaN(width) || isNaN(height)) {
+        alert('width and height need to be valid numbers');
+        return;
+      }
+
+      if (this.formMapCurretlyEditting) {
+        this.formMapCurretlyEditting.name = name;
+        this.formMapCurretlyEditting.width = width;
+        this.formMapCurretlyEditting.height = height;
+        this.render();
+      } else {
+        const map = this.addMap(
+          name,
+          width,
+          height
+        );
+        this.changeMap(map);
+      }
 
       this.closeModalAddMap();
     });
@@ -322,29 +333,54 @@ export class MapEditor {
     });
 
     this.formLayerButtonSave.addEventListener('click', () => {
-      // TODO: how do we know if we are creating or updating
-      this.selectedMap.addLayer(
-        this.formLayerInputName.value,
-        Number(this.formLayerInputIndex.value),
-        this.formLayerInputTileset.value
-      );
+      const name = this.formLayerInputName.value.trim();
+      const index = Number(this.formLayerInputIndex.value);
+      const tileset = this.formLayerInputTileset.value;
 
-      this.renderListLayers();
+      if (isNaN(index)) {
+        alert('index needs to be a valid number');
+        return;
+      }
+
+      if (!Object.keys(Assets.images).includes(tileset)) {
+        alert('valid tileset must be selected');
+        return;
+      }
+
+      if (this.formLayerCurretlyEditting) {
+        this.formLayerCurretlyEditting.name = name;
+        this.formLayerCurretlyEditting.index = index;
+        this.formLayerCurretlyEditting.tileset = tileset;
+      } else {
+        const layer = this.selectedMap.addLayer(
+          this.formLayerInputName.value,
+          Number(this.formLayerInputIndex.value),
+          this.formLayerInputTileset.value
+        );
+        this.changeLayer(layer);
+      }
+
+      // sort by index
+      this.selectedMap.layers = this.selectedMap.layers.sort((a, b) => a.index - b.index);
+
+      this.render();
       this.closeModalAddLayer();
     });
   }
 
-  private openModalAddLayer(background?: EditorLayer): void {
-    if (background) {
-      this.formLayerInputName.value = `${background.name}`;
-      this.formLayerInputIndex.value = `${background.index}`;
-      this.formLayerInputTileset.value = `${background.tileset}`;
+  private openModalAddLayer(layer?: EditorLayer): void {
+    if (layer) {
+      this.formLayerCurretlyEditting = layer;
+      this.formLayerInputName.value = `${layer.name}`;
+      this.formLayerInputIndex.value = `${layer.index}`;
+      this.formLayerInputTileset.value = `${layer.tileset}`;
     }
 
     this.formLayerModal.classList.remove('hidden');
   }
 
   private closeModalAddLayer(): void {
+    this.formLayerCurretlyEditting = undefined;
     this.formLayerInputName.value = '';
     this.formLayerInputIndex.value = '';
     this.formLayerInputTileset.value = null;
@@ -393,10 +429,7 @@ export class MapEditor {
       }
 
       listItem.addEventListener('click', () => {
-        this.selectedLayer = background;
-        this.renderListLayers();
-        this.configureCanvas();
-        this.render();
+        this.changeLayer(background);
       });
 
       const text = document.createElement('span');
@@ -413,11 +446,13 @@ export class MapEditor {
   private renderListMaps(): void {
     this.mapList.innerHTML = '';
 
+    // empty state
     if (this.maps.length === 0) {
       this.mapList.classList.add('empty-state');
       this.mapList.innerHTML = 'No Maps';
       return;
     }
+
     this.mapList.classList.remove('empty-state');
 
     const list = document.createElement('ul');
@@ -431,9 +466,7 @@ export class MapEditor {
       text.innerHTML = `${map.name} [${map.width} - ${map.height}]`;
 
       listItem.addEventListener('click', () => {
-        this.selectedMap = map;
-        this.renderListMaps();
-        this.renderListLayers();
+        this.changeMap(map);
       });
 
       listItem.appendChild(text);
@@ -466,6 +499,10 @@ export class MapEditor {
   }
 
   private render(): void {
+    // really don't need to rerender everything but be grand
+    this.configureCanvas();
+    this.renderListMaps();
+    this.renderListLayers();
     this.renderCanvasMap();
     this.renderCanvasMapPreview();
     this.renderCanvasTileset();
@@ -475,6 +512,14 @@ export class MapEditor {
     const context = this.canvasMap.getContext('2d');
 
     RenderUtils.clearCanvas(context);
+
+    if (this.selectedMap === undefined) {
+      return;
+    }
+
+    if (this.selectedLayer === undefined) {
+      return;
+    }
 
     for (let row = 0; row < this.selectedMap.height; row++) {
       for (let column = 0; column < this.selectedMap.width; column++) {
@@ -515,6 +560,10 @@ export class MapEditor {
 
     RenderUtils.clearCanvas(context);
 
+    if (this.selectedMap === undefined) {
+      return;
+    }
+
     this.selectedMap.layers.forEach(layer => {
       for (let row = 0; row < this.selectedMap.height; row++) {
         for (let column = 0; column < this.selectedMap.width; column++) {
@@ -543,6 +592,14 @@ export class MapEditor {
     const context = this.canvasTileset.getContext('2d');
 
     RenderUtils.clearCanvas(context);
+
+    if (this.selectedMap === undefined) {
+      return;
+    }
+
+    if (this.selectedLayer === undefined) {
+      return;
+    }
 
     for (let row = 0; row < this.selectedMap.height; row++) {
       for (let column = 0; column < this.selectedMap.width; column++) {
@@ -574,8 +631,8 @@ export class MapEditor {
         context,
         this.sprite.x,
         this.sprite.y,
-        1,
-        1,
+        this.tilesetConfig.width,
+        this.tilesetConfig.height,
         {
           type: 'tile',
           colour: 'red',
@@ -633,10 +690,6 @@ export class MapEditor {
     x = Math.floor(x / this.tileSize);
     y = Math.floor(y / this.tileSize);
 
-    console.log({
-      x, y,
-    });
-
     switch (this.tool) {
       case 'add': {
         this.selectedLayer.tiles[y][x] = {
@@ -645,8 +698,8 @@ export class MapEditor {
           sprite: {
             x: this.sprite.x,
             y: this.sprite.y,
-            width: 1,
-            height: 1,
+            width: this.tilesetConfig.width,
+            height: this.tilesetConfig.height,
           },
         };
         break;
@@ -690,7 +743,28 @@ export class MapEditor {
   }
 
   private import(): void {
-    alert('import');
+    const upload = document.createElement('input');
+    upload.type = 'file';
+
+    upload.addEventListener('change', () => {
+      if (upload.files.length <= 0) {
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // import file
+        const json: string = e.target.result as string;
+        const map = EditorMap.fromJson(json);
+        this.maps.push(map);
+        this.changeMap(map);
+        // TODO: change map
+      };
+
+      reader.readAsText(upload.files.item(0));
+    });
+
+    upload.click();
   }
 
   private export(): void {
@@ -706,5 +780,33 @@ export class MapEditor {
 
     download.click();
     download.remove();
+  }
+
+  private changeMap(map: EditorMap | undefined): void {
+    this.selectedMap = map;
+    this.selectedLayer = undefined;
+    this.render();
+  }
+
+  private changeLayer(layer: EditorLayer | undefined): void {
+    this.selectedLayer = layer;
+    this.render();
+  }
+
+  get tilesetConfig(): { width: number; height: number; } {
+    const width = Number(this.formTilesetInputWidth.value);
+    const height = Number(this.formTilesetInputHeight.value);
+
+    if (isNaN(width) || isNaN(height)) {
+      return {
+        width: 1,
+        height: 1,
+      };
+    }
+
+    return {
+      width,
+      height,
+    };
   }
 }
