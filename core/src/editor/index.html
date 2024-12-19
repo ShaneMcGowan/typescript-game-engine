@@ -77,17 +77,103 @@
 
   <!-- Map Editor -->
   <div id="map-editor" class="map-editor">
-    <div class="layers">
-      <div class="layers-header">
-        Layers <button id="map-editor-add-layer-open-modal">+</button>
+    <div class="section">
+      <div class="section-header">
+        <div>
+          Maps
+        </div>
+        <div>
+          <button id="map-editor-add-map-open-modal">new</button>
+          <button id="map-editor-edit-map">edit</button>
+          <button id="map-editor-duplicate-map">duplicate</button>
+          <button id="map-editor-delete-map">delete</button>
+        </div>
       </div>
-      <div id="map-editor-layer-list">
+      <div class="section-body" id="map-editor-map-list">
 
       </div>
     </div>
-    <canvas></canvas>
-    <div id="modal-add-layer" class="add-layer">
-      <div class="add-layer-conatiner">
+
+    <div class="section">
+      <div class="section-header">
+        <div>
+          Layers 
+        </div>
+        <div>
+          <button id="map-editor-add-layer-open-modal">new</button>
+          <button id="map-editor-edit-layer">edit</button>
+          <button id="map-editor-duplicate-layer">duplicate</button>
+          <button id="map-editor-delete-layer">delete</button>
+        </div>
+      </div>
+      <div class="section-body" id="map-editor-layer-list">
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div>
+          Canvas
+        </div>
+        <div>
+          <button id="map-editor-canvas-add">Add</button>
+          <button id="map-editor-canvas-delete">Delete</button>
+          <button id="map-editor-canvas-select">Select</button>
+        </div>
+      </div>
+      <div class="section-body" id="map-editor-layer-list">
+        <div class="canvas-container">
+          <canvas id="map-editor-canvas"></canvas>
+        </div>
+        <div class="canvas-container">
+          <canvas id="map-editor-canvas-preview"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div>
+          Tileset
+        </div>
+        <div>
+          <button>Export</button>
+        </div>
+      </div>
+      <div class="section-body" id="map-editor-layer-list">
+        <canvas id="map-editor-canvas-tileset"></canvas>
+      </div>
+    </div>
+
+    <div id="modal-add-map" class="modal hidden">
+      <div class="modal-container">
+
+        <!-- Name -->
+        <label for="map-editor-add-map-name">Name</label>
+        <input id="map-editor-add-map-name" type="text" />
+
+        <!-- Width -->
+        <label for="map-editor-add-map-width">width</label>
+        <input id="map-editor-add-map-width" type="text" />
+
+        <!-- Height -->
+        <label for="map-editor-add-map-height">height</label>
+        <input id="map-editor-add-map-height" type="text" />
+
+        <!-- Button -->
+        <div style="display: flex;">
+          <button id="map-editor-add-map-button-cancel" style="margin-left: auto;">Cancel</button>
+          <button id="map-editor-add-map-button-save" style="margin-left: 1rem;">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-add-layer" class="modal hidden">
+      <div class="modal-container">
+        <div class="modal-header">
+          <span>Layer</span>
+        </div>
 
         <!-- Name -->
         <label for="map-editor-add-layer-name">Name</label>
@@ -106,7 +192,7 @@
         <!-- Button -->
         <div style="display: flex;">
           <button id="map-editor-add-layer-button-cancel" style="margin-left: auto;">Cancel</button>
-          <button id="map-editor-add-layer-button-add" style="margin-left: 1rem;">Add</button>
+          <button id="map-editor-add-layer-button-save" style="margin-left: 1rem;">Save</button>
         </div>
       </div>
     </div>
