@@ -1,13 +1,8 @@
-import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { type Scene } from '@core/model/scene';
 import { CollisionTestObject } from './collision-test.object';
 
 export class SCENE_GAME_MAP_TEST_COLLISION extends SceneMap {
-  height = 18;
-  width = 30;
-
-  backgroundLayers: BackgroundLayer[] = [];
 
   constructor(protected scene: Scene) {
     super(scene);

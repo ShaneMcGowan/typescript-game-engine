@@ -319,14 +319,11 @@ export abstract class SceneObject {
   }
 
   static calculateBoundingBox(x: number, y: number, width: number, height: number): SceneObjectBoundingBox {
-    let xOffset = width / 2;
-    let yOffset = height / 2;
-
     return {
-      top: y - yOffset,
-      right: x + xOffset,
-      bottom: y + yOffset,
-      left: x - xOffset,
+      top: y,
+      right: x + width,
+      bottom: y + height,
+      left: x,
     };
   }
 
@@ -370,6 +367,19 @@ export abstract class SceneObject {
       this.transform.position.local.x + this.parent.transform.position.world.x,
       this.transform.position.local.y + this.parent.transform.position.world.y
     );
+  }
+
+  /**
+   * calculate the offset from position.world that will center a sprite
+   * @param spriteWidth 
+   * @param spriteHeight 
+   * @returns 
+   */
+  protected calculateSpriteOffset(spriteWidth: number, spriteHeight: number): { x: number, y: number } {
+    return {
+      x: (this.width / 2) - (spriteWidth / 2),
+      y: (this.height / 2) - (spriteHeight / 2),
+    }
   }
 }
 

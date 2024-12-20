@@ -2,28 +2,18 @@ import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
-import { InventoryObject } from "./inventory.object";
-import { ChestObject } from "./chest.object";
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 import { TilesetUI } from "@game/constants/tileset-ui.constants";
 
-enum Controls {
-  QuickMove = 'shift'
-}
-
 interface Config extends SceneObjectBaseConfig {
-  chest?: ChestObject;
   index: number;
 }
 
-export class InventorySlotObject extends SceneObject {
+export class HotbarSlotObject extends SceneObject {
   width: number = 2;
   height: number = 2;
 
-  chest?: ChestObject;
   index: number;
 
   constructor(
@@ -31,52 +21,26 @@ export class InventorySlotObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
-    this.collision.enabled = true;
+    this.collision.enabled = false;
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
 
-    this.chest = config.chest;
     this.index = config.index;
   }
 
-  onUpdate(delta: number): void {
-    this.updateClicked();
-  }
-
   onRender(context: CanvasRenderingContext2D): void {
+    if (this.scene.globals.disable_player_inputs) {
+      return;
+    }
+
     this.renderContainer(context);
     this.renderItem(context);
     this.renderStackSize(context);
-  }
-
-  private updateClicked(): void {
-    // currently dragging
-    if((this.parent as InventoryObject).dragging !== undefined){
-      return;
-    }
-
-    if (!Input.isMousePressed()) {
-      return;
-    }
-
-    if (!MouseUtils.isMouseWithinObject(this)) {
-      return;
-    }
-
-    if(this.item === undefined){
-      return;
-    }
-
-    if(Input.isKeyPressed(Controls.QuickMove)){
-      (this.parent as InventoryObject).quickMove(this.chest ? 'chest' : 'inventory', this.index);
-    } else {
-      (this.parent as InventoryObject).startDraggingItem(this.chest ? 'chest' : 'inventory', this.index);
-    }
-
+    this.renderHotbarSelector(context);
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {
-    const tile = MouseUtils.isMouseWithinObject(this) ? TilesetUI.Container.Darker.Default : TilesetUI.Container.Default.Default;
+    const tile = TilesetUI.Container.Default.Default;
 
     RenderUtils.renderSprite(
       context,
@@ -94,7 +58,7 @@ export class InventorySlotObject extends SceneObject {
   }
 
   private renderItem(context: CanvasRenderingContext2D): void {
-    if(this.sprite === undefined){
+    if (this.sprite === undefined) {
       return;
     }
 
@@ -103,36 +67,49 @@ export class InventorySlotObject extends SceneObject {
       Assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
-      this.transform.position.world.x,
-      this.transform.position.world.y,
-      undefined,
-      undefined,
-      {centered: true}
+      this.transform.position.world.x + 0.5,
+      this.transform.position.world.y + 0.5,
+      1,
+      1,
+      { centered: true }
     );
   }
 
   private renderStackSize(context: CanvasRenderingContext2D): void {
-    if(this.item === undefined){
+    if (this.item === undefined) {
       return;
     }
 
-    if(this.item.maxStackSize === 1){
+    if (this.item.maxStackSize === 1) {
       return;
     }
 
     RenderUtils.renderText(
       context,
       `${this.item.currentStackSize}`,
-      this.transform.position.world.x + 0.25,
-      this.transform.position.world.y + 0.75,
+      this.transform.position.world.x + 1.25,
+      this.transform.position.world.y + 1.75,
+    );
+  }
+
+  private renderHotbarSelector(context: CanvasRenderingContext2D): void {
+    if (this.scene.globals.hotbar_selected_index !== this.index) {
+      return;
+    }
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images.tileset_ui,
+      9,
+      9,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
+      2,
+      2,
     );
   }
 
   get item(): Item | undefined {
-    if(this.chest){
-      return this.chest.inventory.items[this.index];
-    }
-
     return this.inventory.items[this.index];
   }
 
@@ -141,7 +118,7 @@ export class InventorySlotObject extends SceneObject {
   }
 
   get sprite(): ItemSprite | undefined {
-    if(this.item === undefined){
+    if (this.item === undefined) {
       return undefined;
     }
 

@@ -4,8 +4,8 @@ import { ChestObject } from "../chest.object";
 
 export function useChest(scene: SCENE_GAME): void {
 
-  const x = Math.round(Input.mouse.position.x + scene.globals.camera.startX);
-  const y = Math.round(Input.mouse.position.y + scene.globals.camera.startY);
+  const x = Math.floor(Input.mouse.position.x + scene.globals.camera.startX);
+  const y = Math.floor(Input.mouse.position.y + scene.globals.camera.startY);
 
   const object = new ChestObject(
     scene,

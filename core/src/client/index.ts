@@ -431,7 +431,7 @@ export class Client {
 
     console.log('[listener added] mousedown');
     this.displayCanvas.addEventListener('mousedown', (event: MouseEvent) => {
-      console.log('[mousedown]', event);
+      // console.log('[mousedown]', event);
       switch (event.button) {
         case 0:
           Input.mouse.click.left = true;
@@ -447,7 +447,7 @@ export class Client {
 
     console.log('[listener added] mouseup');
     this.displayCanvas.addEventListener('mouseup', (event: MouseEvent) => {
-      console.log('[mouseup]', event);
+      // console.log('[mouseup]', event);
       switch (event.button) {
         case 0:
           Input.mouse.click.left = false;

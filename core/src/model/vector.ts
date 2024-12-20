@@ -5,11 +5,11 @@ export class Vector {
   ) { }
 
   get roundedX(): number {
-    return Math.round(this.x);
+    return Math.floor(this.x);
   }
 
   get roundedY(): number {
-    return Math.round(this.y);
+    return Math.floor(this.y);
   }
 
   get magnitude(): number {

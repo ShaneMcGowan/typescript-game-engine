@@ -33,7 +33,7 @@ export class InventoryButtonCloseObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {
-    switch(this.state) {
+    switch (this.state) {
       case ButtonState.Default:
         this.updateDefault();
         break;
@@ -98,14 +98,15 @@ export class InventoryButtonCloseObject extends SceneObject {
 
   private renderButtonIcon(context: CanvasRenderingContext2D): void {
     const tileset = this.state === ButtonState.Default ? TilesetBasic.Cross.Red.Default : TilesetBasic.Cross.Red.Pressed;
+    const offset = this.calculateSpriteOffset(tileset.width, tileset.height);
 
     RenderUtils.renderSprite(
       context,
       Assets.images[TilesetBasic.id],
       tileset.x,
       tileset.y,
-      this.transform.position.world.x,
-      this.transform.position.world.y,
+      this.transform.position.world.x + offset.x,
+      this.transform.position.world.y + offset.y,
       tileset.width,
       tileset.height,
       { centered: true }

@@ -73,6 +73,7 @@ export class ObjectTrackingCameraObject extends SceneObject {
     this.scene.globals.camera.endY = endY;
 
     // render
+    // TODO: we should use the custom renderer before doing a full map render for performance reasons
     renderingContext.background.forEach((context) => {
       RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
     });

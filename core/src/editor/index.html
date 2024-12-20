@@ -75,11 +75,149 @@
     </div>
   </div>
 
+  <!-- Map Editor -->
+  <div id="map-editor" class="map-editor hidden">
+    <div class="section">
+      <div class="section-header">
+        <div style="display: flex;">
+          Maps
+          <span id="map-editor-import" style="margin-left: auto; margin-right: 0.5rem; cursor: pointer;">Import</span>
+          <span id="map-editor-export" style="cursor: pointer;">Export</span>
+        </div>
+        <div>
+          <button id="map-editor-add-map-open-modal">new</button>
+          <button id="map-editor-edit-map">edit</button>
+          <button id="map-editor-duplicate-map">duplicate</button>
+          <button id="map-editor-delete-map">delete</button>
+        </div>
+      </div>
+      <div class="section-body" id="map-editor-map-list">
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div>
+          Layers
+        </div>
+        <div>
+          <button id="map-editor-add-layer-open-modal">new</button>
+          <button id="map-editor-edit-layer">edit</button>
+          <button id="map-editor-duplicate-layer">duplicate</button>
+          <button id="map-editor-delete-layer">delete</button>
+        </div>
+      </div>
+      <div class="section-body" id="map-editor-layer-list">
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div>
+          Canvas
+        </div>
+        <div>
+          <button id="map-editor-canvas-add">Add</button>
+          <button id="map-editor-canvas-delete">Delete</button>
+          <button id="map-editor-canvas-select">Select</button>
+          <label>
+            Width
+            <input id="map-editor-canvas-tool-width" value="1" type="text" />
+          </label>
+          <label>
+            Height
+            <input id="map-editor-canvas-tool-height" value="1" type="text" />
+          </label>
+
+        </div>
+      </div>
+      <div class="section-body" id="map-editor-layer-list">
+        <div class="canvas-container">
+          <canvas id="map-editor-canvas"></canvas>
+        </div>
+        <div class="canvas-container">
+          <canvas id="map-editor-canvas-preview"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div>
+          Tileset
+        </div>
+        <div>
+          <label>
+            Width
+            <input id="map-editor-canvas-tileset-width" type="number" inputmode="decimal" value="1" />
+          </label>
+          <label>
+            Height
+            <input id="map-editor-canvas-tileset-height" type="number" inputmode="decimal" value="1" />
+          </label>
+        </div>
+      </div>
+      <div class="section-body" id="map-editor-layer-list">
+        <canvas id="map-editor-canvas-tileset"></canvas>
+      </div>
+    </div>
+
+    <div id="modal-add-map" class="modal hidden">
+      <div class="modal-container">
+
+        <!-- Name -->
+        <label for="map-editor-add-map-name">Name</label>
+        <input id="map-editor-add-map-name" type="text" />
+
+        <!-- Width -->
+        <label for="map-editor-add-map-width">width</label>
+        <input id="map-editor-add-map-width" type="number" />
+
+        <!-- Height -->
+        <label for="map-editor-add-map-height">height</label>
+        <input id="map-editor-add-map-height" type="number" />
+
+        <!-- Button -->
+        <div style="display: flex;">
+          <button id="map-editor-add-map-button-cancel" style="margin-left: auto;">Cancel</button>
+          <button id="map-editor-add-map-button-save" style="margin-left: 1rem;">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-add-layer" class="modal hidden">
+      <div class="modal-container">
+        <div class="modal-header">
+          <span>Layer</span>
+        </div>
+
+        <!-- Name -->
+        <label for="map-editor-add-layer-name">Name</label>
+        <input id="map-editor-add-layer-name" type="text" />
+
+        <!-- Index -->
+        <label for="map-editor-add-layer-index">Index</label>
+        <input id="map-editor-add-layer-index" type="number" />
+
+        <!-- Tileset -->
+        <label for="map-editor-add-layer-tileset">Tileset</label>
+        <select id="map-editor-add-layer-tileset" type="text">
+
+        </select>
+
+        <!-- Button -->
+        <div style="display: flex;">
+          <button id="map-editor-add-layer-button-cancel" style="margin-left: auto;">Cancel</button>
+          <button id="map-editor-add-layer-button-save" style="margin-left: 1rem;">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 <script>
-
-
-
   (function () {
     function resize() {
       let container = document.getElementById('render-area');

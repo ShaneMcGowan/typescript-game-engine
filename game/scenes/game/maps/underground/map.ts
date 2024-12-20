@@ -1,8 +1,5 @@
-import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
-import { SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_DIRT } from './backgrounds/dirt.background';
-import { SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_OTHER } from './backgrounds/other.background';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { TransitionObject } from '@core/objects/transition.object';
 import { CollisionObject } from '@game/objects/collision.object';
@@ -14,12 +11,6 @@ import { UnknownNpcObject } from '@game/objects/npcs/unknown.npc';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
 
 export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
-  height = 40;
-  width = 40;
-  backgroundLayers: BackgroundLayer[] = [
-    SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_DIRT,
-    SCENE_GAME_MAP_UNDERGROUND_BACKGROUND_OTHER
-  ];
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);

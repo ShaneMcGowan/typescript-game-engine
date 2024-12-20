@@ -1,5 +1,6 @@
 import { Client } from '@core/client';
 import { EditorUtils } from '@core/editor/editor.utils';
+import { MapEditor } from '@core/editor/map-editor.utils';
 import { Assets, AssetsConfig } from '@core/utils/assets.utils';
 import { type SceneConstructorSignature } from '@core/model/scene';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
@@ -57,14 +58,18 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
   };
   Assets.initialise(config);
 
-  EditorUtils.initHelpers()
+  EditorUtils.initHelpers();
 
-  window.engine = new Client(
-    document.getElementById('render-area'),
-    scene,
-    EditorUtils.engineMapList,
-    EditorUtils.engineObjectList,
-    EditorUtils.engineObjectDetails,
-    EditorUtils.engineControls
-  );
+  if (params.get('map-editor')) {
+    window.mapEditor = new MapEditor();
+  } else {
+    window.engine = new Client(
+      document.getElementById('render-area'),
+      scene,
+      EditorUtils.engineMapList,
+      EditorUtils.engineObjectList,
+      EditorUtils.engineObjectDetails,
+      EditorUtils.engineControls
+    );
+  }
 })();

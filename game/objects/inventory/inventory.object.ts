@@ -10,7 +10,7 @@ import { ObjectFilter } from '@core/model/scene';
 import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
 import { Inventory, Item } from '@game/models/inventory.model';
-import { InventoryButtonTrashObject } from './inventory/inventory-button-trash.object';
+import { InventoryButtonTrashObject } from './inventory-button-trash.object';
 
 
 type DraggingSource = 'inventory' | 'chest';
@@ -47,7 +47,7 @@ export class InventoryObject extends SceneObject {
 
   onAwake(): void {
     const slots = [];
-    
+
     // inventory size
     const rows = 5;
     const columns = 5;
@@ -55,40 +55,40 @@ export class InventoryObject extends SceneObject {
     const columnsChest = this.chest ? this.chest.columns : 0;
     // inventory slots
     const width = 2;
-    const height = 2;  
+    const height = 2;
     const gap = (columns + 1) * width;
-  
+
     const rowsTotal = rows + (this.chest ? rowsChest + 1 : 0); // 1 is a gap
     const columnsTotal = columns + (this.chest ? columnsChest + 1 : 0); // 1 is a gap
 
     const marginTopInventory = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rows * height)) / 2) + (height / 2); // height / 2 due to objects being drawn from their center
     const marginTopChest = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rowsChest * height)) / 2) + (height / 2); // height / 2 due to objects being drawn from their center
-    
+
     const marginLeft = ((CanvasConstants.CANVAS_TILE_WIDTH - (columnsTotal * width)) / 2) + (width / 2); // width / 2 due to objects being drawn from their center
 
-    for(let row = 0; row < rows; row++){
-      for(let column = 0; column < columns; column++){
+    for (let row = 0; row < rows; row++) {
+      for (let column = 0; column < columns; column++) {
         const index = (row * columns) + column;
 
         slots.push(
-          new InventorySlotObject(this.scene, { 
-            positionX: marginLeft + (column * width), 
-            positionY: marginTopInventory + (row * height), 
+          new InventorySlotObject(this.scene, {
+            positionX: marginLeft + (column * width),
+            positionY: marginTopInventory + (row * height),
             index: index
           })
         );
       }
     }
 
-    for(let row = 0; row < rowsChest; row++){
-      for(let column = 0; column < columnsChest; column++){
+    for (let row = 0; row < rowsChest; row++) {
+      for (let column = 0; column < columnsChest; column++) {
         const index = (row * columnsChest) + column;
 
-        if(this.chest){
+        if (this.chest) {
           slots.push(
-            new InventorySlotObject(this.scene, { 
-              positionX: marginLeft + gap + (column * width), 
-              positionY: marginTopChest + (row * height), 
+            new InventorySlotObject(this.scene, {
+              positionX: marginLeft + gap + (column * width),
+              positionY: marginTopChest + (row * height),
               index: index,
               chest: this.chest
             })
@@ -99,22 +99,22 @@ export class InventoryObject extends SceneObject {
 
     slots.forEach(slot => this.addChild(slot));
 
-    this.addChild(new InventoryButtonCloseObject(this.scene, { 
-      positionX: 30, 
-      positionY: 2 
+    this.addChild(new InventoryButtonCloseObject(this.scene, {
+      positionX: 30,
+      positionY: 2
     }));
 
-    this.addChild(new InventoryButtonTrashObject(this.scene, { 
-      positionX: 28, 
-      positionY: 2 
+    this.addChild(new InventoryButtonTrashObject(this.scene, {
+      positionX: 28,
+      positionY: 2
     }));
 
     this.addChild(new FillObject(this.scene, {
       positionX: 0,
       positionY: 0,
-      hexColourCode: '#00000099', 
+      hexColourCode: '#00000099',
       width: CanvasConstants.CANVAS_TILE_WIDTH,
-      height: CanvasConstants.CANVAS_TILE_HEIGHT 
+      height: CanvasConstants.CANVAS_TILE_HEIGHT
     }));
   }
 
@@ -163,16 +163,16 @@ export class InventoryObject extends SceneObject {
     };
 
     const slot = this.scene.getObject(filter);
-    if(slot === undefined){
+    if (slot === undefined) {
       this.stopDraggingItem();
-    } else if(slot instanceof InventoryButtonTrashObject){
+    } else if (slot instanceof InventoryButtonTrashObject) {
       // destroy
       this.dragging = undefined;
-    } else if(slot instanceof InventorySlotObject) {
+    } else if (slot instanceof InventorySlotObject) {
       // swap
       const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
       const target = slot.chest === undefined ? this.inventory : this.chest.inventory;
-      
+
       source.items[this.dragging.index] = target.items[slot.index];
       target.items[slot.index] = this.dragging.item;
     }
@@ -223,7 +223,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private renderTooltip(context: CanvasRenderingContext2D): void {
-    if(this.isDragging){
+    if (this.isDragging) {
       return;
     }
 
@@ -234,16 +234,16 @@ export class InventoryObject extends SceneObject {
       },
       typeMatch: [InventorySlotObject]
     };
-    
+
     const slot = (this.scene.getObject(filter) as InventorySlotObject);
-    if(slot === undefined){
+    if (slot === undefined) {
       return;
     }
-    
-    if(slot.item === undefined){
+
+    if (slot.item === undefined) {
       return;
     }
-    
+
     RenderUtils.fillRectangle(
       context,
       Input.mouse.position.x + 0.5,
@@ -255,14 +255,14 @@ export class InventoryObject extends SceneObject {
         colour: '#ffffffcc'
       }
     );
-    
+
     RenderUtils.renderText(
       context,
       `${Inventory.getItemName(slot.item)}`,
       Input.mouse.position.x + 1,
       Input.mouse.position.y + 1
     );
-    
+
     const description = Inventory.getItemDescription(slot.item);
     description.split('\n').forEach((line, index) => {
       RenderUtils.renderText(
@@ -273,7 +273,7 @@ export class InventoryObject extends SceneObject {
       );
     });
 
-    
+
   }
 
   startDraggingItem(source: DraggingSource, inventoryIndex: number): void {
@@ -287,7 +287,7 @@ export class InventoryObject extends SceneObject {
   }
 
   quickMove(source: DraggingSource, inventoryIndex: number): void {
-    if(this.chest === undefined){
+    if (this.chest === undefined) {
       return;
     }
 
@@ -296,7 +296,7 @@ export class InventoryObject extends SceneObject {
 
     // no slot to move to
     const index = targetInventory.getFirstFreeSlot();
-    if(index === undefined){
+    if (index === undefined) {
       return;
     }
 
@@ -305,19 +305,19 @@ export class InventoryObject extends SceneObject {
   }
 
   private stopDraggingItem(): void {
-    if(this.dragging === undefined){
+    if (this.dragging === undefined) {
       return;
     }
 
-    if(this.dragging.source === 'inventory'){
+    if (this.dragging.source === 'inventory') {
       this.inventory.items[this.dragging.index] = this.dragging.item;
-    } else if(this.dragging.source === 'chest') {
+    } else if (this.dragging.source === 'chest') {
       this.chest.inventory.items[this.dragging.index] = this.dragging.item;
     }
   }
 
   private getInventoryFromSource(source: DraggingSource): Inventory {
-    switch(source){
+    switch (source) {
       case 'chest':
         return this.chest.inventory;
       case 'inventory':

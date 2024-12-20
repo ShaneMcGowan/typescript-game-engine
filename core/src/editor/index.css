@@ -143,3 +143,146 @@ body {
 .border-right {
   border-right: 1px solid var(--colour-white);
 }
+
+.map-editor {
+  position: fixed;
+  background: white;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  color: black;
+}
+
+.map-editor .maps {
+  padding: 1rem;
+  border-radius: 1px solid grey;
+  width: 300px;
+  border-right: 1px solid black;
+}
+
+.map-editor .maps .maps-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.map-editor .layers {
+  padding: 1rem;
+  border-radius: 1px solid grey;
+  width: 300px;
+  border-right: 1px solid black;
+}
+
+.map-editor .layers .layers-header {
+  display: flex;
+  justify-content: space-between
+}
+
+/* modal */
+.map-editor .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #00000099;
+}
+
+.map-editor .modal .modal-container
+{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: lightgray;
+  padding: 1rem;
+  width: 25%;
+
+  border-radius: 0.25rem;
+  border: 1px solid white;
+}
+
+.map-editor .modal .modal-container .modal-header {
+  font-weight: bold;
+}
+
+/* inputs */
+.map-editor input {
+  padding: 0.5rem;
+}
+
+.map-editor select {
+  padding: 0.5rem;
+}
+
+.map-editor button {
+  padding: 0.5rem;
+}
+
+/* sections */
+.map-editor .section {
+  border-radius: 1px solid grey;
+  border-right: 1px solid black;
+  overflow: auto;
+} 
+
+.map-editor .section .section-header {
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid black;
+  background: white;
+}
+
+.map-editor .section .section-header button.selected{
+  background-color: lightblue;
+}
+
+.map-editor .section .section-body {
+
+}
+
+.map-editor .section .section-body li {
+  list-style: none;
+  padding: 1rem;
+  border-bottom: 1px solid black;
+}
+
+.map-editor .section .section-body li:hover {
+  background-color: lightgreen;
+  cursor: pointer;
+}
+
+.map-editor .section .section-body li.selected {
+  background-color: lightgrey;
+}
+
+.map-editor .section .section-body.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* canvas */
+.map-editor .canvas-container {
+  background: lightgrey;
+  max-width: 512px; /* default canvas width for game */
+  max-height: 288px; /* default canvas height for game */
+  overflow: auto;
+}
+
+.map-editor canvas {
+  image-rendering: pixelated;
+}

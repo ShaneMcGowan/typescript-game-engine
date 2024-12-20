@@ -30,7 +30,7 @@ export class SCENE_GAME extends Scene {
     this.globals.inventory.addToInventory(ItemType.WheatSeeds);
     this.globals.inventory.addToInventory(ItemType.ShopKey);
 
-    this.changeMap(SCENE_GAME_MAP_SHOP);
+    this.changeMap(SCENE_GAME_MAP_WORLD);
   }
 
   get selectedInventoryItem(): Item | undefined {
