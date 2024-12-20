@@ -8,6 +8,7 @@ import { SceneMapConstructorSignature } from '@core/model/scene-map';
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
   map: SceneMapConstructorSignature;
+  isColliding?: boolean; // if true, don't check for warp until player moves off of position
 }
 
 export class WarpObject extends SceneObject {
@@ -27,6 +28,10 @@ export class WarpObject extends SceneObject {
     super(scene, config);
     this.player = config.player;
     this.map = config.map;
+
+    if (config.isColliding !== undefined) {
+      this.isColliding = config.isColliding
+    }
   }
 
   onUpdate(delta: number): void {

@@ -1,6 +1,5 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type BackgroundLayer } from './background-layer';
 import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { type Client } from '@core/client';
@@ -42,26 +41,8 @@ export interface ObjectFilter {
 }
 
 export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
-/**
-
-  adding a quick description here as this shape is pretty gross but I think it will be somewhat performant at scale
-  where <number> from left to right is, <scene index>, <x position>, <y position>, <animation timer in seconds>
-
-  backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>>
-  backgroundLayersAnimationTimer = {
-    0: {
-      0: {
-        0: 0
-      }
-    }
-  }
-
-*/
 
 export abstract class Scene {
-  // background
-  // backgroundLayers: BackgroundLayer[];
-  backgroundLayersAnimationTimer: Record<number, Record<number, Record<number, number>>> = {}; // used for timings for background layer animations
 
   // objects
   objects: Map<string, SceneObject> = new Map<string, SceneObject>();
@@ -101,8 +82,6 @@ export abstract class Scene {
     this.displayContext = this.client.displayContext;
   }
 
-  backgroundLayerAnimationFrame: Record<string, number> = {};
-
   frame(delta: number): void {
     this.awake();
     this.background(delta);
@@ -141,11 +120,14 @@ export abstract class Scene {
       console.time('[frame] background');
     }
 
+    if (this.map.background === undefined) {
+      return;
+    }
+
     this.map.background.layers.forEach((layer, index) => {
       let context = this.renderingContext.background[index];
       RenderUtils.clearCanvas(context);
 
-      // TODO(shane): add back in the -0.5 offset to position of background if can't figure out a good way to position objects
       for (let y = 0; y < this.map.height; y++) {
         for (let x = 0; x < this.map.width; x++) {
           const tile = layer.tiles[y][x];
@@ -159,53 +141,6 @@ export abstract class Scene {
             continue;
           }
 
-          /*
-          let animationFrame;
-          if (tile.animationFrames.length === 1) {
-            // skip animations if only 1 sprite
-            animationFrame = tile.animationFrames[0];
-          } else {
-            // check if timer has started for specific tile on specific layer
-            if (this.backgroundLayersAnimationTimer[layer.index] === undefined) {
-              this.backgroundLayersAnimationTimer[layer.index] = {};
-            }
-
-            if (this.backgroundLayersAnimationTimer[layer.index][x] === undefined) {
-              this.backgroundLayersAnimationTimer[layer.index][x] = {};
-            }
-
-            let timer;
-            if (this.backgroundLayersAnimationTimer[layer.index][x][y] === undefined) {
-              timer = 0;
-            } else {
-              timer = this.backgroundLayersAnimationTimer[layer.index][x][y] + delta;
-            }
-
-            // wrap timer if over animation frame duration
-            if (timer > tile.animationFrameDuration) {
-              timer = timer % tile.animationFrameDuration;
-            }
-
-            for (let i = 0; i < tile.animationMap.length; i++) {
-              if (timer <= tile.animationMap[i]) {
-                animationFrame = tile.animationFrames[i];
-                break;
-              }
-            }
-
-            this.backgroundLayersAnimationTimer[layer.index][x][y] = timer;
-          }
-
-          // offsetting x and y by 0.5 in order to center tile on coordinates
-          RenderUtils.renderSprite(
-            context,
-            Assets.images[tile.tileset],
-            animationFrame.spriteX,
-            animationFrame.spriteY,
-            x - 0.5,
-            y - 0.5
-          );
-            */
           RenderUtils.renderSprite(
             context,
             Assets.images[layer.tileset],

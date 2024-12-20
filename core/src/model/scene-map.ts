@@ -1,5 +1,4 @@
-import { JsonBackgroundMap, type EditorLayer } from './background';
-import { type BackgroundLayer } from './background-layer';
+import { JsonBackgroundMap } from './background';
 import { type Scene } from './scene';
 import { type SceneObject } from './scene-object';
 
@@ -19,7 +18,6 @@ export abstract class SceneMap {
 
   store: Map<string, any> = new Map<string, any>();
 
-  backgroundLayers: BackgroundLayer[];
   background: JsonBackgroundMap;
 
   objects: Map<string, SceneObject> = new Map<string, SceneObject>(); // used for storing objects when map is suspended

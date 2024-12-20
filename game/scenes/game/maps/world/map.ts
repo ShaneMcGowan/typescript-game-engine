@@ -1,19 +1,13 @@
-import { type BackgroundLayer } from '@core/model/background-layer';
 import { SceneMap } from '@core/model/scene-map';
 import { SpriteObject } from '@core/objects/sprite.object';
 import { ChickenObject } from '@game/objects/chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
-import { SCENE_GAME_MAP_WORLD_BACKGROUND_WATER } from './backgrounds/water.background';
-import { SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS } from './backgrounds/mountains.background';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { CollisionObject } from '@game/objects/collision.object';
-import { SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND } from './backgrounds/ground.background';
 import { ShopKeeperObject } from '@game/objects/npcs/shop-keeper.npc';
-import { FenceObject, FenceType } from '@game/objects/fence.object';
 import { TransitionObject } from '@core/objects/transition.object';
 import { CropStage, DirtObject } from '@game/objects/dirt.object';
-import { SCENE_GAME_MAP_WORLD_BACKGROUND_STEPS } from './backgrounds/steps.background';
 import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
@@ -29,21 +23,11 @@ import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
-  // height = 100;
-  // width = 100;
 
-  // backgroundLayers: BackgroundLayer[] = [
-  //   SCENE_GAME_MAP_WORLD_BACKGROUND_WATER,
-  //   SCENE_GAME_MAP_WORLD_BACKGROUND_GROUND,
-  //   SCENE_GAME_MAP_WORLD_BACKGROUND_MOUNTAINS,
-  //   SCENE_GAME_MAP_WORLD_BACKGROUND_STEPS,
-  //   // SCENE_GAME_MAP_WORLD_BACKGROUND_BRIDGES,
-  // ];
   background: JsonBackgroundMap = background;
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);
-
 
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
@@ -83,6 +67,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }
 
     // horizontal
+    this.scene.addObject(new CollisionObject(scene, { positionX: 8, positionY: 0, width: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 8, positionY: 1, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 1, width: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 25, positionY: 0, width: 3 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 3, width: 7 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 7, width: 6 }));
