@@ -10,7 +10,7 @@ import { ObjectFilter } from '@core/model/scene';
 import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
 import { Inventory, Item } from '@game/models/inventory.model';
-import { InventoryButtonTrashObject } from './inventory/inventory-button-trash.object';
+import { InventoryButtonTrashObject } from './inventory-button-trash.object';
 
 
 type DraggingSource = 'inventory' | 'chest';

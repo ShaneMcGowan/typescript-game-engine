@@ -4,7 +4,7 @@ import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { Assets } from "@core/utils/assets.utils";
 import { TilesetBasic } from "@game/constants/tileset-basic.constants";
-import { InventoryObject } from "../inventory.object";
+import { InventoryObject } from "./inventory.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
 
 interface Config extends SceneObjectBaseConfig {
@@ -26,7 +26,7 @@ export class InventoryButtonTrashObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {
-    
+
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -37,7 +37,7 @@ export class InventoryButtonTrashObject extends SceneObject {
   private renderButtonContainer(context: CanvasRenderingContext2D): void {
     let tileset;
 
-    if((this.parent as InventoryObject).isDragging && MouseUtils.isMouseWithinObject(this)){
+    if ((this.parent as InventoryObject).isDragging && MouseUtils.isMouseWithinObject(this)) {
       tileset = TilesetBasic.Button.White.Pressed;
     } else {
       tileset = TilesetBasic.Button.White.Default;
@@ -58,14 +58,15 @@ export class InventoryButtonTrashObject extends SceneObject {
 
   private renderButtonIcon(context: CanvasRenderingContext2D): void {
     const tileset = TilesetBasic.Skull.Dark.Default;
+    const offset = this.calculateSpriteOffset(tileset.width, tileset.height);
 
     RenderUtils.renderSprite(
       context,
       Assets.images[TilesetBasic.id],
       tileset.x,
       tileset.y,
-      this.transform.position.world.x,
-      this.transform.position.world.y,
+      this.transform.position.world.x + offset.x,
+      this.transform.position.world.y + offset.y,
       tileset.width,
       tileset.height,
       { centered: true }

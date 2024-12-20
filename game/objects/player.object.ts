@@ -14,7 +14,7 @@ import { useSeed } from '@game/objects/player/use-seed.action';
 import { useSeedOnDirt } from '@game/objects/player/seed/use-seed-on-dirt.action';
 import { ChickenObject } from '@game/objects/chicken.object';
 import { useCropOnChicken } from '@game/objects/player/crop/use-crop-on-chicken.action';
-import { InventoryObject } from '@game/objects/inventory.object';
+import { InventoryObject } from '@game/objects/inventory/inventory.object';
 import { useWateringCanOnChicken } from './player/watering-can/use-watering-can-on-chicken.action';
 import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
@@ -489,8 +489,10 @@ export class PlayerObject extends SceneObject {
 
     if (
       item.radius === ItemRadius.Player &&
-      Math.abs(x - this.transform.position.world.roundedX) > 1 ||
-      Math.abs(y - this.transform.position.world.roundedY) > 1
+      (
+        Math.abs(x - this.transform.position.world.roundedX) > 1 ||
+        Math.abs(y - this.transform.position.world.roundedY) > 1
+      )
     ) {
       return;
     }
@@ -601,8 +603,10 @@ export class PlayerObject extends SceneObject {
     // don't render cursor if greater than 1 tile away from user
     if (
       item.radius === ItemRadius.Player &&
-      Math.abs(x - this.transform.position.world.roundedX) > 1 ||
-      Math.abs(y - this.transform.position.world.roundedY) > 1
+      (
+        Math.abs(x - this.transform.position.world.roundedX) > 1 ||
+        Math.abs(y - this.transform.position.world.roundedY) > 1
+      )
     ) {
       return;
     }

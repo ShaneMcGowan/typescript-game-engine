@@ -2,7 +2,7 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
-import { InventoryObject } from '@game/objects/inventory.object';
+import { InventoryObject } from '@game/objects/inventory/inventory.object';
 import { Assets } from '@core/utils/assets.utils';
 import { Inventory } from '@game/models/inventory.model';
 
@@ -18,7 +18,7 @@ export class ChestObject extends SceneObject implements Interactable {
   inventory: Inventory;
   rows: number = 5;
   columns: number = 5;
-  
+
   private isOpen: boolean = false;
 
   constructor(protected scene: SCENE_GAME, config: Config) {
@@ -65,7 +65,7 @@ export class ChestObject extends SceneObject implements Interactable {
         context,
         Assets.images[TILE_SET],
         13,
-        0.5,
+        1,
         this.transform.position.world.x,
         this.transform.position.world.y,
         1,
@@ -79,7 +79,7 @@ export class ChestObject extends SceneObject implements Interactable {
         context,
         Assets.images[TILE_SET],
         1,
-        0.5,
+        1,
         this.transform.position.world.x,
         this.transform.position.world.y,
         1,

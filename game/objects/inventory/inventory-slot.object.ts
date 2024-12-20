@@ -6,7 +6,7 @@ import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { InventoryObject } from "./inventory.object";
-import { ChestObject } from "./chest.object";
+import { ChestObject } from "../chest.object";
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 import { TilesetUI } from "@game/constants/tileset-ui.constants";
 
@@ -51,7 +51,7 @@ export class InventorySlotObject extends SceneObject {
 
   private updateClicked(): void {
     // currently dragging
-    if((this.parent as InventoryObject).dragging !== undefined){
+    if ((this.parent as InventoryObject).dragging !== undefined) {
       return;
     }
 
@@ -63,11 +63,11 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    if(this.item === undefined){
+    if (this.item === undefined) {
       return;
     }
 
-    if(Input.isKeyPressed(Controls.QuickMove)){
+    if (Input.isKeyPressed(Controls.QuickMove)) {
       (this.parent as InventoryObject).quickMove(this.chest ? 'chest' : 'inventory', this.index);
     } else {
       (this.parent as InventoryObject).startDraggingItem(this.chest ? 'chest' : 'inventory', this.index);
@@ -94,7 +94,7 @@ export class InventorySlotObject extends SceneObject {
   }
 
   private renderItem(context: CanvasRenderingContext2D): void {
-    if(this.sprite === undefined){
+    if (this.sprite === undefined) {
       return;
     }
 
@@ -103,33 +103,33 @@ export class InventorySlotObject extends SceneObject {
       Assets.images[this.sprite.tileset],
       this.sprite.spriteX,
       this.sprite.spriteY,
-      this.transform.position.world.x,
-      this.transform.position.world.y,
-      undefined,
-      undefined,
-      {centered: true}
+      this.transform.position.world.x + 0.5,
+      this.transform.position.world.y + 0.5,
+      1,
+      1,
+      { centered: true }
     );
   }
 
   private renderStackSize(context: CanvasRenderingContext2D): void {
-    if(this.item === undefined){
+    if (this.item === undefined) {
       return;
     }
 
-    if(this.item.maxStackSize === 1){
+    if (this.item.maxStackSize === 1) {
       return;
     }
 
     RenderUtils.renderText(
       context,
       `${this.item.currentStackSize}`,
-      this.transform.position.world.x + 0.25,
-      this.transform.position.world.y + 0.75,
+      this.transform.position.world.x + 1.25,
+      this.transform.position.world.y + 1.75,
     );
   }
 
   get item(): Item | undefined {
-    if(this.chest){
+    if (this.chest) {
       return this.chest.inventory.items[this.index];
     }
 
@@ -141,7 +141,7 @@ export class InventorySlotObject extends SceneObject {
   }
 
   get sprite(): ItemSprite | undefined {
-    if(this.item === undefined){
+    if (this.item === undefined) {
       return undefined;
     }
 
