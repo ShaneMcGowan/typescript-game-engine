@@ -62,6 +62,8 @@ export class MapEditor {
   canvasControlAdd: HTMLButtonElement;
   canvasControlDelete: HTMLButtonElement;
   canvasControlSelect: HTMLButtonElement;
+  canvasInputWidth: HTMLInputElement;
+  canvasInputHeight: HTMLInputElement;
 
   // canvas - tileset
   canvasTileset: HTMLCanvasElement;
@@ -147,6 +149,9 @@ export class MapEditor {
       this.canvasControlDelete.classList.remove('selected');
       this.canvasControlSelect.classList.add('selected');
     });
+
+    this.canvasInputWidth = document.getElementById('map-editor-canvas-tool-width') as HTMLInputElement;
+    this.canvasInputHeight = document.getElementById('map-editor-canvas-tool-height') as HTMLInputElement;
 
     // canvas clicks
     this.canvasMap.addEventListener('click', (event) => {
@@ -695,20 +700,44 @@ export class MapEditor {
 
     switch (this.tool) {
       case 'add': {
-        this.selectedLayer.tiles[y][x] = {
-          x,
-          y,
-          sprite: {
-            x: this.sprite.x,
-            y: this.sprite.y,
-            width: this.tilesetConfig.width,
-            height: this.tilesetConfig.height,
-          },
-        };
+        for (let row = 0; row < this.toolConfig.height; row++) {
+          for (let col = 0; col < this.toolConfig.width; col++) {
+            const calculatedX = x + col;
+            const calculatedY = y + row;
+
+            // prevent attempting to write outside of the map
+            if (calculatedX >= this.selectedMap.width || calculatedY >= this.selectedMap.height) {
+              continue;
+            }
+
+            this.selectedLayer.tiles[calculatedY][calculatedX] = {
+              x: calculatedX,
+              y: calculatedY,
+              sprite: {
+                x: this.sprite.x,
+                y: this.sprite.y,
+                width: this.tilesetConfig.width,
+                height: this.tilesetConfig.height,
+              },
+            };
+          }
+        }
         break;
       }
       case 'delete': {
-        this.selectedLayer.tiles[y][x] = null;
+        for (let row = 0; row < this.toolConfig.height; row++) {
+          for (let col = 0; col < this.toolConfig.width; col++) {
+            const calculatedX = x + col;
+            const calculatedY = y + row;
+
+            // prevent attempting to write outside of the map
+            if (calculatedX >= this.selectedMap.width || calculatedY >= this.selectedMap.height) {
+              continue;
+            }
+
+            this.selectedLayer.tiles[y][x] = null;
+          }
+        }
         break;
       }
       case 'select': {
@@ -794,6 +823,23 @@ export class MapEditor {
   private changeLayer(layer: EditorLayer | undefined): void {
     this.selectedLayer = layer;
     this.render();
+  }
+
+  get toolConfig(): { width: number; height: number; } {
+    const width = Number(this.canvasInputWidth.value);
+    const height = Number(this.canvasInputHeight.value);
+
+    if (isNaN(width) || isNaN(height)) {
+      return {
+        width: 1,
+        height: 1,
+      };
+    }
+
+    return {
+      width,
+      height,
+    };
   }
 
   get tilesetConfig(): { width: number; height: number; } {
