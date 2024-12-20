@@ -18,7 +18,7 @@ export class WarpObject extends SceneObject {
   // a flag used to ensure that warping doesn't happen again after the player reenters a map at the same position.
   // this ensures they have to leave the tile before warping will happen again
   // preventing getting stuck in a loop, warping back and forth
-  private isColliding: boolean = false; 
+  private isColliding: boolean = false;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -39,7 +39,7 @@ export class WarpObject extends SceneObject {
       return;
     }
 
-    if(this.isColliding){
+    if (this.isColliding) {
       return;
     }
 
@@ -63,8 +63,8 @@ export class WarpObject extends SceneObject {
       new TransitionObject(this.scene, {
         animationType: 'circle',
         animationDirection: 'out',
-        animationCenterX: this.transform.position.world.x,
-        animationCenterY: this.transform.position.world.y,
+        animationCenterX: this.transform.position.world.x + (this.width / 2),
+        animationCenterY: this.transform.position.world.y + (this.height / 2),
         animationLength: duration,
       })
     );
@@ -74,5 +74,5 @@ export class WarpObject extends SceneObject {
     this.isWarping = false;
     this.scene.globals.disable_player_inputs = false;
   }
- 
+
 }

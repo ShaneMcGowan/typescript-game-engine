@@ -58,8 +58,8 @@ export class HoleObject extends SceneObject {
       this.scene.addObject(new TransitionObject(this.scene, {
         animationType: 'circle',
         animationDirection: 'out',
-        animationCenterX: this.transform.position.world.x,
-        animationCenterY: this.transform.position.world.y,
+        animationCenterX: this.transform.position.world.x + (this.width / 2),
+        animationCenterY: this.transform.position.world.y + (this.height / 2),
         animationLength: duration,
       }));
 

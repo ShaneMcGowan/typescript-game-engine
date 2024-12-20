@@ -99,8 +99,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // fade in
     this.scene.addObject(new TransitionObject(scene, {
-      animationCenterX: player.transform.position.world.x,
-      animationCenterY: player.transform.position.world.y,
+      animationCenterX: player.transform.position.world.x + (player.width / 2),
+      animationCenterY: player.transform.position.world.y + (player.height / 2),
       animationType: 'circle',
       animationLength: 3,
     }));

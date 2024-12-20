@@ -18,7 +18,7 @@ import { InventoryObject } from '@game/objects/inventory/inventory.object';
 import { useWateringCanOnChicken } from './player/watering-can/use-watering-can-on-chicken.action';
 import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
-import { HotbarObject } from './hotbar.object';
+import { HotbarObject } from './hotbar/hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
 import { Inventory, ItemRadius, ItemType } from '@game/models/inventory.model';
 
