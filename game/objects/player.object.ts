@@ -72,9 +72,6 @@ export class PlayerObject extends SceneObject {
   animationIndex: number = 0;
   isIdle: boolean = true;
 
-  // state
-  inventoryEnabled: boolean = false;
-
   // scroll wheel
   latestScrollTimestamp: number; // used to track if the mouse wheel has been scrolled this frame
 
@@ -89,13 +86,8 @@ export class PlayerObject extends SceneObject {
 
     this.targetX = this.transform.position.local.x;
     this.targetY = this.transform.position.local.y;
-
-    this.enableInventoryKeys();
   }
 
-  private enableInventoryKeys(): void {
-    this.inventoryEnabled = true;
-  }
 
   onAwake(): void {
     this.addHotbar();
@@ -386,14 +378,6 @@ export class PlayerObject extends SceneObject {
 
   private updateOpenInventory(): void {
     if (!this.scene.globals.player.enabled) {
-      return;
-    }
-
-    if (!this.scene.globals.player.actionsEnabled) {
-      return;
-    }
-
-    if (this.inventoryEnabled === false) {
       return;
     }
 

@@ -334,19 +334,23 @@ export abstract class Scene {
 
   changeMap(mapClass: SceneMapConstructorSignature): void {
     // clean up map
-    if (this.map?.destroy !== undefined) {
-      this.map.destroy();
-    }
 
     if (this.map !== undefined) {
-      // cache map
+      if (this.map.onLeave) {
+        this.map.onLeave();
+      }
 
-      // clear previous object cache
-      this.map.objects.clear();
-      // cache current map objects
-      this.objects.forEach(o => this.map.objects.set(o.id, o));
-
-      // TODO: do we need to cache anything else?
+      if (this.map.flags.suspend) {
+        // clear previous object cache on map
+        this.map.objects.clear();
+        // store objects in cache
+        this.objects.forEach(o => this.map.objects.set(o.id, o));
+      } else {
+        // only call onDestroy if map.flags.suspend is false
+        if (this.map.onDestroy) {
+          this.map.onDestroy();
+        }
+      }
     }
 
     // remove objects from scene
@@ -371,6 +375,10 @@ export abstract class Scene {
 
     // remove flag
     this.flaggedForMapChange = undefined;
+
+    if (this.map.onEnter) {
+      this.map.onEnter();
+    }
   }
 
   changeScene(sceneClass: any): void {

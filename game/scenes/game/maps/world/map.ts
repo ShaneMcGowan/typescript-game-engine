@@ -71,10 +71,10 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { positionX: 8, positionY: 1, width: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 1, width: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 25, positionY: 0, width: 3 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 3, width: 7 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 7, width: 6 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 7, width: 9 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 14, width: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 3, width: 7, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 7, width: 6, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 7, width: 9, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 14, width: 5, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 18, width: 28 }));
     // vertical
     this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 8, height: 6 }));

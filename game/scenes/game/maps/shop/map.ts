@@ -59,4 +59,12 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
       positionX: 16
     }));
   }
+
+  onEnter(): void {
+    this.scene.globals.player.actionsEnabled = false;
+  }
+
+  onLeave(): void {
+    this.scene.globals.player.actionsEnabled = true;
+  }
 }
