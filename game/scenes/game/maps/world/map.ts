@@ -89,7 +89,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       animationCenterX: player.transform.position.world.x + (player.width / 2),
       animationCenterY: player.transform.position.world.y + (player.height / 2),
       animationType: 'circle',
-      animationLength: 3,
+      animationLength: 2,
     }));
 
     // ambient floating items

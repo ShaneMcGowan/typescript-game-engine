@@ -39,7 +39,7 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
     // bottom
     this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 12, width: 4 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 17, positionY: 12, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 15, positionY: 13, width: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 15, positionY: 13, width: 2 }));
 
     // exit door
     const warpConfig = {
@@ -67,4 +67,5 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
   onLeave(): void {
     this.scene.globals.player.actionsEnabled = true;
   }
+
 }

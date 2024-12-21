@@ -27,6 +27,9 @@ export class ObjectTrackingCameraObject extends SceneObject {
   ) {
     super(scene, config);
 
+    this.transform.position.local.x = -1;
+    this.transform.position.local.y = -1;
+
     // calculation for centering a tile on the screen
     // -0.5 to center the tile (e.g 16 / 2 is 8, which is the center of the tile, but we want to render the player half on either side of this value)
     this.cameraOffsetX = (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 0.5;

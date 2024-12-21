@@ -55,10 +55,6 @@ export class TransitionObject extends SceneObject {
     }
   }
 
-  get animationPercentage(): number {
-    return this.animationTimer / this.animationLength;
-  }
-
   onRender(context: CanvasRenderingContext2D): void {
     switch (this.animationType) {
       case 'block':
@@ -68,6 +64,10 @@ export class TransitionObject extends SceneObject {
         this.renderAnimationCircle(context);
         break;
     }
+  }
+
+  get animationPercentage(): number {
+    return this.animationTimer / this.animationLength;
   }
 
   private renderAnimationBlock(context: CanvasRenderingContext2D): void {

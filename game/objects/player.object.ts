@@ -98,7 +98,7 @@ export class PlayerObject extends SceneObject {
     this.updateAnimations(delta);
     this.updateHotbarViaKey();
     this.updateHotbarViaWheel();
-    this.updateLeftClick();
+    this.updateAction();
     this.updateButtonInteract();
     this.updateOpenInventory();
 
@@ -408,7 +408,7 @@ export class PlayerObject extends SceneObject {
    * else
    *   use item
    */
-  private updateLeftClick(): void {
+  private updateAction(): void {
     if (!this.scene.globals.player.enabled) {
       return;
     }

@@ -2,7 +2,7 @@ import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 
 const DEFAULT_DURATION = 1;
-const DEFAULT_ON_INTERVAL = (): void => {};
+const DEFAULT_ON_INTERVAL = (): void => { };
 
 export interface IntervalObjectConfig extends SceneObjectBaseConfig {
   duration?: number; // duration of each interval in seconds (e.g. 1 = 1 second)
@@ -25,6 +25,8 @@ export class IntervalObject extends SceneObject {
     config: IntervalObjectConfig
   ) {
     super(scene, config);
+    this.transform.position.local.x = -1;
+    this.transform.position.local.y = -1;
 
     this.duration = config.duration ?? DEFAULT_DURATION;
     this.onInterval = config.onInterval ?? DEFAULT_ON_INTERVAL;
