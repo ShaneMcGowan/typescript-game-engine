@@ -44,13 +44,13 @@ export class HoleObject extends SceneObject {
         return;
       }
 
-      this.scene.globals.disable_player_inputs = true;
+      this.scene.globals.player.enabled = false;
 
       let duration = 2;
       this.scene.addObject(new TimerObject(this.scene, {
         duration,
         onComplete: () => {
-          this.scene.globals.disable_player_inputs = false;
+          this.scene.globals.player.enabled = true;
           this.scene.flagForMapChange(SCENE_GAME_MAP_UNDERGROUND);
         },
       }));

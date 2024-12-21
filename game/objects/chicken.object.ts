@@ -260,7 +260,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   private interactDefault(): void {
     // disable inputs
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     let text = '';
     if (this.isEdgyTeen) {
@@ -297,7 +297,7 @@ export class ChickenObject extends SceneObject implements Interactable {
         name: 'Chicken',
         onComplete: () => {
           // enable inputs
-          this.scene.globals.disable_player_inputs = false;
+          this.scene.globals.player.enabled = true;
         }
       }
     );
@@ -319,7 +319,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   private actionGiveTomato(): void {
     // disable inputs
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     let textbox = new TextboxObject(
       this.scene,
@@ -329,7 +329,7 @@ export class ChickenObject extends SceneObject implements Interactable {
         name: 'Chicken',
         onComplete: () => {
           // enable inputs
-          this.scene.globals.disable_player_inputs = false;
+          this.scene.globals.player.enabled = true;
         }
       }
     );
@@ -341,7 +341,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
   private actionGiveWheat(): void {
     // disable inputs
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     let textbox = new TextboxObject(
       this.scene,
@@ -351,7 +351,7 @@ export class ChickenObject extends SceneObject implements Interactable {
         name: 'Chicken',
         onComplete: () => {
           // enable inputs
-          this.scene.globals.disable_player_inputs = false;
+          this.scene.globals.player.enabled = true;
         }
       }
     );

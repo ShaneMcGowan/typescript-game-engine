@@ -29,7 +29,11 @@ export class HotbarSlotObject extends SceneObject {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    if (this.scene.globals.disable_player_inputs) {
+    if (!this.scene.globals.player.enabled) {
+      return;
+    }
+
+    if (!this.scene.globals.player.actionsEnabled) {
       return;
     }
 

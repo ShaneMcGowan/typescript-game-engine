@@ -41,7 +41,7 @@ export class ShopKeeperObject extends NpcObject {
   }
 
   interact(): void {
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     // if (this.stage !== 'idle') {
     //   return;
@@ -73,7 +73,7 @@ export class ShopKeeperObject extends NpcObject {
   }
 
   private startStageGreeting(): void {
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     this.scene.addObject(
       new TextboxObject(
@@ -99,7 +99,7 @@ export class ShopKeeperObject extends NpcObject {
           portrait: PORTRAIT, // TODO: new to implement proper portrait system
           name: 'Shopkeeper',
           onComplete: () => {
-            this.scene.globals.disable_player_inputs = false;
+            this.scene.globals.player.enabled = true;
           }
         }
       )

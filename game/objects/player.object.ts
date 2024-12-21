@@ -73,11 +73,7 @@ export class PlayerObject extends SceneObject {
   isIdle: boolean = true;
 
   // state
-  movementEnabled: boolean = false;
-  hotbarEnabled: boolean = false;
-  leftClickEnabled: boolean = false;
   inventoryEnabled: boolean = false;
-  interactButtonEnabled: boolean = false;
 
   // scroll wheel
   latestScrollTimestamp: number; // used to track if the mouse wheel has been scrolled this frame
@@ -94,26 +90,11 @@ export class PlayerObject extends SceneObject {
     this.targetX = this.transform.position.local.x;
     this.targetY = this.transform.position.local.y;
 
-    this.enableMovement();
-    this.enableInteractKeys();
     this.enableInventoryKeys();
-    this.enableOtherKeys();
-  }
-
-  private enableMovement(): void {
-    this.movementEnabled = true;
-  }
-  private enableOtherKeys(): void {
-    this.hotbarEnabled = true;
-    this.leftClickEnabled = true;
   }
 
   private enableInventoryKeys(): void {
     this.inventoryEnabled = true;
-  }
-
-  private enableInteractKeys(): void {
-    this.interactButtonEnabled = true;
   }
 
   onAwake(): void {
@@ -143,13 +124,7 @@ export class PlayerObject extends SceneObject {
   }
 
   updateMovement(delta: number): void {
-
-
-    if (this.movementEnabled === false) {
-      return;
-    }
-
-    if (this.scene.globals.disable_player_inputs === false) {
+    if (this.scene.globals.player.enabled && this.scene.globals.player.movementEnabled) {
       this.determineNextMovement(delta);
     }
 
@@ -272,11 +247,11 @@ export class PlayerObject extends SceneObject {
    * if object player is facing is interactable, run `interact` on that object
    */
   private updateButtonInteract(): void {
-    if (this.scene.globals.disable_player_inputs === true) {
+    if (!this.scene.globals.player.enabled) {
       return;
     }
 
-    if (this.interactButtonEnabled === false) {
+    if (!this.scene.globals.player.interactEnabled) {
       return;
     }
 
@@ -349,11 +324,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateHotbarViaKey(): void {
-    if (this.scene.globals.disable_player_inputs === true) {
-      return;
-    }
-
-    if (this.hotbarEnabled === false) {
+    if (!this.scene.globals.player.enabled) {
       return;
     }
 
@@ -386,11 +357,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateHotbarViaWheel(): void {
-    if (this.scene.globals.disable_player_inputs === true) {
-      return;
-    }
-
-    if (this.hotbarEnabled === false) {
+    if (!this.scene.globals.player.enabled) {
       return;
     }
 
@@ -418,7 +385,11 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateOpenInventory(): void {
-    if (this.scene.globals.disable_player_inputs === true) {
+    if (!this.scene.globals.player.enabled) {
+      return;
+    }
+
+    if (!this.scene.globals.player.actionsEnabled) {
       return;
     }
 
@@ -454,11 +425,11 @@ export class PlayerObject extends SceneObject {
    *   use item
    */
   private updateLeftClick(): void {
-    if (this.scene.globals.disable_player_inputs === true) {
+    if (!this.scene.globals.player.enabled) {
       return;
     }
 
-    if (this.leftClickEnabled === false) {
+    if (!this.scene.globals.player.actionsEnabled) {
       return;
     }
 
@@ -578,11 +549,11 @@ export class PlayerObject extends SceneObject {
   }
 
   private renderCursor(context: CanvasRenderingContext2D): void {
-    if (this.scene.globals.disable_player_inputs === true) {
+    if (!this.scene.globals.player.enabled) {
       return;
     }
 
-    if (!this.leftClickEnabled) {
+    if (!this.scene.globals.player.actionsEnabled) {
       return;
     }
 

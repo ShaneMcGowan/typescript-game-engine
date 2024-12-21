@@ -26,7 +26,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
     this.scene.addObject(new TextboxObject(
       this.scene,
       {
@@ -35,7 +35,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
         name: undefined,
         onComplete: () => {
           const index = this.scene.globals.inventory.getFirstIndexForType(ItemType.ShopKey);
-          if(index === undefined){
+          if (index === undefined) {
             this.interactNoKey();
           } else {
             this.interactWithKey(index);
@@ -70,7 +70,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
         portrait: undefined,
         name: undefined,
         onComplete: () => {
-          this.scene.globals.disable_player_inputs = false;
+          this.scene.globals.player.enabled = true;
         }
       }
     ));
@@ -89,7 +89,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
         name: undefined,
         onComplete: () => {
           // enable inputs
-          this.scene.globals.disable_player_inputs = false;
+          this.scene.globals.player.enabled = true;
           // destroy door
           this.destroy();
         }

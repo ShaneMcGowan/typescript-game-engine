@@ -9,7 +9,7 @@ const PORTRAIT: Portrait = {
 }
 
 export function useWateringCanOnChicken(scene: SCENE_GAME, object: ChickenObject): void {
-  scene.globals.disable_player_inputs = true;
+  scene.globals.player.actionsEnabled = false;
 
   const newObject = new TextboxObject(
     scene,
@@ -18,7 +18,7 @@ export function useWateringCanOnChicken(scene: SCENE_GAME, object: ChickenObject
       portrait: PORTRAIT,
       name: 'Chicken',
       onComplete: () => {
-        scene.globals.disable_player_inputs = false;
+        scene.globals.player.actionsEnabled = true;
       },
     }
   );

@@ -53,7 +53,7 @@ export class GregNpcObject extends NpcObject {
       return;
     }
 
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     this.startStageHi();
   };

@@ -43,7 +43,7 @@ export class UnknownNpcObject extends NpcObject {
   }
 
   onDestroy(): void {
-    this.scene.globals.disable_player_inputs = false;
+    this.scene.globals.player.enabled = true;
   }
 
   interact(): void {
@@ -51,7 +51,7 @@ export class UnknownNpcObject extends NpcObject {
       return;
     }
 
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     this.startStageIntro();
   };

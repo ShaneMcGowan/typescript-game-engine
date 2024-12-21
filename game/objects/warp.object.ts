@@ -49,7 +49,7 @@ export class WarpObject extends SceneObject {
     }
 
     // disable input
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     this.isWarping = true;
     this.isColliding = true;
@@ -77,7 +77,7 @@ export class WarpObject extends SceneObject {
 
   private reset(): void {
     this.isWarping = false;
-    this.scene.globals.disable_player_inputs = false;
+    this.scene.globals.player.enabled = true;
   }
 
 }

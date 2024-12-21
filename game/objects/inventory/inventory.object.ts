@@ -41,7 +41,7 @@ export class InventoryObject extends SceneObject {
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 2;
     this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
 
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
     this.chest = config.chest;
   }
 
@@ -131,7 +131,7 @@ export class InventoryObject extends SceneObject {
 
   onDestroy(): void {
     this.stopDraggingItem();
-    this.scene.globals.disable_player_inputs = false;
+    this.scene.globals.player.enabled = true;
     if (this.chest) {
       this.chest.actionClose();
     }

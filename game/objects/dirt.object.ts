@@ -75,7 +75,7 @@ export class DirtObject extends SceneObject implements Interactable {
 
     this.cropStage = CropStage.Empty;
 
-    if(config.growing){
+    if (config.growing) {
       // preconfigure growing
       this.collision.enabled = true;
       this.cropStage = config.growing.stage;
@@ -89,8 +89,8 @@ export class DirtObject extends SceneObject implements Interactable {
 
   private onDirtPlaced(event: CustomEvent): void {
     // update sprite based on surrounding dirt
-    let left = this.scene.getObjects({ position: { x: this.transform.position.world.x - 1, y: this.transform.position.world.y}});
-    let right = this.scene.getObjects({ position: { x: this.transform.position.world.x + 1, y: this.transform.position.world.y}});
+    let left = this.scene.getObjects({ position: { x: this.transform.position.world.x - 1, y: this.transform.position.world.y } });
+    let right = this.scene.getObjects({ position: { x: this.transform.position.world.x + 1, y: this.transform.position.world.y } });
 
     let hasLeft = left.filter(object => object instanceof DirtObject).length > 0;
     let hasRight = right.filter(object => object instanceof DirtObject).length > 0;
@@ -129,39 +129,39 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   private interactStageEmpty(): void {
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     let textbox = new TextboxObject(
       this.scene,
       {
         text: `It's a beautiful patch of dirt, brimming with potential.`,
-        onComplete: () => this.scene.globals.disable_player_inputs = false
+        onComplete: () => this.scene.globals.player.enabled = true
       }
     );
     this.scene.addObject(textbox);
   }
 
   private interactStageWatered(): void {
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     let textbox = new TextboxObject(
       this.scene,
       {
         text: `The patch of dirt is watered, better plant something before it dries up.`,
-        onComplete: () => this.scene.globals.disable_player_inputs = false
+        onComplete: () => this.scene.globals.player.enabled = true
       }
     );
     this.scene.addObject(textbox);
   }
 
   private interactStageGrowing(): void {
-    this.scene.globals.disable_player_inputs = true;
+    this.scene.globals.player.enabled = false;
 
     let textbox = new TextboxObject(
       this.scene,
       {
         text: `The plant is growing nicely, it will be ready for harvest soon.`,
-        onComplete: () => this.scene.globals.disable_player_inputs = false
+        onComplete: () => this.scene.globals.player.enabled = true
       }
     );
     this.scene.addObject(textbox);
@@ -179,7 +179,7 @@ export class DirtObject extends SceneObject implements Interactable {
         break;
     }
 
-    if(!success){
+    if (!success) {
       // TODO: some sort of indication the player's inventory is full
       return;
     }
@@ -234,7 +234,7 @@ export class DirtObject extends SceneObject implements Interactable {
       }
     );
 
-    if(this.cropStage === CropStage.Empty){
+    if (this.cropStage === CropStage.Empty) {
       return;
     }
 
