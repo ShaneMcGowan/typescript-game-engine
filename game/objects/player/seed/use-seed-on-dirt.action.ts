@@ -4,14 +4,14 @@ import { TextboxObject } from "@game/objects/textbox.object";
 
 export function useSeedOnDirt(scene: SCENE_GAME, object: DirtObject): void {
   if (object.cropStage !== CropStage.Watered) {
-    scene.globals.player.actionsEnabled = false;
+    scene.globals.player.enabled = false;
 
     const object = new TextboxObject(
       scene,
       {
         text: 'Seeds can only be placed in watered dirt.',
         onComplete: () => {
-          scene.globals.player.actionsEnabled = true;
+          scene.globals.player.enabled = true;
         },
       }
     )

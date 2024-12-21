@@ -286,3 +286,8 @@ body {
 .map-editor canvas {
   image-rendering: pixelated;
 }
+
+.map-editor canvas.map-editor-canvas-preview {
+  background-color: white;
+  border: 1px solid black;
+}
