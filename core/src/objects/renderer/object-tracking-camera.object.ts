@@ -72,11 +72,21 @@ export class ObjectTrackingCameraObject extends SceneObject {
     this.scene.globals.camera.endX = endX;
     this.scene.globals.camera.endY = endY;
 
-    // render
-    // TODO: we should use the custom renderer before doing a full map render for performance reasons
+    // background
+    // only render the background we are looking at
+    this.scene.background(
+      {
+        xStart: Math.floor(startX),
+        yStart: Math.floor(startY),
+        xEnd: Math.min(this.scene.map.background.width - 1, Math.floor(endX) + 1),
+        yEnd: Math.min(this.scene.map.background.height - 1, Math.floor(endY) + 1),
+      }
+    );
+
     renderingContext.background.forEach((context) => {
       RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
     });
+
     renderingContext.objects.forEach((context, index) => {
       if (index >= CanvasConstants.FIRST_UI_RENDER_LAYER) {
         RenderUtils.renderSubsection(context, this.mainContext, 0, 0, CanvasConstants.CANVAS_TILE_WIDTH, CanvasConstants.CANVAS_TILE_HEIGHT);

@@ -84,13 +84,15 @@ export abstract class Scene {
 
   frame(delta: number): void {
     this.awake();
-    this.background(delta);
     this.update(delta);
     this.render(delta);
 
+
     if (this.customRenderer) {
+      // Scene.background needs to be called in custom renderers 
       this.customRenderer(this.renderingContext);
     } else {
+      this.background();
       defaultRenderer(this);
     }
 
@@ -115,7 +117,7 @@ export abstract class Scene {
     }
   }
 
-  private background(delta: number): void {
+  background(options: { xStart?: number; yStart?: number; xEnd?: number; yEnd?: number } = {}): void {
     if (this.client.flags.frame.log.backgroundDuration) {
       console.time('[frame] background');
     }
@@ -128,8 +130,13 @@ export abstract class Scene {
       let context = this.renderingContext.background[index];
       RenderUtils.clearCanvas(context);
 
-      for (let y = 0; y < this.map.height; y++) {
-        for (let x = 0; x < this.map.width; x++) {
+      const xStart = options.xStart ?? 0;
+      const yStart = options.yStart ?? 0;
+      const xEnd = options.xEnd ?? this.map.width - 1;
+      const yEnd = options.yEnd ?? this.map.height - 1;
+
+      for (let y = yStart; y < yEnd; y++) {
+        for (let x = xStart; x < xEnd; x++) {
           const tile = layer.tiles[y][x];
 
           if (tile === null) {
@@ -175,7 +182,7 @@ export abstract class Scene {
     }
   }
 
-  private render(delta: number): void {
+  render(delta: number): void {
     if (this.client.flags.frame.log.renderDuration) {
       console.time('[frame] render');
     }
