@@ -96,9 +96,6 @@ export class Client {
     },
   };
 
-  // controllers
-  gamepad: Gamepad | undefined = undefined;
-
   // engine
   engineSelectedObjectId: string | undefined;
   editorTimer: number = 0; // how often to refresh
@@ -492,10 +489,11 @@ export class Client {
         event.gamepad.buttons.length,
         event.gamepad.axes.length
       );
-      this.gamepad = event.gamepad;
+      Input.gamepad.set(event.gamepad.index, event.gamepad);
     });
     window.addEventListener('gamepaddisconnected', (event: GamepadEvent) => {
-      this.gamepad = undefined;
+      // TODO: determine if we should do this or just let the gamepad go stale
+      Input.gamepad.delete(event.gamepad.index);
     });
   }
 

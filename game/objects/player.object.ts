@@ -4,7 +4,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { DirtObject } from '@game/objects/dirt.object';
 import { isInteractable } from '@game/models/interactable.model';
-import { Input, MouseKey } from '@core/utils/input.utils';
+import { ControlScheme, GamepadKey, Input, MouseKey } from '@core/utils/input.utils';
 import { useHoe } from '@game/objects/player/use-hoe.action';
 import { useWateringCan } from '@game/objects/player/use-watering-can.action';
 import { useWateringCanOnDirt } from '@game/objects/player/watering-can/use-watering-can-on-dirt.action';
@@ -29,6 +29,56 @@ enum Direction {
   RIGHT = 'd'
 }
 
+enum Control {
+  Up = 'Up',
+  Down = 'Down',
+  Left = 'Left',
+  Right = 'Right',
+  Inventory = 'Inventory',
+  Interact = 'Interact',
+  Action = 'Action',
+}
+
+const CONTROL_SCHEME: ControlScheme<Control> = {
+  [Control.Up]: {
+    keyboard: [Direction.UP],
+    mouse: [],
+    controller: [GamepadKey.DirectionUp]
+  },
+  [Control.Down]: {
+    keyboard: [Direction.UP],
+    mouse: [],
+    controller: [GamepadKey.DirectionDown]
+  },
+  [Control.Left]: {
+    keyboard: [Direction.LEFT],
+    mouse: [],
+    controller: [GamepadKey.DirectionLeft]
+  },
+  [Control.Right]: {
+    keyboard: [Direction.RIGHT],
+    mouse: [],
+    controller: [GamepadKey.DirectionRight]
+  },
+  [Control.Inventory]: {
+    keyboard: ['tab'],
+    mouse: [],
+    controller: [GamepadKey.OptionsRight]
+  },
+  [Control.Interact]: {
+    keyboard: ['e', ' '],
+    mouse: [],
+    controller: [GamepadKey.ButtonDown]
+  },
+  [Control.Action]: {
+    keyboard: [],
+    mouse: [],
+    controller: [GamepadKey.TriggerRight]
+  }
+} 
+
+
+
 enum Controls {
   Inventory = 'tab',
   Interact = 'e',
@@ -40,9 +90,12 @@ const TILE_SET = 'tileset_player';
 const RENDERER_LAYER: number = 10;
 
 interface Config extends SceneObjectBaseConfig {
+  playerIndex: number;
 }
 
 export class PlayerObject extends SceneObject {
+  playerIndex: number; // player index to be used mainly for controller access for now
+
   targetX: number = -1;
   targetY: number = -1;
 
@@ -86,6 +139,8 @@ export class PlayerObject extends SceneObject {
 
     this.targetX = this.transform.position.local.x;
     this.targetY = this.transform.position.local.y;
+
+    this.playerIndex = config.playerIndex;
   }
 
 
@@ -93,7 +148,7 @@ export class PlayerObject extends SceneObject {
     this.addHotbar();
   }
 
-  onUpdate(delta: number): void {
+  onUpdate(delta: number): void {    
     this.updateMovement(delta);
     this.updateAnimations(delta);
     this.updateHotbarViaKey();
@@ -109,6 +164,7 @@ export class PlayerObject extends SceneObject {
   onRender(context: CanvasRenderingContext2D): void {
     this.renderSprite(context);
     this.renderCursor(context);
+    this.renderControllerState(context);
   }
 
   get hotbar(): Inventory {
@@ -576,6 +632,38 @@ export class PlayerObject extends SceneObject {
         colour: '#0000ff33',
         type: 'tile'
       }
+    );
+  }
+
+  private renderControllerState(context: CanvasRenderingContext2D): void {
+    const gamepad = Input.gamepad.get(this.playerIndex);
+    if(gamepad === undefined){
+      return;
+    }
+
+    gamepad.buttons.forEach((button, index) => {
+      RenderUtils.renderText(
+        context,
+        `${index} - ${button.value} ${button.pressed} ${button.touched}`,
+        this.transform.position.world.x,
+        this.transform.position.world.y + index,
+      );
+    });
+
+    gamepad.axes.forEach((axes, index) => {
+      RenderUtils.renderText(
+        context,
+        `${index} - ${axes}`,
+        this.transform.position.world.x + 5,
+        this.transform.position.world.y + index,
+      );
+    });
+
+    RenderUtils.renderText(
+      context,
+      `${gamepad.vibrationActuator}`,
+      this.transform.position.world.x + 15,
+      this.transform.position.world.y,
     );
   }
 

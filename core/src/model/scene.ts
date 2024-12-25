@@ -5,6 +5,7 @@ import { type SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { type Client } from '@core/client';
 import { Assets } from '@core/utils/assets.utils';
 import { defaultRenderer } from '@core/objects/renderer/default.renderer';
+import { Input } from '@core/utils/input.utils';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
@@ -43,7 +44,6 @@ export interface ObjectFilter {
 export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
 
 export abstract class Scene {
-
   // objects
   objects: Map<string, SceneObject> = new Map<string, SceneObject>();
   // TODO: how do we access types for this from the scene object?
@@ -83,13 +83,13 @@ export abstract class Scene {
   }
 
   frame(delta: number): void {
+    this.inputs();
     this.awake();
     this.update(delta);
     this.render(delta);
 
-
     if (this.customRenderer) {
-      // Scene.background needs to be called in custom renderers 
+      // Scene.background needs to be called in custom renderers
       this.customRenderer(this.renderingContext);
     } else {
       this.background();
@@ -101,6 +101,15 @@ export abstract class Scene {
     if (this.flaggedForMapChange) {
       this.changeMap(this.flaggedForMapChange);
     }
+  }
+
+  /**
+   * query connected gamepads
+   */
+  private inputs(): void {
+    Input.gamepad.forEach(gamepad => {
+      Input.gamepad.set(gamepad.index, navigator.getGamepads()[gamepad.index]);
+    });
   }
 
   private awake(): void {
@@ -117,7 +126,7 @@ export abstract class Scene {
     }
   }
 
-  background(options: { xStart?: number; yStart?: number; xEnd?: number; yEnd?: number } = {}): void {
+  background(options: { xStart?: number; yStart?: number; xEnd?: number; yEnd?: number; } = {}): void {
     if (this.client.flags.frame.log.backgroundDuration) {
       console.time('[frame] background');
     }
@@ -158,7 +167,6 @@ export abstract class Scene {
             tile.sprite.width,
             tile.sprite.height
           );
-
         }
       }
     });
