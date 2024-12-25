@@ -30,7 +30,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     super(scene);
 
     // Set up UI
-    MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
+    MouseUtils.setCursor(this.scene.screen.contexts.display.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
     this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 31, positionY: 1 }))
 
     // instanciate objects
@@ -82,7 +82,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { positionX: 25, positionY: 1, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 27, positionY: 1, height: 17 }));
 
-    this.scene.addObject(new ObjectTrackingCameraObject(scene, { object: player }));
+    this.scene.addObject(new ObjectTrackingCameraObject(scene, scene.screen, { object: player }));
 
     // fade in
     this.scene.addObject(new TransitionObject(scene, {

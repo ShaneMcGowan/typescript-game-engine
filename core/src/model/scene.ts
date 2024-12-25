@@ -4,23 +4,11 @@ import { type SceneMapConstructorSignature, type SceneMap } from './scene-map';
 import { type SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { type Client } from '@core/client';
 import { Assets } from '@core/utils/assets.utils';
-import { defaultRenderer } from '@core/objects/renderer/default.renderer';
+import { type ClientScreen } from './screen';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
-export interface SceneRenderingContext {
-  background: CanvasRenderingContext2D[];
-  objects: CanvasRenderingContext2D[];
-}
-
 export interface SceneGlobalsBaseConfig {
-  // TODO: cameraPosition is referring to customRenderer, perhaps rename customRenderer to camera?
-  camera: {
-    startX: number;
-    startY: number;
-    endX: number;
-    endY: number;
-  };
 }
 
 export interface ObjectFilter {
@@ -40,10 +28,7 @@ export interface ObjectFilter {
   };
 }
 
-export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
-
 export abstract class Scene {
-
   // objects
   objects: Map<string, SceneObject> = new Map<string, SceneObject>();
   // TODO: how do we access types for this from the scene object?
@@ -63,38 +48,18 @@ export abstract class Scene {
   private activeMap: SceneMapConstructorSignature;
   private readonly maps: Map<SceneMapConstructorSignature, SceneMap> = new Map<SceneMapConstructorSignature, SceneMap>(); // Yo dawg, I heard you like maps, so we put your maps in a map so you can map while you map
 
-  // store an in memory canvas for each background layer and each rendering layer (based on CanvasConstants.TOTAL_RENDER_LAYERS)
-  renderingContext: SceneRenderingContext = {
-    background: [],
-    objects: [],
-  };
-
-  private customRenderer?: CustomRendererSignature;
-
-  // from client
-  renderContext: CanvasRenderingContext2D;
-  displayContext: CanvasRenderingContext2D;
-
   constructor(
     protected client: Client
   ) {
-    this.renderContext = this.client.renderContext;
-    this.displayContext = this.client.displayContext;
   }
 
   frame(delta: number): void {
     this.awake();
     this.update(delta);
-    this.render(delta);
 
-
-    if (this.customRenderer) {
-      // Scene.background needs to be called in custom renderers 
-      this.customRenderer(this.renderingContext);
-    } else {
-      this.background();
-      defaultRenderer(this);
-    }
+    this.client.screens.forEach(screen => {
+      screen.render(this);
+    });
 
     this.destroy(delta);
 
@@ -117,7 +82,7 @@ export abstract class Scene {
     }
   }
 
-  background(options: { xStart?: number; yStart?: number; xEnd?: number; yEnd?: number } = {}): void {
+  renderBackgrounds(screen: ClientScreen): void {
     if (this.client.flags.frame.log.backgroundDuration) {
       console.time('[frame] background');
     }
@@ -127,16 +92,11 @@ export abstract class Scene {
     }
 
     this.map.background.layers.forEach((layer, index) => {
-      let context = this.renderingContext.background[index];
+      const context = screen.contexts.background[index];
       RenderUtils.clearCanvas(context);
 
-      const xStart = options.xStart ?? 0;
-      const yStart = options.yStart ?? 0;
-      const xEnd = options.xEnd ?? this.map.width - 1;
-      const yEnd = options.yEnd ?? this.map.height - 1;
-
-      for (let y = yStart; y < yEnd; y++) {
-        for (let x = xStart; x < xEnd; x++) {
+      for (let y = screen.camera.startY; y <= screen.camera.endY; y++) {
+        for (let x = screen.camera.startX; x <= screen.camera.endX; x++) {
           const tile = layer.tiles[y][x];
 
           if (tile === null) {
@@ -158,7 +118,6 @@ export abstract class Scene {
             tile.sprite.width,
             tile.sprite.height
           );
-
         }
       }
     });
@@ -182,13 +141,13 @@ export abstract class Scene {
     }
   }
 
-  render(delta: number): void {
+  renderObjects(screen: ClientScreen): void {
     if (this.client.flags.frame.log.renderDuration) {
       console.time('[frame] render');
     }
 
     // clear object canvases
-    this.renderingContext.objects.forEach((context) => {
+    screen.contexts.objects.forEach((context) => {
       RenderUtils.clearCanvas(context);
     });
 
@@ -196,17 +155,17 @@ export abstract class Scene {
     for (let [, object] of this.objects) {
       if (this.client.debug.object.renderBackground) {
         object.debuggerRenderBackground(
-          this.renderingContext.objects[object.renderer.layer]
+          screen.contexts.objects[object.renderer.layer]
         );
       }
 
       object.render(
-        this.renderingContext.objects[object.renderer.layer]
+        screen.contexts.objects[object.renderer.layer]
       );
 
       if (this.client.debug.object.renderBoundary) {
         object.debuggerRenderBoundary(
-          this.renderingContext.objects[object.renderer.layer]
+          screen.contexts.objects[object.renderer.layer]
         );
       }
     }
@@ -236,6 +195,10 @@ export abstract class Scene {
 
   get map(): SceneMap {
     return this.maps.get(this.activeMap);
+  }
+
+  get screen(): ClientScreen {
+    return this.client.screens.get(this.client.activeScreenId);
   }
 
   addObjects(sceneObjects: SceneObject[]): void {
@@ -302,32 +265,6 @@ export abstract class Scene {
     return (positionX > this.map.width - 1 || positionY > this.map.height - 1 || positionX < 0 || positionY < 0);
   }
 
-  setUpRenderingContexts(): void {
-    this.renderingContext = {
-      background: [],
-      objects: [],
-    };
-
-    for (let i = 0; i < this.map.background.layers.length; i++) {
-      let canvas = this.createCanvas();
-      this.renderingContext.background[i] = RenderUtils.getContext(canvas);
-    }
-    for (let i = 0; i < CanvasConstants.TOTAL_RENDERING_LAYERS; i++) {
-      let canvas = this.createCanvas();
-      this.renderingContext.objects[i] = RenderUtils.getContext(canvas);
-    }
-  }
-
-  private createCanvas(): HTMLCanvasElement {
-    let canvas = RenderUtils.createCanvas(this.map.width, this.map.height);
-
-    if (this.client.debug.ui.canvasLayers) {
-      this.client.container.append(canvas);
-    }
-
-    return canvas;
-  }
-
   flagForMapChange(mapClass: SceneMapConstructorSignature): void {
     this.flaggedForMapChange = mapClass;
   }
@@ -371,7 +308,7 @@ export abstract class Scene {
 
     // set up rendering contexts
     // custom renderers in objects for maps require this
-    this.setUpRenderingContexts();
+    // TODO: set up rendering contexts and screens
 
     // remove flag
     this.flaggedForMapChange = undefined;
@@ -379,18 +316,15 @@ export abstract class Scene {
     if (this.map.onEnter) {
       this.map.onEnter();
     }
+
+    this.client.screens.get(this.client.activeScreenId).setupContexts(
+      this.client.screens.size,
+      this.map
+    );
   }
 
   changeScene(sceneClass: any): void {
     this.client.changeScene(sceneClass);
-  }
-
-  setCustomRenderer(renderer: CustomRendererSignature): void {
-    this.customRenderer = renderer;
-  }
-
-  removeCustomerRenderer(): void {
-    this.customRenderer = undefined;
   }
 }
 

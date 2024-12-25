@@ -1,6 +1,8 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type Scene, type CustomRendererSignature, type SceneRenderingContext } from '@core/model/scene';
+import { type Renderer } from '@core/model/renderer';
+import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
+import { type ClientScreen } from '@core/model/screen';
 import { RenderUtils } from '@core/utils/render.utils';
 
 const DEFAULT_ZOOM: number = 1;
@@ -23,6 +25,7 @@ export class ObjectTrackingCameraObject extends SceneObject {
 
   constructor(
     protected scene: Scene,
+    private readonly screen: ClientScreen,
     config: ObjectTrackingCameraObjectConfig
   ) {
     super(scene, config);
@@ -38,10 +41,10 @@ export class ObjectTrackingCameraObject extends SceneObject {
     this.object = config.object;
     this.zoom = config.zoom ?? DEFAULT_ZOOM;
 
-    this.scene.setCustomRenderer(this.customerRenderer);
+    this.screen.addRenderer(this.customerRenderer);
   }
 
-  customerRenderer: CustomRendererSignature = (renderingContext: SceneRenderingContext) => {
+  customerRenderer: Renderer = (scene: Scene, screen: ClientScreen) => {
     // TODO: zoom is broken and not sure why
     const adjustedCameraOffsetX = this.cameraOffsetX / this.zoom;
     const adjustedCameraOffsetY = this.cameraOffsetY / this.zoom;
@@ -56,50 +59,70 @@ export class ObjectTrackingCameraObject extends SceneObject {
     if (startX < 0) {
       startX = 0;
       endX = startX + CanvasConstants.CANVAS_TILE_WIDTH;
-    } else if (endX > this.scene.map.width) {
-      endX = this.scene.map.width;
+    } else if (endX > scene.map.width) {
+      endX = scene.map.width;
       startX = endX - CanvasConstants.CANVAS_TILE_WIDTH;
     }
 
     if (startY < 0) {
       startY = 0;
       endY = startY + CanvasConstants.CANVAS_TILE_HEIGHT;
-    } else if (endY > this.scene.map.height) {
-      endY = this.scene.map.height;
+    } else if (endY > scene.map.height) {
+      endY = scene.map.height;
       startY = endY - CanvasConstants.CANVAS_TILE_HEIGHT;
     }
 
     // set camera positions
-    this.scene.globals.camera.startX = startX;
-    this.scene.globals.camera.startY = startY;
-    this.scene.globals.camera.endX = endX;
-    this.scene.globals.camera.endY = endY;
+    this.screen.camera.startX = startX;
+    this.screen.camera.startY = startY;
+    this.screen.camera.endX = endX;
+    this.screen.camera.endY = endY;
 
     // background
     // only render the background we are looking at
-    this.scene.background(
-      {
-        xStart: Math.floor(startX),
-        yStart: Math.floor(startY),
-        xEnd: Math.min(this.scene.map.background.width - 1, Math.floor(endX) + 1),
-        yEnd: Math.min(this.scene.map.background.height - 1, Math.floor(endY) + 1),
-      }
-    );
+    // build layers
+    scene.renderBackgrounds(screen);
+    scene.renderObjects(screen);
 
-    renderingContext.background.forEach((context) => {
-      RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
+    // compile frame
+    screen.contexts.background.forEach((context) => {
+      RenderUtils.renderSubsection(
+        context,
+        screen.contexts.rendering,
+        screen.camera.startX,
+        screen.camera.startY,
+        screen.camera.endX,
+        screen.camera.endY
+      );
     });
-
-    renderingContext.objects.forEach((context, index) => {
+    screen.contexts.objects.forEach((context, index) => {
+      // if UI layer, render without relative to camera
       if (index >= CanvasConstants.FIRST_UI_RENDER_LAYER) {
-        RenderUtils.renderSubsection(context, this.mainContext, 0, 0, CanvasConstants.CANVAS_TILE_WIDTH, CanvasConstants.CANVAS_TILE_HEIGHT);
+        RenderUtils.renderSubsection(
+          context,
+          screen.contexts.rendering,
+          0,
+          0,
+          CanvasConstants.CANVAS_TILE_WIDTH, // TODO: check this is correct
+          CanvasConstants.CANVAS_TILE_HEIGHT // TODO: check this is correct
+        );
       } else {
-        RenderUtils.renderSubsection(context, this.mainContext, startX, startY, endX, endY);
+        RenderUtils.renderSubsection(
+          context,
+          screen.contexts.rendering,
+          screen.camera.startX,
+          screen.camera.startY,
+          screen.camera.endX,
+          screen.camera.endY
+        );
       }
     });
+
+    // copy frame
+    screen.contexts.display.drawImage(screen.contexts.rendering.canvas, 0, 0);
   };
 
   onDestroy(): void {
-    this.scene.removeCustomerRenderer();
+    this.screen.removeRenderer();
   }
 }

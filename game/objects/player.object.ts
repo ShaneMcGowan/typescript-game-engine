@@ -422,8 +422,8 @@ export class PlayerObject extends SceneObject {
     }
 
     console.log({
-      x: Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX),
-      y: Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY)
+      x: Math.floor(Input.mouse.position.x + this.scene.screen.camera.startX),
+      y: Math.floor(Input.mouse.position.y + this.scene.screen.camera.startY)
     });
 
     Input.clearMousePressed(MouseKey.Left);
@@ -439,8 +439,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    const x = Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX);
-    const y = Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY);
+    const x = Math.floor(Input.mouse.position.x + this.scene.screen.camera.startX);
+    const y = Math.floor(Input.mouse.position.y + this.scene.screen.camera.startY);
 
     if (
       item.radius === ItemRadius.Player &&
@@ -541,8 +541,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let x = Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX);
-    let y = Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY);
+    let x = Math.floor(Input.mouse.position.x + this.scene.screen.camera.startX);
+    let y = Math.floor(Input.mouse.position.y + this.scene.screen.camera.startY);
 
     let item = this.scene.selectedInventoryItem;
     // do not render cursor

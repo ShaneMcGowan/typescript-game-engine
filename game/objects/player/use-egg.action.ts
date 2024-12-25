@@ -4,8 +4,8 @@ import { EggObject } from "@game/objects/egg.object";
 
 export function useEgg(scene: SCENE_GAME): void {
 
-  const x = Math.floor(Input.mouse.position.x + scene.globals.camera.startX);
-  const y = Math.floor(Input.mouse.position.y + scene.globals.camera.startY);
+  const x = Math.floor(Input.mouse.position.x + scene.screen.camera.startX);
+  const y = Math.floor(Input.mouse.position.y + scene.screen.camera.startY);
 
   const object = new EggObject(
     scene,

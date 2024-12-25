@@ -32,7 +32,7 @@ export class FullscreenToggleObject extends SceneObject {
       document.exitFullscreen();
     }
     else { 
-      this.scene.displayContext.canvas.requestFullscreen()
+      this.scene.screen.contexts.display.canvas.requestFullscreen()
       .then(() => {
       })
       .catch((error) => {

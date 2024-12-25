@@ -111,8 +111,6 @@ export abstract class SceneObject {
   fromJson?(json: string): void; // used to populate a SceneObject with state from JSON
   toJson?(): string; // used to convert the state of a SceneIbject to JSON
 
-  protected mainContext: CanvasRenderingContext2D;
-
   readonly children: Map<string, SceneObject> = new Map<string, SceneObject>();
   parent: SceneObject | undefined = undefined;
 
@@ -122,8 +120,6 @@ export abstract class SceneObject {
   ) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;
-
-    this.mainContext = this.scene.renderContext;
 
     this.transform = {
       position: {
@@ -371,15 +367,15 @@ export abstract class SceneObject {
 
   /**
    * calculate the offset from position.world that will center a sprite
-   * @param spriteWidth 
-   * @param spriteHeight 
-   * @returns 
+   * @param spriteWidth
+   * @param spriteHeight
+   * @returns
    */
-  protected calculateSpriteOffset(spriteWidth: number, spriteHeight: number): { x: number, y: number } {
+  protected calculateSpriteOffset(spriteWidth: number, spriteHeight: number): { x: number; y: number; } {
     return {
       x: (this.width / 2) - (spriteWidth / 2),
       y: (this.height / 2) - (spriteHeight / 2),
-    }
+    };
   }
 }
 

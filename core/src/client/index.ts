@@ -4,6 +4,7 @@ import { CanvasConstants } from '../constants/canvas.constants';
 import { Input } from '../utils/input.utils';
 import { MouseUtils } from '../utils/mouse.utils';
 import { EditorUtils } from '@core/editor/editor.utils';
+import { ClientScreen } from '@core/model/screen';
 
 interface DebugButtons {
   gridLines?: HTMLElement;
@@ -39,18 +40,6 @@ interface Flags {
 }
 
 export class Client {
-  // Constants
-  private readonly CANVAS_HEIGHT: number = CanvasConstants.CANVAS_HEIGHT;
-  private readonly CANVAS_WIDTH: number = CanvasConstants.CANVAS_WIDTH;
-
-  // display canvas - used for display, copies the fully rendered frame from the in memory render canvas
-  private readonly displayCanvas: HTMLCanvasElement;
-  public readonly displayContext: CanvasRenderingContext2D;
-
-  // render canvas - in memory canvas used for building a frame that will then be pushed to the display canvas once it is complete
-  private readonly renderCanvas: HTMLCanvasElement;
-  public readonly renderContext: CanvasRenderingContext2D;
-
   private delta: number = 0;
   private lastRenderTimestamp: number = 0;
   readonly flags: Flags = {
@@ -103,6 +92,9 @@ export class Client {
   engineSelectedObjectId: string | undefined;
   editorTimer: number = 0; // how often to refresh
 
+  readonly screens = new Map<string, ClientScreen>();
+  activeScreenId: string; // TODO: hack until things are figured out later
+
   constructor(
     public container: HTMLElement,
     openingScene: SceneConstructorSignature,
@@ -111,22 +103,19 @@ export class Client {
     public engineObjectDetails: HTMLElement | null,
     private readonly engineControls?: DebugButtons
   ) {
+    // configure first screen
+    // this needs to be first as everything else relies on it existing
+    const screen = this.addScreen();
+    this.activeScreenId = screen.id;
+
     // initialise debug controls
     if (this.debug.enabled) {
       this.initialiseDebuggerState();
       this.initialiseDebuggerListeners();
     }
 
-    // initialise display canvas
-    this.displayCanvas = this.createCanvas();
-    this.displayContext = RenderUtils.getContext(this.displayCanvas);
-
-    // initialise render canvas
-    this.renderCanvas = this.createCanvas();
-    this.renderContext = RenderUtils.getContext(this.renderCanvas);
-
     // attach canvas to ui
-    container.append(this.displayCanvas);
+    container.append(screen.contexts.display.canvas);
 
     // handle tabbed out state
     document.addEventListener('visibilitychange', (event) => {
@@ -160,18 +149,6 @@ export class Client {
 
     // Run game logic
     window.requestAnimationFrame(this.firstFrame.bind(this));
-  }
-
-  private createCanvas(): HTMLCanvasElement {
-    // create canvas
-    const canvas = RenderUtils.createCanvas();
-
-    // prevent right click menu
-    canvas.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-    });
-
-    return canvas;
   }
 
   changeScene(sceneClass: SceneConstructorSignature): void {
@@ -235,15 +212,8 @@ export class Client {
       console.log(`[delta] ${this.delta}`);
     }
 
-    // Clear render canvas before render
-    RenderUtils.clearCanvas(this.renderContext);
-
     // run frame logic
     this.scene.frame(this.delta);
-
-    // copy full frame from render canvas to display canvas
-    RenderUtils.clearCanvas(this.displayContext);
-    this.displayContext.drawImage(this.renderCanvas, 0, 0);
 
     // Render stats
     if (this.debug.stats.fps) {
@@ -285,31 +255,59 @@ export class Client {
   }
 
   private renderStats(index: number, label: string, value: string): void {
-    this.displayContext.fillStyle = 'red';
-    this.displayContext.font = '12px serif';
-    this.displayContext.fillText(value, this.CANVAS_WIDTH - 50, (index + 1) * CanvasConstants.TILE_SIZE);
+    const screen = this.screens.get(this.activeScreenId);
+
+    screen.contexts.display.fillStyle = 'red';
+    screen.contexts.display.font = '12px serif';
+    screen.contexts.display.fillText(
+      value,
+      CanvasConstants.CANVAS_WIDTH - 50,
+      (index + 1) * CanvasConstants.TILE_SIZE
+    );
   }
 
   private renderGrid(): void {
+    const screen = this.screens.get(this.activeScreenId);
+
     if (this.debug.ui.grid.lines || this.debug.ui.grid.numbers) {
-      RenderUtils.fillRectangle(this.displayContext, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT, { colour: 'rgba(0, 0, 0, 0.25)', });
+      RenderUtils.fillRectangle(
+        screen.contexts.display,
+        0,
+        0,
+        screen.width,
+        screen.height,
+        {
+          type: 'tile',
+          colour: 'rgba(0, 0, 0, 0.25)',
+        }
+      );
     }
 
     if (this.debug.ui.grid.lines) {
-      for (let x = 0; x < this.CANVAS_WIDTH; x += CanvasConstants.TILE_SIZE) {
-        for (let y = 0; y < this.CANVAS_HEIGHT; y += CanvasConstants.TILE_SIZE) {
-          RenderUtils.strokeRectangle(this.displayContext, x, y, CanvasConstants.TILE_SIZE, CanvasConstants.TILE_SIZE, { colour: 'black', });
+      for (let x = 0; x < screen.width; x += 1) {
+        for (let y = 0; y < screen.height; y += 1) {
+          RenderUtils.strokeRectangle(
+            screen.contexts.display,
+            x,
+            y,
+            CanvasConstants.TILE_SIZE,
+            CanvasConstants.TILE_SIZE,
+            {
+              colour: 'black',
+              type: 'tile',
+            }
+          );
         }
       }
     }
 
     if (this.debug.ui.grid.numbers) {
-      for (let x = 0; x < CanvasConstants.CANVAS_TILE_WIDTH; x++) {
-        for (let y = 0; y < CanvasConstants.CANVAS_TILE_HEIGHT; y++) {
-          this.displayContext.fillStyle = 'black';
-          this.displayContext.font = '8px helvetica';
-          this.displayContext.fillText(`${x}`, (x * CanvasConstants.TILE_SIZE) + 1, (y * CanvasConstants.TILE_SIZE) + 8); // 8 is 8 px
-          this.displayContext.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
+      for (let x = 0; x < screen.width; x++) {
+        for (let y = 0; y < screen.height; y++) {
+          screen.contexts.display.fillStyle = 'black';
+          screen.contexts.display.font = '8px helvetica';
+          screen.contexts.display.fillText(`${x}`, (x * CanvasConstants.TILE_SIZE) + 1, (y * CanvasConstants.TILE_SIZE) + 8); // 8 is 8 px
+          screen.contexts.display.fillText(`${y}`, (x * CanvasConstants.TILE_SIZE) + 6, (y * CanvasConstants.TILE_SIZE) + 14); // 16 is 16px
         }
       }
     }
@@ -330,6 +328,8 @@ export class Client {
   }
 
   private initialiseDebuggerListeners(): void {
+    const screen = this.screens.get(this.activeScreenId);
+
     if (this.engineControls === undefined) {
       return;
     }
@@ -387,7 +387,7 @@ export class Client {
 
     if (this.engineControls.fullscreen) {
       this.engineControls.fullscreen.addEventListener('click', () => {
-        this.displayCanvas.requestFullscreen().catch((error) => {
+        screen.contexts.display.canvas.requestFullscreen().catch((error) => {
           throw new Error(error);
         });
       });
@@ -423,14 +423,16 @@ export class Client {
   }
 
   private initialiseMouseListeners(): void {
+    const screen = this.screens.get(this.activeScreenId);
+
     console.log('[listener added] mousemove');
-    this.displayCanvas.addEventListener('mousemove', (event: MouseEvent) => {
-      Input.mouse.position = MouseUtils.getMousePosition(this.displayCanvas, event);
+    screen.contexts.display.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+      Input.mouse.position = MouseUtils.getMousePosition(screen.contexts.display.canvas, event);
       Input.mouse.latestEvent = event;
     });
 
     console.log('[listener added] mousedown');
-    this.displayCanvas.addEventListener('mousedown', (event: MouseEvent) => {
+    screen.contexts.display.canvas.addEventListener('mousedown', (event: MouseEvent) => {
       // console.log('[mousedown]', event);
       switch (event.button) {
         case 0:
@@ -446,7 +448,7 @@ export class Client {
     });
 
     console.log('[listener added] mouseup');
-    this.displayCanvas.addEventListener('mouseup', (event: MouseEvent) => {
+    screen.contexts.display.canvas.addEventListener('mouseup', (event: MouseEvent) => {
       // console.log('[mouseup]', event);
       switch (event.button) {
         case 0:
@@ -463,21 +465,21 @@ export class Client {
 
     // touch - this is for mobile only
     console.log('[listener added] touchstart');
-    this.displayCanvas.addEventListener('touchstart', (event: TouchEvent) => {
+    screen.contexts.display.canvas.addEventListener('touchstart', (event: TouchEvent) => {
       console.log('[touchstart]', event);
       Input.mouse.click.left = true;
     });
 
     // touch - this is for mobile only
     console.log('[listener added] touchend');
-    this.displayCanvas.addEventListener('touchend', (event: TouchEvent) => {
+    screen.contexts.display.canvas.addEventListener('touchend', (event: TouchEvent) => {
       console.log('[touchend]', event);
       Input.mouse.click.left = false;
     });
 
     // for mouse scroll
     console.log('[listener added] wheel');
-    this.displayCanvas.addEventListener('wheel', (event: WheelEvent) => {
+    screen.contexts.display.canvas.addEventListener('wheel', (event: WheelEvent) => {
       console.log('[wheel]', event);
       Input.mouse.wheel.event = event;
     });
@@ -573,6 +575,21 @@ export class Client {
 
     // log the object to the console
     console.log(object);
+  }
+
+  addScreen(): ClientScreen {
+    const screen = new ClientScreen(1);
+    this.screens.set(screen.id, screen);
+
+    this.screens.forEach(screen => {
+      // screen.reset()
+    });
+
+    return screen;
+  }
+
+  removeScreen(screen: ClientScreen): void {
+    this.screens.delete(screen.id);
   }
 }
 
