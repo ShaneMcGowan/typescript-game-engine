@@ -489,11 +489,11 @@ export class Client {
         event.gamepad.buttons.length,
         event.gamepad.axes.length
       );
-      Input.gamepad.set(event.gamepad.index, event.gamepad);
+      Input.gamepads.set(event.gamepad.index, event.gamepad);
     });
     window.addEventListener('gamepaddisconnected', (event: GamepadEvent) => {
       // TODO: determine if we should do this or just let the gamepad go stale
-      Input.gamepad.delete(event.gamepad.index);
+      Input.gamepads.delete(event.gamepad.index);
     });
   }
 

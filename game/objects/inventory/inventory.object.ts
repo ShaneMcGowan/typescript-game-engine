@@ -11,13 +11,9 @@ import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
 import { Inventory, Item } from '@game/models/inventory.model';
 import { InventoryButtonTrashObject } from './inventory-button-trash.object';
-
+import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 
 type DraggingSource = 'inventory' | 'chest';
-
-enum Controls {
-  Close = 'tab',
-}
 
 interface Config extends SceneObjectBaseConfig {
   chest?: ChestObject
@@ -181,11 +177,13 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateClose(): void {
-    if (!Input.isKeyPressed(Controls.Close)) {
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Inventory)) {
       return;
     }
 
-    Input.clearKeyPressed(Controls.Close);
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Inventory);
+    
+    console.log('destroyed');
 
     this.destroy();
   }

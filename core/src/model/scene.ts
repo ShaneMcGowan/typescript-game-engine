@@ -107,8 +107,14 @@ export abstract class Scene {
    * query connected gamepads
    */
   private inputs(): void {
-    Input.gamepad.forEach(gamepad => {
-      Input.gamepad.set(gamepad.index, navigator.getGamepads()[gamepad.index]);
+    Input.gamepads.forEach(gamepad => {
+      // poll gamepad
+      Input.gamepads.set(gamepad.index, navigator.getGamepads()[gamepad.index]);
+
+      // update gamepad button state
+      Input.gamepads.get(0).buttons.forEach((button, index) => {
+        Input.gamepad.buttons.get(index).updateState(button.pressed);
+      });
     });
   }
 
