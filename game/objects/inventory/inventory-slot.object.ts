@@ -70,7 +70,7 @@ export class InventorySlotObject extends SceneObject {
     if (Input.isKeyPressed(Controls.QuickMove)) {
       (this.parent as InventoryObject).quickMove(this.chest ? 'chest' : 'inventory', this.index);
     } else {
-      (this.parent as InventoryObject).startDraggingItem(this.chest ? 'chest' : 'inventory', this.index);
+      (this.parent as InventoryObject).startDraggingItem('mouse', this.chest ? 'chest' : 'inventory', this.index);
     }
 
   }

@@ -24,7 +24,7 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
     this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 30, positionY: 1 }))
 
     // player
-    let player = new PlayerObject(scene, { positionX: 16, positionY: 12, });
+    let player = new PlayerObject(scene, { playerIndex: 0, positionX: 16, positionY: 12, });
     // NPCS
     this.scene.addObject(player);
     this.scene.addObject(new ShopKeeperObject(scene, { positionX: 16, positionY: 8, }));

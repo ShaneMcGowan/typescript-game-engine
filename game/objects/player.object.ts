@@ -21,6 +21,7 @@ import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar/hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
 import { Inventory, ItemRadius, ItemType } from '@game/models/inventory.model';
+import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 
 enum Direction {
   UP = 'w',
@@ -29,20 +30,17 @@ enum Direction {
   RIGHT = 'd'
 }
 
-enum Controls {
-  Inventory = 'tab',
-  Interact = 'e',
-  InteractAlt = ' '
-}
-
 const TILE_SET = 'tileset_player';
 
 const RENDERER_LAYER: number = 10;
 
 interface Config extends SceneObjectBaseConfig {
+  playerIndex: number;
 }
 
 export class PlayerObject extends SceneObject {
+  playerIndex: number; // player index to be used mainly for controller access for now
+
   targetX: number = -1;
   targetY: number = -1;
 
@@ -72,9 +70,6 @@ export class PlayerObject extends SceneObject {
   animationIndex: number = 0;
   isIdle: boolean = true;
 
-  // scroll wheel
-  latestScrollTimestamp: number; // used to track if the mouse wheel has been scrolled this frame
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -86,6 +81,8 @@ export class PlayerObject extends SceneObject {
 
     this.targetX = this.transform.position.local.x;
     this.targetY = this.transform.position.local.y;
+
+    this.playerIndex = config.playerIndex;
   }
 
 
@@ -93,22 +90,18 @@ export class PlayerObject extends SceneObject {
     this.addHotbar();
   }
 
-  onUpdate(delta: number): void {
+  onUpdate(delta: number): void {    
     this.updateMovement(delta);
     this.updateAnimations(delta);
-    this.updateHotbarViaKey();
-    this.updateHotbarViaWheel();
     this.updateAction();
     this.updateButtonInteract();
     this.updateOpenInventory();
-
-    // update at end of frame after checks have been ran
-    this.latestScrollTimestamp = Input.mouse.wheel.event.timeStamp;
   }
 
   onRender(context: CanvasRenderingContext2D): void {
     this.renderSprite(context);
     this.renderCursor(context);
+    // this.renderControllerState(context);
   }
 
   get hotbar(): Inventory {
@@ -130,24 +123,24 @@ export class PlayerObject extends SceneObject {
     }
 
     // check if button pressed
-    if (!Input.isKeyPressed([Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN])) {
+    if(!Input.isPressed<Control>(CONTROL_SCHEME, [Control.Left, Control.Right, Control.Up, Control.Down])){
       return;
     }
 
-    let movement = new Movement(this.transform.position.world.x, this.transform.position.world.y, this.targetX, this.targetY);
+    const movement = new Movement(this.transform.position.world.x, this.transform.position.world.y, this.targetX, this.targetY);
     let direction;
 
     // determine next position and set direction
-    if (Input.isKeyPressed(Direction.RIGHT)) {
+    if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Right)) {
       movement.targetX += 1;
       direction = Direction.RIGHT;
-    } else if (Input.isKeyPressed(Direction.LEFT)) {
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Left)) {
       movement.targetX -= 1;
       direction = Direction.LEFT;
-    } else if (Input.isKeyPressed(Direction.UP)) {
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Up)) {
       movement.targetY -= 1;
       direction = Direction.UP;
-    } else if (Input.isKeyPressed(Direction.DOWN)) {
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Down)) {
       movement.targetY += 1;
       direction = Direction.DOWN;
     }
@@ -247,11 +240,11 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if (!Input.isKeyPressed([Controls.Interact, Controls.InteractAlt])) {
+    if(!Input.isPressed<Control>(CONTROL_SCHEME, Control.Interact)){
       return;
     }
 
-    Input.clearKeyPressed([Controls.Interact, Controls.InteractAlt]);
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Interact)
 
     let x = this.transform.position.world.x;
     let y = this.transform.position.world.y;
@@ -315,75 +308,12 @@ export class PlayerObject extends SceneObject {
     }
   }
 
-  private updateHotbarViaKey(): void {
-    if (!this.scene.globals.player.enabled) {
-      return;
-    }
-
-    if (Input.isKeyPressed('1') === true) {
-      this.scene.globals['hotbar_selected_index'] = 0;
-      return;
-    }
-
-    if (Input.isKeyPressed('2') === true) {
-      this.scene.globals['hotbar_selected_index'] = 1;
-      return;
-    }
-
-    if (Input.isKeyPressed('3') === true) {
-      this.scene.globals['hotbar_selected_index'] = 2;
-      return;
-    }
-
-    if (Input.isKeyPressed('4') === true) {
-      this.scene.globals['hotbar_selected_index'] = 3;
-      return;
-    }
-
-    if (Input.isKeyPressed('5') === true) {
-      this.scene.globals['hotbar_selected_index'] = 4;
-      return;
-    }
-
-    // TODO: this is hard coded, if hotbar size changes this won't work properly
-  }
-
-  private updateHotbarViaWheel(): void {
-    if (!this.scene.globals.player.enabled) {
-      return;
-    }
-
-    // no new scroll events this frame
-    if (this.latestScrollTimestamp === Input.mouse.wheel.event.timeStamp) {
-      return;
-    }
-
-    // wrap hotbar if at end
-    const index = this.scene.globals['hotbar_selected_index'];
-    if (Input.mouse.wheel.event.deltaY > 0) {
-      if (index === this.hotbar.size - 1) {
-        this.scene.globals['hotbar_selected_index'] = 0;
-      } else {
-        this.scene.globals['hotbar_selected_index']++;
-      }
-    } else if (Input.mouse.wheel.event.deltaY < 0) {
-      if (index === 0) {
-        this.scene.globals['hotbar_selected_index'] = this.hotbar.size - 1;
-      } else {
-        this.scene.globals['hotbar_selected_index']--;
-      }
-    }
-
-  }
-
   private updateOpenInventory(): void {
     if (!this.scene.globals.player.enabled) {
       return;
     }
 
-    let keys = [Controls.Inventory];
-
-    if (Input.isKeyPressed(keys) === false) {
+    if(!Input.isPressed<Control>(CONTROL_SCHEME, Control.OpenInventory)){
       return;
     }
 
@@ -397,7 +327,7 @@ export class PlayerObject extends SceneObject {
       )
     );
 
-    Input.clearKeyPressed(keys);
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.OpenInventory);
   }
 
   /**
@@ -416,8 +346,8 @@ export class PlayerObject extends SceneObject {
     if (!this.scene.globals.player.actionsEnabled) {
       return;
     }
-
-    if (!Input.isMousePressed(MouseKey.Left)) {
+    
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Action)) {
       return;
     }
 
@@ -426,7 +356,7 @@ export class PlayerObject extends SceneObject {
       y: Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY)
     });
 
-    Input.clearMousePressed(MouseKey.Left);
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Action);
 
     const item = this.scene.selectedInventoryItem;
     // no item selected
@@ -576,6 +506,39 @@ export class PlayerObject extends SceneObject {
         colour: '#0000ff33',
         type: 'tile'
       }
+    );
+  }
+
+  private renderControllerState(context: CanvasRenderingContext2D): void {
+    // const gamepad = Input.gamepads.get(this.playerIndex);
+    const gamepad = navigator.getGamepads()[this.playerIndex];
+    if(gamepad === null){
+      return;
+    }
+
+    gamepad.buttons.forEach((button, index) => {
+      RenderUtils.renderText(
+        context,
+        `${index} - ${button.value} ${button.pressed} ${button.touched}`,
+        this.transform.position.world.x,
+        this.transform.position.world.y + index,
+      );
+    });
+
+    gamepad.axes.forEach((axes, index) => {
+      RenderUtils.renderText(
+        context,
+        `${index} - ${axes}`,
+        this.transform.position.world.x + 6,
+        this.transform.position.world.y + index,
+      );
+    });
+
+    RenderUtils.renderText(
+      context,
+      `${gamepad.vibrationActuator}`,
+      this.transform.position.world.x + 18,
+      this.transform.position.world.y,
     );
   }
 

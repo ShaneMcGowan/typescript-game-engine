@@ -4,6 +4,7 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
+import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 
 export interface Portrait {
   tileset: string;
@@ -154,10 +155,11 @@ export class TextboxObject extends SceneObject {
   }
 
   private updateConfirm(): void {
-
-    if (!Input.isKeyPressed([Controls.Confirm, Controls.ConfirmAlt]) && !Input.isMousePressed(MouseKey.Left)) {
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Confirm)) {
       return;
     }
+
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Confirm);
 
     // if text is scrolling, scroll to end but don't go to next segment
     if (this.scrollText) {
@@ -180,9 +182,6 @@ export class TextboxObject extends SceneObject {
       }
       this.destroy();
     }
-
-    Input.clearKeyPressed([Controls.Confirm, Controls.ConfirmAlt]);
-    Input.clearMousePressed(MouseKey.Left);
   }
 
   private renderOverlay(context: CanvasRenderingContext2D): void {

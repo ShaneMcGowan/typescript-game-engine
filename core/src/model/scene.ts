@@ -5,6 +5,8 @@ import { type SceneObjectBoundingBox, type SceneObject } from './scene-object';
 import { type Client } from '@core/client';
 import { Assets } from '@core/utils/assets.utils';
 import { defaultRenderer } from '@core/objects/renderer/default.renderer';
+import { Input } from '@core/utils/input.utils';
+import { Vector } from './vector';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
@@ -43,7 +45,6 @@ export interface ObjectFilter {
 export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
 
 export abstract class Scene {
-
   // objects
   objects: Map<string, SceneObject> = new Map<string, SceneObject>();
   // TODO: how do we access types for this from the scene object?
@@ -83,13 +84,13 @@ export abstract class Scene {
   }
 
   frame(delta: number): void {
+    this.inputs();
     this.awake();
     this.update(delta);
     this.render(delta);
 
-
     if (this.customRenderer) {
-      // Scene.background needs to be called in custom renderers 
+      // Scene.background needs to be called in custom renderers
       this.customRenderer(this.renderingContext);
     } else {
       this.background();
@@ -101,6 +102,29 @@ export abstract class Scene {
     if (this.flaggedForMapChange) {
       this.changeMap(this.flaggedForMapChange);
     }
+  }
+
+  /**
+   * query connected gamepads
+   */
+  private inputs(): void {
+    Input.gamepads.forEach(gamepad => {
+      // poll gamepad
+      Input.gamepads.set(gamepad.index, navigator.getGamepads()[gamepad.index]);
+
+      // update gamepad state
+      Input.gamepad.connected = Input.gamepads.get(0).connected;
+
+      // update gamepad button state
+      Input.gamepads.get(0).buttons.forEach((button, index) => {
+        Input.gamepad.buttons.get(index).updateState(button.pressed);
+      });
+
+      // update gamepad axes state
+      const axes = Input.gamepads.get(0).axes;
+      Input.gamepad.leftStick = new Vector(axes[0], axes[1]);
+      Input.gamepad.rightStick = new Vector(axes[2], axes[3]);
+    });
   }
 
   private awake(): void {
@@ -117,7 +141,7 @@ export abstract class Scene {
     }
   }
 
-  background(options: { xStart?: number; yStart?: number; xEnd?: number; yEnd?: number } = {}): void {
+  background(options: { xStart?: number; yStart?: number; xEnd?: number; yEnd?: number; } = {}): void {
     if (this.client.flags.frame.log.backgroundDuration) {
       console.time('[frame] background');
     }
@@ -158,7 +182,6 @@ export abstract class Scene {
             tile.sprite.width,
             tile.sprite.height
           );
-
         }
       }
     });

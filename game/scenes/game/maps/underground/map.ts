@@ -16,7 +16,7 @@ export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    const player = new PlayerObject(scene, { positionX: 15, positionY: 8, });
+    const player = new PlayerObject(scene, { playerIndex: 0, positionX: 15, positionY: 8, });
     this.scene.addObject(player);
 
     // scene init
