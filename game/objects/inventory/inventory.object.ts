@@ -12,6 +12,7 @@ import { InventoryButtonCloseObject } from './inventory-button-close.object';
 import { Inventory, Item } from '@game/models/inventory.model';
 import { InventoryButtonTrashObject } from './inventory-button-trash.object';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
+import { InventoryTooltipObject } from './inventory-tooltip.object';
 
 type DraggingSource = 'inventory' | 'chest';
 type DraggingType = 'mouse' | 'controller';
@@ -41,7 +42,9 @@ export class InventoryObject extends SceneObject {
     item: Item;
     index: number;
     source: DraggingSource;
-  } | undefined
+  } | undefined;
+
+  private tooltip: InventoryTooltipObject | undefined;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -156,12 +159,16 @@ export class InventoryObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {
-    this.updateDraggingMouse();
-    this.updateClose();
+    this.updateMouseDragging();
+    this.updateMouseAddTooltip();
+    this.updateMouseRemoveTooltip();
+    
     this.updateControllerGridPosition();
     this.updateControllerQuickMove();
     this.updateControllerStopDragging();
     this.updateControllerStartDragging();
+    
+    this.updateClose();
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -171,8 +178,6 @@ export class InventoryObject extends SceneObject {
     this.renderControllerInventoryItem(context);
     this.renderControllerInventoryItemStackSize(context);
     this.renderControllerInventorySelector(context);
-
-    this.renderTooltip(context);
   }
 
   onDestroy(): void {
@@ -195,7 +200,7 @@ export class InventoryObject extends SceneObject {
     return this.grid.positions[this.gridPosition.y][this.gridPosition.x]
   }
 
-  private updateDraggingMouse(): void {
+  private updateMouseDragging(): void {
     if (this.dragging === undefined) {
       return;
     }
@@ -232,6 +237,65 @@ export class InventoryObject extends SceneObject {
     }
 
     this.dragging = undefined;
+  }
+
+  private updateMouseAddTooltip(): void {
+    if(this.tooltip){
+      return;
+    }
+
+    const filter: ObjectFilter = {
+      typeMatch: [InventorySlotObject],
+      boundingBox: SceneObject.calculateBoundingBox(
+        Input.mouse.position.x,
+        Input.mouse.position.y,
+        2,
+        2,
+      )
+    }
+    const slot = this.scene.getObject(filter) as InventorySlotObject;
+    
+    if(slot === undefined){
+      return;
+    }
+
+    if(slot.item === undefined){
+      return;
+    }
+
+    this.tooltip = new InventoryTooltipObject(
+      this.scene,
+      {
+        item: slot.item,
+        index: slot.index,
+        width: 12,
+        positionX: slot.boundingBox.world.right,
+        positionY: slot.boundingBox.world.bottom,
+      }
+    );
+    this.addChild(this.tooltip);
+  }
+
+  private updateMouseRemoveTooltip(): void {
+    if(this.tooltip === undefined){
+      return;
+    }
+
+    const filter: ObjectFilter = {
+      typeMatch: [InventorySlotObject],
+      boundingBox: SceneObject.calculateBoundingBox(
+        Input.mouse.position.x,
+        Input.mouse.position.y,
+        2,
+        2,
+      )
+    }
+    const slot = this.scene.getObject(filter) as InventorySlotObject;
+    
+    if(this.dragging || slot === undefined || slot.index !== this.tooltip.index){
+      this.removeChild(this.tooltip);
+      this.tooltip = undefined;
+    }
   }
 
   private updateClose(): void {
@@ -464,58 +528,6 @@ export class InventoryObject extends SceneObject {
       x,
       y,
     );
-  }
-
-  private renderTooltip(context: CanvasRenderingContext2D): void {
-    if (this.isDragging) {
-      return;
-    }
-
-    const filter: ObjectFilter = {
-      position: {
-        x: Input.mouse.position.x,
-        y: Input.mouse.position.y
-      },
-      typeMatch: [InventorySlotObject]
-    };
-    const slot = (this.scene.getObject(filter) as InventorySlotObject);
-
-    if (slot === undefined) {
-      return;
-    }
-
-    if (slot.item === undefined) {
-      return;
-    }
-
-    RenderUtils.fillRectangle(
-      context,
-      Input.mouse.position.x + 0.5,
-      Input.mouse.position.y + 0.25,
-      20,
-      5,
-      {
-        type: 'tile',
-        colour: '#ffffffcc'
-      }
-    );
-
-    RenderUtils.renderText(
-      context,
-      `${Inventory.getItemName(slot.item)}`,
-      Input.mouse.position.x + 1,
-      Input.mouse.position.y + 1
-    );
-
-    const description = Inventory.getItemDescription(slot.item);
-    description.split('\n').forEach((line, index) => {
-      RenderUtils.renderText(
-        context,
-        `${line}`,
-        Input.mouse.position.x + 1,
-        Input.mouse.position.y + 2 + (index * 0.75)
-      );
-    });
   }
 
   private renderControllerInventorySelector(context: CanvasRenderingContext2D): void {
