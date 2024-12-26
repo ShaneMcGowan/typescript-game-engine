@@ -225,8 +225,12 @@ export class InventoryObject extends SceneObject {
     if (slot === undefined) {
       this.stopDraggingItem();
     } else if (slot instanceof InventoryButtonTrashObject) {
-      // destroy
-      this.dragging = undefined;
+      if(Inventory.canItemBeDestroyed(this.dragging.item)){
+        // destroy
+        this.dragging = undefined;
+      } else {
+        this.stopDraggingItem();
+      }
     } else if (slot instanceof InventorySlotObject) {
       // swap
       const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
@@ -309,6 +313,10 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateControllerGridPosition(): void {
+    if(!Input.gamepad.connected){
+      return;
+    }
+
     if (!Input.isPressed<Control>(CONTROL_SCHEME, [Control.Up, Control.Down, Control.Left, Control.Right])) {
       return;
     }
@@ -406,6 +414,10 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateControllerStopDragging(): void {
+    if(!Input.gamepad.connected){
+      return;
+    }
+
     if (this.dragging === undefined) {
       return;
     }
@@ -433,8 +445,12 @@ export class InventoryObject extends SceneObject {
     if (slot === undefined) {
       this.stopDraggingItem();
     } else if (slot instanceof InventoryButtonTrashObject) {
-      // destroy
-      this.dragging = undefined;
+      if(Inventory.canItemBeDestroyed(this.dragging.item)){
+        // destroy
+        this.dragging = undefined;
+      } else {
+        this.stopDraggingItem();
+      }
     } else if (slot instanceof InventorySlotObject) {
       // swap
       const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;

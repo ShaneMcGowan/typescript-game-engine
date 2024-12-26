@@ -102,6 +102,19 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.ShopKey]: `A key that opens the Shop door,\nit's old and rusty looking.\nIt tastes kinda funny too.`,
 }
 
+export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
+  [ItemType.Chicken]: true,
+  [ItemType.Egg]: true,
+  [ItemType.WheatSeeds]: true,
+  [ItemType.Wheat]: true,
+  [ItemType.TomatoSeeds]: true,
+  [ItemType.Tomato]: true,
+  [ItemType.Hoe]: true,
+  [ItemType.WateringCan]: true,
+  [ItemType.Chest]: true,
+  [ItemType.ShopKey]: false
+}
+
 export interface ItemSprite {
   tileset: string;
   spriteX: number;
@@ -282,4 +295,9 @@ export class Inventory {
   static getItemDescription(item: Item): string {
     return TYPE_TO_DESCRIPTION_MAP[item.type];
   }
+
+  static canItemBeDestroyed(item: Item): boolean {
+    return TYPE_TO_CAN_DESTROY_MAP[item.type];
+  }
+  
 }
