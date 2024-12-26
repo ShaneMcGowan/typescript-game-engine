@@ -1,15 +1,18 @@
-import { ControlScheme, GamepadKey } from "@core/utils/input.utils";
+import { ControlScheme, GamepadKey, MouseKey } from "@core/utils/input.utils";
 
 export enum Control {
   Up = 'Up',
   Down = 'Down',
   Left = 'Left',
   Right = 'Right',
-  Inventory = 'Inventory',
+  OpenInventory = 'OpenInventory',
+  CloseInventory = 'CloseInventory',
+  CloseShop = 'CloseShop',
   Interact = 'Interact',
   Action = 'Action',
   HotbarLeft = 'HotbarLeft',
   HotbarRight = 'HotbarRight',
+  Confirm = 'Confirm',
 }
 
 export const CONTROL_SCHEME: ControlScheme<Control> = {
@@ -33,19 +36,29 @@ export const CONTROL_SCHEME: ControlScheme<Control> = {
     mouse: [],
     controller: [GamepadKey.DirectionRight]
   },
-  [Control.Inventory]: {
+  [Control.OpenInventory]: {
     keyboard: ['tab'],
     mouse: [],
-    controller: [GamepadKey.OptionsRight]
+    controller: [GamepadKey.Touchpad]
+  },
+  [Control.CloseInventory]: {
+    keyboard: ['tab'],
+    mouse: [],
+    controller: [GamepadKey.Touchpad, GamepadKey.ButtonRight]
+  },
+  [Control.CloseShop]: {
+    keyboard: ['tab'],
+    mouse: [],
+    controller: [GamepadKey.ButtonRight]
   },
   [Control.Interact]: {
     keyboard: ['e', ' '],
     mouse: [],
-    controller: [GamepadKey.ButtonDown]
+    controller: [GamepadKey.ButtonBottom]
   },
   [Control.Action]: {
     keyboard: [],
-    mouse: [],
+    mouse: [MouseKey.Left],
     controller: [GamepadKey.TriggerRight]
   },
   [Control.HotbarLeft]: {
@@ -57,5 +70,10 @@ export const CONTROL_SCHEME: ControlScheme<Control> = {
     keyboard: [],
     mouse: [],
     controller: [GamepadKey.BumperRight]
+  },
+  [Control.Confirm]: {
+    keyboard: ['e', ' '],
+    mouse: [MouseKey.Left],
+    controller: [GamepadKey.ButtonBottom]
   }
 } 

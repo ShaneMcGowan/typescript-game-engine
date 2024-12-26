@@ -101,7 +101,7 @@ export class PlayerObject extends SceneObject {
   onRender(context: CanvasRenderingContext2D): void {
     this.renderSprite(context);
     this.renderCursor(context);
-    this.renderControllerState(context);
+    // this.renderControllerState(context);
   }
 
   get hotbar(): Inventory {
@@ -313,7 +313,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(!Input.isPressed<Control>(CONTROL_SCHEME, Control.Inventory)){
+    if(!Input.isPressed<Control>(CONTROL_SCHEME, Control.OpenInventory)){
       return;
     }
 
@@ -327,7 +327,7 @@ export class PlayerObject extends SceneObject {
       )
     );
 
-    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Inventory);
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.OpenInventory);
   }
 
   /**

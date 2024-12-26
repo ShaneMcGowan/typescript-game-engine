@@ -3,7 +3,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type ChestObject } from '@game/objects/chest.object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { Input } from '@core/utils/input.utils';
+import { GamepadKey, Input, MouseKey } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
 import { InventorySlotObject } from './inventory-slot.object';
 import { ObjectFilter } from '@core/model/scene';
@@ -14,15 +14,30 @@ import { InventoryButtonTrashObject } from './inventory-button-trash.object';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 
 type DraggingSource = 'inventory' | 'chest';
+type DraggingType = 'mouse' | 'controller';
 
 interface Config extends SceneObjectBaseConfig {
   chest?: ChestObject
 }
 
+interface Grid {
+  columns: number;
+  rows: number;
+  positions: { x: number; y: number; }[][];
+  selector: {
+    x: 0,
+    y: 0,
+  }
+}
+
 export class InventoryObject extends SceneObject {
   private chest: ChestObject | undefined = undefined;
+  
+  private grid: Grid;
+  private gridPosition: { x: number, y: number } = { x: 0, y: 0 };
 
   dragging: {
+    type: DraggingType;
     item: Item;
     index: number;
     source: DraggingSource;
@@ -42,6 +57,16 @@ export class InventoryObject extends SceneObject {
   }
 
   onAwake(): void {
+    this.grid = {
+      columns: 0,
+      rows: 0,
+      selector: {
+        x: 0,
+        y: 0,
+      },
+      positions: []
+    };
+
     const slots = [];
 
     // inventory size
@@ -62,14 +87,30 @@ export class InventoryObject extends SceneObject {
 
     const marginLeft = ((CanvasConstants.CANVAS_TILE_WIDTH - (columnsTotal * width)) / 2) + (width / 2); // width / 2 due to objects being drawn from their center
 
+    // configure grid
+    this.grid.rows = rows;
+    this.grid.columns = columns;
+
     for (let row = 0; row < rows; row++) {
       for (let column = 0; column < columns; column++) {
+        
+        // initialise position array
+        if(column === 0){
+          this.grid.positions[row] = [];
+        }
+
         const index = (row * columns) + column;
 
+        const positionX = marginLeft + (column * width);
+        const positionY = marginTopInventory + (row * height);
+
+        // store position
+        this.grid.positions[row][column] = { x: positionX, y: positionY };
+        
         slots.push(
           new InventorySlotObject(this.scene, {
-            positionX: marginLeft + (column * width),
-            positionY: marginTopInventory + (row * height),
+            positionX: positionX,
+            positionY: positionY,
             index: index
           })
         );
@@ -96,13 +137,13 @@ export class InventoryObject extends SceneObject {
     slots.forEach(slot => this.addChild(slot));
 
     this.addChild(new InventoryButtonCloseObject(this.scene, {
-      positionX: 30,
-      positionY: 2
+      positionX: 29,
+      positionY: 1
     }));
 
     this.addChild(new InventoryButtonTrashObject(this.scene, {
-      positionX: 28,
-      positionY: 2
+      positionX: 27,
+      positionY: 1
     }));
 
     this.addChild(new FillObject(this.scene, {
@@ -115,13 +156,22 @@ export class InventoryObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {
-    this.updateDragging();
+    this.updateDraggingMouse();
     this.updateClose();
+    this.updateControllerGridPosition();
+    this.updateControllerQuickMove();
+    this.updateControllerStopDragging();
+    this.updateControllerStartDragging();
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    this.renderInventoryItem(context);
-    this.renderInventoryItemStackSize(context);
+    this.renderMouseInventoryItem(context);
+    this.renderMouseInventoryItemStackSize(context);
+    
+    this.renderControllerInventoryItem(context);
+    this.renderControllerInventoryItemStackSize(context);
+    this.renderControllerInventorySelector(context);
+
     this.renderTooltip(context);
   }
 
@@ -141,12 +191,20 @@ export class InventoryObject extends SceneObject {
     return this.scene.globals.inventory;
   }
 
-  private updateDragging(): void {
+  get controllerSelectorPosition(): { x: number, y: number } | undefined {
+    return this.grid.positions[this.gridPosition.y][this.gridPosition.x]
+  }
+
+  private updateDraggingMouse(): void {
     if (this.dragging === undefined) {
       return;
     }
 
-    if (Input.mouse.click.left === true) {
+    if(this.dragging.type !== 'mouse'){
+      return;
+    }
+
+    if (Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
@@ -177,19 +235,160 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateClose(): void {
-    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Inventory)) {
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.CloseInventory)) {
       return;
     }
 
-    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Inventory);
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.CloseInventory);
     
-    console.log('destroyed');
-
     this.destroy();
   }
 
-  private renderInventoryItem(context: CanvasRenderingContext2D): void {
+  private updateControllerGridPosition(): void {
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, [Control.Up, Control.Down, Control.Left, Control.Right])) {
+      return;
+    }
+
+    if(Input.isPressed<Control>(CONTROL_SCHEME, Control.Up)){
+      if(this.gridPosition.y > 0){
+        this.gridPosition.y--;
+      }
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Right)){
+      if(this.gridPosition.x < this.grid.rows - 1){
+        this.gridPosition.x++;
+      }
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Down)) {
+      if(this.gridPosition.y < this.grid.columns - 1){
+        this.gridPosition.y++;
+      }
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Left)){
+      if(this.gridPosition.x > 0){
+        this.gridPosition.x--;
+      }
+    }
+
+    Input.clearPressed<Control>(CONTROL_SCHEME, [Control.Up, Control.Down, Control.Left, Control.Right]);
+  }
+
+  private updateControllerQuickMove(): void {
+    if(!Input.gamepad.connected){
+      return;
+    }
+
+    const key = GamepadKey.ButtonTop;
+
+    if (!Input.isButtonPressed(key)) {
+      return;
+    }
+
+    Input.clearButtonPressed(key);
+
+    const filter: ObjectFilter = {
+      typeMatch: [InventorySlotObject],
+      boundingBox: SceneObject.calculateBoundingBox(
+        this.controllerSelectorPosition.x,
+        this.controllerSelectorPosition.y,
+        2,
+        2,
+      )
+    }
+    const slot = this.scene.getObject(filter);
+    
+    if(slot === undefined){
+      return;
+    }
+
+    this.quickMove(
+      'inventory', // TODO: source of inventory shouldn't be hard coded
+      (slot as InventorySlotObject).index
+    );
+  }
+
+  private updateControllerStartDragging(): void {
+    if(!Input.gamepad.connected){
+      return;
+    }
+
+    const key = GamepadKey.ButtonBottom;
+
+    if (!Input.isButtonPressed(key)) {
+      return;
+    }
+
+    Input.clearButtonPressed(key);
+
+    const filter: ObjectFilter = {
+      typeMatch: [InventorySlotObject],
+      position: {
+        x: this.controllerSelectorPosition.x + 1,
+        y: this.controllerSelectorPosition.y + 1,
+      }
+    }
+    const slot = this.scene.getObject(filter) as InventorySlotObject;
+    
+    if(slot === undefined){
+      return;
+    }
+
+    if(slot.item === undefined){
+      return;
+    }
+
+    this.startDraggingItem(
+      'controller',
+      'inventory', // TODO: source of inventory shouldn't be hard coded
+      slot.index
+    );
+  }
+
+  private updateControllerStopDragging(): void {
     if (this.dragging === undefined) {
+      return;
+    }
+
+    if(this.dragging.type !== 'controller'){
+      return;
+    }
+
+    if (!Input.isButtonPressed(GamepadKey.ButtonBottom)) {
+      return;
+    }
+    Input.clearButtonPressed(GamepadKey.ButtonBottom);
+
+    const filter: ObjectFilter = {
+      boundingBox: SceneObject.calculateBoundingBox(
+        this.controllerSelectorPosition.x,
+        this.controllerSelectorPosition.y,
+        2,
+        2,
+      ),
+      typeMatch: [InventorySlotObject, InventoryButtonTrashObject]
+    };
+
+    const slot = this.scene.getObject(filter);
+    if (slot === undefined) {
+      this.stopDraggingItem();
+    } else if (slot instanceof InventoryButtonTrashObject) {
+      // destroy
+      this.dragging = undefined;
+    } else if (slot instanceof InventorySlotObject) {
+      // swap
+      const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
+      const target = slot.chest === undefined ? this.inventory : this.chest.inventory;
+
+      source.items[this.dragging.index] = target.items[slot.index];
+      target.items[slot.index] = this.dragging.item;
+    }
+
+    this.dragging = undefined;
+  }
+
+  private renderMouseInventoryItem(context: CanvasRenderingContext2D): void {
+    if (this.dragging === undefined) {
+      return;
+    }
+
+    if(this.dragging.type !== 'mouse'){
       return;
     }
 
@@ -203,11 +402,58 @@ export class InventoryObject extends SceneObject {
     );
   }
 
-  private renderInventoryItemStackSize(context: CanvasRenderingContext2D): void {
+  private renderControllerInventoryItem(context: CanvasRenderingContext2D): void {
     if (this.dragging === undefined) {
       return;
     }
 
+    if(this.dragging.type !== 'controller'){
+      return;
+    }
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[this.dragging.item.sprite.tileset],
+      this.dragging.item.sprite.spriteX,
+      this.dragging.item.sprite.spriteY,
+      this.controllerSelectorPosition.x + 0.5,
+      this.controllerSelectorPosition.y + 0.5,
+    );
+  }
+
+  private renderMouseInventoryItemStackSize(context: CanvasRenderingContext2D): void {
+    if (this.dragging === undefined) {
+      return;
+    }
+
+    if (this.dragging.type !== 'mouse') {
+      return;
+    }
+
+    this.renderInventoryItemStackSize(
+      context,
+      Input.mouse.position.x + 0.25,
+      Input.mouse.position.y + 0.75,
+    )
+  }
+
+  private renderControllerInventoryItemStackSize(context: CanvasRenderingContext2D): void {
+    if (this.dragging === undefined) {
+      return;
+    }
+
+    if (this.dragging.type !== 'controller') {
+      return;
+    }
+
+    this.renderInventoryItemStackSize(
+      context,
+      this.controllerSelectorPosition.x + 1.25,
+      this.controllerSelectorPosition.y + 1.75,
+    )
+  }
+
+  private renderInventoryItemStackSize(context: CanvasRenderingContext2D, x: number, y: number): void {
     if (this.dragging.item.maxStackSize === 1) {
       return;
     }
@@ -215,8 +461,8 @@ export class InventoryObject extends SceneObject {
     RenderUtils.renderText(
       context,
       `${this.dragging.item.currentStackSize}`,
-      Input.mouse.position.x + 0.25,
-      Input.mouse.position.y + 0.75,
+      x,
+      y,
     );
   }
 
@@ -232,8 +478,8 @@ export class InventoryObject extends SceneObject {
       },
       typeMatch: [InventorySlotObject]
     };
-
     const slot = (this.scene.getObject(filter) as InventorySlotObject);
+
     if (slot === undefined) {
       return;
     }
@@ -270,15 +516,39 @@ export class InventoryObject extends SceneObject {
         Input.mouse.position.y + 2 + (index * 0.75)
       );
     });
-
-
   }
 
-  startDraggingItem(source: DraggingSource, inventoryIndex: number): void {
+  private renderControllerInventorySelector(context: CanvasRenderingContext2D): void {
+    if(!Input.gamepad.connected){
+      return;
+    }
+
+    if(this.grid === undefined){
+      return;
+    }
+
+    if(this.controllerSelectorPosition === undefined){
+      return;
+    }
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images.tileset_ui,
+      9,
+      9,
+      this.controllerSelectorPosition.x,
+      this.controllerSelectorPosition.y,
+      2,
+      2,
+    );
+  }
+
+  startDraggingItem(type: DraggingType, source: DraggingSource, inventoryIndex: number): void {
     this.dragging = {
+      type,
       item: this.getInventoryFromSource(source).items[inventoryIndex],
       index: inventoryIndex,
-      source: source,
+      source,
     }
 
     this.getInventoryFromSource(this.dragging.source).items[inventoryIndex] = undefined;

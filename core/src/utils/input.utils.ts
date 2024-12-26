@@ -1,3 +1,5 @@
+import { Vector } from '@core/model/vector';
+
 export enum MouseKey {
   Left = 'left',
   Middle = 'middle',
@@ -5,10 +7,10 @@ export enum MouseKey {
 }
 
 export enum GamepadKey {
-  ButtonDown = 0,
+  ButtonBottom = 0,
   ButtonRight = 1,
   ButtonLeft = 2,
-  ButtonUp = 3,
+  ButtonTop = 3,
 
   BumperLeft = 4,
   BumperRight = 5,
@@ -28,7 +30,7 @@ export enum GamepadKey {
   DirectionRight = 15,
 
   Power = 16,
-  Touchpad = 17
+  Touchpad = 17 // TODO: what does this refer to on non PS5 controllers?
 }
 
 interface Mouse {
@@ -78,7 +80,10 @@ class GamepadButtonState {
 }
 
 class ClientGamepad {
+  connected: boolean = false;
   buttons: Map<GamepadKey, GamepadButtonState> = new Map<GamepadKey, GamepadButtonState>();
+  leftStick: Vector = new Vector(0, 0);
+  rightStick: Vector = new Vector(0, 0);
 
   constructor() {
     Object.values(GamepadKey).forEach(value => this.buttons.set(value as GamepadKey, new GamepadButtonState())); // TODO: is this typing valid
@@ -194,8 +199,6 @@ export abstract class Input {
     if (!Array.isArray(buttons)) {
       buttons = [buttons];
     }
-
-    console.log(buttons);
 
     for (const button of buttons) {
       this.gamepad.buttons.get(button).clearState();

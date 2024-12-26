@@ -7,6 +7,7 @@ import { ShopItemBuyObject } from './shop/shop-item-buy.object';
 import { ShopItemSellObject } from './shop/shop-item-sell.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { Inventory, ItemType } from '@game/models/inventory.model';
+import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 
 enum Controls {
   Close = 'tab',
@@ -84,11 +85,11 @@ export class ShopObject extends SceneObject {
   }
 
   private updateButtonClose(): void {
-    if (!Input.isKeyPressed(Controls.Close)) {
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.CloseShop)) {
       return;
     }
 
-    Input.clearKeyPressed(Controls.Close);
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.CloseShop);
 
     this.close();
   }

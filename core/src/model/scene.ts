@@ -6,6 +6,7 @@ import { type Client } from '@core/client';
 import { Assets } from '@core/utils/assets.utils';
 import { defaultRenderer } from '@core/objects/renderer/default.renderer';
 import { Input } from '@core/utils/input.utils';
+import { Vector } from './vector';
 
 export type SceneConstructorSignature = new (client: Client) => Scene;
 
@@ -111,10 +112,18 @@ export abstract class Scene {
       // poll gamepad
       Input.gamepads.set(gamepad.index, navigator.getGamepads()[gamepad.index]);
 
+      // update gamepad state
+      Input.gamepad.connected = Input.gamepads.get(0).connected;
+
       // update gamepad button state
       Input.gamepads.get(0).buttons.forEach((button, index) => {
         Input.gamepad.buttons.get(index).updateState(button.pressed);
       });
+
+      // update gamepad axes state
+      const axes = Input.gamepads.get(0).axes;
+      Input.gamepad.leftStick = new Vector(axes[0], axes[1]);
+      Input.gamepad.rightStick = new Vector(axes[2], axes[3]);
     });
   }
 
