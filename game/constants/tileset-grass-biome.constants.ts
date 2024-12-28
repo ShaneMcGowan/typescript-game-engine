@@ -21,4 +21,15 @@ export class TilesetGrassBiome {
     },
   };
 
+  static readonly SmallTree: Tile<'Default', 'Default'> = { 
+    Default: {
+      Default: {
+        x: 0, 
+        y: 0,
+        width: 1,
+        height: 2
+      },
+    },
+  };
+
 }

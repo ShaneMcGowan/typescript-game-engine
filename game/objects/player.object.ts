@@ -26,6 +26,8 @@ import { useAxeOnChicken } from './player/axe/use-axe-on-chicken.action';
 import { usePickaxeOnChicken } from './player/pickaxe/use-pickaxe-on-chicken.action';
 import { RockObject } from './rock.object';
 import { usePickaxeOnRock } from './player/pickaxe/use-pickaxe-on-rock.action';
+import { TreeObject } from './tree.object';
+import { useAxeOnTree } from './player/axe/use-axe-on-tree.action';
 
 enum Direction {
   UP = 'w',
@@ -452,6 +454,9 @@ export class PlayerObject extends SceneObject {
           switch(true){
             case object instanceof ChickenObject:
               useAxeOnChicken(this.scene, object);
+              return;
+            case object instanceof TreeObject:
+              useAxeOnTree(this.scene, object);
               return;
             default:
               return;

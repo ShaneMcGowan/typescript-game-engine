@@ -12,6 +12,7 @@ export enum ItemType {
   Axe = 'Axe',
   Pickaxe = 'Pickaxe',
   Rock = 'Rock',
+  Log = 'Log',
 }
 
 /**
@@ -41,6 +42,7 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.Axe]: ItemRadius.Player,
   [ItemType.Pickaxe]: ItemRadius.Player,
   [ItemType.Rock]: ItemRadius.None,
+  [ItemType.Log]: ItemRadius.None,
 }
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
@@ -57,6 +59,7 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.Axe]: { tileset: 'tileset_tools', x: 4, y: 2, },
   [ItemType.Pickaxe]: { tileset: 'tileset_tools', x: 4, y: 4, },
   [ItemType.Rock]: { tileset: 'tileset_grass_biome', x: 7, y: 1, },
+  [ItemType.Log]: { tileset: 'tileset_grass_biome', x: 5, y: 2, },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -73,6 +76,7 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.Axe]: 1,
   [ItemType.Pickaxe]: 1,
   [ItemType.Rock]: 99,
+  [ItemType.Log]: 99,
 };
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
@@ -89,6 +93,7 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Axe]: 0,
   [ItemType.Pickaxe]: 0,
   [ItemType.Rock]: 1,
+  [ItemType.Log]: 1,
 }
 
 export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
@@ -105,6 +110,7 @@ export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
   [ItemType.Axe]: 'Axe',
   [ItemType.Pickaxe]: 'Pickaxe',
   [ItemType.Rock]: 'Rock',
+  [ItemType.Log]: 'Log',
 }
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
@@ -120,7 +126,8 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.GateKey]: `A key for a Gate, it's old and rusty looking. It tastes kinda funny too.`,
   [ItemType.Axe]: `A tool with a sharp blade, I can use this to chop down trees.`,
   [ItemType.Pickaxe]: `A tool with a strong blunt head, I can use this to break rocks.`,
-  [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make stone tools.`,
+  [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make tools.`,
+  [ItemType.Log]: `A log that was cut from a mighty tree, I can use this to make tools.`,
 }
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
@@ -137,6 +144,7 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: true,
+  [ItemType.Log]: true,
 }
 
 export interface ItemSprite {

@@ -22,6 +22,7 @@ import background from './background.json';
 import { GateObject } from '@game/objects/world/gate.object';
 import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
 import { RockObject } from '@game/objects/rock.object';
+import { TreeObject } from '@game/objects/tree.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -159,6 +160,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { positionX: 23, positionY: 8 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 21, positionY: 6 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 25, positionY: 15 }));
+
+    // trees
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 2 }));
 
   }
 }
