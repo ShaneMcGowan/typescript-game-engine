@@ -12,20 +12,22 @@ export function usePickaxeOnRock(scene: SCENE_GAME, object: RockObject): void {
     {
       text: `The rock shatters into pieces.`,
       onComplete: () => {
-        scene.addObject(new ItemObject(
-          scene, 
-          {
-            type: ItemType.Rock,
-            positionX: object.transform.position.world.x,
-            positionY: object.transform.position.world.y,
-          }
-        ))
+        
         scene.globals.player.enabled = true;
       },
     }
   );
 
   scene.addObject(textbox);
-
+  
   object.destroy();
+
+  scene.addObject(new ItemObject(
+    scene, 
+    {
+      type: ItemType.Rock,
+      positionX: object.transform.position.world.x,
+      positionY: object.transform.position.world.y,
+    }
+  ))
 }

@@ -49,7 +49,8 @@ const NPC_FARMERS_SON = {
   details: { ...NPC_FARMERS_SON_DETAILS },
   text: {
     intro: `Hi, you must be new around here. I'm the farmer's son. If you're looking for something to do, you should go speak with my father. He should be back at our house.`,
-    shack_open: `Go find my Father, he's probably back at our house. He'll have something for you to do.`
+    shack_open: `Go find my Father, he's probably back at our house. He'll have something for you to do.`,
+    other: `When I grow up I want to be a main character like you. My father says it's just fine to be an NPC like him but I have delusions of grandure due to being hit on the head as a child.`
   }
 };
 

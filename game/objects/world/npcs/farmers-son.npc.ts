@@ -25,6 +25,8 @@ export class FarmersSonObject extends NpcObject {
     protected config: Config
   ) {
     config.animations = ANIMATION;
+    config.name = SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.name;
+    config.portrait = SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.portrait;
     super(scene, config);
   }
 
@@ -32,52 +34,42 @@ export class FarmersSonObject extends NpcObject {
     super.onUpdate(delta);
   }
 
-  get isShackLocked(): boolean {
-    return this.scene.globals.flags.shackDoorLocked;
+  get sceneFlags() {
+    return this.scene.globals.flags;
+  }
+
+  get quests() {
+    return this.scene.globals.quests;
   }
 
   interact(): void {
-    if(this.isShackLocked){
+    if(this.sceneFlags.shackDoorLocked){
       this.startStageIntro();
-    } else {
+    } else if(!this.quests.break_rocks.complete) {
       this.startStageShackOpen();
+    } else {
+      this.startStageOther();
     }
   };
 
   private startStageIntro(): void {
-    this.scene.globals.player.enabled = false;
-
-    this.scene.addObject(
-      new TextboxObject(
-        this.scene,
-        {
-          name: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.name,
-          portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.portrait,
-          text: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.text.intro,
-          onComplete: () => {
-            this.scene.globals.flags.shackDoorLocked = false;
-            this.scene.globals.player.enabled = true;
-          },
-        }
-      )
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.text.intro,
+      () => {
+        this.scene.globals.flags.shackDoorLocked = false
+      }
     );
   }
 
   private startStageShackOpen(): void {
-    this.scene.globals.player.enabled = false;
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.text.shack_open,
+    );
+  }
 
-    this.scene.addObject(
-      new TextboxObject(
-        this.scene,
-        {
-          name: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.name,
-          portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.portrait,
-          text: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.text.shack_open,
-          onComplete: () => {
-            this.scene.globals.player.enabled = true;
-          },
-        }
-      )
+  private startStageOther(): void {
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.text.other,
     );
   }
 
