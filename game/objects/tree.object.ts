@@ -9,8 +9,10 @@ import { ItemObject } from "./item.object";
 import { ItemType } from "@game/models/inventory.model";
 import { MathUtils } from "@core/utils/math.utils";
 
+type Type = 'big' | 'small';
+
 interface Config extends SceneObjectBaseConfig {
-  type?: 'big' | 'small';
+  type: Type;
 }
 
 export class TreeObject extends SceneObject implements Interactable {
@@ -32,7 +34,10 @@ export class TreeObject extends SceneObject implements Interactable {
   }
 
   onUpdate(delta: number): void {
-    this.updateFruit(delta);
+    // only grow fruit on big trees
+    if(this.type === 'big'){
+      this.updateFruit(delta);
+    }
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -47,6 +52,10 @@ export class TreeObject extends SceneObject implements Interactable {
     }
 
     this.renderFruit(context);
+  }
+
+  get type(): Type {
+    return this.config.type;
   }
 
   private updateFruit(delta: number): void {

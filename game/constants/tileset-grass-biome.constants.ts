@@ -60,4 +60,21 @@ export class TilesetGrassBiome {
     }
   }
 
+  static readonly Stump: Tile<'Default', 'Big' | 'Small'> = { 
+    Default: {
+      Big: {
+        x: 4, 
+        y: 2,
+        width: 1,
+        height: 1
+      },
+      Small: {
+        x: 3, 
+        y: 2,
+        width: 1,
+        height: 1
+      },
+    },
+  };
+
 }

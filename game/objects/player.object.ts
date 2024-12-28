@@ -28,6 +28,8 @@ import { RockObject } from './rock.object';
 import { usePickaxeOnRock } from './player/pickaxe/use-pickaxe-on-rock.action';
 import { TreeObject } from './tree.object';
 import { useAxeOnTree } from './player/axe/use-axe-on-tree.action';
+import { TreeStumpObject } from './tree-stump.object';
+import { useAxeOnTreeStump } from './player/axe/use-axe-on-tree-stump.action';
 
 enum Direction {
   UP = 'w',
@@ -457,6 +459,9 @@ export class PlayerObject extends SceneObject {
               return;
             case object instanceof TreeObject:
               useAxeOnTree(this.scene, object);
+              return;
+            case object instanceof TreeStumpObject:
+              useAxeOnTreeStump(this.scene, object);
               return;
             default:
               return;

@@ -67,7 +67,7 @@ export class SCENE_GAME extends Scene {
     // this.globals.inventory.addToInventory(ItemType.WateringCan);
     // this.globals.inventory.addToInventory(ItemType.Axe);
     // this.globals.inventory.addToInventory(ItemType.Pickaxe);
-    this.globals.inventory.addToInventory(ItemType.GateKey);
+    // this.globals.inventory.addToInventory(ItemType.GateKey);
 
     // this is for debugging, letting us launch into a specific map
     const params = new URLSearchParams(window.location.search);
