@@ -4,7 +4,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { DirtObject } from '@game/objects/dirt.object';
 import { isInteractable } from '@game/models/interactable.model';
-import { Input, MouseKey } from '@core/utils/input.utils';
+import { Input } from '@core/utils/input.utils';
 import { useHoe } from '@game/objects/player/use-hoe.action';
 import { useWateringCan } from '@game/objects/player/use-watering-can.action';
 import { useWateringCanOnDirt } from '@game/objects/player/watering-can/use-watering-can-on-dirt.action';
@@ -22,6 +22,10 @@ import { HotbarObject } from './hotbar/hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
 import { Inventory, ItemRadius, ItemType } from '@game/models/inventory.model';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
+import { useAxeOnChicken } from './player/axe/use-axe-on-chicken.action';
+import { usePickaxeOnChicken } from './player/pickaxe/use-pickaxe-on-chicken.action';
+import { RockObject } from './rock.object';
+import { usePickaxeOnRock } from './player/pickaxe/use-pickaxe-on-rock.action';
 
 enum Direction {
   UP = 'w',
@@ -440,6 +444,25 @@ export class PlayerObject extends SceneObject {
           switch (true) {
             case object instanceof ChickenObject:
               useCropOnChicken(this.scene, object);
+              return;
+            default:
+              return;
+          }
+        case ItemType.Axe:
+          switch(true){
+            case object instanceof ChickenObject:
+              useAxeOnChicken(this.scene, object);
+              return;
+            default:
+              return;
+          }
+        case ItemType.Pickaxe:
+          switch(true){
+            case object instanceof ChickenObject:
+              usePickaxeOnChicken(this.scene, object);
+              return;
+            case object instanceof RockObject:
+              usePickaxeOnRock(this.scene, object);
               return;
             default:
               return;

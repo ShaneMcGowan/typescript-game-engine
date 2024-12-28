@@ -90,8 +90,8 @@ export class ShopItemBuyObject extends SceneObject {
     RenderUtils.renderSprite(
       context,
       Assets.images[this.sprite.tileset],
-      this.sprite.spriteX,
-      this.sprite.spriteY,
+      this.sprite.x,
+      this.sprite.y,
       this.transform.position.world.x,
       this.transform.position.world.y,
       undefined,

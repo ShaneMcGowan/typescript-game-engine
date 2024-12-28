@@ -20,10 +20,8 @@ import { SCENE_GAME_MAP_SHOP } from '../shop/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
 import { GateObject } from '@game/objects/world/gate.object';
-import { FarmerObject } from '@game/objects/world/npcs/farmer.npc';
-import { NpcObject } from '@game/objects/npc.object';
-import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
+import { RockObject } from '@game/objects/rock.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -66,13 +64,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       ...([...Array(8)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 2 + i, positionY: 5 }))),
       ...([...Array(7)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 11 + i, positionY: 5 }))),
     ]);
-
-
-    for (let row = 0; row < 6; row++) {
-      for (let col = 0; col < 13; col++) {
-        this.scene.addObject(new DirtObject(scene, { positionX: 12 + col, positionY: 10 + row, growing: { stage: CropStage.FullyGrown, itemType: ItemType.WheatSeeds } }));
-      }
-    }
 
     // horizontal
     this.scene.addObject(new CollisionObject(scene, { positionX: 8, positionY: 0, width: 5 }));
@@ -138,7 +129,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
 
     // warps
-    this.scene.addObject(new HoleObject(this.scene, { positionX: 25, positionY: 16 }))
+    // this.scene.addObject(new HoleObject(this.scene, { positionX: 25, positionY: 16 }))
 
     // mission - 
     // TODO: perhaps move these into some sort of Story Controller scene object
@@ -158,5 +149,16 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
 
     this.scene.addObject(new GateObject(this.scene, { positionX: 10, positionY: 7 }))
+
+    // rocks
+    this.scene.addObject(new RockObject(this.scene, { positionX: 6, positionY: 10 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 11, positionY: 13 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 8, positionY: 15 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 17, positionY: 16 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 20, positionY: 11 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 23, positionY: 8 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 21, positionY: 6 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 25, positionY: 15 }));
+
   }
 }

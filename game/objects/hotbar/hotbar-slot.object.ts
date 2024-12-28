@@ -69,8 +69,8 @@ export class HotbarSlotObject extends SceneObject {
     RenderUtils.renderSprite(
       context,
       Assets.images[this.sprite.tileset],
-      this.sprite.spriteX,
-      this.sprite.spriteY,
+      this.sprite.x,
+      this.sprite.y,
       this.transform.position.world.x + 0.5,
       this.transform.position.world.y + 0.5,
       1,

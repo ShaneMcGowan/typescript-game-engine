@@ -25,6 +25,10 @@ interface Globals extends SceneGlobalsBaseConfig {
       intro: boolean;
       complete: boolean;
     }
+    break_rocks: {
+      intro: boolean;
+      complete: boolean;
+    }
   }
 }
 
@@ -49,6 +53,10 @@ export class SCENE_GAME extends Scene {
         intro: false,
         complete: false,
       },
+      break_rocks: {
+        intro: false,
+        complete: false,
+      },
     }
   };
 
@@ -57,7 +65,9 @@ export class SCENE_GAME extends Scene {
 
     // this.globals.inventory.addToInventory(ItemType.Hoe);
     // this.globals.inventory.addToInventory(ItemType.WateringCan);
-    // this.globals.inventory.addToInventory(ItemType.WheatSeeds);
+    // this.globals.inventory.addToInventory(ItemType.Axe);
+    // this.globals.inventory.addToInventory(ItemType.Pickaxe);
+    // this.globals.inventory.addToInventory(ItemType.GateKey);
 
     // this is for debugging, letting us launch into a specific map
     const params = new URLSearchParams(window.location.search);

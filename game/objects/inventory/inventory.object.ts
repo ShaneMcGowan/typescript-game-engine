@@ -475,8 +475,8 @@ export class InventoryObject extends SceneObject {
     RenderUtils.renderSprite(
       context,
       Assets.images[this.dragging.item.sprite.tileset],
-      this.dragging.item.sprite.spriteX,
-      this.dragging.item.sprite.spriteY,
+      this.dragging.item.sprite.x,
+      this.dragging.item.sprite.y,
       Input.mouse.position.x - 0.5,
       Input.mouse.position.y - 0.5,
     );
@@ -494,8 +494,8 @@ export class InventoryObject extends SceneObject {
     RenderUtils.renderSprite(
       context,
       Assets.images[this.dragging.item.sprite.tileset],
-      this.dragging.item.sprite.spriteX,
-      this.dragging.item.sprite.spriteY,
+      this.dragging.item.sprite.x,
+      this.dragging.item.sprite.y,
       this.controllerSelectorPosition.x + 0.5,
       this.controllerSelectorPosition.y + 0.5,
     );

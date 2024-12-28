@@ -50,6 +50,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
       tileset_fullscreen: 'assets/custom/fullscreen.png',
       tileset_basic: 'assets/sample/Sprite sheet for Basic Pack.png',
       tileset_shop_key: 'assets/custom/shop-key.png',
+      tileset_grass_biome: 'assets/sample/Objects/Basic_Grass_Biom_things.png'
     },
     audio: {},
     fonts: {

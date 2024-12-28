@@ -29,6 +29,8 @@ export class FarmerObject extends NpcObject {
     protected config: Config
   ) {
     config.animations = ANIMATION;
+    config.name = SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.name;
+    config.portrait = SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.portrait;
     super(scene, config);
   }
 
@@ -57,67 +59,49 @@ export class FarmerObject extends NpcObject {
       return;
     }
 
+    // quest - break_rocks
+    if(!this.quests.break_rocks.complete){
+      if(this.quests.break_rocks.intro === false){
+        this.questBreakRocksIntro();
+      } else {
+        const check = this.questBreakRocksCheck();
+        if(check){
+          this.questBreakRocksSuccess();
+        } else {
+          this.questBreakRocksFailure();
+        }
+      }
+      return;
+    }
+
     this.questDefault();
   };
 
   private questCollectWheatIntro(): void {
-    this.scene.globals.player.enabled = false;
-
-    this.scene.addObject(
-      new TextboxObject(
-        this.scene,
-        {
-          name: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.name,
-          portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.portrait,
-          text: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_wheat.intro,
-          onComplete: () => {
-            this.scene.globals.player.enabled = true;
-            this.quests.collect_wheat.intro = true;
-          },
-        }
-      )
-    );
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_wheat.intro,
+      () => {
+        this.quests.collect_wheat.intro = true;
+      }
+    )
   }
 
   private questCollectWheatFailure(): void {
-    this.scene.globals.player.enabled = false;
-
-    this.scene.addObject(
-      new TextboxObject(
-        this.scene,
-        {
-          name: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.name,
-          portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.portrait,
-          text: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_wheat.failure,
-          onComplete: () => {
-            this.scene.globals.player.enabled = true;
-          },
-        }
-      )
-    );
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_wheat.failure,
+    )
   }
 
   private questCollectWheatSuccess(): void {
-    this.scene.globals.player.enabled = false;
-
-    this.scene.addObject(
-      new TextboxObject(
-        this.scene,
-        {
-          name: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.name,
-          portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.portrait,
-          text: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_wheat.success,
-          onComplete: () => {
-            this.scene.globals.player.enabled = true;
-            
-            // give key
-            this.scene.globals.inventory.addToInventory(ItemType.GateKey);
-            // quest complete
-            this.scene.globals.quests.collect_wheat.complete = true;
-          },
-        }
-      )
-    );
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_wheat.success,
+      () => {
+        // give key
+        this.scene.globals.inventory.addToInventory(ItemType.GateKey);
+        // quest complete
+        this.scene.globals.quests.collect_wheat.complete = true;
+      }
+    )
   }
 
   private questCollectWheatCheck(): boolean {
@@ -127,6 +111,40 @@ export class FarmerObject extends NpcObject {
     }
     return false;
   }
+
+  private questBreakRocksIntro(): void {
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.break_rocks.intro,
+      () => {
+        this.quests.break_rocks.intro = true;
+        this.scene.globals.inventory.addToInventory(ItemType.Pickaxe);
+      }
+    )
+  }
+
+  private questBreakRocksSuccess(): void {
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.break_rocks.success,
+      () => {
+        this.quests.break_rocks.complete = true;
+      }
+    )
+  }
+
+  private questBreakRocksFailure(): void {
+    this.say(
+      SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.break_rocks.failure,
+    )
+  }
+
+  private questBreakRocksCheck(): boolean {
+    if(this.scene.globals.inventory.hasItem(ItemType.Rock, 8)){
+      this.scene.globals.inventory.removeItems(ItemType.Rock, 8);
+      return true;
+    }
+    return false;
+  }
+
 
   private questDefault(): void {
     this.scene.globals.player.enabled = false;
