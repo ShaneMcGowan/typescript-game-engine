@@ -8,7 +8,9 @@ type Stage = 'idle' | 'intro' | 'outro';
 const PORTRAIT: Portrait = {
   tileset: 'tileset_chicken',
   x: 0,
-  y: 0
+  y: 0,
+  width: 1,
+  height: 1,
 }
 
 export interface Config extends NpcObjectConfig {

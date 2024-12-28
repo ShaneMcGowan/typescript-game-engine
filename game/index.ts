@@ -45,12 +45,13 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
       tileset_wood_bridge: 'assets/sample/Objects/Wood_Bridge.png',
       tileset_chest: 'assets/sample/Objects/Chest.png',
       tileset_plants: 'assets/sample/Objects/Basic_Plants.png',
-      tileset_dialogue_box: 'assets/sample/Dialouge UI/dialog box.png',
+      tileset_dialogue_box: 'assets/custom/dialog box.png',
       tileset_tools: 'assets/sample/Characters/Tools.png',
       tileset_fullscreen: 'assets/custom/fullscreen.png',
       tileset_basic: 'assets/sample/Sprite sheet for Basic Pack.png',
       tileset_shop_key: 'assets/custom/shop-key.png',
-      tileset_grass_biome: 'assets/sample/Objects/Basic_Grass_Biom_things.png'
+      tileset_grass_biome: 'assets/sample/Objects/Basic_Grass_Biom_things.png',
+      tileset_emotes: 'assets/sample/Dialouge UI/Emotes/Teemo Basic emote animations sprite sheet.png'
     },
     audio: {},
     fonts: {

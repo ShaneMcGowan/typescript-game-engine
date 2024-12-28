@@ -38,9 +38,9 @@ export class HotbarSlotObject extends SceneObject {
     }
 
     this.renderContainer(context);
+    this.renderHotbarSelector(context);
     this.renderItem(context);
     this.renderStackSize(context);
-    this.renderHotbarSelector(context);
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {
@@ -103,14 +103,49 @@ export class HotbarSlotObject extends SceneObject {
 
     RenderUtils.renderSprite(
       context,
-      Assets.images.tileset_ui,
-      9,
-      9,
-      this.transform.position.world.x,
-      this.transform.position.world.y,
-      2,
-      2,
+      Assets.images[TilesetUI.id],
+      TilesetUI.Selector.White.TopLeft.x,
+      TilesetUI.Selector.White.TopLeft.y,
+      this.transform.position.world.x - 0.25,
+      this.transform.position.world.y - 0.25,
+      TilesetUI.Selector.White.TopLeft.width,
+      TilesetUI.Selector.White.TopLeft.height,
     );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetUI.id],
+      TilesetUI.Selector.White.TopRight.x,
+      TilesetUI.Selector.White.TopRight.y,
+      this.transform.position.world.x + 1 + 0.25,
+      this.transform.position.world.y - 0.25,
+      TilesetUI.Selector.White.TopRight.width,
+      TilesetUI.Selector.White.TopRight.height,
+    );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetUI.id],
+      TilesetUI.Selector.White.BottomLeft.x,
+      TilesetUI.Selector.White.BottomLeft.y,
+      this.transform.position.world.x - 0.25,
+      this.transform.position.world.y + 1 + 0.25,
+      TilesetUI.Selector.White.BottomLeft.width,
+      TilesetUI.Selector.White.BottomLeft.height,
+    );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetUI.id],
+      TilesetUI.Selector.White.BottomRight.x,
+      TilesetUI.Selector.White.BottomRight.y,
+      this.transform.position.world.x + 1 + 0.25,
+      this.transform.position.world.y + 1 + 0.25,
+      TilesetUI.Selector.White.BottomRight.width,
+      TilesetUI.Selector.White.BottomRight.height,
+    );
+
+
   }
 
   get item(): Item | undefined {

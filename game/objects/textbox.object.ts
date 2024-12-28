@@ -5,11 +5,17 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
+import { TilesetDialogueBox } from '@game/constants/tileset-dialogue-box.constants';
+import { TilesetUI } from '@game/constants/tileset-ui.constants';
+import { PortraitObject } from './portrait.object';
 
 export interface Portrait {
   tileset: string;
   x: number;
   y: number;
+  width: number;
+  height: number;
+  scale?: number;
 }
 
 enum Controls {
@@ -36,13 +42,12 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class TextboxObject extends SceneObject {
-  height = 3;
+  height = 5;
   width = CanvasConstants.CANVAS_TILE_WIDTH;
 
   // text box specific
   private readonly textboxWidth: number = CanvasConstants.CANVAS_TILE_WIDTH - 8;
   private readonly textboxBorder: number = 2;
-  private readonly textSize: number = 16;
   private readonly text: string;
   private textSegments: string[] = [];
   private textIndex: number = 0; // index of textSegments
@@ -102,7 +107,13 @@ export class TextboxObject extends SceneObject {
   initText(): void {
     // generate text segments
     // TODO: what is 4 here?
-    this.textSegments = RenderUtils.textToArray(this.text, (this.textboxWidth - 4) * CanvasConstants.TILE_SIZE, { size: this.textSize, });
+    this.textSegments = RenderUtils.textToArray(this.text, (this.textboxWidth - 4) * CanvasConstants.TILE_SIZE);
+  }
+
+  onAwake(): void {
+    if(this.portrait){
+      this.addChild(new PortraitObject(this.scene, { portrait: this.portrait }))
+    }
   }
 
   onUpdate(delta: number): void {
@@ -123,10 +134,6 @@ export class TextboxObject extends SceneObject {
     if (this.showOverlay) {
       // this.renderOverlay(context);
       // TODO: overlay flickers between textbox objects, figure out a better pattern for this
-    }
-
-    if (this.hasPortrait) {
-      this.renderPortrait(context);
     }
 
     this.generateTextbox(context);
@@ -197,115 +204,129 @@ export class TextboxObject extends SceneObject {
   }
 
   private generateTextbox(context: CanvasRenderingContext2D): void {
-    let width = this.textboxWidth;
-    let offset = (CanvasConstants.CANVAS_TILE_WIDTH - width) / 2;
+    const width = this.textboxWidth;
+    const offset = (CanvasConstants.CANVAS_TILE_WIDTH - width) / 2;
 
     // left
     RenderUtils.renderSprite(
       context,
-      Assets.images[TILE_SET],
-      0,
-      0,
-      offset,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 4
-    );
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TILE_SET],
-      0,
-      1,
-      offset,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 3
-    );
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TILE_SET],
-      0,
-      1,
-      offset,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 2
-    );
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TILE_SET],
-      0,
-      2,
-      offset,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 1
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.TopLeft.Default.Default.x,
+      TilesetDialogueBox.TopLeft.Default.Default.y,
+      this.transform.position.world.x + 0.5 + offset,
+      this.transform.position.world.y + 1,
+      TilesetDialogueBox.TopLeft.Default.Default.width,
+      TilesetDialogueBox.TopLeft.Default.Default.height,
     );
 
-    // columns
-    for (let i = 1; i < width - 1; i++) {
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.Left.Default.Default.x,
+      TilesetDialogueBox.Left.Default.Default.y,
+      this.transform.position.world.x + 0.5 + offset,
+      this.transform.position.world.y + 2,
+      TilesetDialogueBox.Left.Default.Default.width,
+      TilesetDialogueBox.Left.Default.Default.height,
+    );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.BottomLeft.Default.Default.x,
+      TilesetDialogueBox.BottomLeft.Default.Default.y,
+      this.transform.position.world.x + 0.5 + offset,
+      this.transform.position.world.y + 3,
+      TilesetDialogueBox.BottomLeft.Default.Default.width,
+      TilesetDialogueBox.BottomLeft.Default.Default.height,
+    );
+
+    if(this.portrait){
       RenderUtils.renderSprite(
         context,
-        Assets.images[TILE_SET],
-        1,
-        0,
-        offset + i,
-        CanvasConstants.CANVAS_TILE_HEIGHT - 4
-      );
-      RenderUtils.renderSprite(
-        context,
-        Assets.images[TILE_SET],
-        1,
-        1,
-        offset + i,
-        CanvasConstants.CANVAS_TILE_HEIGHT - 3
-      );
-      RenderUtils.renderSprite(
-        context,
-        Assets.images[TILE_SET],
-        1,
-        1,
-        offset + i,
-        CanvasConstants.CANVAS_TILE_HEIGHT - 2
-      );
-      RenderUtils.renderSprite(
-        context,
-        Assets.images[TILE_SET],
-        1,
-        2,
-        offset + i,
-        CanvasConstants.CANVAS_TILE_HEIGHT - 1
+        Assets.images[TilesetDialogueBox.id],
+        TilesetDialogueBox.Notch.Default.Default.x,
+        TilesetDialogueBox.Notch.Default.Default.y,
+        this.transform.position.world.x + 0.5 + offset - 1 + (1 / 16), // move 1 pixel over for overlap
+        this.transform.position.world.y + 2,
+        TilesetDialogueBox.Notch.Default.Default.width,
+        TilesetDialogueBox.Notch.Default.Default.height,
       );
     }
 
     // right
     RenderUtils.renderSprite(
       context,
-      Assets.images[TILE_SET],
-      2,
-      0,
-      offset + width - 1,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 4
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.TopRight.Default.Default.x,
+      TilesetDialogueBox.TopRight.Default.Default.y,
+      this.transform.position.world.x + offset + width - 1.5,
+      this.transform.position.world.y + 1,
+      TilesetDialogueBox.TopRight.Default.Default.width,
+      TilesetDialogueBox.TopRight.Default.Default.height,
     );
+
     RenderUtils.renderSprite(
       context,
-      Assets.images[TILE_SET],
-      2,
-      1,
-      offset + width - 1,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 3
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.Right.Default.Default.x,
+      TilesetDialogueBox.Right.Default.Default.y,
+      this.transform.position.world.x + offset + width - 1.5,
+      this.transform.position.world.y + 2,
+      TilesetDialogueBox.Right.Default.Default.width,
+      TilesetDialogueBox.Right.Default.Default.height,
     );
+
     RenderUtils.renderSprite(
       context,
-      Assets.images[TILE_SET],
-      2,
-      1,
-      offset + width - 1,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 2
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.BottomRight.Default.Default.x,
+      TilesetDialogueBox.BottomRight.Default.Default.y,
+      this.transform.position.world.x + offset + width - 1.5,
+      this.transform.position.world.y + 3,
+      TilesetDialogueBox.BottomRight.Default.Default.width,
+      TilesetDialogueBox.BottomRight.Default.Default.height,
     );
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TILE_SET],
-      2,
-      2,
-      offset + width - 1,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 1
-    );
+
+    // columns
+    for (let i = 1; i < width - 1; i++) {
+      RenderUtils.renderSprite(
+        context,
+        Assets.images[TilesetDialogueBox.id],
+        TilesetDialogueBox.Top.Default.Default.x,
+        TilesetDialogueBox.Top.Default.Default.y,
+        offset + i,
+        this.transform.position.world.y + 1,
+        TilesetDialogueBox.Top.Default.Default.width,
+        TilesetDialogueBox.Top.Default.Default.height,
+      )
+
+      RenderUtils.renderSprite(
+        context,
+        Assets.images[TilesetDialogueBox.id],
+        TilesetDialogueBox.Centre.Default.Default.x,
+        TilesetDialogueBox.Centre.Default.Default.y,
+        offset + i,
+        this.transform.position.world.y + 2,
+        TilesetDialogueBox.Centre.Default.Default.width,
+        TilesetDialogueBox.Centre.Default.Default.height,
+      );
+
+      RenderUtils.renderSprite(
+        context,
+        Assets.images[TilesetDialogueBox.id],
+        TilesetDialogueBox.Bottom.Default.Default.x,
+        TilesetDialogueBox.Bottom.Default.Default.y,
+        offset + i,
+        this.transform.position.world.y + 3,
+        TilesetDialogueBox.Bottom.Default.Default.width,
+        TilesetDialogueBox.Bottom.Default.Default.height,
+      );
+    }
   }
 
   private renderText(context: CanvasRenderingContext2D): void {
+    
     if (this.textLine1) {
       let text = this.scrollText ? this.textLine1.substring(0, this.characterIndex) : this.textLine1;
 
@@ -313,8 +334,7 @@ export class TextboxObject extends SceneObject {
         context,
         text,
         ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
-        CanvasConstants.CANVAS_TILE_HEIGHT - 2 - 0.25,
-        { size: this.textSize }
+        this.textLine2 ? this.transform.position.world.y + 2.25 : this.transform.position.world.y + 2.75,
       );
     }
 
@@ -325,44 +345,89 @@ export class TextboxObject extends SceneObject {
         context,
         text,
         ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
-        CanvasConstants.CANVAS_TILE_HEIGHT - 1 - 0.25,
-        { size: this.textSize, }
+        this.transform.position.world.y + 3.25,
       );
     }
   }
 
-  private renderPortrait(context: CanvasRenderingContext2D): void {
+  private renderNamePlate(context: CanvasRenderingContext2D): void {
+    const x = ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1;
+
+    // left
     RenderUtils.renderSprite(
       context,
-      Assets.images[this.portrait.tileset],
-      this.portrait.x,
-      this.portrait.y,
-      // this.animations.idle[this.animationIndex].x,
-      // this.animations.idle[this.animationIndex].y,
-      3,
-      9,
-      undefined,
-      undefined,
-      { scale: 8, }
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.TopLeft.Default.Default.x,
+      TilesetDialogueBox.TopLeft.Default.Default.y,
+      this.transform.position.world.x + x - 0.5,
+      this.transform.position.world.y - 1,
+      TilesetDialogueBox.TopLeft.Default.Default.width,
+      TilesetDialogueBox.TopLeft.Default.Default.height,
     );
-  }
 
-  private renderNamePlate(context: CanvasRenderingContext2D): void {
-    RenderUtils.fillRectangle(
+    RenderUtils.renderSprite(
       context,
-      ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 4,
-      6 * CanvasConstants.TILE_SIZE,
-      1 * CanvasConstants.TILE_SIZE,
-      { colour: '#e8cfa6', }
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.BottomLeft.Default.Default.x,
+      TilesetDialogueBox.BottomLeft.Default.Default.y,
+      this.transform.position.world.x + x - 0.5,
+      this.transform.position.world.y - 0.5,
+      TilesetDialogueBox.BottomLeft.Default.Default.width,
+      TilesetDialogueBox.BottomLeft.Default.Default.height,
+    );
+
+    // center
+    for(let i = 0; i < 5; i++){
+      RenderUtils.renderSprite(
+        context,
+        Assets.images[TilesetDialogueBox.id],
+        TilesetDialogueBox.Top.Default.Default.x,
+        TilesetDialogueBox.Top.Default.Default.y,
+        this.transform.position.world.x + x + i + 0.5,
+        this.transform.position.world.y - 1,
+        TilesetDialogueBox.Top.Default.Default.width,
+        TilesetDialogueBox.Top.Default.Default.height,
+      );
+      RenderUtils.renderSprite(
+        context,
+        Assets.images[TilesetDialogueBox.id],
+        TilesetDialogueBox.Bottom.Default.Default.x,
+        TilesetDialogueBox.Bottom.Default.Default.y,
+        this.transform.position.world.x + x + i + 0.5,
+        this.transform.position.world.y - 0.5,
+        TilesetDialogueBox.Bottom.Default.Default.width,
+        TilesetDialogueBox.Bottom.Default.Default.height,
+      );
+    }
+
+    // right
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.TopRight.Default.Default.x,
+      TilesetDialogueBox.TopRight.Default.Default.y,
+      this.transform.position.world.x + x + 6 - 0.5,
+      this.transform.position.world.y - 1,
+      TilesetDialogueBox.TopRight.Default.Default.width,
+      TilesetDialogueBox.TopRight.Default.Default.height,
+    );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetDialogueBox.id],
+      TilesetDialogueBox.BottomRight.Default.Default.x,
+      TilesetDialogueBox.BottomRight.Default.Default.y,
+      this.transform.position.world.x + x + 6 - 0.5,
+      this.transform.position.world.y - 0.5,
+      TilesetDialogueBox.BottomRight.Default.Default.width,
+      TilesetDialogueBox.BottomRight.Default.Default.height,
     );
 
     RenderUtils.renderText(
       context,
       this.name,
       ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
-      CanvasConstants.CANVAS_TILE_HEIGHT - 3 - 0.25,
-      { size: this.textSize, }
+      this.transform.position.world.y - 0.125,
     );
   }
 

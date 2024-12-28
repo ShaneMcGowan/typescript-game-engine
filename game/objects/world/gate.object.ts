@@ -79,7 +79,7 @@ export class GateObject extends SceneObject implements Interactable {
     this.scene.globals.inventory.removeFromInventoryByIndex(index, 1);
 
     // display message
-    this.addChild(new TextboxObject(
+    this.scene.addObject(new TextboxObject(
       this.scene,
       {
         text: SCENE_GAME_MAP_WORLD_TEXT.objects.gate.interact.key,

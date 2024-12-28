@@ -1,18 +1,18 @@
+import { Portrait } from "@game/objects/textbox.object";
+
 interface NpcDetails {
     name: string,
-    portrait: {
-      tileset: string,
-      x: number,
-      y: number
-    }
+    portrait: Portrait
 }
 
 const NPC_FARMER_DETAILS: NpcDetails = {
     name: `Farmer`,
     portrait: {
-      tileset: 'tileset_player',
-      x: 1,
-      y: 1
+      tileset: 'tileset_emotes',
+      x: 0,
+      y: 0,
+      height: 2,
+      width: 2, 
     }
 };
 
@@ -39,9 +39,11 @@ const NPC_FARMER = {
 const NPC_FARMERS_SON_DETAILS: NpcDetails = {
   name: `Farmer's Son`,
   portrait: {
-    tileset: 'tileset_player',
-    x: 1,
-    y: 1
+    tileset: 'tileset_emotes',
+    x: 0,
+    y: 0,
+    width: 2,
+    height: 2,
   }
 };
 
@@ -50,7 +52,7 @@ const NPC_FARMERS_SON = {
   text: {
     intro: `Hi, you must be new around here. I'm the farmer's son. If you're looking for something to do, you should go speak with my father. He should be back at our house.`,
     shack_open: `Go find my Father, he's probably back at our house. He'll have something for you to do.`,
-    other: `When I grow up I want to be a main character like you. My father says it's just fine to be an NPC like him but I have delusions of grandure due to being hit on the head as a child.`
+    other: `When I grow up I want to be a main character like you. My father says it's just fine to be an NPC like him but I have delusions of grandeur due to being hit on the head as a child.`
   }
 };
 
@@ -60,7 +62,10 @@ const NPC_CHICKEN_DETAILS: NpcDetails = {
   portrait: {
     tileset: 'tileset_chicken',
     x: 0,
-    y: 0
+    y: 0,
+    width: 1,
+    height: 1,
+    scale: 2
   }
 };
 

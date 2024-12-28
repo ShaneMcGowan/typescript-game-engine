@@ -9,11 +9,14 @@ import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
 import { ObjectFilter } from '@core/model/scene';
 import { Inventory, ItemType } from '@game/models/inventory.model';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 
 const PORTRAIT: Portrait = {
   tileset: 'tileset_chicken',
   x: 0,
-  y: 0
+  y: 0,
+  width: 1,
+  height: 1,
 }
 
 const TILE_SET: string = 'tileset_chicken';
@@ -292,9 +295,9 @@ export class ChickenObject extends SceneObject implements Interactable {
     let textbox = new TextboxObject(
       this.scene,
       {
+        name: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.name,
+        portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.portrait,
         text: text,
-        portrait: PORTRAIT,
-        name: 'Chicken',
         onComplete: () => {
           // enable inputs
           this.scene.globals.player.enabled = true;
@@ -324,9 +327,9 @@ export class ChickenObject extends SceneObject implements Interactable {
     let textbox = new TextboxObject(
       this.scene,
       {
+        name: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.name,
+        portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.portrait,
         text: 'I LOooOooOoOooOoOVE TOMATOES!',
-        portrait: PORTRAIT,
-        name: 'Chicken',
         onComplete: () => {
           // enable inputs
           this.scene.globals.player.enabled = true;
@@ -346,9 +349,9 @@ export class ChickenObject extends SceneObject implements Interactable {
     let textbox = new TextboxObject(
       this.scene,
       {
+        name: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.name,
+        portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.portrait,
         text: 'I HAAAAAAAAAAAAAAAATE WHEAT!',
-        portrait: PORTRAIT,
-        name: 'Chicken',
         onComplete: () => {
           // enable inputs
           this.scene.globals.player.enabled = true;

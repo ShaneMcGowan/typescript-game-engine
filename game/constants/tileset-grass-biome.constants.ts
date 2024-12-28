@@ -32,4 +32,32 @@ export class TilesetGrassBiome {
     },
   };
 
+  static readonly Tree: Tile<'Default', 'Default'> = { 
+    Default: {
+      Default: {
+        x: 1, 
+        y: 0,
+        width: 2,
+        height: 2
+      },
+    },
+  };
+
+  static readonly Fruit: Tile<'Berry', 'OnTree' | 'OnGround'> = {
+    Berry: {
+      OnTree: {
+        x: 0, 
+        y: 2,
+        width: 1,
+        height: 1
+      },
+      OnGround: {
+        x: 1, 
+        y: 2,
+        width: 1,
+        height: 1
+      }
+    }
+  }
+
 }

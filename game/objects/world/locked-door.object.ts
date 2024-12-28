@@ -68,7 +68,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
 
   private interactIsLocked(): void {
     // display message
-    this.addChild(new TextboxObject(
+    this.scene.addObject(new TextboxObject(
       this.scene,
       {
         text: SCENE_GAME_MAP_WORLD_TEXT.objects.shack.door.locked,

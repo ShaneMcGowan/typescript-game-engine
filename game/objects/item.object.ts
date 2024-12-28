@@ -14,7 +14,7 @@ export class ItemObject extends SceneObject implements Interactable {
   constructor(protected scene: SCENE_GAME, protected config: Config){
     super(scene, config);
 
-    this.collision.enabled = true;
+    this.collision.enabled = false;
     this.renderer.enabled = true;
   }
 
