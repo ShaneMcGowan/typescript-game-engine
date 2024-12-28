@@ -4,18 +4,17 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { Assets } from '@core/utils/assets.utils';
 import { TilesetHouse } from '@game/constants/tileset-house.constants';
+import { ItemType } from '@game/models/inventory.model';
 import { TextboxObject } from '../textbox.object';
-import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"
 
 interface Config extends SceneObjectBaseConfig {
 
 }
 
-export class LockedDoorObject extends SceneObject implements Interactable {
+export class GateObject extends SceneObject implements Interactable {
   width = 1;
   height = 1;
-
-  isLocked: boolean = true;
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
@@ -23,34 +22,30 @@ export class LockedDoorObject extends SceneObject implements Interactable {
     this.renderer.enabled = true;
   }
 
-  onUpdate(delta: number): void {
-    // destroy door when unlocked flag
-    if(this.scene.globals.flags.shackDoorLocked){
-      return;
-    }
-
-    this.destroy();
-  }
-
   onRender(context: CanvasRenderingContext2D): void {
-    this.renderDoor(context);
+    this.renderGate(context);
   }
 
   interact(): void {
     this.scene.globals.player.enabled = false;
-
+    
     this.scene.addObject(new TextboxObject(
       this.scene,
       {
-        text: SCENE_GAME_MAP_WORLD_TEXT.objects.shack.door.intro,
+        text: SCENE_GAME_MAP_WORLD_TEXT.objects.gate.interact.intro,
         onComplete: () => {
-          this.interactIsLocked();
+          const index = this.scene.globals.inventory.getFirstIndexForType(ItemType.GateKey);
+          if (index === undefined) {
+            this.interactNoKey();
+          } else {
+            this.interactWithKey(index);
+          }
         }
       }
     ));
   }
 
-  private renderDoor(context: CanvasRenderingContext2D): void {
+  private renderGate(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
       Assets.images[TilesetHouse.id],
@@ -66,14 +61,33 @@ export class LockedDoorObject extends SceneObject implements Interactable {
     );
   }
 
-  private interactIsLocked(): void {
+  private interactNoKey(): void {
+    // message saying door is locked
+    this.scene.addObject(new TextboxObject(
+      this.scene,
+      {
+        text: SCENE_GAME_MAP_WORLD_TEXT.objects.gate.interact.no_key,
+        onComplete: () => {
+          this.scene.globals.player.enabled = true;
+        }
+      }
+    ));
+  }
+
+  private interactWithKey(index: number): void {
+    // remove key from inventory
+    this.scene.globals.inventory.removeFromInventoryByIndex(index, 1);
+
     // display message
     this.addChild(new TextboxObject(
       this.scene,
       {
-        text: SCENE_GAME_MAP_WORLD_TEXT.objects.shack.door.locked,
+        text: SCENE_GAME_MAP_WORLD_TEXT.objects.gate.interact.key,
         onComplete: () => {
+          // enable inputs
           this.scene.globals.player.enabled = true;
+          // destroy door
+          this.destroy();
         }
       }
     ));

@@ -9,12 +9,6 @@ import { SpriteAnimation } from '@core/model/sprite-animation';
 import { Assets } from '@core/utils/assets.utils';
 import { ObjectFilter } from '@core/model/scene';
 
-const PORTRAIT: Portrait = {
-  tileset: 'tileset_chicken',
-  x: 0,
-  y: 0
-}
-
 const RENDERER_LAYER: number = 8;
 const DEFAULT_CAN_MOVE: boolean = false;
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
@@ -41,6 +35,8 @@ export interface NpcObjectConfig extends SceneObjectBaseConfig {
   movementSpeed?: number;
   movementDelay?: number;
   name?: string;
+  portrait?: Portrait;
+  onInteractEnd?: () => void;
 }
 
 export class NpcObject extends SceneObject implements Interactable {
@@ -56,6 +52,7 @@ export class NpcObject extends SceneObject implements Interactable {
   };
 
   name: string;
+  portrait?: Portrait;
 
   animations: Record<string, SpriteAnimation>;
 
@@ -71,7 +68,7 @@ export class NpcObject extends SceneObject implements Interactable {
 
   constructor(
     protected scene: SCENE_GAME,
-    config: NpcObjectConfig
+    protected config: NpcObjectConfig
   ) {
     super(scene, config);
     this.collision.enabled = true;
@@ -87,6 +84,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.movementSpeed = config.movementSpeed ?? DEFAULT_MOVEMENT_SPEED;
     this.movementDelay = config.movementDelay ?? DEFAULT_MOVEMENT_DELAY;
     this.name = config.name ?? DEFAULT_NAME;
+    this.portrait = config.portrait;
   }
 
   onUpdate(delta: number): void {
@@ -220,9 +218,13 @@ export class NpcObject extends SceneObject implements Interactable {
     let textbox = new TextboxObject(
       this.scene,
       {
-        text: this.dialogue,
-        portrait: PORTRAIT, // TODO: new to implement proper portrait system
         name: this.name,
+        portrait: this.portrait,
+        text: this.dialogue,
+        onDestroy: () => {
+          this.scene.globals.player.enabled = true;
+          this.config?.onInteractEnd();
+        }
       }
     );
     this.scene.addObject(textbox);

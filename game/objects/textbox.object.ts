@@ -121,7 +121,8 @@ export class TextboxObject extends SceneObject {
 
   onRender(context: CanvasRenderingContext2D): void {
     if (this.showOverlay) {
-      this.renderOverlay(context);
+      // this.renderOverlay(context);
+      // TODO: overlay flickers between textbox objects, figure out a better pattern for this
     }
 
     if (this.hasPortrait) {

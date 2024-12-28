@@ -17,6 +17,15 @@ interface Globals extends SceneGlobalsBaseConfig {
     actionsEnabled: boolean;
     interactEnabled: boolean;
   }
+  flags: {
+    shackDoorLocked: boolean; // is the shack door locked
+  }
+  quests: {
+    collect_wheat: {
+      intro: boolean;
+      complete: boolean;
+    }
+  }
 }
 
 export class SCENE_GAME extends Scene {
@@ -31,16 +40,24 @@ export class SCENE_GAME extends Scene {
       movementEnabled: true,
       actionsEnabled: true,
       interactEnabled: true,
+    },
+    flags: {
+      shackDoorLocked: true,
+    },
+    quests: {
+      collect_wheat: {
+        intro: false,
+        complete: false,
+      },
     }
   };
 
   constructor(client: Client) {
     super(client);
 
-    this.globals.inventory.addToInventory(ItemType.Hoe);
-    this.globals.inventory.addToInventory(ItemType.WateringCan);
-    this.globals.inventory.addToInventory(ItemType.WheatSeeds);
-    this.globals.inventory.addToInventory(ItemType.ShopKey);
+    // this.globals.inventory.addToInventory(ItemType.Hoe);
+    // this.globals.inventory.addToInventory(ItemType.WateringCan);
+    // this.globals.inventory.addToInventory(ItemType.WheatSeeds);
 
     // this is for debugging, letting us launch into a specific map
     const params = new URLSearchParams(window.location.search);

@@ -92,7 +92,7 @@ export class InventoryTooltipObject extends SceneObject {
   }
 
   private calculateDescriptionLines(): string[] {
-    return RenderUtils.textToArray(this.description, (this.width - 3) * CanvasConstants.TILE_SIZE);
+    return RenderUtils.textToArray(this.description, (this.width - 4) * CanvasConstants.TILE_SIZE);
   }
 
   private calculateHeight(): number {

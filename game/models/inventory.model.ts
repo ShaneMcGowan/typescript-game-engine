@@ -8,7 +8,7 @@ export enum ItemType {
   Hoe = 'Hoe',
   WateringCan = 'WateringCan',
   Chest = 'Chest',
-  ShopKey = 'ShopKey',
+  GateKey = 'GateKey',
 }
 
 /**
@@ -34,7 +34,7 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.Hoe]: ItemRadius.Player,
   [ItemType.WateringCan]: ItemRadius.Player,
   [ItemType.Chest]: ItemRadius.Anywhere,
-  [ItemType.ShopKey]: ItemRadius.None,
+  [ItemType.GateKey]: ItemRadius.None,
 }
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
@@ -47,7 +47,7 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.Hoe]: { tileset: 'tileset_tools', spriteX: 4, spriteY: 4, },
   [ItemType.WateringCan]: { tileset: 'tileset_tools', spriteX: 0, spriteY: 0, },
   [ItemType.Chest]: { tileset: 'tileset_chest', spriteX: 1, spriteY: 1, },
-  [ItemType.ShopKey]: { tileset: 'tileset_shop_key', spriteX: 0, spriteY: 0, },
+  [ItemType.GateKey]: { tileset: 'tileset_shop_key', spriteX: 0, spriteY: 0, },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -60,7 +60,7 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.Hoe]: 1,
   [ItemType.WateringCan]: 1,
   [ItemType.Chest]: 1,
-  [ItemType.ShopKey]: 1,
+  [ItemType.GateKey]: 1,
 };
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
@@ -73,7 +73,7 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Hoe]: 0,
   [ItemType.WateringCan]: 0,
   [ItemType.Chest]: 0,
-  [ItemType.ShopKey]: 0,
+  [ItemType.GateKey]: 0,
 }
 
 export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
@@ -86,7 +86,7 @@ export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
   [ItemType.Hoe]: 'Hoe',
   [ItemType.WateringCan]: 'Watering Can',
   [ItemType.Chest]: 'Chest',
-  [ItemType.ShopKey]: 'Shop Key',
+  [ItemType.GateKey]: 'Shop Key',
 }
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
@@ -98,8 +98,8 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.Tomato]: 'Like an Orange but red (trust me on this one).',
   [ItemType.Hoe]: `A long-handled gardening tool with a thin metal blade.\nI can use this to prepare the ground for planting seeds.\nSome bearded guy in a red jacket is always raving on about these.`,
   [ItemType.WateringCan]: 'I can use this to water dirt',
-  [ItemType.Chest]: 'I can pu my treasures in here,\nor maybe just my socks or something.',
-  [ItemType.ShopKey]: `A key that opens the Shop door,\nit's old and rusty looking.\nIt tastes kinda funny too.`,
+  [ItemType.Chest]: 'I can put my treasures in here,\nor maybe just my socks or something.',
+  [ItemType.GateKey]: `A key for a Gate,\nit's old and rusty looking.\nIt tastes kinda funny too.`,
 }
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
@@ -112,7 +112,7 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Hoe]: true,
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: true,
-  [ItemType.ShopKey]: false
+  [ItemType.GateKey]: false
 }
 
 export interface ItemSprite {
@@ -134,7 +134,7 @@ export interface Item {
  */
 export class Inventory {
 
-  items: Item[] = [];
+  items: (Item | undefined)[] = [];
   rows: number;
   columns: number;
 
@@ -265,6 +265,60 @@ export class Inventory {
     }
 
     return item;
+  }
+
+  /**
+   * Returns true if the inventory contains the specificed amount and item, across multiple stacks
+   * @param type 
+   * @param amount 
+   */
+  hasItem(type: ItemType, amount: number): boolean{
+    const items = this.items.filter(item => item !== undefined && item.type === type);
+    const total = items.reduce((acc, curr) => acc + curr.currentStackSize, 0)
+
+    if(total >= amount){
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Removes items until the provided amount has been removed or we are at the end of the inventory 
+   * @param type 
+   * @param amount 
+   */
+  removeItems(type: ItemType, amount: number): boolean {
+    let removed = 0;
+
+    for(const [index, item] of this.items.entries()){
+      if(item === undefined){
+        continue;
+      }
+
+      if(item.type !== type){
+        continue;
+      }
+
+      const yetToBeRemoved = amount - removed;
+      // no more to be removed, return;
+      if(yetToBeRemoved === 0){
+        return true;
+      }
+
+      if(yetToBeRemoved >= item.currentStackSize){
+        // amount greater than stack, remove stack
+        removed += item.currentStackSize;
+        item.currentStackSize = 0;
+        this.items[index] = undefined;
+      } else {
+        // reduce stack
+        removed += item.currentStackSize;
+        item.currentStackSize -= amount;
+      }
+    }
+
+    return false;
   }
 
   private createItem(type: ItemType, stackSize?: number): Item {
