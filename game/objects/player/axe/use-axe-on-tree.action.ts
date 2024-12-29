@@ -46,4 +46,15 @@ export function useAxeOnTree(scene: SCENE_GAME, object: TreeObject): void {
       positionY: object.transform.position.world.y + 1,
     }
   ))
+
+  for(let i = 0; i < object.fruit; i++){
+    scene.addObject(new ItemObject(
+      scene, 
+      {
+        type: ItemType.Berry,
+        positionX: object.transform.position.world.x + 1, // TODO: this should fall in an available space rather than a stack
+        positionY: object.transform.position.world.y,
+      }
+    ))
+  }
 }

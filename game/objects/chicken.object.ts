@@ -262,9 +262,6 @@ export class ChickenObject extends SceneObject implements Interactable {
   };
 
   private interactDefault(): void {
-    // disable inputs
-    this.scene.globals.player.enabled = false;
-
     let text = '';
     if (this.isEdgyTeen) {
       switch (this.interactionCount % 3) {
@@ -292,19 +289,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       }
     }
 
-    let textbox = new TextboxObject(
-      this.scene,
-      {
-        name: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.name,
-        portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.portrait,
-        text: text,
-        onComplete: () => {
-          // enable inputs
-          this.scene.globals.player.enabled = true;
-        }
-      }
-    );
-    this.scene.addObject(textbox);
+    this.say(text);
 
     this.interactionCount++;
   }
@@ -360,6 +345,36 @@ export class ChickenObject extends SceneObject implements Interactable {
     );
 
     this.scene.addObject(textbox);
+  }
+
+  say(text: string, onComplete?: () => void):void {
+    // disable inputs
+    this.scene.globals.player.enabled = false;
+
+    // stop movement and store it's state
+    const canMoveState = this.canMove;
+    this.canMove = false;
+
+    this.scene.addObject(
+      new TextboxObject(
+        this.scene,
+        {
+          name: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.name,
+          portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.portrait,
+          text: text,
+          onComplete: () => {
+            if(onComplete){
+              onComplete();
+            }
+
+            // enable inputs
+            this.scene.globals.player.enabled = true;
+            // restore can move
+            this.canMove = canMoveState;
+          }
+        }
+      )
+    );
   }
 
 }

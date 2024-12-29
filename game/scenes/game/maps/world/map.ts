@@ -15,7 +15,7 @@ import { ItemType } from '@game/models/inventory.model';
 import { WarpObject } from '@game/objects/warp.object';
 import { TilesetHouse } from '@game/constants/tileset-house.constants';
 import { LockedDoorObject } from '@game/objects/world/locked-door.object';
-import { HoleObject } from '@game/objects/world/hole.object';
+import { Hole2Object } from '@game/objects/world/hole2.object';
 import { SCENE_GAME_MAP_SHOP } from '../shop/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
@@ -163,19 +163,13 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // trees
     this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 2, type: 'big' }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 2, positionY: 7 }));
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 2, positionY: 7, type: 'small'}));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 11, type: 'big' }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 25, positionY: 7 }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 13, positionY: 11 }));
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 25, positionY: 7, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 13, positionY: 11, type: 'small'}));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 7, positionY: 13, type: 'big' }));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 20, positionY: 15, type: 'big' }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 16, positionY: 2 }));
-
-
-
-
-
-
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 16, positionY: 2, type: 'small'}));
 
   }
 }

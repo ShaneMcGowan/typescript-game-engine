@@ -13,6 +13,8 @@ export enum ItemType {
   Pickaxe = 'Pickaxe',
   Rock = 'Rock',
   Log = 'Log',
+  Berry = 'Berry',
+  Shovel = 'Shovel',
 }
 
 /**
@@ -43,6 +45,8 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.Pickaxe]: ItemRadius.Player,
   [ItemType.Rock]: ItemRadius.None,
   [ItemType.Log]: ItemRadius.None,
+  [ItemType.Berry]: ItemRadius.None,
+  [ItemType.Shovel]: ItemRadius.Player,
 }
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
@@ -57,9 +61,11 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.Chest]: { tileset: 'tileset_chest', x: 1, y: 1, },
   [ItemType.GateKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
   [ItemType.Axe]: { tileset: 'tileset_tools', x: 4, y: 2, },
-  [ItemType.Pickaxe]: { tileset: 'tileset_tools', x: 4, y: 4, },
+  [ItemType.Pickaxe]: { tileset: 'tileset_tool_pickaxe', x: 0, y: 0, },
   [ItemType.Rock]: { tileset: 'tileset_grass_biome', x: 7, y: 1, },
   [ItemType.Log]: { tileset: 'tileset_grass_biome', x: 5, y: 2, },
+  [ItemType.Berry]: { tileset: 'tileset_grass_biome', x: 1, y: 2, },
+  [ItemType.Shovel]: {tileset: 'tileset_tool_shovel', x: 0, y: 0, }
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -75,8 +81,10 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.GateKey]: 1,
   [ItemType.Axe]: 1,
   [ItemType.Pickaxe]: 1,
-  [ItemType.Rock]: 99,
-  [ItemType.Log]: 99,
+  [ItemType.Rock]: 9,
+  [ItemType.Log]: 9,
+  [ItemType.Berry]: 9,
+  [ItemType.Shovel]: 1,
 };
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
@@ -94,6 +102,8 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Pickaxe]: 0,
   [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
+  [ItemType.Berry]: 5,
+  [ItemType.Shovel]: 0,
 }
 
 export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
@@ -111,6 +121,8 @@ export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
   [ItemType.Pickaxe]: 'Pickaxe',
   [ItemType.Rock]: 'Rock',
   [ItemType.Log]: 'Log',
+  [ItemType.Berry]: 'Berry',
+  [ItemType.Shovel]: 'Shovel',
 }
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
@@ -124,10 +136,12 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.WateringCan]: 'I can use this to water dirt.',
   [ItemType.Chest]: 'I can put my treasures in here, or maybe just my socks or something.',
   [ItemType.GateKey]: `A key for a Gate, it's old and rusty looking. It tastes kinda funny too.`,
-  [ItemType.Axe]: `A tool with a sharp blade, I can use this to chop down trees.`,
-  [ItemType.Pickaxe]: `A tool with a strong blunt head, I can use this to break rocks.`,
+  [ItemType.Axe]: `A tool with a sharp blade. I can use this to chop down trees.`,
+  [ItemType.Pickaxe]: `A tool with a pointed blunt head. I can use this to break rocks.`,
   [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make tools.`,
   [ItemType.Log]: `A log that was cut from a mighty tree, I can use this to make tools.`,
+  [ItemType.Berry]: `A declious berry. If I plant it a berry tree will grow.`,
+  [ItemType.Shovel]: `A tool with a blunt head. I can use this to dig holes.`,
 }
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
@@ -145,6 +159,8 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: true,
   [ItemType.Log]: true,
+  [ItemType.Berry]: true,
+  [ItemType.Shovel]: true,
 }
 
 export interface ItemSprite {

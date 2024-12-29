@@ -5,6 +5,7 @@ import { TilesetGrassBiome } from "@game/constants/tileset-grass-biome.constants
 import { Interactable } from "@game/models/interactable.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { TextboxObject } from "./textbox.object";
+import { TreeObject } from "./tree.object";
 
 interface Config extends SceneObjectBaseConfig {
   type?: 'big' | 'small';
@@ -16,7 +17,7 @@ export class TreeStumpObject extends SceneObject implements Interactable {
   chopCounterMax: number = 5;
 
   regrowthTimer: number = 0;
-  regrowthTimerMax: number = 30;
+  regrowthTimerMax: number = 5;
 
   constructor(protected scene: SCENE_GAME, protected config: Config){
     super(scene, config);
@@ -27,14 +28,36 @@ export class TreeStumpObject extends SceneObject implements Interactable {
   }
 
   onUpdate(delta: number): void {
-    // if(this.config.type === 'big'){
-    //   this.updateFruit(delta);
-    // }
-    // TODO: stump timer
+    this.updateRegrowthTimer(delta);
   }
 
   onRender(context: CanvasRenderingContext2D): void {
     this.renderStump(context);
+  }
+
+  get type() {
+    return this.config.type;
+  }
+
+  private updateRegrowthTimer(delta: number): void {
+    this.regrowthTimer += delta;
+
+    if(this.regrowthTimer <= this.regrowthTimerMax){
+      return;
+    }
+
+    this.destroy();
+
+    this.scene.addObject(
+      new TreeObject(
+        this.scene,
+        {
+          positionX: this.transform.position.world.x,
+          positionY: this.transform.position.world.y,
+          type: this.type
+        }
+      )
+    );
   }
 
   private renderStump(context: CanvasRenderingContext2D): void {

@@ -5,6 +5,7 @@ import { type Interactable } from '@game/models/interactable.model';
 import { TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
 import { Inventory, ItemType } from '@game/models/inventory.model';
+import { MessageUtils } from '@game/utils/message.utils';
 
 const DIRT = { x: 1, y: 1, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
@@ -129,42 +130,24 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   private interactStageEmpty(): void {
-    this.scene.globals.player.enabled = false;
-
-    let textbox = new TextboxObject(
+    MessageUtils.showMessage(
       this.scene,
-      {
-        text: `It's a beautiful patch of dirt, brimming with potential.`,
-        onComplete: () => this.scene.globals.player.enabled = true
-      }
+      `It's a beautiful patch of dirt, brimming with potential. I can plant crops here.`
     );
-    this.scene.addObject(textbox);
   }
 
   private interactStageWatered(): void {
-    this.scene.globals.player.enabled = false;
-
-    let textbox = new TextboxObject(
+    MessageUtils.showMessage(
       this.scene,
-      {
-        text: `The patch of dirt is watered, better plant something before it dries up.`,
-        onComplete: () => this.scene.globals.player.enabled = true
-      }
+      `The patch of dirt is watered, better plant something before it dries up.`
     );
-    this.scene.addObject(textbox);
   }
 
   private interactStageGrowing(): void {
-    this.scene.globals.player.enabled = false;
-
-    let textbox = new TextboxObject(
+    MessageUtils.showMessage(
       this.scene,
-      {
-        text: `The plant is growing nicely, it will be ready for harvest soon.`,
-        onComplete: () => this.scene.globals.player.enabled = true
-      }
+      `The plant is growing nicely, it will be ready for harvest soon.`
     );
-    this.scene.addObject(textbox);
   }
 
   private interactStageFullyGrown(): void {

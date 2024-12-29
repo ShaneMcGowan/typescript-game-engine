@@ -66,6 +66,7 @@ export class SCENE_GAME extends Scene {
     // this.globals.inventory.addToInventory(ItemType.Hoe);
     // this.globals.inventory.addToInventory(ItemType.WateringCan);
     // this.globals.inventory.addToInventory(ItemType.Axe);
+    // this.globals.inventory.addToInventory(ItemType.Shovel);
     // this.globals.inventory.addToInventory(ItemType.Pickaxe);
     // this.globals.inventory.addToInventory(ItemType.GateKey);
 

@@ -51,7 +51,9 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
       tileset_basic: 'assets/sample/Sprite sheet for Basic Pack.png',
       tileset_shop_key: 'assets/custom/shop-key.png',
       tileset_grass_biome: 'assets/sample/Objects/Basic_Grass_Biom_things.png',
-      tileset_emotes: 'assets/sample/Dialouge UI/Emotes/Teemo Basic emote animations sprite sheet.png'
+      tileset_emotes: 'assets/sample/Dialouge UI/Emotes/Teemo Basic emote animations sprite sheet.png',
+      tileset_tool_shovel: 'assets/custom/tools/shovel.png',
+      tileset_tool_pickaxe: 'assets/custom/tools/pickaxe.png'
     },
     audio: {},
     fonts: {

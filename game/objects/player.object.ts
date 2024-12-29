@@ -30,6 +30,11 @@ import { TreeObject } from './tree.object';
 import { useAxeOnTree } from './player/axe/use-axe-on-tree.action';
 import { TreeStumpObject } from './tree-stump.object';
 import { useAxeOnTreeStump } from './player/axe/use-axe-on-tree-stump.action';
+import { useShovelOnChicken } from './player/shovel/use-shovel-on-chicken.action';
+import { useHoeOnChicken } from './player/hoe/use-hoe-on-chicken.action';
+import { useShovel } from './player/shovel/use-shovel.action';
+import { HoleObject } from './hole.object';
+import { useShovelOnHole } from './player/shovel/use-shovel-on-hole.action';
 
 enum Direction {
   UP = 'w',
@@ -418,6 +423,9 @@ export class PlayerObject extends SceneObject {
         case ItemType.Chest:
           useChest(this.scene);
           return;
+        case ItemType.Shovel:
+          useShovel(this.scene);
+          return;
         default:
           return;
       }
@@ -473,6 +481,25 @@ export class PlayerObject extends SceneObject {
               return;
             case object instanceof RockObject:
               usePickaxeOnRock(this.scene, object);
+              return;
+            default:
+              return;
+          }
+        case ItemType.Shovel:
+          switch(true){
+            case object instanceof ChickenObject:
+              useShovelOnChicken(this.scene, object);
+              return;
+            case object instanceof HoleObject:
+              useShovelOnHole(this.scene, object);
+              return;
+            default:
+              return;
+          }
+        case ItemType.Hoe:
+          switch(true){
+            case object instanceof ChickenObject:
+              useHoeOnChicken(this.scene, object);
               return;
             default:
               return;

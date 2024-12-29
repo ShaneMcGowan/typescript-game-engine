@@ -67,7 +67,7 @@ export class TreeObject extends SceneObject implements Interactable {
 
     this.fruitTimer -= this.fruitTimerMax;
 
-    if(this.fruit > this.fruitMax){
+    if(this.fruit >= this.fruitMax){
       return;
     }
 
@@ -148,7 +148,7 @@ export class TreeObject extends SceneObject implements Interactable {
       const textbox = new TextboxObject(
         this.scene,
         {
-          text: `A mighty tree, I should be able to cut it down with an Axe...`,
+          text: this.type === 'small' ? `It's a tree, I should be able to cut it down with an Axe...` : `It's a berry tree.`,
           onComplete: () => {
             this.scene.globals.player.enabled = true;
           },
@@ -166,7 +166,7 @@ export class TreeObject extends SceneObject implements Interactable {
     const item = new ItemObject(
       this.scene, 
       { 
-        type: ItemType.Rock, // TODO: change this to berry object
+        type: ItemType.Berry, // TODO: change this to berry object
         positionX: this.transform.position.world.x,
         positionY: this.transform.position.world.y + 1, // TODO: should fruit always drop in this position?
       });

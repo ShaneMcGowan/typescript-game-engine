@@ -12,7 +12,7 @@ import { EggObject } from '../egg.object';
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class HoleObject extends SceneObject {
+export class Hole2Object extends SceneObject {
   private playerConsumed: boolean = false;
 
   constructor(
