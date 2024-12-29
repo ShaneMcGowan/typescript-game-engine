@@ -96,12 +96,14 @@ export abstract class RenderUtils {
     );
   }
 
-  static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number, options: { colour?: string; } = {}): void {
+  static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number, options: { colour?: string; width?: number; } = {}): void {
+    const radius = ((options.width * CanvasConstants.TILE_SIZE) / 2);
+
     context.beginPath();
     context.arc(
       (positionX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
       (positionY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
-      CanvasConstants.TILE_SIZE / 2,
+      radius,
       0,
       2 * Math.PI
     );
@@ -235,6 +237,10 @@ export abstract class RenderUtils {
       // no exit condition, store new line
       currentLine = updatedLine.trim();
     }
+
+    // trim output
+    output = output.map(value => value.trim());
+
     return output;
   }
 }
