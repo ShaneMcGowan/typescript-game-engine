@@ -40,10 +40,10 @@ export class TilesetBasic {
   static readonly ArrowDown = {
     White: {
       Default: {
-        x: 15, y: 3,
+        x: 15, y: 3, width: 1, height: 1,
       },
       Pressed: {
-        x: 16, y: 3,
+        x: 16, y: 3, width: 1, height: 1,
       }
     }
   };
@@ -98,6 +98,25 @@ export class TilesetBasic {
       Default: {
         x: 55,
         y: 12,
+        width: 1,
+        height: 1,
+      }
+    }
+  }
+
+  static readonly Blocked: Tile<'Dark' | 'White', 'Default'> = {
+    Dark: {
+      Default: {
+        x: 52,
+        y: 14,
+        width: 1,
+        height: 1,
+      }
+    },
+    White: {
+      Default: {
+        x: 43,
+        y: 14,
         width: 1,
         height: 1,
       }

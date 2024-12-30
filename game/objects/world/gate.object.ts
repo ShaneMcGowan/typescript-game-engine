@@ -7,6 +7,7 @@ import { TilesetHouse } from '@game/constants/tileset-house.constants';
 import { ItemType } from '@game/models/inventory.model';
 import { TextboxObject } from '../textbox.object';
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"
+import { TilesetBasic } from '@game/constants/tileset-basic.constants';
 
 interface Config extends SceneObjectBaseConfig {
 
@@ -46,18 +47,52 @@ export class GateObject extends SceneObject implements Interactable {
   }
 
   private renderGate(context: CanvasRenderingContext2D): void {
+    const LeftHorizontal = { x: 1, y: 3, width: 1, height: 1 };
+    const RightHorizontal = { x: 3, y: 3, width: 1, height: 1 };
+
     RenderUtils.renderSprite(
       context,
-      Assets.images[TilesetHouse.id],
-      TilesetHouse.Door.Default.Closed.x,
-      TilesetHouse.Door.Default.Closed.y,
+      Assets.images['tileset_fence'],
+      LeftHorizontal.x,
+      LeftHorizontal.y,
+      this.transform.position.world.x - 1,
+      this.transform.position.world.y,
+      LeftHorizontal.width,
+      LeftHorizontal.height,
+    );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images['tileset_fence'],
+      RightHorizontal.x,
+      RightHorizontal.y,
+      this.transform.position.world.x + 1,
+      this.transform.position.world.y,
+      RightHorizontal.width,
+      RightHorizontal.height,
+    );
+
+    // icon
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetBasic.id],
+      TilesetBasic.Blocked.White.Default.x,
+      TilesetBasic.Blocked.White.Default.y,
+      this.transform.position.world.x - (1 / 16),
+      this.transform.position.world.y - (1 / 16),
+      TilesetBasic.Blocked.White.Default.width,
+      TilesetBasic.Blocked.White.Default.height,
+    );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[TilesetBasic.id],
+      TilesetBasic.Blocked.Dark.Default.x,
+      TilesetBasic.Blocked.Dark.Default.y,
       this.transform.position.world.x,
       this.transform.position.world.y,
-      this.width,
-      this.height,
-      {
-        centered: true,
-      }
+      TilesetBasic.Blocked.Dark.Default.width,
+      TilesetBasic.Blocked.Dark.Default.height,
     );
   }
 

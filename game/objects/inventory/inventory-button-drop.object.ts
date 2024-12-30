@@ -57,7 +57,7 @@ export class InventoryButtonDropObject extends SceneObject {
   }
 
   private renderButtonIcon(context: CanvasRenderingContext2D): void {
-    const tileset = TilesetBasic.Skull.Dark.Default;
+    const tileset = TilesetBasic.ArrowDown.White.Default;
     const offset = this.calculateSpriteOffset(tileset.width, tileset.height);
 
     RenderUtils.renderSprite(

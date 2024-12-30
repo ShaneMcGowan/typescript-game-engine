@@ -88,6 +88,17 @@ export class DirtObject extends SceneObject implements Interactable {
     return this.scene.globals.inventory;
   }
 
+  get produces(): ItemType | undefined {
+    switch (this.currentlyGrowing) {
+      case ItemType.TomatoSeeds:
+        return ItemType.Tomato;
+      case ItemType.WheatSeeds:
+        return ItemType.Wheat;
+      default:
+        return undefined;
+    }
+  }
+
   private onDirtPlaced(event: CustomEvent): void {
     // update sprite based on surrounding dirt
     let left = this.scene.getObjects({ position: { x: this.transform.position.world.x - 1, y: this.transform.position.world.y } });
@@ -151,24 +162,19 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   private interactStageFullyGrown(): void {
-    let success = false;
-
-    switch (this.currentlyGrowing) {
-      case ItemType.TomatoSeeds:
-        success = this.inventory.hasRoomForItem(ItemType.Tomato);
-        break;
-      case ItemType.WheatSeeds:
-        success = this.inventory.hasRoomForItem(ItemType.Wheat);
-        break;
+    if(this.produces === undefined){
+      return;
     }
 
-    if (!success) {
+    if(!this.inventory.hasRoomForItem(this.produces)){
       MessageUtils.showMessage(
         this.scene,
         `I don't have enough room.`
       )
       return;
     }
+
+    this.inventory.addToInventory(this.produces);
 
     this.destroy();
   }
