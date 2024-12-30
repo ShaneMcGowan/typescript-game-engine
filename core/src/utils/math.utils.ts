@@ -12,4 +12,14 @@ export abstract class MathUtils {
   static randomStartingDelta(seconds?: number): number {
     return Math.random() * (seconds ?? 1);
   }
+
+  static getRandomElement<T>(values: T[]): T | undefined {
+    if (values.length === 0) {
+      return undefined;
+    }
+
+    const index = this.randomIntFromRange(0, values.length - 1);
+
+    return values[index];
+  }
 }

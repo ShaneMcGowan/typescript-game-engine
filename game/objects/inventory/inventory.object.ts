@@ -13,11 +13,15 @@ import { Inventory, Item } from '@game/models/inventory.model';
 import { InventoryButtonTrashObject } from './inventory-button-trash.object';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 import { InventoryTooltipObject } from './inventory-tooltip.object';
+import { InventoryButtonDropObject } from './inventory-button-drop.object';
+import { ItemObject } from '../item.object';
+import { PlayerObject } from '../player.object';
 
 type DraggingSource = 'inventory' | 'chest';
 type DraggingType = 'mouse' | 'controller';
 
 interface Config extends SceneObjectBaseConfig {
+  player: PlayerObject;
   chest?: ChestObject
 }
 
@@ -32,6 +36,7 @@ interface Grid {
 }
 
 export class InventoryObject extends SceneObject {
+  private player: PlayerObject;
   private chest: ChestObject | undefined = undefined;
   
   private grid: Grid;
@@ -56,6 +61,7 @@ export class InventoryObject extends SceneObject {
     this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
 
     this.scene.globals.player.enabled = false;
+    this.player = config.player;
     this.chest = config.chest;
   }
 
@@ -149,6 +155,11 @@ export class InventoryObject extends SceneObject {
       positionY: 1
     }));
 
+    this.addChild(new InventoryButtonDropObject(this.scene, {
+      positionX: 25,
+      positionY: 1
+    }));
+
     this.addChild(new FillObject(this.scene, {
       positionX: 0,
       positionY: 0,
@@ -218,7 +229,7 @@ export class InventoryObject extends SceneObject {
         x: Input.mouse.position.x,
         y: Input.mouse.position.y
       },
-      typeMatch: [InventorySlotObject, InventoryButtonTrashObject]
+      typeMatch: [InventorySlotObject, InventoryButtonTrashObject, InventoryButtonDropObject]
     };
 
     const slot = this.scene.getObject(filter);
@@ -231,6 +242,26 @@ export class InventoryObject extends SceneObject {
       } else {
         this.stopDraggingItem();
       }
+    } else if (slot instanceof InventoryButtonDropObject) {
+      if(Inventory.canItemBeDropped(this.dragging.item)){
+        // drop
+        for(let i = 0; i < this.dragging.item.currentStackSize; i++){
+          const item = new ItemObject(
+            this.scene,
+            {
+              positionX: this.player.transform.position.world.x,
+              positionY: this.player.transform.position.world.y,
+              type: this.dragging.item.type,
+              dropped: true,
+            }
+          );
+          this.scene.addObject(item);
+        }
+
+        this.dragging = undefined;
+      } else {
+        this.stopDraggingItem();
+      } 
     } else if (slot instanceof InventorySlotObject) {
       // swap
       const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
@@ -591,7 +622,7 @@ export class InventoryObject extends SceneObject {
     const targetInventory = source === 'inventory' ? this.chest.inventory : this.inventory;
 
     // no slot to move to
-    const index = targetInventory.getFirstFreeSlot();
+    const index = targetInventory.getFirstSlotAvailable();
     if (index === undefined) {
       return;
     }

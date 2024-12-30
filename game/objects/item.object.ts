@@ -3,19 +3,49 @@ import { Assets } from "@core/utils/assets.utils";
 import { RenderUtils } from "@core/utils/render.utils";
 import { Interactable } from "@game/models/interactable.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { TextboxObject } from "./textbox.object";
 import { Inventory, ItemSprite, ItemType, TYPE_TO_NAME_MAP, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
+import { PlayerObject } from "./player.object";
+import { MessageUtils } from "@game/utils/message.utils";
 
 interface Config extends SceneObjectBaseConfig {
   type: ItemType;
+  dropped?: boolean;
 }
 
 export class ItemObject extends SceneObject implements Interactable {
+
+  // config
+  player: PlayerObject;
+  
+  // state
+  dropped: boolean;
+
   constructor(protected scene: SCENE_GAME, protected config: Config){
     super(scene, config);
 
-    this.collision.enabled = false;
+    this.collision.enabled = Inventory.canItemBeInteractedWith(this.type);
     this.renderer.enabled = true;
+
+    this.dropped = config.dropped ?? false;
+
+    // store PlayerObject on init so we don't search for it each frame
+    // TODO: review if this should be:
+    // - left as is
+    // - passed in as a config param
+    // - retrieved from some sort of Scene store
+    for(const [_, object] of this.scene.objects){
+      if(!(object instanceof PlayerObject)){
+        continue;
+      }
+
+      this.player = object;
+      break;
+    }
+  }
+
+  onUpdate(delta: number): void {
+    this.updatePickUpItem();
+    this.updateDropped();
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -28,26 +58,7 @@ export class ItemObject extends SceneObject implements Interactable {
       this.transform.position.world.y,
       1,
       1,
-    )
-  }
-
-  interact(): void {
-    this.scene.globals.player.enabled = false;
-
-    const textbox = new TextboxObject(
-      this.scene,
-      {
-        text: `You pick up the ${this.name}.`,
-        onComplete: () => {
-          this.inventory.addToInventory(this.type);
-          // TODO: handle case of inventory full
-          this.scene.globals.player.enabled = true;
-          this.destroy();
-        },
-      }
     );
-
-    this.scene.addObject(textbox);
   }
 
   get inventory(): Inventory {
@@ -64,6 +75,76 @@ export class ItemObject extends SceneObject implements Interactable {
 
   get type(): ItemType {
     return this.config.type;
+  }
+
+  get canPickUp(): boolean {
+    return this.inventory.hasRoomForItem(this.type);
+  }
+
+  private updatePickUpItem(): void {
+    // don't automatically pick up interactable items
+    if(Inventory.canItemBeInteractedWith(this.type)){
+      return;
+    }
+
+    // don't pick up if just dropped
+    if(this.dropped){
+      return;
+    }
+    
+    if(this.player.transform.position.world.x !== this.transform.position.world.x){
+      return;
+    }
+
+    if(this.player.transform.position.world.y !== this.transform.position.world.y){
+      return;
+    }
+
+    if(!this.canPickUp){
+      return;
+    }
+
+    this.inventory.addToInventory(this.type);
+    
+    this.destroy();
+  }
+
+  private updateDropped(): void {
+    if(!this.dropped){
+      return;
+    }
+
+    if(
+      this.player.transform.position.world.x === this.transform.position.world.x
+      && this.player.transform.position.world.y === this.transform.position.world.y
+    ){
+      return;
+    }
+
+
+    this.dropped = false;
+  }
+
+  interact(): void {
+    if(!Inventory.canItemBeInteractedWith(this.type)){
+      return;
+    }
+
+    if(!this.canPickUp){
+      MessageUtils.showMessage(
+        this.scene,
+        `I don't have enough room.`,
+      );
+      return;
+    }
+
+    MessageUtils.showMessage(
+      this.scene,
+      `You pick up the ${this.name}.`,
+    );
+
+    this.inventory.addToInventory(this.type);
+    this.destroy();
   }
 
 }

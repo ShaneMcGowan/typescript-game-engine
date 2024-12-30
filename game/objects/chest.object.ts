@@ -5,15 +5,17 @@ import { type Interactable } from '@game/models/interactable.model';
 import { InventoryObject } from '@game/objects/inventory/inventory.object';
 import { Assets } from '@core/utils/assets.utils';
 import { Inventory } from '@game/models/inventory.model';
+import { PlayerObject } from './player.object';
 
 const TILE_SET: string = 'tileset_chest';
 const RENDERER_LAYER = 8;
 
 interface Config extends SceneObjectBaseConfig {
-
+  player: PlayerObject;
 }
 
 export class ChestObject extends SceneObject implements Interactable {
+  private player: PlayerObject;
 
   inventory: Inventory;
   rows: number = 5;
@@ -26,6 +28,8 @@ export class ChestObject extends SceneObject implements Interactable {
     this.collision.enabled = true;
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
+
+    this.player = config.player;
 
     this.inventory = new Inventory(this.rows, this.columns);
   }
@@ -50,7 +54,8 @@ export class ChestObject extends SceneObject implements Interactable {
       {
         positionX: 0,
         positionY: 0,
-        chest: this
+        chest: this,
+        player: this.player,
       }
     ));
   }

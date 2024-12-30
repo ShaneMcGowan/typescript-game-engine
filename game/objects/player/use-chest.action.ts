@@ -1,8 +1,9 @@
 import { Input } from "@core/utils/input.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { ChestObject } from "../chest.object";
+import { PlayerObject } from "../player.object";
 
-export function useChest(scene: SCENE_GAME): void {
+export function useChest(scene: SCENE_GAME, player: PlayerObject): void {
 
   const x = Math.floor(Input.mouse.position.x + scene.globals.camera.startX);
   const y = Math.floor(Input.mouse.position.y + scene.globals.camera.startY);
@@ -12,6 +13,7 @@ export function useChest(scene: SCENE_GAME): void {
     {
       positionX: x,
       positionY: y,
+      player: player,
     }
   );
 

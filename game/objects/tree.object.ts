@@ -8,6 +8,8 @@ import { TextboxObject } from "./textbox.object";
 import { ItemObject } from "./item.object";
 import { ItemType } from "@game/models/inventory.model";
 import { MathUtils } from "@core/utils/math.utils";
+import { ObjectFilter, Scene } from "@core/model/scene";
+import { PlayerObject } from "./player.object";
 
 type Type = 'big' | 'small';
 
@@ -163,14 +165,68 @@ export class TreeObject extends SceneObject implements Interactable {
     this.fruit--;
     this.fruitTimer = 0;
 
+    // drop at a random position around the tree
+    const positions = this.findDropPositions();
+    const position = MathUtils.getRandomElement<{x: number, y: number}>(positions);
+
+    // no valid position
+    // this shouldn't really ever happen but just being safe
+    if(position === undefined){
+      return;
+    }
+
     const item = new ItemObject(
       this.scene, 
       { 
-        type: ItemType.Berry, // TODO: change this to berry object
-        positionX: this.transform.position.world.x,
-        positionY: this.transform.position.world.y + 1, // TODO: should fruit always drop in this position?
+        type: ItemType.Berry,
+        positionX: position.x,
+        positionY: position.y,
       });
     this.scene.addObject(item);
+  }
+
+  /**
+   * find a position to drop around the tree, ignoring the tree itself or behind the tree
+   * @returns 
+   */
+  private findDropPositions(): {x: number, y: number}[] {
+    const available: {x: number, y: number}[] = [];
+
+    for(let x = -1; x <= 1; x++){
+      for(let y = -1; y <= 1; y++){
+        // on top of the tree itself is not a valid position
+        if(x === 0 && y === 0){
+          continue;
+        }
+
+        // behind the tree is not a valid position
+        if(x === 0 && y === -1){
+          continue;
+        }
+
+        const filter: ObjectFilter = {
+          boundingBox: SceneObject.calculateBoundingBox(
+            this.transform.position.world.x + x,
+            this.transform.position.world.y + y,
+            1,
+            1,
+          ),
+          typeIgnore: [PlayerObject, ItemObject]
+        }
+        const object = this.scene.getObject(filter);
+        
+        // on top of another object is not a valid position
+        if(object !== undefined){
+          continue;
+        }
+
+        available.push({
+          x: this.transform.position.world.x + x,
+          y: this.transform.position.world.y + y,
+        });
+      }
+    }
+    return available;
   }
 
 }

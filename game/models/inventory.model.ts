@@ -45,7 +45,7 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.Pickaxe]: ItemRadius.Player,
   [ItemType.Rock]: ItemRadius.None,
   [ItemType.Log]: ItemRadius.None,
-  [ItemType.Berry]: ItemRadius.None,
+  [ItemType.Berry]: ItemRadius.Player,
   [ItemType.Shovel]: ItemRadius.Player,
 }
 
@@ -138,8 +138,8 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.GateKey]: `A key for a Gate, it's old and rusty looking. It tastes kinda funny too.`,
   [ItemType.Axe]: `A tool with a sharp blade. I can use this to chop down trees.`,
   [ItemType.Pickaxe]: `A tool with a pointed blunt head. I can use this to break rocks.`,
-  [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make tools.`,
-  [ItemType.Log]: `A log that was cut from a mighty tree, I can use this to make tools.`,
+  [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make things.`,
+  [ItemType.Log]: `A log that was cut from a mighty tree, I can use this to make things.`,
   [ItemType.Berry]: `A declious berry. If I plant it a berry tree will grow.`,
   [ItemType.Shovel]: `A tool with a blunt head. I can use this to dig holes.`,
 }
@@ -160,6 +160,44 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: true,
   [ItemType.Log]: true,
   [ItemType.Berry]: true,
+  [ItemType.Shovel]: true,
+}
+
+export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
+  [ItemType.Chicken]: true,
+  [ItemType.Egg]: true,
+  [ItemType.WheatSeeds]: true,
+  [ItemType.Wheat]: true,
+  [ItemType.TomatoSeeds]: true,
+  [ItemType.Tomato]: true,
+  [ItemType.Hoe]: true,
+  [ItemType.WateringCan]: true,
+  [ItemType.Chest]: true,
+  [ItemType.GateKey]: false,
+  [ItemType.Axe]: true,
+  [ItemType.Pickaxe]: true,
+  [ItemType.Rock]: true,
+  [ItemType.Log]: true,
+  [ItemType.Berry]: true,
+  [ItemType.Shovel]: true,
+}
+
+export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
+  [ItemType.Chicken]: false,
+  [ItemType.Egg]: false,
+  [ItemType.WheatSeeds]: false,
+  [ItemType.Wheat]: false,
+  [ItemType.TomatoSeeds]: false,
+  [ItemType.Tomato]: false,
+  [ItemType.Hoe]: true,
+  [ItemType.WateringCan]: true,
+  [ItemType.Chest]: false,
+  [ItemType.GateKey]: false,
+  [ItemType.Axe]: true,
+  [ItemType.Pickaxe]: true,
+  [ItemType.Rock]: false,
+  [ItemType.Log]: false,
+  [ItemType.Berry]: false,
   [ItemType.Shovel]: true,
 }
 
@@ -201,7 +239,7 @@ export class Inventory {
    * @returns 
    */
 
-  firstSlotWithRoom(type: ItemType): number | undefined {
+  getFirstSlotWithRoom(type: ItemType): number | undefined {
     for (let i = 0; i < this.size; i++) {
       const item = this.items[i];
       
@@ -227,7 +265,7 @@ export class Inventory {
    * finds the index of the first free slot, if none available, returns undefined
    * @returns 
    */
-   getFirstFreeSlot(): number | undefined {
+   getFirstSlotAvailable(): number | undefined {
     for (let i = 0; i < this.size; i++) {
       if(this.items[i] === undefined){
         return i;
@@ -269,7 +307,7 @@ export class Inventory {
   addToInventory(type: ItemType): Item | undefined {
 
     // existing stack
-    const stackIndex = this.firstSlotWithRoom(type);
+    const stackIndex = this.getFirstSlotWithRoom(type);
     if(stackIndex !== undefined){
       const item = this.items[stackIndex];
       item.currentStackSize++;
@@ -277,7 +315,7 @@ export class Inventory {
     }
 
     // blank slot
-    const blankIndex = this.getFirstFreeSlot();
+    const blankIndex = this.getFirstSlotAvailable();
     if(blankIndex !== undefined){
       const item = this.createItem(type);
       this.items[blankIndex] = item;
@@ -369,6 +407,14 @@ export class Inventory {
     return false;
   }
 
+  hasRoomForItem(type: ItemType): boolean {
+    if(this.getFirstSlotWithRoom(type) !== undefined){
+      return true;
+    }
+
+    return this.getFirstSlotAvailable() !== undefined;
+  }
+
   private createItem(type: ItemType, stackSize?: number): Item {
     const maxStackSize =  TYPE_TO_MAX_STACK_MAP[type] ?? DEFAULT_MAX_STACK;
     
@@ -390,16 +436,28 @@ export class Inventory {
     }
   }
 
+  // TODO: change to accept a type
   static getItemName(item: Item): string {
     return TYPE_TO_NAME_MAP[item.type];
   }
 
+  // TODO: change to accept a type
   static getItemDescription(item: Item): string {
     return TYPE_TO_DESCRIPTION_MAP[item.type];
   }
 
+  // TODO: change to accept a type
   static canItemBeDestroyed(item: Item): boolean {
     return TYPE_TO_CAN_DESTROY_MAP[item.type];
+  }
+
+  // TODO: change to accept a type
+  static canItemBeDropped(item: Item): boolean {
+    return TYPE_TO_CAN_DROP_MAP[item.type];
+  }
+
+  static canItemBeInteractedWith(type: ItemType): boolean {
+    return TYPE_TO_CAN_INTERACT_MAP[type];
   }
   
 }

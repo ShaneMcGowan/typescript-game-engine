@@ -5,6 +5,7 @@ import { Inventory, Item, ItemType } from '@game/models/inventory.model';
 import { SCENE_GAME_MAP_SHOP } from './maps/shop/map';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
+import { PlayerObject } from '@game/objects/player.object';
 
 interface Globals extends SceneGlobalsBaseConfig {
   inventory: Inventory;
@@ -65,10 +66,11 @@ export class SCENE_GAME extends Scene {
 
     // this.globals.inventory.addToInventory(ItemType.Hoe);
     // this.globals.inventory.addToInventory(ItemType.WateringCan);
-    // this.globals.inventory.addToInventory(ItemType.Axe);
-    // this.globals.inventory.addToInventory(ItemType.Shovel);
+    this.globals.inventory.addToInventory(ItemType.Axe);
+    this.globals.inventory.addToInventory(ItemType.Shovel);
     // this.globals.inventory.addToInventory(ItemType.Pickaxe);
     // this.globals.inventory.addToInventory(ItemType.GateKey);
+    this.globals.inventory.addToInventory(ItemType.Berry);
 
     // this is for debugging, letting us launch into a specific map
     const params = new URLSearchParams(window.location.search);

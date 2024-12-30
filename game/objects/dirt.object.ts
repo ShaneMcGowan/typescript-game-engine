@@ -155,15 +155,18 @@ export class DirtObject extends SceneObject implements Interactable {
 
     switch (this.currentlyGrowing) {
       case ItemType.TomatoSeeds:
-        success = !!this.inventory.addToInventory(ItemType.Tomato);
+        success = this.inventory.hasRoomForItem(ItemType.Tomato);
         break;
       case ItemType.WheatSeeds:
-        success = !!this.inventory.addToInventory(ItemType.Wheat);
+        success = this.inventory.hasRoomForItem(ItemType.Wheat);
         break;
     }
 
     if (!success) {
-      // TODO: some sort of indication the player's inventory is full
+      MessageUtils.showMessage(
+        this.scene,
+        `I don't have enough room.`
+      )
       return;
     }
 

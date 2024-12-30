@@ -35,6 +35,7 @@ import { useHoeOnChicken } from './player/hoe/use-hoe-on-chicken.action';
 import { useShovel } from './player/shovel/use-shovel.action';
 import { HoleObject } from './hole.object';
 import { useShovelOnHole } from './player/shovel/use-shovel-on-hole.action';
+import { useBerryOnHole } from './player/berry/use-berry-on-hole.action';
 
 enum Direction {
   UP = 'w',
@@ -336,6 +337,7 @@ export class PlayerObject extends SceneObject {
         {
           positionX: 0,
           positionY: 0,
+          player: this,
         }
       )
     );
@@ -421,7 +423,7 @@ export class PlayerObject extends SceneObject {
           useSeed(this.scene);
           return;
         case ItemType.Chest:
-          useChest(this.scene);
+          useChest(this.scene, this);
           return;
         case ItemType.Shovel:
           useShovel(this.scene);
@@ -466,7 +468,7 @@ export class PlayerObject extends SceneObject {
               useAxeOnChicken(this.scene, object);
               return;
             case object instanceof TreeObject:
-              useAxeOnTree(this.scene, object);
+              useAxeOnTree(this.scene, this, object);
               return;
             case object instanceof TreeStumpObject:
               useAxeOnTreeStump(this.scene, object);
@@ -500,6 +502,14 @@ export class PlayerObject extends SceneObject {
           switch(true){
             case object instanceof ChickenObject:
               useHoeOnChicken(this.scene, object);
+              return;
+            default:
+              return;
+          }
+        case ItemType.Berry:
+          switch(true){
+            case object instanceof HoleObject:
+              useBerryOnHole(this.scene, object);
               return;
             default:
               return;
