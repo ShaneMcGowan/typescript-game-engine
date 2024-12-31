@@ -159,8 +159,8 @@ export abstract class Scene {
       const xEnd = options.xEnd ?? this.map.width - 1;
       const yEnd = options.yEnd ?? this.map.height - 1;
 
-      for (let y = yStart; y < yEnd; y++) {
-        for (let x = xStart; x < xEnd; x++) {
+      for (let y = yStart; y <= yEnd; y++) {
+        for (let x = xStart; x <= xEnd; x++) {
           const tile = layer.tiles[y][x];
 
           if (tile === null) {
