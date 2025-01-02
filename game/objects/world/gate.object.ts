@@ -3,7 +3,6 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { Assets } from '@core/utils/assets.utils';
-import { TilesetHouse } from '@game/constants/tileset-house.constants';
 import { ItemType } from '@game/models/inventory.model';
 import { TextboxObject } from '../textbox.object';
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"

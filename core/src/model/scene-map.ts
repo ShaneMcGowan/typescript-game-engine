@@ -1,4 +1,4 @@
-import { JsonBackgroundMap } from './background';
+import { type JsonBackgroundMap } from './background';
 import { type Scene } from './scene';
 import { type SceneObject } from './scene-object';
 
@@ -11,7 +11,6 @@ interface Flags {
 }
 
 export abstract class SceneMap {
-
   flags: Flags = {
     suspend: FLAGS_SUSPEND_DEFAULT,
   };
@@ -49,9 +48,8 @@ export abstract class SceneMap {
    */
   onLeave?(): void;
   /**
-   * Ran when map is destroyed, after `onLeave`. 
+   * Ran when map is destroyed, after `onLeave`.
    * Not called if `flags.suspend` is true as the map is never destroyed
    */
   onDestroy?(): void;
-
 }

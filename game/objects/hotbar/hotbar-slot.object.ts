@@ -1,16 +1,19 @@
 import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
+import { SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { Assets } from "@core/utils/assets.utils";
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 import { TilesetUI } from "@game/constants/tileset-ui.constants";
+import { Input, MouseKey } from "@core/utils/input.utils";
+import { MouseUtils } from "@core/utils/mouse.utils";
+import { UiObject } from "@core/objects/ui.object";
 
 interface Config extends SceneObjectBaseConfig {
   index: number;
 }
 
-export class HotbarSlotObject extends SceneObject {
+export class HotbarSlotObject extends UiObject {
   width: number = 2;
   height: number = 2;
 
@@ -26,6 +29,18 @@ export class HotbarSlotObject extends SceneObject {
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
 
     this.index = config.index;
+  }
+
+  onUpdate(delta: number): void {
+    if(!Input.isMousePressed(MouseKey.Left)){
+      return;
+    }
+
+    if(!MouseUtils.isMouseWithinObject(this)){
+      return;
+    }
+
+    this.scene.globals.hotbar_selected_index = this.index;
   }
 
   onRender(context: CanvasRenderingContext2D): void {

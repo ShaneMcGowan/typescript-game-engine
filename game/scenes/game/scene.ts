@@ -64,13 +64,13 @@ export class SCENE_GAME extends Scene {
   constructor(client: Client) {
     super(client);
 
-    // this.globals.inventory.addToInventory(ItemType.Hoe);
-    // this.globals.inventory.addToInventory(ItemType.WateringCan);
-    // this.globals.inventory.addToInventory(ItemType.Axe);
-    // this.globals.inventory.addToInventory(ItemType.Shovel);
-    // this.globals.inventory.addToInventory(ItemType.Pickaxe);
-    // this.globals.inventory.addToInventory(ItemType.GateKey);
-    // this.globals.inventory.addToInventory(ItemType.Berry);
+    this.globals.inventory.addToInventory(ItemType.Hoe);
+    this.globals.inventory.addToInventory(ItemType.WateringCan);
+    this.globals.inventory.addToInventory(ItemType.Axe);
+    this.globals.inventory.addToInventory(ItemType.Shovel);
+    this.globals.inventory.addToInventory(ItemType.Pickaxe);
+    this.globals.inventory.addToInventory(ItemType.GateKey);
+    this.globals.inventory.addToInventory(ItemType.Berry);
 
     // this is for debugging, letting us launch into a specific map
     const params = new URLSearchParams(window.location.search);

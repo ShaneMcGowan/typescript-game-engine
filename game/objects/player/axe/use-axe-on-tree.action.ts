@@ -12,19 +12,6 @@ export function useAxeOnTree(scene: SCENE_GAME, player: PlayerObject, object: Tr
   if(object.chopCounter < object.chopCounterMax){
     return;
   }
-
-  scene.globals.player.enabled = false;
-
-  const textbox = new TextboxObject(
-    scene,
-    {
-      text: `The tree tumbles to the ground.`,
-      onComplete: () => {
-        scene.globals.player.enabled = true;
-      },
-    }
-  )
-  scene.addObject(textbox);
   
   object.destroy();
 

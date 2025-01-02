@@ -36,6 +36,8 @@ import { useShovel } from './player/shovel/use-shovel.action';
 import { HoleObject } from './hole.object';
 import { useShovelOnHole } from './player/shovel/use-shovel-on-hole.action';
 import { useBerryOnHole } from './player/berry/use-berry-on-hole.action';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { UiObject } from '@core/objects/ui.object';
 
 enum Direction {
   UP = 'w',
@@ -370,6 +372,24 @@ export class PlayerObject extends SceneObject {
       x: Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX),
       y: Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY)
     });
+    
+    // check if UI object at mouse position, if so, cancel this call
+    const uiFilter: ObjectFilter = {
+      boundingBox: SceneObject.calculateBoundingBox(
+        Input.mouse.position.x, 
+        Input.mouse.position.y, 
+        CanvasConstants.TILE_PIXEL_SIZE, 
+        CanvasConstants.TILE_PIXEL_SIZE,
+      ),
+      typeMatch: [UiObject]
+    };
+
+    const uiObject = this.scene.getObject(uiFilter, false);
+
+    if(uiObject){
+      console.log(uiObject);
+      return;
+    }
 
     Input.clearPressed<Control>(CONTROL_SCHEME, Control.Action);
 
@@ -398,7 +418,13 @@ export class PlayerObject extends SceneObject {
     }
 
     const filter: ObjectFilter = {
-      boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
+      boundingBox: SceneObject.calculateBoundingBox(
+        x, 
+        y, 
+        CanvasConstants.TILE_PIXEL_SIZE, 
+        CanvasConstants.TILE_PIXEL_SIZE,
+      ),
+      typeIgnore: [UiObject]
     }
     const object = this.scene.getObject(filter);
 

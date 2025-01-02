@@ -5,11 +5,12 @@ import { Inventory, Item } from '@game/models/inventory.model';
 import { HotbarSlotObject } from './hotbar-slot.object';
 import { Input } from '@core/utils/input.utils';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
+import { UiObject } from '@core/objects/ui.object';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class HotbarObject extends SceneObject {
+export class HotbarObject extends UiObject {
   height: number = 2;
   width: number = 10;
 
@@ -21,9 +22,6 @@ export class HotbarObject extends SceneObject {
     config: Config
   ) {
     super(scene, config);
-    this.renderer.enabled = true;
-    this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
-    this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
   }
 
   onAwake(): void {

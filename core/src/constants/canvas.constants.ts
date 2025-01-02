@@ -66,4 +66,8 @@ export abstract class CanvasConstants {
   static get CANVAS_CENTER_PIXEL_Y(): number {
     return CanvasConstants.CANVAS_HEIGHT / 2;
   }
+
+  static get TILE_PIXEL_SIZE(): number {
+    return 1 / this.TILE_SIZE;
+  }
 }

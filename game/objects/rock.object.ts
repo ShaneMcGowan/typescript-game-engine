@@ -4,16 +4,25 @@ import { RenderUtils } from "@core/utils/render.utils";
 import { TilesetGrassBiome } from "@game/constants/tileset-grass-biome.constants";
 import { Interactable } from "@game/models/interactable.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { TextboxObject } from "./textbox.object";
+import { MessageUtils } from "@game/utils/message.utils";
 
-interface Config extends SceneObjectBaseConfig {}
+const CAN_BE_BROKEN_DEFAULT: boolean = true;
+
+interface Config extends SceneObjectBaseConfig {
+  canBeBroken?: boolean;
+}
 
 export class RockObject extends SceneObject implements Interactable {
+
+  canBeBroken: boolean;
+
   constructor(protected scene: SCENE_GAME, config: Config){
     super(scene, config);
 
     this.collision.enabled = true;
     this.renderer.enabled = true;
+
+    this.canBeBroken = config.canBeBroken ?? CAN_BE_BROKEN_DEFAULT;
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -31,18 +40,15 @@ export class RockObject extends SceneObject implements Interactable {
 
   interact(): void {
     this.scene.globals.player.enabled = false;
+    
+    const text = this.canBeBroken 
+    ? `This rock is too tough to break by hand, maybe if I used a Pickaxe...`
+    : `This rock looks too tough to be broken, even with a pickaxe.`;
 
-    const textbox = new TextboxObject(
+    MessageUtils.showMessage(
       this.scene,
-      {
-        text: `This rock is too tough to break by hand, maybe if I used a Pickaxe...`,
-        onComplete: () => {
-          this.scene.globals.player.enabled = true;
-        },
-      }
+      text,
     );
-
-    this.scene.addObject(textbox);
   }
 
 }

@@ -422,7 +422,7 @@ export class Client {
   private initialiseMouseListeners(): void {
     console.log('[listener added] pointermove');
     this.displayCanvas.addEventListener('pointermove', (event: PointerEvent) => {
-      console.log('[pointermove]', event);
+      // console.log('[pointermove]', event);
       setMousePosition(
         this.displayCanvas,
         event
@@ -438,6 +438,8 @@ export class Client {
         this.displayCanvas,
         event
       );
+
+      // TODO: store latest pointerdown position
 
       switch (event.button) {
         case 0:
@@ -455,6 +457,9 @@ export class Client {
     console.log('[listener added] pointerup');
     this.displayCanvas.addEventListener('pointerup', (event: MouseEvent) => {
       console.log('[pointerup]', event);
+
+      // TODO: store latest pointerup position
+
       switch (event.button) {
         case 0:
           Input.mouse.click.left = false;

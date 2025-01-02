@@ -225,10 +225,12 @@ export class InventoryObject extends SceneObject {
     }
 
     const filter: ObjectFilter = {
-      position: {
-        x: Input.mouse.position.x,
-        y: Input.mouse.position.y
-      },
+      boundingBox: SceneObject.calculateBoundingBox(
+        Input.mouse.position.x,
+        Input.mouse.position.y,
+        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE,
+      ),
       typeMatch: [InventorySlotObject, InventoryButtonTrashObject, InventoryButtonDropObject]
     };
 
@@ -284,8 +286,8 @@ export class InventoryObject extends SceneObject {
       boundingBox: SceneObject.calculateBoundingBox(
         Input.mouse.position.x,
         Input.mouse.position.y,
-        2,
-        2,
+        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE,
       )
     }
     const slot = this.scene.getObject(filter) as InventorySlotObject;
@@ -321,8 +323,8 @@ export class InventoryObject extends SceneObject {
       boundingBox: SceneObject.calculateBoundingBox(
         Input.mouse.position.x,
         Input.mouse.position.y,
-        2,
-        2,
+        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE,
       )
     }
     const slot = this.scene.getObject(filter) as InventorySlotObject;
@@ -391,8 +393,8 @@ export class InventoryObject extends SceneObject {
       boundingBox: SceneObject.calculateBoundingBox(
         this.controllerSelectorPosition.x,
         this.controllerSelectorPosition.y,
-        2,
-        2,
+        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE,
       )
     }
     const slot = this.scene.getObject(filter);
@@ -466,8 +468,8 @@ export class InventoryObject extends SceneObject {
       boundingBox: SceneObject.calculateBoundingBox(
         this.controllerSelectorPosition.x,
         this.controllerSelectorPosition.y,
-        2,
-        2,
+        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE,
       ),
       typeMatch: [InventorySlotObject, InventoryButtonTrashObject]
     };
