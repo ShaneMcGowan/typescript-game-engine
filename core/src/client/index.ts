@@ -420,15 +420,25 @@ export class Client {
   }
 
   private initialiseMouseListeners(): void {
-    console.log('[listener added] mousemove');
-    this.displayCanvas.addEventListener('mousemove', (event: MouseEvent) => {
-      Input.mouse.position = MouseUtils.getMousePosition(this.displayCanvas, event);
-      Input.mouse.latestEvent = event;
+    console.log('[listener added] pointermove');
+    this.displayCanvas.addEventListener('pointermove', (event: PointerEvent) => {
+      console.log('[pointermove]', event);
+      setMousePosition(
+        this.displayCanvas,
+        event
+      );
     });
 
-    console.log('[listener added] mousedown');
-    this.displayCanvas.addEventListener('mousedown', (event: MouseEvent) => {
-      // console.log('[mousedown]', event);
+    console.log('[listener added] pointerdown');
+    this.displayCanvas.addEventListener('pointerdown', (event: PointerEvent) => {
+      console.log('[pointerdown]', event);
+
+      // update position, mainly for touch devices
+      setMousePosition(
+        this.displayCanvas,
+        event
+      );
+
       switch (event.button) {
         case 0:
           Input.mouse.click.left = true;
@@ -442,9 +452,9 @@ export class Client {
       }
     });
 
-    console.log('[listener added] mouseup');
-    this.displayCanvas.addEventListener('mouseup', (event: MouseEvent) => {
-      // console.log('[mouseup]', event);
+    console.log('[listener added] pointerup');
+    this.displayCanvas.addEventListener('pointerup', (event: MouseEvent) => {
+      console.log('[pointerup]', event);
       switch (event.button) {
         case 0:
           Input.mouse.click.left = false;
@@ -459,18 +469,18 @@ export class Client {
     });
 
     // touch - this is for mobile only
-    console.log('[listener added] touchstart');
-    this.displayCanvas.addEventListener('touchstart', (event: TouchEvent) => {
-      console.log('[touchstart]', event);
-      Input.mouse.click.left = true;
-    });
+    // console.log('[listener added] touchstart');
+    // this.displayCanvas.addEventListener('touchstart', (event: TouchEvent) => {
+    //   console.log('[touchstart]', event);
+    //   Input.mouse.click.left = true;
+    // });
 
     // touch - this is for mobile only
-    console.log('[listener added] touchend');
-    this.displayCanvas.addEventListener('touchend', (event: TouchEvent) => {
-      console.log('[touchend]', event);
-      Input.mouse.click.left = false;
-    });
+    // console.log('[listener added] touchend');
+    // this.displayCanvas.addEventListener('touchend', (event: TouchEvent) => {
+    //   console.log('[touchend]', event);
+    //   Input.mouse.click.left = false;
+    // });
 
     // for mouse scroll
     console.log('[listener added] wheel');
@@ -583,4 +593,9 @@ function generateDebuggerLine(object: any, key: string): string {
   html += '</div>';
 
   return html;
+}
+
+function setMousePosition(canvas: HTMLCanvasElement, event: PointerEvent): void {
+  Input.mouse.position = MouseUtils.getMousePosition(canvas, event);
+  Input.mouse.latestEvent = event;
 }

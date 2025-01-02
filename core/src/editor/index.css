@@ -29,6 +29,7 @@ body {
   /* preventing 1px appearing below canvas */
   background-color: var(--colour-black);
   color: var(--colour-white);
+  touch-action: none; /* without this, the pointerup event doesn't fire */
 }
 
 .editor-container {

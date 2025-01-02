@@ -24,6 +24,7 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden; /* preventing 1px appearing below canvas / preventing mac weird scroll/stretch of page */
+  touch-action: none; /* without this, the pointerup event doesn't fire */
 }
 
 #render-area {
