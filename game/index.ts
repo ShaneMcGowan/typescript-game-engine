@@ -20,9 +20,10 @@ import { DeviceType } from '@core/model/device-type';
   // viewport
   const deviceParam = params.get('device');
   if(deviceParam === 'mobile'){
-    CanvasConstants.CANVAS_TILE_WIDTH = 9;
-    CanvasConstants.CANVAS_TILE_HEIGHT = 16;
+    CanvasConstants.CANVAS_TILE_WIDTH = 15;
+    CanvasConstants.CANVAS_TILE_HEIGHT = 24;
     CanvasConstants.DEVICE_TYPE = DeviceType.Mobile;
+    CanvasConstants.DEFAULT_FONT_SIZE = 16; // TODO: might need a smaller font for mobile devices
   }
 
   // this is for debugging, letting us launch into a specific scene

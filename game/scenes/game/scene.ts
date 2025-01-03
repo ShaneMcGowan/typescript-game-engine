@@ -6,6 +6,8 @@ import { SCENE_GAME_MAP_SHOP } from './maps/shop/map';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
 import { PlayerObject } from '@game/objects/player.object';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { DeviceType } from '@core/model/device-type';
 
 interface Globals extends SceneGlobalsBaseConfig {
   inventory: Inventory;

@@ -8,6 +8,7 @@ import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 import { TilesetDialogueBox } from '@game/constants/tilesets/dialogue-box.tileset';
 import { PortraitObject } from './portrait.object';
 import { DeviceType } from '@core/model/device-type';
+import { TextboxNamePlateObject } from './textbox/textbox-name-plate.object';
 
 export interface Portrait {
   tileset: string;
@@ -76,6 +77,10 @@ export class TextboxObject extends SceneObject {
   private completionTimer: number = 0;
   private readonly completionDuration: number | undefined;
 
+  // 
+  namePlateObject: TextboxNamePlateObject;
+  portraitObject: PortraitObject;
+
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -115,14 +120,34 @@ export class TextboxObject extends SceneObject {
   }
 
   onAwake(): void {
-    if(CanvasConstants.DEVICE_TYPE === DeviceType.Mobile){
-      return;
-    }
     if(this.portrait === undefined){
       return;
     }
+
+    this.portraitObject = new PortraitObject(
+      this.scene, 
+      { 
+        portrait: this.portrait,
+        positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 2,
+        positionY: (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 4,
+      }
+    );
+    this.scene.addObject(this.portraitObject);
+
+    if(this.hasNamePlate){
+      this.namePlateObject = new TextboxNamePlateObject(
+        this.scene,
+        {
+          positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (3), // 3 is 6 width / 2
+          positionY: CanvasConstants.CANVAS_TILE_HEIGHT / 2,
+          width: 6,
+          height: 1.5,
+          name: this.name,
+        }
+      );
+      this.scene.addObject(this.namePlateObject);
+    }
     
-    this.addChild(new PortraitObject(this.scene, { portrait: this.portrait }))
   }
 
   onUpdate(delta: number): void {
@@ -141,17 +166,18 @@ export class TextboxObject extends SceneObject {
 
   onRender(context: CanvasRenderingContext2D): void {
     if (this.showOverlay) {
-      // this.renderOverlay(context);
+      this.renderOverlay(context);
       // TODO: overlay flickers between textbox objects, figure out a better pattern for this
     }
 
     this.generateTextbox(context);
 
-    if (this.hasNamePlate) {
-      this.renderNamePlate(context);
-    }
-
     this.renderText(context);
+  }
+
+  onDestroy(): void {
+    this.namePlateObject?.destroy();
+    this.portraitObject?.destroy();
   }
 
   private updateTimer(delta: number): void {
@@ -259,19 +285,6 @@ export class TextboxObject extends SceneObject {
       TilesetDialogueBox.BottomLeft.Default.Default.height,
     );
 
-    if(this.portrait){
-      RenderUtils.renderSprite(
-        context,
-        Assets.images[TilesetDialogueBox.id],
-        TilesetDialogueBox.Notch.Default.Default.x,
-        TilesetDialogueBox.Notch.Default.Default.y,
-        this.transform.position.world.x + xOffset + 0.5 - 1 + (1 / 16), // move 1 pixel over for overlap
-        this.transform.position.world.y + yOffset + 2,
-        TilesetDialogueBox.Notch.Default.Default.width,
-        TilesetDialogueBox.Notch.Default.Default.height,
-      );
-    }
-
     // right
     RenderUtils.renderSprite(
       context,
@@ -366,87 +379,6 @@ export class TextboxObject extends SceneObject {
         this.transform.position.world.y + 3.25,
       );
     }
-  }
-
-  private renderNamePlate(context: CanvasRenderingContext2D): void {
-    const x = ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1;
-
-    // left
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TilesetDialogueBox.id],
-      TilesetDialogueBox.TopLeft.Default.Default.x,
-      TilesetDialogueBox.TopLeft.Default.Default.y,
-      this.transform.position.world.x + x - 0.5,
-      this.transform.position.world.y - 1,
-      TilesetDialogueBox.TopLeft.Default.Default.width,
-      TilesetDialogueBox.TopLeft.Default.Default.height,
-    );
-
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TilesetDialogueBox.id],
-      TilesetDialogueBox.BottomLeft.Default.Default.x,
-      TilesetDialogueBox.BottomLeft.Default.Default.y,
-      this.transform.position.world.x + x - 0.5,
-      this.transform.position.world.y - 0.5,
-      TilesetDialogueBox.BottomLeft.Default.Default.width,
-      TilesetDialogueBox.BottomLeft.Default.Default.height,
-    );
-
-    // center
-    for(let i = 0; i < 5; i++){
-      RenderUtils.renderSprite(
-        context,
-        Assets.images[TilesetDialogueBox.id],
-        TilesetDialogueBox.Top.Default.Default.x,
-        TilesetDialogueBox.Top.Default.Default.y,
-        this.transform.position.world.x + x + i + 0.5,
-        this.transform.position.world.y - 1,
-        TilesetDialogueBox.Top.Default.Default.width,
-        TilesetDialogueBox.Top.Default.Default.height,
-      );
-      RenderUtils.renderSprite(
-        context,
-        Assets.images[TilesetDialogueBox.id],
-        TilesetDialogueBox.Bottom.Default.Default.x,
-        TilesetDialogueBox.Bottom.Default.Default.y,
-        this.transform.position.world.x + x + i + 0.5,
-        this.transform.position.world.y - 0.5,
-        TilesetDialogueBox.Bottom.Default.Default.width,
-        TilesetDialogueBox.Bottom.Default.Default.height,
-      );
-    }
-
-    // right
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TilesetDialogueBox.id],
-      TilesetDialogueBox.TopRight.Default.Default.x,
-      TilesetDialogueBox.TopRight.Default.Default.y,
-      this.transform.position.world.x + x + 6 - 0.5,
-      this.transform.position.world.y - 1,
-      TilesetDialogueBox.TopRight.Default.Default.width,
-      TilesetDialogueBox.TopRight.Default.Default.height,
-    );
-
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[TilesetDialogueBox.id],
-      TilesetDialogueBox.BottomRight.Default.Default.x,
-      TilesetDialogueBox.BottomRight.Default.Default.y,
-      this.transform.position.world.x + x + 6 - 0.5,
-      this.transform.position.world.y - 0.5,
-      TilesetDialogueBox.BottomRight.Default.Default.width,
-      TilesetDialogueBox.BottomRight.Default.Default.height,
-    );
-
-    RenderUtils.renderText(
-      context,
-      this.name,
-      ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
-      this.transform.position.world.y - 0.125,
-    );
   }
 
   private updatePortraitAnimation(delta: number): void {

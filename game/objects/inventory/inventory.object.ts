@@ -16,6 +16,7 @@ import { InventoryTooltipObject } from './inventory-tooltip.object';
 import { InventoryButtonDropObject } from './inventory-button-drop.object';
 import { ItemObject } from '../item.object';
 import { PlayerObject } from '../player.object';
+import { DeviceType } from '@core/model/device-type';
 
 type DraggingSource = 'inventory' | 'chest';
 type DraggingType = 'mouse' | 'controller';
@@ -78,9 +79,12 @@ export class InventoryObject extends SceneObject {
 
     const slots = [];
 
+
+
     // inventory size
-    const rows = 5;
-    const columns = 5;
+    const rows = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 5 : 7;
+    const columns = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 5 : 4;
+
     const rowsChest = this.chest ? this.chest.rows : 0;
     const columnsChest = this.chest ? this.chest.columns : 0;
     // inventory slots
@@ -91,10 +95,9 @@ export class InventoryObject extends SceneObject {
     const rowsTotal = rows + (this.chest ? rowsChest + 1 : 0); // 1 is a gap
     const columnsTotal = columns + (this.chest ? columnsChest + 1 : 0); // 1 is a gap
 
-    const marginTopInventory = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rows * height)) / 2) + (height / 2); // height / 2 due to objects being drawn from their center
-    const marginTopChest = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rowsChest * height)) / 2) + (height / 2); // height / 2 due to objects being drawn from their center
-
-    const marginLeft = ((CanvasConstants.CANVAS_TILE_WIDTH - (columnsTotal * width)) / 2) + (width / 2); // width / 2 due to objects being drawn from their center
+    const marginTopInventory = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rows * height)) / 2);
+    const marginTopChest = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rowsChest * height)) / 2);
+    const marginLeft = ((CanvasConstants.CANVAS_TILE_WIDTH - (columnsTotal * width)) / 2);
 
     // configure grid
     this.grid.rows = rows;
@@ -116,6 +119,12 @@ export class InventoryObject extends SceneObject {
         // store position
         this.grid.positions[row][column] = { x: positionX, y: positionY };
         
+
+        // skip extra slots rendered by grid, mainly for mobile
+        if(index >= this.scene.globals.inventory.size){
+          continue;
+        }
+
         slots.push(
           new InventorySlotObject(this.scene, {
             positionX: positionX,
@@ -145,20 +154,20 @@ export class InventoryObject extends SceneObject {
 
     slots.forEach(slot => this.addChild(slot));
 
-    this.addChild(new InventoryButtonCloseObject(this.scene, {
-      positionX: 29,
-      positionY: 1
-    }));
+    const buttons = [
+      new InventoryButtonCloseObject(this.scene, {}),
+      new InventoryButtonTrashObject(this.scene, {}),
+      new InventoryButtonDropObject(this.scene, {})
+    ];
+    
+    const x = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? CanvasConstants.CANVAS_TILE_WIDTH - 3 : CanvasConstants.CANVAS_TILE_WIDTH - 3;
+    const y = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 1 : CanvasConstants.CANVAS_TILE_HEIGHT - 3;
 
-    this.addChild(new InventoryButtonTrashObject(this.scene, {
-      positionX: 27,
-      positionY: 1
-    }));
-
-    this.addChild(new InventoryButtonDropObject(this.scene, {
-      positionX: 25,
-      positionY: 1
-    }));
+    buttons.forEach((button, index) => {
+      button.transform.position.local.x = x - (index * 2);
+      button.transform.position.local.y = y;
+      this.addChild(button);
+    });
 
     this.addChild(new FillObject(this.scene, {
       positionX: 0,
@@ -305,7 +314,7 @@ export class InventoryObject extends SceneObject {
       {
         item: slot.item,
         index: slot.index,
-        width: 12,
+        width: CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 12 : 6,
         positionX: slot.boundingBox.world.right,
         positionY: slot.boundingBox.world.bottom,
       }

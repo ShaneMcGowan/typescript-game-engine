@@ -641,8 +641,8 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    const x = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 11 : 0.5;
-    const y = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? CanvasConstants.CANVAS_TILE_HEIGHT - this.height - 1 : CanvasConstants.CANVAS_TILE_HEIGHT - this.height - 1.5;
+    const x = (CanvasConstants.CANVAS_TILE_WIDTH / 2) - this.scene.globals.hotbar.size;
+    const y = CanvasConstants.CANVAS_TILE_HEIGHT - 2.5;
 
     this.hotbarObject = new HotbarObject(
       this.scene, 
