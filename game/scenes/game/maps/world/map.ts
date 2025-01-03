@@ -6,14 +6,12 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { CollisionObject } from '@game/objects/collision.object';
 import { TransitionObject } from '@core/objects/transition.object';
-import { CropStage, DirtObject } from '@game/objects/dirt.object';
 import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
-import { ItemType } from '@game/models/inventory.model';
 import { WarpObject } from '@game/objects/warp.object';
-import { TilesetHouse } from '@game/constants/tileset-house.constants';
+import { TilesetHouse } from '@game/constants/tilesets/house.tileset';
 import { LockedDoorObject } from '@game/objects/world/locked-door.object';
 import { SCENE_GAME_MAP_SHOP } from '../shop/map';
 import { JsonBackgroundMap } from '@core/model/background';
@@ -22,6 +20,7 @@ import { GateObject } from '@game/objects/world/gate.object';
 import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
 import { RockObject } from '@game/objects/rock.object';
 import { TreeObject } from '@game/objects/tree.object';
+import { SettingsIconObject } from '@game/objects/settings-icon.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -34,6 +33,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
     // this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 31, positionY: 1 }))
 
+    this.scene.addObject(new SettingsIconObject(this.scene, { positionX: 30, positionY: 1 }));
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
     let player = new PlayerObject(scene, {playerIndex: 0, positionX: 17, positionY: 13, });
@@ -67,14 +67,20 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // horizontal
     this.scene.addObject(new CollisionObject(scene, { positionX: 20, positionY: 0, width: 7 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 10, positionY: 1, width: 1 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 20, positionY: 1, width: 3 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 24, positionY: 1, width: 3 }));
-
+    this.scene.addObject(new CollisionObject(scene, { positionX: 6, positionY: 2, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 1, positionY: 5, width: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 2, width: 8 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 3, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 2, positionY: 4, width: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 7, width: 6, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 7, width: 9, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 14, width: 5, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 18, width: 28 }));
     // vertical
+    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 6, height: 6 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 8, height: 6 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 2, height: 5 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 27, positionY: 0, height: 18 }));
@@ -159,7 +165,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { positionX: 17, positionY: 16 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 16, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 17, canBeBroken: false }));
-
 
     // trees
     this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 2, type: 'small' }));

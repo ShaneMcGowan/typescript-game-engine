@@ -4,7 +4,7 @@ import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { Assets } from "@core/utils/assets.utils";
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
-import { TilesetUI } from "@game/constants/tileset-ui.constants";
+import { TilesetUI } from "@game/constants/tilesets/ui.tileset";
 import { Input, MouseKey } from "@core/utils/input.utils";
 import { MouseUtils } from "@core/utils/mouse.utils";
 import { UiObject } from "@core/objects/ui.object";
@@ -32,6 +32,10 @@ export class HotbarSlotObject extends UiObject {
   }
 
   onUpdate(delta: number): void {
+    if(!this.scene.globals.player.enabled){
+      return;
+    }
+
     if(!Input.isMousePressed(MouseKey.Left)){
       return;
     }

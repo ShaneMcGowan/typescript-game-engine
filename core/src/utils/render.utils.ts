@@ -183,18 +183,36 @@ export abstract class RenderUtils {
     text: string,
     positionX: number,
     positionY: number,
-    options: { size?: number; colour?: string; font?: string; } = {}
+    options: {
+      size?: number;
+      colour?: string;
+      font?: string;
+      align?: CanvasTextAlign;
+      baseline?: CanvasTextBaseline;
+      direction?: CanvasDirection;
+    } = {}
   ): void {
-    let size = options.size ? options.size : CanvasConstants.DEFAULT_FONT_SIZE;
-    let colour = options.colour ? options.colour : CanvasConstants.DEFAULT_FONT_COLOUR;
-    let font = options.font ? options.font : CanvasConstants.DEFAULT_FONT_FAMILY;
+    const size = options.size ?? CanvasConstants.DEFAULT_FONT_SIZE;
+    const colour = options.colour ?? CanvasConstants.DEFAULT_FONT_COLOUR;
+    const font = options.font ?? CanvasConstants.DEFAULT_FONT_FAMILY;
+    const align = options.align ?? CanvasConstants.DEFAULT_TEXT_ALIGN;
+    const baseline = options.baseline ?? CanvasConstants.DEFAULT_TEXT_BASELINE;
+    const direction = options.direction ?? CanvasConstants.DEFAULT_TEXT_DIRECTION;
 
     context.font = `${size}px ${font}`;
     context.fillStyle = `${colour}`;
+    context.textAlign = align;
+    context.textBaseline = baseline;
+    context.direction = direction;
+    context.textRendering = 'geometricPrecision';
+
+    const x = positionX * CanvasConstants.TILE_SIZE; // translate tile position to pixel position
+    const y = positionY * CanvasConstants.TILE_SIZE; // translate tile position to pixel position
+
     context.fillText(
       text,
-      positionX * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
-      positionY * CanvasConstants.TILE_SIZE // translate sprite position to pixel position
+      x,
+      y
     );
   }
 

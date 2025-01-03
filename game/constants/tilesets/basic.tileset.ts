@@ -122,4 +122,31 @@ export class TilesetBasic {
       }
     }
   }
+
+  static readonly Cog: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
+    White: {
+      Default: {
+        x: 41,
+        y: 12,
+        width: 1,
+        height: 1,
+      }
+    },
+    Dark: {
+      Default: {
+        x: 47,
+        y: 12,
+        width: 1,
+        height: 1,
+      }
+    },
+    Darker: {
+      Default: {
+        x: 50,
+        y: 12,
+        width: 1,
+        height: 1,
+      }
+    }
+  }
 }

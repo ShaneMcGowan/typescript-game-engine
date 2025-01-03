@@ -2,7 +2,7 @@ import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Assets } from '@core/utils/assets.utils';
-import { ButtonObject } from './button.object';
+import { ButtonObject } from '../button.object';
 
 interface Config extends SceneObjectBaseConfig {
 }

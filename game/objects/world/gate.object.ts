@@ -6,7 +6,7 @@ import { Assets } from '@core/utils/assets.utils';
 import { ItemType } from '@game/models/inventory.model';
 import { TextboxObject } from '../textbox.object';
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"
-import { TilesetBasic } from '@game/constants/tileset-basic.constants';
+import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
 
 interface Config extends SceneObjectBaseConfig {
 

@@ -5,8 +5,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
-import { TilesetDialogueBox } from '@game/constants/tileset-dialogue-box.constants';
-import { TilesetUI } from '@game/constants/tileset-ui.constants';
+import { TilesetDialogueBox } from '@game/constants/tilesets/dialogue-box.tileset';
 import { PortraitObject } from './portrait.object';
 
 export interface Portrait {

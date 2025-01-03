@@ -3,7 +3,7 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Assets } from '@core/utils/assets.utils';
-import { TilesetUI } from '@game/constants/tileset-ui.constants';
+import { TilesetUI } from '@game/constants/tilesets/ui.tileset';
 import { Portrait } from './textbox.object';
 
 

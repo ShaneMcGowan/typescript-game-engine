@@ -38,6 +38,8 @@ import { useShovelOnHole } from './player/shovel/use-shovel-on-hole.action';
 import { useBerryOnHole } from './player/berry/use-berry-on-hole.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
+import { Coordinate } from '@core/model/coordinate';
+import { Vector } from '@core/model/vector';
 
 enum Direction {
   UP = 'w',
@@ -367,11 +369,6 @@ export class PlayerObject extends SceneObject {
     if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Action)) {
       return;
     }
-
-    console.log({
-      x: Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX),
-      y: Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY)
-    });
     
     // check if UI object at mouse position, if so, cancel this call
     const uiFilter: ObjectFilter = {
@@ -404,8 +401,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    const x = Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX);
-    const y = Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY);
+    const { x, y } = this.mouseTilePosition;
 
     if (
       item.radius === ItemRadius.Player &&
@@ -428,7 +424,8 @@ export class PlayerObject extends SceneObject {
     }
     const object = this.scene.getObject(filter);
 
-    console.log(object);
+    // update direction based on action
+    this.direction = this.actionDirection;
 
     if (object === undefined) {
       switch (item.type) {
@@ -567,10 +564,10 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    let x = Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX);
-    let y = Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY);
+    const x = Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX);
+    const y = Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY);
 
-    let item = this.scene.selectedInventoryItem;
+    const item = this.scene.selectedInventoryItem;
     // do not render cursor
     if (item === undefined || item.radius === ItemRadius.None) {
       return;
@@ -643,17 +640,55 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    this.hotbarObject = new HotbarObject(this.scene, { positionX: 11, positionY: 14, });
+    this.hotbarObject = new HotbarObject(
+      this.scene, 
+      { 
+        positionX: 11, 
+        positionY: 15, 
+      });
 
     this.scene.addObject(this.hotbarObject);
   }
 
-  private removeHotbar(): void {
-    if (this.hotbarObject === undefined) {
-      return;
+  get mouseTilePosition(): Coordinate {
+    return {
+      x: Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX),
+      y: Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY),
+    }
+  }
+
+  get playerTilePosition(): Coordinate {
+    return {
+      x: Math.floor(this.transform.position.world.x),
+      y: Math.floor(this.transform.position.world.y),
+    }
+  }
+
+  get actionDirection(): Direction {
+    const { x: mouseX, y: mouseY } = this.mouseTilePosition;
+    const { x: playerX, y: playerY } = this.playerTilePosition;
+    
+    const x = mouseX - playerX; 
+    const y = mouseY - playerY;
+    
+    if(y === -1){
+      return Direction.UP;
     }
 
-    this.hotbarObject.destroy();
+    if(y === 1){
+      return Direction.DOWN;
+    }
+
+    if(x < 0){
+      return Direction.LEFT;
+    }
+
+    if(x > 0){
+      return Direction.RIGHT;
+    }
+
+    // default
+    return Direction.DOWN;
   }
 
 }

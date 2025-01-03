@@ -10,6 +10,9 @@ export abstract class CanvasConstants {
   static DEFAULT_FONT_SIZE: number = 16;
   static DEFAULT_FONT_COLOUR: string = 'black';
   static DEFAULT_FONT_FAMILY: string = 'Helvetica';
+  static DEFAULT_TEXT_ALIGN: CanvasTextAlign = 'left';
+  static DEFAULT_TEXT_BASELINE: CanvasTextBaseline = 'alphabetic';
+  static DEFAULT_TEXT_DIRECTION: CanvasDirection = 'inherit';
 
   /**
    * Keep an eye on this and any getters, don't run it on hot code paths

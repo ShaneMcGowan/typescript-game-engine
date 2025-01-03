@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { Assets } from '@core/utils/assets.utils';
-import { TilesetWoodenBridge } from '@game/constants/tileset-wooden-bridge.constants';
+import { TilesetWoodenBridge } from '@game/constants/tilesets/wooden-bridge.tileset';
 
 type Type = 'horizontal' | 'vertical';
 interface Config extends SceneObjectBaseConfig {

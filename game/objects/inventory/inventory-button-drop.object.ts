@@ -3,7 +3,7 @@ import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { Assets } from "@core/utils/assets.utils";
-import { TilesetBasic } from "@game/constants/tileset-basic.constants";
+import { TilesetBasic } from "@game/constants/tilesets/basic.tileset";
 import { InventoryObject } from "./inventory.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
 

@@ -2,6 +2,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { type Scene } from './scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { Vector } from './vector';
+import { type Coordinate } from './coordinate';
 
 export interface SceneObjectBoundingBox {
   top: number;
@@ -257,6 +258,22 @@ export abstract class SceneObject {
     };
   }
 
+  get centre(): {
+    local: Coordinate;
+    world: Coordinate;
+  } {
+    return {
+      local: {
+        x: this.transform.position.local.x + (this.width / 2),
+        y: this.transform.position.local.y + (this.height / 2),
+      },
+      world: {
+        x: this.transform.position.world.x + (this.width / 2),
+        y: this.transform.position.world.y + (this.height / 2),
+      },
+    };
+  }
+
   /**
    * Used for debugging
    * @param context
@@ -371,15 +388,15 @@ export abstract class SceneObject {
 
   /**
    * calculate the offset from position.world that will center a sprite
-   * @param spriteWidth 
-   * @param spriteHeight 
-   * @returns 
+   * @param spriteWidth
+   * @param spriteHeight
+   * @returns
    */
-  protected calculateSpriteOffset(spriteWidth: number, spriteHeight: number): { x: number, y: number } {
+  protected calculateSpriteOffset(spriteWidth: number, spriteHeight: number): { x: number; y: number; } {
     return {
       x: (this.width / 2) - (spriteWidth / 2),
       y: (this.height / 2) - (spriteHeight / 2),
-    }
+    };
   }
 }
 
