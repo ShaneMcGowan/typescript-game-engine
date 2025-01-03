@@ -439,7 +439,11 @@ export class Client {
         event
       );
 
-      // TODO: store latest pointerdown position
+      // store latest pointerdown position
+      Input.mouse.click.details = {
+        event,
+        position: MouseUtils.getMousePosition(this.displayCanvas, event),
+      };
 
       switch (event.button) {
         case 0:
@@ -458,7 +462,8 @@ export class Client {
     this.displayCanvas.addEventListener('pointerup', (event: MouseEvent) => {
       console.log('[pointerup]', event);
 
-      // TODO: store latest pointerup position
+      // clear latest pointer down event
+      Input.mouse.click.details = null;
 
       switch (event.button) {
         case 0:
@@ -472,20 +477,6 @@ export class Client {
           break;
       }
     });
-
-    // touch - this is for mobile only
-    // console.log('[listener added] touchstart');
-    // this.displayCanvas.addEventListener('touchstart', (event: TouchEvent) => {
-    //   console.log('[touchstart]', event);
-    //   Input.mouse.click.left = true;
-    // });
-
-    // touch - this is for mobile only
-    // console.log('[listener added] touchend');
-    // this.displayCanvas.addEventListener('touchend', (event: TouchEvent) => {
-    //   console.log('[touchend]', event);
-    //   Input.mouse.click.left = false;
-    // });
 
     // for mouse scroll
     console.log('[listener added] wheel');
@@ -602,5 +593,4 @@ function generateDebuggerLine(object: any, key: string): string {
 
 function setMousePosition(canvas: HTMLCanvasElement, event: PointerEvent): void {
   Input.mouse.position = MouseUtils.getMousePosition(canvas, event);
-  Input.mouse.latestEvent = event;
 }

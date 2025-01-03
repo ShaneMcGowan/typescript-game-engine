@@ -58,6 +58,21 @@ export class MenuButtonObject extends SceneObject {
       return;
     }
 
+    // ensure click started on the button
+    if(Input.mouse.click.details === null){
+      return;
+    }
+    const isWithin = MouseUtils.isMouseWithinBoundary(
+      Input.mouse.click.details.position,
+      this.boundingBox.world.left,
+      this.boundingBox.world.top,
+      this.width,
+      this.height
+    );
+    if(!isWithin){
+      return;
+    }
+
     this.held = true;
   }
 
@@ -80,7 +95,13 @@ export class MenuButtonObject extends SceneObject {
   }
 
   private renderButtonContainer(context:CanvasRenderingContext2D): void {
-    const state: 'Default' | 'Pressed' = this.held ? 'Pressed' : 'Default';
+    let state: 'Default' | 'Hover' | 'Pressed' = 'Default';
+    if(this.isHovering){
+      state = 'Hover';
+    }
+    if(this.held){
+      state = 'Pressed';
+    } 
 
     // left
     RenderUtils.renderSprite(

@@ -1,11 +1,7 @@
+import { type Coordinate } from '@core/model/coordinate';
 import { CanvasConstants } from '../constants/canvas.constants';
 import { type SceneObject } from '../model/scene-object';
 import { Input } from './input.utils';
-
-export interface MousePosition {
-  x: number;
-  y: number;
-}
 
 export abstract class MouseUtils {
   /**
@@ -15,7 +11,7 @@ export abstract class MouseUtils {
    * @param evt
    * @returns
    */
-  static getMousePosition(canvas: HTMLCanvasElement, event: MouseEvent): MousePosition {
+  static getMousePosition(canvas: HTMLCanvasElement, event: MouseEvent): Coordinate {
     let boundingRect = canvas.getBoundingClientRect();
 
     let adjustedBountingRect = {
@@ -56,6 +52,7 @@ export abstract class MouseUtils {
     // scale mouse coordinates after they have been adjusted to be relative to element
     let x = ((adjustedEvent.clientX - boundingRect.left) * scaleX) / CanvasConstants.TILE_SIZE;
     let y = ((adjustedEvent.clientY - boundingRect.top) * scaleY) / CanvasConstants.TILE_SIZE;
+
     return {
       x,
       y,
@@ -70,7 +67,7 @@ export abstract class MouseUtils {
     return document.fullscreenElement !== null;
   }
 
-  static isMouseWithinBoundary(mousePosition: MousePosition, x: number, y: number, width: number, height: number): boolean {
+  static isMouseWithinBoundary(mousePosition: Coordinate, x: number, y: number, width: number, height: number): boolean {
     return (
       mousePosition.x >= x &&
       mousePosition.x <= x + width &&

@@ -4,7 +4,7 @@ export class TilesetButtons {
 
   static readonly id: string = 'tileset_button';
 
-  static readonly TopLeft: Tile<'Default', 'Default' | 'Pressed'> = { 
+  static readonly TopLeft: Tile<'Default', 'Default' | 'Hover' | 'Pressed'> = { 
     Default: {
       Default: {
         x: 0, 
@@ -18,10 +18,16 @@ export class TilesetButtons {
         width: 1,
         height: 1
       },
+      Hover: {
+        x: 12, 
+        y: 0,
+        width: 1,
+        height: 1
+      },
     },
   };
 
-  static readonly Top: Tile<'Default', 'Default' | 'Pressed'> = { 
+  static readonly Top: Tile<'Default', 'Default' | 'Hover' | 'Pressed'> = { 
     Default: {
       Default: {
         x: 1, 
@@ -35,10 +41,16 @@ export class TilesetButtons {
         width: 1,
         height: 1
       },
+      Hover: {
+        x: 13, 
+        y: 0,
+        width: 1,
+        height: 1
+      },
     },
   };
 
-  static readonly TopRight: Tile<'Default', 'Default' | 'Pressed'> = { 
+  static readonly TopRight: Tile<'Default', 'Default' | 'Hover' | 'Pressed'> = { 
     Default: {
       Default: {
         x: 5, 
@@ -52,10 +64,16 @@ export class TilesetButtons {
         width: 1,
         height: 1
       },
+      Hover: {
+        x: 17, 
+        y: 0,
+        width: 1,
+        height: 1
+      },
     },
   };
 
-  static readonly BottomLeft: Tile<'Default', 'Default' | 'Pressed'> = { 
+  static readonly BottomLeft: Tile<'Default', 'Default' | 'Hover' | 'Pressed'> = { 
     Default: {
       Default: {
         x: 0, 
@@ -69,10 +87,16 @@ export class TilesetButtons {
         width: 1,
         height: 1
       },
+      Hover: {
+        x: 12, 
+        y: 1,
+        width: 1,
+        height: 1
+      },
     },
   };
 
-  static readonly Bottom: Tile<'Default', 'Default' | 'Pressed'> = { 
+  static readonly Bottom: Tile<'Default', 'Default' | 'Hover' | 'Pressed'> = { 
     Default: {
       Default: {
         x: 1, 
@@ -86,10 +110,16 @@ export class TilesetButtons {
         width: 1,
         height: 1
       },
+      Hover: {
+        x: 13, 
+        y: 1,
+        width: 1,
+        height: 1
+      },
     },
   };
 
-  static readonly BottomRight: Tile<'Default', 'Default' | 'Pressed'> = { 
+  static readonly BottomRight: Tile<'Default', 'Default' | 'Hover' | 'Pressed'> = { 
     Default: {
       Default: {
         x: 5, 
@@ -99,6 +129,12 @@ export class TilesetButtons {
       },
       Pressed: {
         x: 11, 
+        y: 1,
+        width: 1,
+        height: 1
+      },
+      Hover: {
+        x: 17, 
         y: 1,
         width: 1,
         height: 1

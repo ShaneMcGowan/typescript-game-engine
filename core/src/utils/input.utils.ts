@@ -1,3 +1,4 @@
+import { type Coordinate } from '@core/model/coordinate';
 import { Vector } from '@core/model/vector';
 
 export enum MouseKey {
@@ -38,6 +39,10 @@ interface Mouse {
     left: boolean;
     middle: boolean;
     right: boolean;
+    details: {
+      event: MouseEvent;
+      position: Coordinate;
+    }; // set on pointerdown, cleared on pointerup
   };
   position: {
     x: number;
@@ -46,7 +51,6 @@ interface Mouse {
   wheel: {
     event: WheelEvent;
   };
-  latestEvent: MouseEvent;
 }
 
 class GamepadButtonState {
@@ -106,6 +110,7 @@ export abstract class Input {
       left: false,
       middle: false,
       right: false,
+      details: null,
     },
     position: {
       x: 0,
@@ -116,7 +121,6 @@ export abstract class Input {
       // deltaY negative is a scroll up
       // deltaY positive is a scroll down
     },
-    latestEvent: new MouseEvent(''), // TODO: ensure this is a valid default event
   };
 
   static readonly gamepads = new Map<number, Gamepad>();
