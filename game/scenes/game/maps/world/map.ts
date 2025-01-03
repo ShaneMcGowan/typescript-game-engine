@@ -20,7 +20,7 @@ import { GateObject } from '@game/objects/world/gate.object';
 import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
 import { RockObject } from '@game/objects/rock.object';
 import { TreeObject } from '@game/objects/tree.object';
-import { SettingsIconObject } from '@game/objects/settings-icon.object';
+import { IconsObject } from '@game/objects/icons/icons.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -33,7 +33,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
     // this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 31, positionY: 1 }))
 
-    this.scene.addObject(new SettingsIconObject(this.scene, { positionX: 30, positionY: 1 }));
+    this.scene.addObject(new IconsObject(this.scene, { positionX: 0, positionY: 0 }));
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
     let player = new PlayerObject(scene, {playerIndex: 0, positionX: 17, positionY: 13, });

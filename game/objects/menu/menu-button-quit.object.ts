@@ -4,12 +4,12 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { TransitionObject } from '@core/objects/transition.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
-import { MenuButtonObject } from './menu-button.object';
+import { ButtonObject } from '../button.object';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class MenuButtonQuitObject extends MenuButtonObject {
+export class MenuButtonQuitObject extends ButtonObject {
 
   quitting: boolean = false;
 

@@ -6,6 +6,7 @@ import { type SceneConstructorSignature } from '@core/model/scene';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
 import { SCENE_GAME } from '@game/scenes/game/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
+import { DeviceType } from '@core/model/device-type';
 
 (function () {
   /**
@@ -14,12 +15,17 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
   // e.g. CanvasConstants.CANVAS_TILE_HEIGHT = 18;
   CanvasConstants.DEFAULT_FONT_FAMILY = 'bookxel';
 
-  /**
-  * Add your scenes here, the first scene will be loaded on startup
-  */
+  const params = new URLSearchParams(window.location.search);
+
+  // viewport
+  const deviceParam = params.get('device');
+  if(deviceParam === 'mobile'){
+    CanvasConstants.CANVAS_TILE_WIDTH = 9;
+    CanvasConstants.CANVAS_TILE_HEIGHT = 16;
+    CanvasConstants.DEVICE_TYPE = DeviceType.Mobile;
+  }
 
   // this is for debugging, letting us launch into a specific scene
-  const params = new URLSearchParams(window.location.search);
   const sceneParam = params.get('scene');
 
   const SCENE_MAP: Record<string, SceneConstructorSignature> = {

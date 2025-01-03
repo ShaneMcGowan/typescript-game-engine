@@ -1,12 +1,14 @@
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { MenuObject } from './menu.object';
 import { ButtonObject } from '../button.object';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class MenuButtonContinueObject extends ButtonObject {
+export class MainMenuButtonLoadGameObject extends ButtonObject {
+
+  width = 8;
+  height = 2;
 
   constructor(
     protected scene: Scene,
@@ -16,11 +18,11 @@ export class MenuButtonContinueObject extends ButtonObject {
   }
 
   get label(): string {
-    return 'Continue';
+    return `Load Game`
   }
 
   onClick(): void {
-    (this.parent as MenuObject).destroy();
+    alert('Coming Soon');
   }
 
 }

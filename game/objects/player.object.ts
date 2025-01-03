@@ -40,6 +40,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
 import { Vector } from '@core/model/vector';
+import { DeviceType } from '@core/model/device-type';
 
 enum Direction {
   UP = 'w',
@@ -640,12 +641,16 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
+    const x = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 11 : 0.5;
+    const y = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? CanvasConstants.CANVAS_TILE_HEIGHT - this.height - 1 : CanvasConstants.CANVAS_TILE_HEIGHT - this.height - 1.5;
+
     this.hotbarObject = new HotbarObject(
       this.scene, 
       { 
-        positionX: 11, 
-        positionY: 15, 
-      });
+        positionX: x, 
+        positionY: y, 
+      }
+    );
 
     this.scene.addObject(this.hotbarObject);
   }

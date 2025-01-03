@@ -1,3 +1,5 @@
+import { DeviceType } from '@core/model/device-type';
+
 export abstract class CanvasConstants {
   static CANVAS_TILE_HEIGHT = 18; // total height in tiles
   static CANVAS_TILE_WIDTH = 32; // total width in tiles
@@ -6,6 +8,7 @@ export abstract class CanvasConstants {
   static UI_RENDERING_LAYERS: number = 16; // number of layers to render ui on e.g. for a value of 16, these are after the OBJECT_RENDERING_LAYERS, so the first index is after those
   static OBJECT_COLLISION_LAYERS: number = 16; // number of layers on which objects can collide. e.g. for a value of 16, 0 is the lowest layer, 15 is the highest
   static CONTEXT_IMAGE_SMOOTHING_ENABLED: boolean = false; // whether to enable image smoothing on the canvas context
+  static DEVICE_TYPE: DeviceType = DeviceType.Desktop; // the device that the client is running. Can be used as a flag for building responsive UIs
 
   static DEFAULT_FONT_SIZE: number = 16;
   static DEFAULT_FONT_COLOUR: string = 'black';

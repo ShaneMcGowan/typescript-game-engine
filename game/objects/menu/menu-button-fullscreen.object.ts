@@ -1,11 +1,11 @@
 import { type Scene } from '@core/model/scene';
-import { MenuButtonObject } from './menu-button.object';
+import { ButtonObject } from '../button.object';
 import { SceneObjectBaseConfig } from '@core/model/scene-object';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class MenuButtonFullscreenObject extends MenuButtonObject {
+export class MenuButtonFullscreenObject extends ButtonObject {
 
   constructor(
     protected scene: Scene,

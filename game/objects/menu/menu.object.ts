@@ -39,11 +39,12 @@ export class MenuObject extends SceneObject {
     ];
 
     buttons.forEach((button, index) => {
+      // center button on screen
+      button.transform.position.local.x = CanvasConstants.CANVAS_CENTER_TILE_X - (button.width / 2);
+      button.transform.position.local.y = CanvasConstants.CANVAS_CENTER_TILE_Y - buttons.length + (index * 2);
+      
       this.addChild(button);
-      button.transform.position.local.y = index * 2;
     });
-
-    this.transform.position.local.y = CanvasConstants.CANVAS_CENTER_TILE_Y - buttons.length;
   }
 
   onDestroy(): void {

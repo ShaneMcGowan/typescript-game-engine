@@ -149,4 +149,31 @@ export class TilesetBasic {
       }
     }
   }
+
+  static readonly House: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
+    White: {
+      Default: {
+        x: 40,
+        y: 14,
+        width: 1,
+        height: 1,
+      }
+    },
+    Dark: {
+      Default: {
+        x: 46,
+        y: 14,
+        width: 1,
+        height: 1,
+      }
+    },
+    Darker: {
+      Default: {
+        x: 55,
+        y: 14,
+        width: 1,
+        height: 1,
+      }
+    }
+  }
 }
