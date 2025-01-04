@@ -169,14 +169,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { positionX: 31, positionY: 1, canBeBroken: false }));
 
     this.scene.addObject(new RockObject(this.scene, { positionX: 10, positionY: 2, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 21, positionY: 6 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 23, positionY: 8 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 6, positionY: 10 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 11, positionY: 13 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 24, positionY: 14 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 8, positionY: 15 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 20, positionY: 11 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 17, positionY: 16 }));
 
     this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 16, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 3, positionY: 16, canBeBroken: false }));
@@ -199,7 +191,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new TreeObject(this.scene, { positionX: 0, positionY: 13, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 7, positionY: 13, type: 'small' }));
 
-
     // quests
     this.scene.addObject(new ItemObject(this.scene, { positionX: 7, positionY: 19, type: ItemType.Log }));
     this.scene.addObject(new ItemObject(this.scene, { positionX: 10, positionY: 21, type: ItemType.Log }));
@@ -209,6 +200,13 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new ItemObject(this.scene, { positionX: 24, positionY: 19, type: ItemType.Rock }));
     this.scene.addObject(new ItemObject(this.scene, { positionX: 23, positionY: 21, type: ItemType.Rock }));
     this.scene.addObject(new ItemObject(this.scene, { positionX: 28, positionY: 20, type: ItemType.Rock }));
-
+    this.scene.addObject(new RockObject(this.scene, { positionX: 21, positionY: 6 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 23, positionY: 8 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 6, positionY: 10 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 11, positionY: 13 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 24, positionY: 14 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 8, positionY: 15 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 20, positionY: 11 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 17, positionY: 16 }));
   }
 }

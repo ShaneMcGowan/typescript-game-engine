@@ -40,7 +40,7 @@ const NPC_FARMER = {
         failure: `Come back to me once you've collected 8 rocks. Don't worry if some are too tough to break, we can deal with those later.`,
         success: `Great work, my field has never looked so rock free, and that's a compliment where I come from.`
       },
-      plant_a_tree: { // TODO:
+      plant_tree: { // TODO:
         intro: `destruction breeds creation, dig a hole and plant this berry, bring me 9 berries`,
         failure: `dig a hole and plant this berry, bring me 9 berries`,
         success: `you did it!`,

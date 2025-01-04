@@ -12,6 +12,7 @@ export enum QuestName {
   break_rocks = 'break_rocks',
   collect_logs = 'collect_logs',
   collect_rocks = 'collect_rocks',
+  plant_tree = 'plant_tree',
 }
 
 export interface QuestStatus {
