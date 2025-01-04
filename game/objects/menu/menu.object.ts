@@ -5,6 +5,7 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { MenuButtonQuitObject } from "./menu-button-quit.object";
 import { MenuButtonContinueObject } from "./menu-button-continue.object";
 import { MenuButtonFullscreenObject } from "./menu-button-fullscreen.object";
+import { MenuButtonSaveGameObject } from "./menu-button-save-game.object";
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -35,6 +36,7 @@ export class MenuObject extends SceneObject {
     const buttons = [
       new MenuButtonContinueObject(this.scene, {}),
       new MenuButtonFullscreenObject(this.scene, {}),
+      new MenuButtonSaveGameObject(this.scene, {}),
       new MenuButtonQuitObject(this.scene, {}),
     ];
 
