@@ -5,8 +5,8 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { DirtObject } from '@game/objects/dirt.object';
 import { isInteractable } from '@game/models/interactable.model';
 import { Input } from '@core/utils/input.utils';
-import { useHoe } from '@game/objects/player/use-hoe.action';
-import { useWateringCan } from '@game/objects/player/use-watering-can.action';
+import { useHoe } from '@game/objects/player/hoe/use-hoe.action';
+import { useWateringCan } from '@game/objects/player/watering-can/use-watering-can.action';
 import { useWateringCanOnDirt } from '@game/objects/player/watering-can/use-watering-can-on-dirt.action';
 import { useChicken } from '@game/objects/player/use-chicken.action';
 import { useEgg } from '@game/objects/player/use-egg.action';
@@ -475,14 +475,12 @@ export class PlayerObject extends SceneObject {
     }
 
     const { x, y } = this.mouseTilePosition;
+    const neighbours = [...this.neighbourTiles];
 
     if (
-      item.radius === ItemRadius.Player &&
-      (
-        Math.abs(x - this.transform.position.world.roundedX) > 1 ||
-        Math.abs(y - this.transform.position.world.roundedY) > 1
-      )
-    ) {
+      item.radius === ItemRadius.Player
+      && !neighbours.some(n => n.x === x && n.y === y)
+    ){
       return;
     }
 
@@ -647,18 +645,15 @@ export class PlayerObject extends SceneObject {
     }
 
     // don't render cursor ontop of self
-    if (x === this.transform.position.world.roundedX && y === this.transform.position.world.roundedY) {
+    if (x === this.transform.position.world.flooredX && y === this.transform.position.world.flooredY) {
       return;
     }
 
-    // don't render cursor if greater than 1 tile away from user
+    // don't render cursor if greater not a neighbouring tile to user
+    const neighbours = [...this.neighbourTiles];
     if (
-      item.radius === ItemRadius.Player &&
-      (
-        Math.abs(x - this.transform.position.world.roundedX) > 1 ||
-        Math.abs(y - this.transform.position.world.roundedY) > 1
-      )
-    ) {
+      item.radius === ItemRadius.Player && !neighbours.some(n => n.x === x && n.y === y)
+    ){
       return;
     }
 
@@ -762,6 +757,27 @@ export class PlayerObject extends SceneObject {
       x: Math.floor(this.transform.position.world.x),
       y: Math.floor(this.transform.position.world.y),
     }
+  }
+
+  get neighbourTiles(): Coordinate[] {
+    return [
+      { 
+        x: this.transform.position.world.x + 1,
+        y: this.transform.position.world.y,
+      },
+      { 
+        x: this.transform.position.world.x - 1,
+        y: this.transform.position.world.y,
+      },
+      { 
+        x: this.transform.position.world.x,
+        y: this.transform.position.world.y + 1,
+      },
+      { 
+        x: this.transform.position.world.x,
+        y: this.transform.position.world.y - 1,
+      }
+    ]
   }
 
   get actionDirection(): Direction {

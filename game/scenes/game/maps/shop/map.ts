@@ -21,7 +21,6 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
 
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
-    this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 30, positionY: 1 }))
 
     // player
     let player = new PlayerObject(scene, { playerIndex: 0, positionX: 16, positionY: 12, });

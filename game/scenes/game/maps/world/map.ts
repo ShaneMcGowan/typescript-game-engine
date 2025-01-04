@@ -21,6 +21,8 @@ import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
 import { RockObject } from '@game/objects/rock.object';
 import { TreeObject } from '@game/objects/tree.object';
 import { IconsObject } from '@game/objects/icons/icons.object';
+import { ItemObject } from '@game/objects/item.object';
+import { ItemType } from '@game/models/inventory.model';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -31,7 +33,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
-    // this.scene.addObject(new FullscreenToggleObject(scene, { positionX: 31, positionY: 1 }))
 
     this.scene.addObject(new IconsObject(this.scene, { positionX: 0, positionY: 0 }));
     // instanciate objects
@@ -104,7 +105,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new IntervalObject(this.scene, {
       duration: 4.5,
       onInterval: () => {
-        let randomY = MathUtils.randomIntFromRange(19, 28);
+        let randomY = MathUtils.randomIntFromRange(24, 29);
 
         let randomItem = MathUtils.randomIntFromRange(0, 2);
         let tileset = '';
@@ -160,11 +161,19 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new GateObject(this.scene, { positionX: 10, positionY: 7 }))
 
     // rocks
+    this.scene.addObject(new RockObject(this.scene, { positionX: 26, positionY: 2, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 27, positionY: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 28, positionY: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 29, positionY: 0, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 30, positionY: 0, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 31, positionY: 1, canBeBroken: false }));
+
     this.scene.addObject(new RockObject(this.scene, { positionX: 10, positionY: 2, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 21, positionY: 6 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 23, positionY: 8 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 6, positionY: 10 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 11, positionY: 13 }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 24, positionY: 14 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 8, positionY: 15 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 20, positionY: 11 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 17, positionY: 16 }));
@@ -186,7 +195,20 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new TreeObject(this.scene, { positionX: 25, positionY: 7, type: 'small'}));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 11, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 13, positionY: 11, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 0, positionY: 12, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 0, positionY: 13, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 7, positionY: 13, type: 'small' }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 20, positionY: 15, type: 'small' }));
+
+
+    // quests
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 7, positionY: 19, type: ItemType.Log }));
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 10, positionY: 21, type: ItemType.Log }));
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 14, positionY: 20, type: ItemType.Log }));
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 18, positionY: 22, type: ItemType.Log }));
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 20, positionY: 17, type: ItemType.Rock }));
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 24, positionY: 19, type: ItemType.Rock }));
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 23, positionY: 21, type: ItemType.Rock }));
+    this.scene.addObject(new ItemObject(this.scene, { positionX: 28, positionY: 20, type: ItemType.Rock }));
+
   }
 }

@@ -4,11 +4,11 @@ export class Vector {
     public y: number
   ) { }
 
-  get roundedX(): number {
+  get flooredX(): number {
     return Math.floor(this.x);
   }
 
-  get roundedY(): number {
+  get flooredY(): number {
     return Math.floor(this.y);
   }
 

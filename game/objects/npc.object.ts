@@ -230,7 +230,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.scene.addObject(textbox);
   };
 
-  protected say(text: string, onComplete?: () => void):void {
+  say(text: string, onComplete?: () => void):void {
     this.scene.globals.player.enabled = false;
 
     this.scene.addObject(

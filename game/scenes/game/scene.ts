@@ -5,9 +5,19 @@ import { Inventory, Item, ItemType } from '@game/models/inventory.model';
 import { SCENE_GAME_MAP_SHOP } from './maps/shop/map';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
-import { PlayerObject } from '@game/objects/player.object';
-import { CanvasConstants } from '@core/constants/canvas.constants';
-import { DeviceType } from '@core/model/device-type';
+
+export enum QuestName {
+  default = 'default',
+  collect_wheat = 'collect_wheat',
+  break_rocks = 'break_rocks',
+  collect_logs = 'collect_logs',
+  collect_rocks = 'collect_rocks',
+}
+
+export interface QuestStatus {
+  intro: boolean;
+  complete: boolean;
+}
 
 interface Globals extends SceneGlobalsBaseConfig {
   inventory: Inventory;
@@ -23,16 +33,7 @@ interface Globals extends SceneGlobalsBaseConfig {
   flags: {
     shackDoorLocked: boolean; // is the shack door locked
   }
-  quests: {
-    collect_wheat: {
-      intro: boolean;
-      complete: boolean;
-    }
-    break_rocks: {
-      intro: boolean;
-      complete: boolean;
-    }
-  }
+  quests: Record<QuestName, QuestStatus>;
 }
 
 export class SCENE_GAME extends Scene {
@@ -52,11 +53,23 @@ export class SCENE_GAME extends Scene {
       shackDoorLocked: true,
     },
     quests: {
+      default: {
+        intro: false,
+        complete: false,
+      },
       collect_wheat: {
         intro: false,
         complete: false,
       },
       break_rocks: {
+        intro: false,
+        complete: false,
+      },
+      collect_logs: {
+        intro: false,
+        complete: false,
+      },
+      collect_rocks: {
         intro: false,
         complete: false,
       },
@@ -66,6 +79,7 @@ export class SCENE_GAME extends Scene {
   constructor(client: Client) {
     super(client);
 
+    /*
     this.globals.inventory.addToInventory(ItemType.Hoe);
     this.globals.inventory.addToInventory(ItemType.WateringCan);
     this.globals.inventory.addToInventory(ItemType.Axe);
@@ -73,6 +87,17 @@ export class SCENE_GAME extends Scene {
     this.globals.inventory.addToInventory(ItemType.Pickaxe);
     this.globals.inventory.addToInventory(ItemType.GateKey);
     this.globals.inventory.addToInventory(ItemType.Berry);
+
+    // quest test
+    this.globals.inventory.addToInventory(ItemType.Rock);
+    this.globals.inventory.addToInventory(ItemType.Rock);
+    this.globals.inventory.addToInventory(ItemType.Rock);
+    this.globals.inventory.addToInventory(ItemType.Rock);
+    this.globals.inventory.addToInventory(ItemType.Log);
+    this.globals.inventory.addToInventory(ItemType.Log);
+    this.globals.inventory.addToInventory(ItemType.Log);
+    this.globals.inventory.addToInventory(ItemType.Log);
+    */
 
     // this is for debugging, letting us launch into a specific map
     const params = new URLSearchParams(window.location.search);
