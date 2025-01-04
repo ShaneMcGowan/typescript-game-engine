@@ -768,7 +768,7 @@ export class MapEditor {
               continue;
             }
 
-            this.selectedLayer.tiles[y][x] = null;
+            this.selectedLayer.tiles[calculatedY][calculatedX] = null;
           }
         }
         break;
