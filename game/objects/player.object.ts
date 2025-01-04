@@ -39,15 +39,7 @@ import { useBerryOnHole } from './player/berry/use-berry-on-hole.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
-import { Vector } from '@core/model/vector';
-import { DeviceType } from '@core/model/device-type';
-
-enum Direction {
-  UP = 'w',
-  DOWN = 's',
-  LEFT = 'a',
-  RIGHT = 'd'
-}
+import { Direction } from '@game/constants/animations/player.animations';
 
 const TILE_SET = 'tileset_player';
 
@@ -67,27 +59,32 @@ export class PlayerObject extends SceneObject {
   movementSpeed = 4; // 4 tiles per second
 
   animations = {
-    [Direction.RIGHT]: [{ x: 7, y: 10, }, { x: 10, y: 10, }],
-    [Direction.LEFT]: [{ x: 7, y: 7, }, { x: 10, y: 7, }],
-    [Direction.UP]: [{ x: 7, y: 4, }, { x: 10, y: 4, }],
-    [Direction.DOWN]: [{ x: 7, y: 1, }, { x: 10, y: 1, }],
+    [Direction.Right]: [{ x: 7, y: 10, }, { x: 10, y: 10, }],
+    [Direction.Left]: [{ x: 7, y: 7, }, { x: 10, y: 7, }],
+    [Direction.Up]: [{ x: 7, y: 4, }, { x: 10, y: 4, }],
+    [Direction.Down]: [{ x: 7, y: 1, }, { x: 10, y: 1, }],
   };
 
   animationsIdle = {
-    [Direction.RIGHT]: [{ x: 1, y: 10, }, { x: 4, y: 10, }],
-    [Direction.LEFT]: [{ x: 1, y: 7, }, { x: 4, y: 7, }],
-    [Direction.UP]: [{ x: 1, y: 4, }, { x: 4, y: 4, }],
-    [Direction.DOWN]: [{ x: 1, y: 1, }, { x: 4, y: 1, }],
+    [Direction.Right]: [{ x: 1, y: 10, }, { x: 4, y: 10, }],
+    [Direction.Left]: [{ x: 1, y: 7, }, { x: 4, y: 7, }],
+    [Direction.Up]: [{ x: 1, y: 4, }, { x: 4, y: 4, }],
+    [Direction.Down]: [{ x: 1, y: 1, }, { x: 4, y: 1, }],
   };
 
   private hotbarObject: SceneObject | undefined = undefined;
 
   // direction state
-  direction: Direction = Direction.DOWN;
+  direction: Direction = Direction.Down;
   directionTime: number = 0;
   directionTimer: number = 0;
   animationIndex: number = 0;
   isIdle: boolean = true;
+
+  // animation state
+  animation: any | undefined;
+  animationDelta: number = 0;
+  animationCallback: (() => void) | undefined;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -112,14 +109,19 @@ export class PlayerObject extends SceneObject {
   onUpdate(delta: number): void {    
     this.updateMovement(delta);
     this.updateAnimations(delta);
+    this.updateAnimation(delta);
     this.updateAction();
     this.updateButtonInteract();
     this.updateOpenInventory();
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    this.renderSprite(context);
-    this.renderCursor(context);
+    if(this.animation){
+      this.renderAnimation(context);
+    } else {
+      this.renderSprite(context);
+      this.renderCursor(context);
+    }
     // this.renderControllerState(context);
   }
 
@@ -128,7 +130,15 @@ export class PlayerObject extends SceneObject {
   }
 
   updateMovement(delta: number): void {
-    if (this.scene.globals.player.enabled && this.scene.globals.player.movementEnabled) {
+    if(!this.scene.globals.player.enabled){
+      return;
+    }
+
+    if(!this.scene.globals.player.movementEnabled){
+      return;
+    }
+
+    if(this.animation === undefined){
       this.determineNextMovement(delta);
     }
 
@@ -152,16 +162,16 @@ export class PlayerObject extends SceneObject {
     // determine next position and set direction
     if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Right)) {
       movement.targetX += 1;
-      direction = Direction.RIGHT;
+      direction = Direction.Right;
     } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Left)) {
       movement.targetX -= 1;
-      direction = Direction.LEFT;
+      direction = Direction.Left;
     } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Up)) {
       movement.targetY -= 1;
-      direction = Direction.UP;
+      direction = Direction.Up;
     } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Down)) {
       movement.targetY += 1;
-      direction = Direction.DOWN;
+      direction = Direction.Down;
     }
 
     // update direction regardless of movement
@@ -247,6 +257,33 @@ export class PlayerObject extends SceneObject {
     }
   }
 
+  startAnimation(animation: any, callback?: () => void): void {
+    this.animation = animation;
+    this.animationDelta = 0;
+    this.animationCallback = callback;
+  }
+
+  endAnimation(): void {
+    this.animation = undefined;
+    this.animationDelta = 0;
+    if(this.animationCallback){
+      this.animationCallback();
+    }
+    this.animationCallback = undefined;
+  }
+
+  private updateAnimation(delta: number): void {
+    if(this.animation === undefined){
+      return;
+    }
+
+    this.animationDelta += delta;
+
+    if(this.animationDelta > this.animation.length){
+      this.endAnimation();
+    }
+  }
+
   /**
    * if object player is facing is interactable, run `interact` on that object
    */
@@ -256,6 +293,10 @@ export class PlayerObject extends SceneObject {
     }
 
     if (!this.scene.globals.player.interactEnabled) {
+      return;
+    }
+
+    if(this.animation !== undefined){
       return;
     }
 
@@ -269,16 +310,16 @@ export class PlayerObject extends SceneObject {
     let y = this.transform.position.world.y;
 
     switch (this.direction) {
-      case Direction.UP:
+      case Direction.Up:
         y -= 1
         break;
-      case Direction.RIGHT:
+      case Direction.Right:
         x += 1
         break;
-      case Direction.DOWN:
+      case Direction.Down:
         y += 1
         break;
-      case Direction.LEFT:
+      case Direction.Left:
         x -= 1
         break;
     }
@@ -316,19 +357,23 @@ export class PlayerObject extends SceneObject {
     let x: number = Math.floor(this.transform.position.world.x);
     let y: number = Math.floor(this.transform.position.world.y);
 
-    if (this.direction === Direction.RIGHT) {
+    if (this.direction === Direction.Right) {
       return { x: x + 1, y, };
-    } else if (this.direction === Direction.LEFT) {
+    } else if (this.direction === Direction.Left) {
       return { x: x - 1, y, };
-    } else if (this.direction === Direction.UP) {
+    } else if (this.direction === Direction.Up) {
       return { x, y: y - 1, };
-    } else if (this.direction === Direction.DOWN) {
+    } else if (this.direction === Direction.Down) {
       return { x, y: y + 1, };
     }
   }
 
   private updateOpenInventory(): void {
     if (!this.scene.globals.player.enabled) {
+      return;
+    }
+
+    if(this.animation !== undefined){
       return;
     }
 
@@ -364,6 +409,10 @@ export class PlayerObject extends SceneObject {
     }
 
     if (!this.scene.globals.player.actionsEnabled) {
+      return;
+    }
+
+    if(this.animation !== undefined){
       return;
     }
     
@@ -433,7 +482,7 @@ export class PlayerObject extends SceneObject {
     if (object === undefined) {
       switch (item.type) {
         case ItemType.Hoe:
-          useHoe(this.scene);
+          useHoe(this.scene, this);
           return;
         case ItemType.WateringCan:
           useWateringCan(this.scene);
@@ -605,6 +654,29 @@ export class PlayerObject extends SceneObject {
     );
   }
 
+  private renderAnimation(context: CanvasRenderingContext2D): void {
+    const frameLength: number = this.animation.length / this.animation.frames.length;
+
+    let sprite;
+    for(let i = 0; i < this.animation.frames.length; i++){
+      const frameStart = frameLength * i;
+      if(this.animationDelta >= frameStart){
+        sprite = this.animation.frames[i];
+      }
+    }
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[this.animation.tileset],
+      sprite.x, 
+      sprite.y,
+      this.transform.position.world.x,
+      this.transform.position.world.y - 1,
+      sprite.width,
+      sprite.height,
+    );
+  }
+
   private renderControllerState(context: CanvasRenderingContext2D): void {
     // const gamepad = Input.gamepads.get(this.playerIndex);
     const gamepad = navigator.getGamepads()[this.playerIndex];
@@ -679,23 +751,23 @@ export class PlayerObject extends SceneObject {
     const y = mouseY - playerY;
     
     if(y === -1){
-      return Direction.UP;
+      return Direction.Up;
     }
 
     if(y === 1){
-      return Direction.DOWN;
+      return Direction.Down;
     }
 
     if(x < 0){
-      return Direction.LEFT;
+      return Direction.Left;
     }
 
     if(x > 0){
-      return Direction.RIGHT;
+      return Direction.Right;
     }
 
     // default
-    return Direction.DOWN;
+    return Direction.Down;
   }
 
 }

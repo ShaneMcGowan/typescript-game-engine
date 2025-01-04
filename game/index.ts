@@ -60,7 +60,8 @@ import { DeviceType } from '@core/model/device-type';
       tileset_grass_biome: 'assets/sample/Objects/Basic_Grass_Biom_things.png',
       tileset_emotes: 'assets/sample/Dialouge UI/Emotes/Teemo Basic emote animations sprite sheet.png',
       tileset_tool_shovel: 'assets/custom/tools/shovel.png',
-      tileset_tool_pickaxe: 'assets/custom/tools/pickaxe.png'
+      tileset_tool_pickaxe: 'assets/custom/tools/pickaxe.png',
+      tileset_actions: 'assets/sample/Characters/Basic Charakter Actions.png'
     },
     audio: {},
     fonts: {
