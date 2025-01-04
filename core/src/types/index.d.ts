@@ -15,5 +15,8 @@ declare global {
 
   interface Document {
     webkitIsFullScreen: boolean; // required for fullscreen checks
+    mozFullscreenEnabled: boolean; // required for fullscreen checks
+    webkitFullscreenEnabled: boolean; // required for fullscreen checks
+    msFullscreenEnabled: boolean; // required for fullscreen checks
   }
 }
