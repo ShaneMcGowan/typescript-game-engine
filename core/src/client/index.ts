@@ -422,6 +422,7 @@ export class Client {
   private initialiseMouseListeners(): void {
     console.log('[listener added] pointermove');
     this.displayCanvas.addEventListener('pointermove', (event: PointerEvent) => {
+      event.preventDefault();
       // console.log('[pointermove]', event);
       setMousePosition(
         this.displayCanvas,
@@ -431,6 +432,7 @@ export class Client {
 
     console.log('[listener added] pointerdown');
     this.displayCanvas.addEventListener('pointerdown', (event: PointerEvent) => {
+      event.preventDefault();
       console.log('[pointerdown]', event);
 
       // update position, mainly for touch devices
@@ -460,6 +462,7 @@ export class Client {
 
     console.log('[listener added] pointerup');
     this.displayCanvas.addEventListener('pointerup', (event: MouseEvent) => {
+      event.preventDefault();
       console.log('[pointerup]', event);
 
       // clear latest pointer down event
