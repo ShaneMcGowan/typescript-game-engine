@@ -4,7 +4,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { DirtObject } from '@game/objects/dirt.object';
 import { isInteractable } from '@game/models/interactable.model';
-import { Input } from '@core/utils/input.utils';
+import { Input, MouseKey } from '@core/utils/input.utils';
 import { useHoe } from '@game/objects/player/use-hoe.action';
 import { useWateringCan } from '@game/objects/player/use-watering-can.action';
 import { useWateringCanOnDirt } from '@game/objects/player/watering-can/use-watering-can-on-dirt.action';
@@ -62,6 +62,7 @@ export class PlayerObject extends SceneObject {
 
   targetX: number = -1;
   targetY: number = -1;
+  path: Coordinate[] = [];
 
   // constants
   movementSpeed = 4; // 4 tiles per second
@@ -110,7 +111,9 @@ export class PlayerObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {    
-    this.updateMovement(delta);
+    // this.updateMovement(delta);
+    this.updateMovementMouse(delta);
+    this.moveAlongPath(delta);
     this.updateAnimations(delta);
     this.updateAction();
     this.updateButtonInteract();
@@ -120,12 +123,175 @@ export class PlayerObject extends SceneObject {
   onRender(context: CanvasRenderingContext2D): void {
     this.renderSprite(context);
     this.renderCursor(context);
+    this.renderPath(context);
     // this.renderControllerState(context);
   }
 
   get hotbar(): Inventory {
     return this.scene.globals.hotbar;
   }
+
+  private updateMovementMouse(delta: number): void {
+    if (!this.scene.globals.player.enabled) {
+      return;
+    }
+    
+    if(!this.scene.globals.player.movementEnabled) {
+      return;
+    }
+
+    if(!Input.isMousePressed()){
+      return;
+    }
+
+    Input.clearMousePressed(MouseKey.Left);
+
+    const { x, y } = this.mouseTilePosition;
+
+    this.generatePath({
+      x,
+      y,
+    });
+  }
+
+  private moveAlongPath(delta: number): void {
+    if (!this.scene.globals.player.enabled){
+      return;
+    } 
+
+    if(!this.scene.globals.player.movementEnabled) {
+      return;
+    }
+
+    if(this.transform.position.world.x === this.targetX && this.transform.position.world.y === this.targetY){
+
+      // at position, get next position
+      const position = this.path.pop();
+      if(position === undefined){
+        // at position, move
+        return;
+      }
+
+      // check if position can be moved to
+      const filter: ObjectFilter = {
+        boundingBox: SceneObject.calculateBoundingBox(
+          position.x,
+          position.y,
+          this.width,
+          this.height,
+        ),
+        collision: {
+          enabled: true,
+        }
+      }
+      const object = this.scene.getObject(filter);
+      if(object){
+        return;
+      }
+
+      this.targetX = position.x;
+      this.targetY = position.y;
+      return;
+    }
+
+    this.processMovement(delta);
+  }
+
+  private generatePath(target: Coordinate): void {
+    const maxRadius: number = 16;
+
+    // clear path
+    this.path = [];
+
+    const parentForCell = new Map();
+
+    const queue: Coordinate[] = [];
+
+    // start position
+    const start: Coordinate = {
+      x: this.transform.position.world.x,
+      y: this.transform.position.world.y,
+    }
+    queue.push(start);
+
+    while(queue.length > 0){
+      const current = queue.shift();
+      const currentKey = `${current.x}x${current.y}`;
+
+      const neighbours = [
+        { x: current.x - 1, y: current.y },
+        { x: current.x, y: current.y + 1 },
+        { x: current.x + 1, y: current.y },
+        { x: current.x, y: current.y - 1 },
+      ];
+
+      for (let i = 0; i < neighbours.length; ++i) {
+        const nX = neighbours[i].x;
+        const nY = neighbours[i].y;
+        
+        // limit radius
+        if(Math.abs(nX - target.x) > maxRadius){
+          continue;
+        }
+
+        if(Math.abs(nY - target.y) > maxRadius){
+          continue;
+        }
+
+        const filter: ObjectFilter = {
+          boundingBox: SceneObject.calculateBoundingBox(
+            nX,
+            nY,
+            this.width,
+            this.height,
+          ),
+          collision: {
+            enabled: true,
+          }
+        };
+        const object = this.scene.getObject(filter);
+        if(object && (target.x !== nX || target.y !== nY)){
+          continue;
+        }
+
+        const key = `${nX}x${nY}`;
+
+        // already visited
+        if (parentForCell.get(key)) {
+          continue;
+        }
+
+        parentForCell.set(
+          key, 
+          {
+            key: currentKey,
+            cell: current
+          }
+        );
+
+        queue.push(neighbours[i])
+      }
+    }
+
+    let currentKey = `${target.x}x${target.y}`;
+    let current = target;
+
+    while (current !== start) {
+      this.path.push(current)
+
+      console.log(this.path);
+
+      if(parentForCell.get(currentKey) === undefined){
+        return;
+      }
+      const { key, cell } = parentForCell.get(currentKey);
+      
+      currentKey = key;
+      current = cell;
+    }
+
+  }
+
 
   updateMovement(delta: number): void {
     if (this.scene.globals.player.enabled && this.scene.globals.player.movementEnabled) {
@@ -602,6 +768,23 @@ export class PlayerObject extends SceneObject {
       }
     );
   }
+
+  private renderPath(context: CanvasRenderingContext2D): void {
+    this.path.forEach(position => {
+      RenderUtils.fillRectangle(
+        context,
+        position.x,
+        position.y,
+        1,
+        1,
+        {
+          colour: 'red',
+          type: 'tile',
+        }
+      );
+    });
+  }
+
 
   private renderControllerState(context: CanvasRenderingContext2D): void {
     // const gamepad = Input.gamepads.get(this.playerIndex);
