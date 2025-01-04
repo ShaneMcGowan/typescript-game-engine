@@ -78,12 +78,17 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 7, width: 6, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 7, width: 9, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 14, width: 5, height: 2 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 18, width: 28 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 25, positionY: 22, width: 5 }));
+
+    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 23, width: 25 }));
     // vertical
     this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 6, height: 6 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 8, height: 6 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 2, height: 5 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 27, positionY: 0, height: 18 }));
+
+    this.scene.addObject(new CollisionObject(scene, { positionX: 30, positionY: 19, height: 3 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 31, positionY: 18, height: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { positionX: 32, positionY: 0, height: 18 }));
 
     this.scene.addObject(new ObjectTrackingCameraObject(scene, { object: player }));
 
@@ -163,8 +168,15 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { positionX: 8, positionY: 15 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 20, positionY: 11 }));
     this.scene.addObject(new RockObject(this.scene, { positionX: 17, positionY: 16 }));
+
     this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 16, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 17, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 3, positionY: 16, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 2, positionY: 17, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 18, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 19, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 2, positionY: 20, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 21, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { positionX: 0, positionY: 22, canBeBroken: false }));
 
     // trees
     this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 2, type: 'small' }));

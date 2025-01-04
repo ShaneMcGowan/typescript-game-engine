@@ -370,6 +370,8 @@ export class PlayerObject extends SceneObject {
     if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Action)) {
       return;
     }
+
+    console.log(this.mouseTilePosition);
     
     // check if UI object at mouse position, if so, cancel this call
     const uiFilter: ObjectFilter = {
