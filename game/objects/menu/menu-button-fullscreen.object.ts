@@ -15,10 +15,18 @@ export class MenuButtonFullscreenObject extends ButtonObject {
   }
 
   get label(): string {
+    if(!this.isFullscreenAvailable){
+      return `Fullscreen Unavailable`;
+    }
+
     return this.isFullscreen ? 'Exit Fullscreen' : 'Go Fullscreen';
   }
 
   onClick(): void {
+    if(!this.isFullscreenAvailable){
+      return;
+    }
+
     if (this.isFullscreen) { 
       document.exitFullscreen();
     }
@@ -38,6 +46,11 @@ export class MenuButtonFullscreenObject extends ButtonObject {
     }
 
     return false;
-  } 
+  }
+
+  private get isFullscreenAvailable(): boolean {
+    const available = document.fullscreenEnabled || document.mozFullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled;
+    return available;
+  }
 
 }

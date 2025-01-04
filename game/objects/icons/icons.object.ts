@@ -24,7 +24,7 @@ export class IconsObject extends SceneObject {
 
     const icons = [
       new IconMenuObject(this.scene, { positionX: x, }),
-      ...(CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? [] : [new IconInventoryObject(this.scene, { positionX: x })])
+      new IconInventoryObject(this.scene, { positionX: x }),
     ];
 
     icons.forEach((icon, index) => {
