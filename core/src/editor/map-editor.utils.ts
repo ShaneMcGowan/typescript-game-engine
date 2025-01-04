@@ -526,6 +526,39 @@ export class MapEditor {
       return;
     }
 
+    // background
+    this.selectedMap.layers.forEach(layer => {
+      // ignore currently layer
+      if (layer.index === this.selectedLayer.index) {
+        return;
+      }
+
+      for (let row = 0; row < this.selectedMap.height; row++) {
+        for (let column = 0; column < this.selectedMap.width; column++) {
+          const tile = layer.tiles[row][column];
+
+          if (tile === null) {
+            continue;
+          }
+
+          RenderUtils.renderSprite(
+            context,
+            Assets.images[layer.tileset],
+            tile.sprite.x,
+            tile.sprite.y,
+            tile.x,
+            tile.y,
+            tile.sprite.width,
+            tile.sprite.height,
+            {
+              opacity: 0.5,
+            }
+          );
+        }
+      }
+    });
+
+    // current layer
     for (let row = 0; row < this.selectedMap.height; row++) {
       for (let column = 0; column < this.selectedMap.width; column++) {
         const tile = this.selectedLayer.tiles[row][column];
