@@ -39,7 +39,7 @@ import { useBerryOnHole } from './player/berry/use-berry-on-hole.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
-import { Direction } from '@game/constants/animations/player.animations';
+import { Direction, ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
 
 const TILE_SET = 'tileset_player';
 
@@ -82,9 +82,9 @@ export class PlayerObject extends SceneObject {
   isIdle: boolean = true;
 
   // animation state
-  animation: any | undefined;
+  animation: ObjectAnimation | undefined;
   animationDelta: number = 0;
-  animationCallback: (() => void) | undefined;
+  animationCallback: PlayerActionAnimationCallback | undefined;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -120,13 +120,21 @@ export class PlayerObject extends SceneObject {
       this.renderAnimation(context);
     } else {
       this.renderSprite(context);
-      this.renderCursor(context);
     }
+    this.renderCursor(context);
     // this.renderControllerState(context);
   }
 
   get hotbar(): Inventory {
     return this.scene.globals.hotbar;
+  }
+
+  get isAnimating(): boolean {
+    return this.animation !== undefined;
+  }
+
+  get isMoving(): boolean {
+    return this.transform.position.world.x !== this.targetX || this.transform.position.world.y !== this.targetY;
   }
 
   updateMovement(delta: number): void {
@@ -138,7 +146,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(this.animation === undefined){
+    if(!this.isAnimating){
       this.determineNextMovement(delta);
     }
 
@@ -257,7 +265,7 @@ export class PlayerObject extends SceneObject {
     }
   }
 
-  startAnimation(animation: any, callback?: () => void): void {
+  startAnimation(animation: any, callback?: PlayerActionAnimationCallback): void {
     this.animation = animation;
     this.animationDelta = 0;
     this.animationCallback = callback;
@@ -266,18 +274,23 @@ export class PlayerObject extends SceneObject {
   endAnimation(): void {
     this.animation = undefined;
     this.animationDelta = 0;
-    if(this.animationCallback){
-      this.animationCallback();
-    }
-    this.animationCallback = undefined;
   }
 
   private updateAnimation(delta: number): void {
-    if(this.animation === undefined){
+    if(!this.isAnimating){
       return;
     }
 
     this.animationDelta += delta;
+
+    const frameLength = this.animation.length / this.animation.frames.length;
+    const finalFrameStart = frameLength * (this.animation.frames.length - 1);
+
+    // run callback on start of final frame as it looks more natural than after animation has stopped
+    if(this.animationDelta > finalFrameStart && this.animationCallback){
+      this.animationCallback();
+      this.animationCallback = undefined;
+    }
 
     if(this.animationDelta > this.animation.length){
       this.endAnimation();
@@ -296,7 +309,11 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(this.animation !== undefined){
+    if(this.isAnimating){
+      return;
+    }
+
+    if(this.isMoving){
       return;
     }
 
@@ -373,7 +390,7 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(this.animation !== undefined){
+    if(this.isAnimating){
       return;
     }
 
@@ -412,7 +429,11 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(this.animation !== undefined){
+    if(this.isAnimating){
+      return;
+    }
+
+    if(this.isMoving){
       return;
     }
     
@@ -501,7 +522,7 @@ export class PlayerObject extends SceneObject {
           useChest(this.scene, this);
           return;
         case ItemType.Shovel:
-          useShovel(this.scene);
+          useShovel(this.scene, this);
           return;
         default:
           return;
@@ -511,10 +532,10 @@ export class PlayerObject extends SceneObject {
         case ItemType.WateringCan:
           switch (true) {
             case object instanceof DirtObject:
-              useWateringCanOnDirt(this.scene, object);
+              useWateringCanOnDirt(this.scene, this, object);
               return;
             case object instanceof ChickenObject:
-              useWateringCanOnChicken(this.scene, object);
+              useWateringCanOnChicken(this.scene, this, object);
               return;
             default:
               return;
@@ -540,13 +561,13 @@ export class PlayerObject extends SceneObject {
         case ItemType.Axe:
           switch(true){
             case object instanceof ChickenObject:
-              useAxeOnChicken(this.scene, object);
+              useAxeOnChicken(this.scene, this, object);
               return;
             case object instanceof TreeObject:
               useAxeOnTree(this.scene, this, object);
               return;
             case object instanceof TreeStumpObject:
-              useAxeOnTreeStump(this.scene, object);
+              useAxeOnTreeStump(this.scene, this, object);
               return;
             default:
               return;
@@ -554,10 +575,10 @@ export class PlayerObject extends SceneObject {
         case ItemType.Pickaxe:
           switch(true){
             case object instanceof ChickenObject:
-              usePickaxeOnChicken(this.scene, object);
+              usePickaxeOnChicken(this.scene, this, object);
               return;
             case object instanceof RockObject:
-              usePickaxeOnRock(this.scene, object);
+              usePickaxeOnRock(this.scene, this, object);
               return;
             default:
               return;
@@ -565,10 +586,10 @@ export class PlayerObject extends SceneObject {
         case ItemType.Shovel:
           switch(true){
             case object instanceof ChickenObject:
-              useShovelOnChicken(this.scene, object);
+              useShovelOnChicken(this.scene, this, object);
               return;
             case object instanceof HoleObject:
-              useShovelOnHole(this.scene, object);
+              useShovelOnHole(this.scene, this, object);
               return;
             default:
               return;
@@ -576,7 +597,7 @@ export class PlayerObject extends SceneObject {
         case ItemType.Hoe:
           switch(true){
             case object instanceof ChickenObject:
-              useHoeOnChicken(this.scene, object);
+              useHoeOnChicken(this.scene, this, object);
               return;
             default:
               return;
@@ -670,10 +691,10 @@ export class PlayerObject extends SceneObject {
       Assets.images[this.animation.tileset],
       sprite.x, 
       sprite.y,
-      this.transform.position.world.x,
+      this.transform.position.world.x - 1,
       this.transform.position.world.y - 1,
-      sprite.width,
-      sprite.height,
+      this.animation.width,
+      this.animation.height,
     );
   }
 

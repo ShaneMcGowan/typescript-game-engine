@@ -1,18 +1,9 @@
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { TextboxObject } from "@game/objects/textbox.object";
+import { MessageUtils } from "@game/utils/message.utils";
 
 export function useWateringCan(scene: SCENE_GAME): void {
-  scene.globals.player.enabled = false;
-
-  const object = new TextboxObject(
-    scene,
-    {
-      text: 'There is nothing to water...',
-      onComplete: () => {
-        scene.globals.player.enabled = true;
-      },
-    }
+  MessageUtils.showMessage(
+    scene, 
+    `There is nothing to water...`
   );
-
-  scene.addObject(object);
 }
