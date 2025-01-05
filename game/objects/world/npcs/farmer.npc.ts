@@ -3,7 +3,6 @@ import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from ".
 import { SpriteAnimation } from "@core/model/sprite-animation";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { Quest } from "@game/models/quest.model";
-import { QuestCollectWheat } from "./farmer/collect-wheat.quest";
 import { QuestBreakRocks } from "./farmer/break-rocks.quest";
 import { QuestCollectRocks } from "./farmer/collect-rocks.quest";
 import { QuestCollectLogs } from "./farmer/collect-logs.quest";

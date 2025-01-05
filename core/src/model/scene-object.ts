@@ -11,16 +11,6 @@ export interface SceneObjectBoundingBox {
   left: number;
 }
 
-// TODO:
-//  in order to enable child and parent objects, position needs to be updated
-//  for now we will place worldPosition on the `transform` object
-//  but later we will want to update transform to be
-//  {
-//    position: {
-//      readonly local: Vector
-//      readonly world: Vector
-//    }
-//  }
 interface Transform {
   readonly position: {
     readonly local: Vector;
