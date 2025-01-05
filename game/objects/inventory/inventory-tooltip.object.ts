@@ -41,11 +41,11 @@ export class InventoryTooltipObject extends SceneObject {
   }
 
   get title(): string {
-    return Inventory.getItemName(this.item)
+    return Inventory.getItemName(this.item.type)
   }
 
   get description(): string {
-    return Inventory.getItemDescription(this.item)
+    return Inventory.getItemDescription(this.item.type)
   }
 
   private renderTooltipBackground(context: CanvasRenderingContext2D, x: number, y: number): void {

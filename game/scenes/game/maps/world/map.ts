@@ -27,6 +27,7 @@ import { QuestCollectLogs } from '@game/objects/world/npcs/farmer/collect-logs.q
 import { QuestCollectRocks } from '@game/objects/world/npcs/farmer/collect-rocks.quest';
 import { QuestBreakRocks } from '@game/objects/world/npcs/farmer/break-rocks.quest';
 import { QuestCollectBerries } from '@game/objects/world/npcs/farmer/collect-berries.quest';
+import { QuestClearPathToFarm } from '@game/objects/world/npcs/farmer/clear-path-to-farm.quest';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -191,8 +192,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new TreeObject(this.scene, { positionX: 25, positionY: 7, type: 'small'}));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 11, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 13, positionY: 11, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 0, positionY: 12, type: 'small' }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 0, positionY: 13, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 7, positionY: 13, type: 'small' }));
 
     // quests
@@ -200,5 +199,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     QuestCollectRocks.setup(this.scene);
     QuestBreakRocks.setup(this.scene);
     QuestCollectBerries.setup(this.scene);
+    QuestClearPathToFarm.setup(this.scene);
   }
 }

@@ -18,14 +18,16 @@ export function useAxeOnTree(scene: SCENE_GAME, player: PlayerObject, object: Tr
     object.destroy();
 
     // stump
-    scene.addObject(new TreeStumpObject(
-      scene, 
-      {
-        type: object.type,
-        positionX: object.transform.position.world.x,
-        positionY: object.transform.position.world.y,
-      }
-    ))
+    if(object.stumpOnDestroy){
+      scene.addObject(new TreeStumpObject(
+        scene, 
+        {
+          type: object.type,
+          positionX: object.transform.position.world.x,
+          positionY: object.transform.position.world.y,
+        }
+      ));
+    }
 
     // log - position based on the direction the tree was chopped from, it looks nicer
     let relativeX = player.transform.position.world.x - object.transform.position.world.x;
@@ -42,24 +44,28 @@ export function useAxeOnTree(scene: SCENE_GAME, player: PlayerObject, object: Tr
       relativeY = -1
     }
 
-    scene.addObject(new ItemObject(
-      scene, 
-      {
-        type: ItemType.Log,
-        positionX: object.transform.position.world.x + relativeX,
-        positionY: object.transform.position.world.y + relativeY,
-      }
-    ))
-
-    for(let i = 0; i < object.fruit; i++){
+    if(object.logOnDestroy){
       scene.addObject(new ItemObject(
         scene, 
         {
-          type: ItemType.Berry,
-          positionX: object.transform.position.world.x + 1, // TODO: this should fall in an available space rather than a stack
-          positionY: object.transform.position.world.y,
+          type: ItemType.Log,
+          positionX: object.transform.position.world.x + relativeX,
+          positionY: object.transform.position.world.y + relativeY,
         }
-      ))
+      ));
+    }
+
+    if(object.berryOnDestroy){
+      for(let i = 0; i < object.fruit; i++){
+        scene.addObject(new ItemObject(
+          scene, 
+          {
+            type: ItemType.Berry,
+            positionX: object.transform.position.world.x + 1, // TODO: this should fall in an available space rather than a stack
+            positionY: object.transform.position.world.y,
+          }
+        ))
+      }
     }
   }
 

@@ -247,14 +247,14 @@ export class InventoryObject extends SceneObject {
     if (slot === undefined) {
       this.stopDraggingItem();
     } else if (slot instanceof InventoryButtonTrashObject) {
-      if(Inventory.canItemBeDestroyed(this.dragging.item)){
+      if(Inventory.canItemBeDestroyed(this.dragging.item.type)){
         // destroy
         this.dragging = undefined;
       } else {
         this.stopDraggingItem();
       }
     } else if (slot instanceof InventoryButtonDropObject) {
-      if(Inventory.canItemBeDropped(this.dragging.item)){
+      if(Inventory.canItemBeDropped(this.dragging.item.type)){
         // drop
         for(let i = 0; i < this.dragging.item.currentStackSize; i++){
           const item = new ItemObject(
@@ -487,7 +487,7 @@ export class InventoryObject extends SceneObject {
     if (slot === undefined) {
       this.stopDraggingItem();
     } else if (slot instanceof InventoryButtonTrashObject) {
-      if(Inventory.canItemBeDestroyed(this.dragging.item)){
+      if(Inventory.canItemBeDestroyed(this.dragging.item.type)){
         // destroy
         this.dragging = undefined;
       } else {

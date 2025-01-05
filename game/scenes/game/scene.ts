@@ -13,7 +13,8 @@ export interface QuestStatus {
 }
 
 export enum SceneFlags {
-  shack_door_open = 'shack_door_open'
+  shack_door_open = 'shack_door_open',
+  path_to_farm_cleared = 'path_to_farm_cleared',
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -27,7 +28,7 @@ interface Globals extends SceneGlobalsBaseConfig {
     actionsEnabled: boolean;
     interactEnabled: boolean;
   }
-  flags: Record<SceneFlags, boolean>,
+  flags: Map<SceneFlags, boolean>, // TODO: we seem to lose some sort of type safety here, consider changing this to a record in future
   quests: Record<QuestName, QuestStatus>;
 }
 
@@ -44,9 +45,7 @@ export class SCENE_GAME extends Scene {
       actionsEnabled: true,
       interactEnabled: true,
     },
-    flags: {
-      [SceneFlags.shack_door_open]: false
-    },
+    flags: new Map(),
     quests: {
       [QuestName.default]: {
         intro: false,
@@ -68,23 +67,27 @@ export class SCENE_GAME extends Scene {
         intro: false,
         complete: false,
       },
-      [QuestName.plant_tree]:  {
+      [QuestName.plant_tree]: {
         intro: false,
         complete: false,
       },
-      [QuestName.collect_berries]:  {
+      [QuestName.collect_berries]: {
         intro: false,
         complete: false,
       },
+      [QuestName.clear_path_to_farm]: {
+        intro: false,
+        complete: false,
+      }
     }
   };
 
   constructor(client: Client) {
     super(client);
 
-    this.globals.inventory.addToInventory(ItemType.GateKey);
     
     /*
+    this.globals.inventory.addToInventory(ItemType.GateKey);
     this.globals.inventory.addToInventory(ItemType.Hoe);
     this.globals.inventory.addToInventory(ItemType.WateringCan);
     this.globals.inventory.addToInventory(ItemType.Axe);

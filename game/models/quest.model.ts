@@ -10,6 +10,7 @@ export enum QuestName {
   collect_rocks = 'collect_rocks',
   plant_tree = 'plant_tree',
   collect_berries = 'collect_berries',
+  clear_path_to_farm = 'clear_path_to_farm',
 }
 
 export interface QuestText {
@@ -27,12 +28,12 @@ export abstract class Quest {
     protected npc: NpcObject
   ){}
 
-  get quest(): QuestStatus {
+  get status(): QuestStatus {
     return this.scene.globals.quests[this.id];
   }
 
   get isComplete(): boolean {
-    return this.quest.complete;
+    return this.status.complete;
   }
 
   get text(): QuestText {
@@ -44,11 +45,11 @@ export abstract class Quest {
   }
 
   run(): void {
-    if(this.quest.complete){
+    if(this.status.complete){
       return;
     }
 
-    if(!this.quest.intro){
+    if(!this.status.intro){
       this.intro();
       return;
     } 
@@ -65,7 +66,7 @@ export abstract class Quest {
     this.npc.say(
       this.text.intro,
       () => { 
-        this.quest.intro = true; 
+        this.status.intro = true; 
         this.onIntro();
       },
     );
@@ -88,7 +89,7 @@ export abstract class Quest {
     this.npc.say(
       this.text.success,
       () => { 
-        this.quest.complete = true;
+        this.status.complete = true;
         this.onSuccess();
       }
     );

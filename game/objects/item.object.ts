@@ -3,7 +3,7 @@ import { Assets } from "@core/utils/assets.utils";
 import { RenderUtils } from "@core/utils/render.utils";
 import { Interactable } from "@game/models/interactable.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { Inventory, ItemSprite, ItemType, TYPE_TO_NAME_MAP, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
+import { Inventory, ItemSprite, ItemType, TYPE_TO_NAME_SINGULAR_MAP, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
 import { PlayerObject } from "./player.object";
 import { MessageUtils } from "@game/utils/message.utils";
 
@@ -67,7 +67,7 @@ export class ItemObject extends SceneObject implements Interactable {
   }
 
   get name(): string {
-    return TYPE_TO_NAME_MAP[this.type];
+    return TYPE_TO_NAME_SINGULAR_MAP[this.type];
   }
 
   get sprite(): ItemSprite {

@@ -25,7 +25,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
 
   onUpdate(delta: number): void {
     // destroy door when unlocked flag
-    if(!this.scene.globals.flags[SceneFlags.shack_door_open]){
+    if(!this.scene.globals.flags.get(SceneFlags.shack_door_open)){
       return;
     }
 

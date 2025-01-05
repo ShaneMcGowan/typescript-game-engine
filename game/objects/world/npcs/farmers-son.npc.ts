@@ -38,7 +38,7 @@ export class FarmersSonObject extends NpcObject {
 
   onIntro(): void {
     // open the shack door
-    this.scene.globals.flags[SceneFlags.shack_door_open] = true;
+    this.scene.globals.flags.set(SceneFlags.shack_door_open, true);
   }
 
 }

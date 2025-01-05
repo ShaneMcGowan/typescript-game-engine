@@ -106,7 +106,7 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Shovel]: 0,
 }
 
-export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
+export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.Chicken]: 'Chicken',
   [ItemType.Egg]: 'Egg',
   [ItemType.WheatSeeds]: 'Wheat Seeds',
@@ -123,6 +123,25 @@ export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
   [ItemType.Log]: 'Log',
   [ItemType.Berry]: 'Berry',
   [ItemType.Shovel]: 'Shovel',
+}
+
+export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
+  [ItemType.Chicken]: 'Chickens',
+  [ItemType.Egg]: 'Eggs',
+  [ItemType.WheatSeeds]: 'Wheat Seeds',
+  [ItemType.Wheat]: 'Wheat',
+  [ItemType.TomatoSeeds]: 'Tomato Seeds',
+  [ItemType.Tomato]: 'Tomatos',
+  [ItemType.Hoe]: 'Hoes',
+  [ItemType.WateringCan]: 'Watering Cans',
+  [ItemType.Chest]: 'Chests',
+  [ItemType.GateKey]: 'Gate Keys',
+  [ItemType.Axe]: 'Axes',
+  [ItemType.Pickaxe]: 'Pickaxes',
+  [ItemType.Rock]: 'Rocks',
+  [ItemType.Log]: 'Logs',
+  [ItemType.Berry]: 'Berries',
+  [ItemType.Shovel]: 'Shovels',
 }
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
@@ -436,24 +455,20 @@ export class Inventory {
     }
   }
 
-  // TODO: change to accept a type
-  static getItemName(item: Item): string {
-    return TYPE_TO_NAME_MAP[item.type];
+  static getItemName(type: ItemType, plural: boolean = false): string {
+    return plural ? TYPE_TO_NAME_SINGULAR_MAP[type] : TYPE_TO_NAME_SINGULAR_MAP[type];
   }
 
-  // TODO: change to accept a type
-  static getItemDescription(item: Item): string {
-    return TYPE_TO_DESCRIPTION_MAP[item.type];
+  static getItemDescription(type: ItemType): string {
+    return TYPE_TO_DESCRIPTION_MAP[type];
   }
 
-  // TODO: change to accept a type
-  static canItemBeDestroyed(item: Item): boolean {
-    return TYPE_TO_CAN_DESTROY_MAP[item.type];
+  static canItemBeDestroyed(type: ItemType): boolean {
+    return TYPE_TO_CAN_DESTROY_MAP[type];
   }
 
-  // TODO: change to accept a type
-  static canItemBeDropped(item: Item): boolean {
-    return TYPE_TO_CAN_DROP_MAP[item.type];
+  static canItemBeDropped(type: ItemType): boolean {
+    return TYPE_TO_CAN_DROP_MAP[type];
   }
 
   static canItemBeInteractedWith(type: ItemType): boolean {

@@ -11,14 +11,27 @@ import { MathUtils } from "@core/utils/math.utils";
 import { ObjectFilter, Scene } from "@core/model/scene";
 import { PlayerObject } from "./player.object";
 
+const DEFAULT_STUMP_ON_DESTROY: boolean = true;
+const DEFAULT_LOG_ON_DESTROY: boolean = true;
+const DEFAULT_BERRY_ON_DESTROY: boolean = true;
+
 type Type = 'big' | 'small';
 
 interface Config extends SceneObjectBaseConfig {
   type: Type;
+  stumpOnDestroy?: boolean;
+  logOnDestroy?: boolean;
+  berryOnDestroy?: boolean;
 }
 
 export class TreeObject extends SceneObject implements Interactable {
 
+  // config
+  stumpOnDestroy: boolean;
+  logOnDestroy: boolean;
+  berryOnDestroy: boolean;
+
+  // state
   chopCounter: number = 0; // used to store the number of times the tree has been chopped
   chopCounterMax: number = 5;
 
@@ -33,6 +46,10 @@ export class TreeObject extends SceneObject implements Interactable {
     this.collision.enabled = true;
     this.renderer.enabled = true;
     this.renderer.layer = 11; // TODO: this should be some sort of constant that is PLAYER RENDER LAYER + 1
+
+    this.stumpOnDestroy = config.stumpOnDestroy ?? DEFAULT_STUMP_ON_DESTROY;
+    this.logOnDestroy = config.logOnDestroy ?? DEFAULT_LOG_ON_DESTROY;
+    this.berryOnDestroy = config.berryOnDestroy ?? DEFAULT_BERRY_ON_DESTROY;
   }
 
   onUpdate(delta: number): void {
@@ -54,6 +71,12 @@ export class TreeObject extends SceneObject implements Interactable {
     }
 
     this.renderFruit(context);
+  }
+
+  onDestroy(): void {
+    if(super.onDestroy){
+      super.onDestroy();
+    }
   }
 
   get type(): Type {
