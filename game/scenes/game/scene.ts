@@ -2,7 +2,7 @@ import { type Client } from '@core/client';
 import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
 import { Inventory, Item, ItemType } from '@game/models/inventory.model';
-import { SCENE_GAME_MAP_SHOP } from './maps/shop/map';
+import { SCENE_GAME_MAP_FARM_HOUSE } from './maps/farm-house/map';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
 import { QuestName } from '@game/models/quest.model';
@@ -103,7 +103,7 @@ export class SCENE_GAME extends Scene {
     const MAP_MAP: Record<string, SceneMapConstructorSignature> = {
       'world': SCENE_GAME_MAP_WORLD,
       'underground': SCENE_GAME_MAP_UNDERGROUND,
-      'shop': SCENE_GAME_MAP_SHOP
+      'farm-house': SCENE_GAME_MAP_FARM_HOUSE
     }
     const map: SceneMapConstructorSignature = MAP_MAP[mapParam] ?? SCENE_GAME_MAP_WORLD;
 

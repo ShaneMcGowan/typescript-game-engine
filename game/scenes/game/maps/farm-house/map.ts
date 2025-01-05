@@ -2,7 +2,6 @@ import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
-import { FullscreenToggleObject } from '@game/objects/fullscreen-toggle.object';
 import { WarpObject } from '@game/objects/warp.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
@@ -10,7 +9,7 @@ import { JsonBackgroundMap } from '@core/model/background';
 import * as background from './background.json'
 import { FarmerObject } from '@game/objects/world/npcs/farmer.npc';
 
-export class SCENE_GAME_MAP_SHOP extends SceneMap {
+export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
   background: JsonBackgroundMap = background;
 

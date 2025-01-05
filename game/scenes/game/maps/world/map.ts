@@ -13,7 +13,7 @@ import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracki
 import { WarpObject } from '@game/objects/warp.object';
 import { TilesetHouse } from '@game/constants/tilesets/house.tileset';
 import { LockedDoorObject } from '@game/objects/world/locked-door.object';
-import { SCENE_GAME_MAP_SHOP } from '../shop/map';
+import { SCENE_GAME_MAP_FARM_HOUSE } from '../farm-house/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
 import { GateObject } from '@game/objects/world/gate.object';
@@ -21,17 +21,21 @@ import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
 import { RockObject } from '@game/objects/rock.object';
 import { TreeObject } from '@game/objects/tree.object';
 import { IconsObject } from '@game/objects/icons/icons.object';
-import { ItemObject } from '@game/objects/item.object';
-import { ItemType } from '@game/models/inventory.model';
 import { QuestCollectLogs } from '@game/objects/world/npcs/farmer/collect-logs.quest';
 import { QuestCollectRocks } from '@game/objects/world/npcs/farmer/collect-rocks.quest';
 import { QuestBreakRocks } from '@game/objects/world/npcs/farmer/break-rocks.quest';
 import { QuestCollectBerries } from '@game/objects/world/npcs/farmer/collect-berries.quest';
 import { QuestClearPathToFarm } from '@game/objects/world/npcs/farmer/clear-path-to-farm.quest';
+import { Scene } from '@core/model/scene';
+import { SCENE_GAME_MAP_FARM } from '../farm/map';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
+  // config
   background: JsonBackgroundMap = background;
+
+  // state
+  player: PlayerObject;
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);
@@ -42,8 +46,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new IconsObject(this.scene, { positionX: 0, positionY: 0 }));
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    let player = new PlayerObject(this.scene, {playerIndex: 0, positionX: 17, positionY: 13, });
-    this.scene.addObject(player);
+    this.player = new PlayerObject(this.scene, {playerIndex: 0, positionX: 17, positionY: 13, });
+    this.scene.addObject(this.player);
 
     // farmer's son
     this.scene.addObject(new FarmersSonObject(this.scene, {
@@ -96,15 +100,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { positionX: 31, positionY: 18, height: 1 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 32, positionY: 0, height: 18 }));
 
-    this.scene.addObject(new ObjectTrackingCameraObject(scene, { object: player }));
-
-    // fade in
-    this.scene.addObject(new TransitionObject(scene, {
-      animationCenterX: player.transform.position.world.x + (player.width / 2),
-      animationCenterY: player.transform.position.world.y + (player.height / 2),
-      animationType: 'circle',
-      animationLength: 2,
-    }));
+    this.scene.addObject(new ObjectTrackingCameraObject(scene, { object: this.player }));
 
     // ambient floating items
     this.scene.addObject(new IntervalObject(this.scene, {
@@ -152,7 +148,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       positionX: 23,
       positionY: 1,
       onDestroy: () => {
-        this.scene.addObject(new WarpObject(scene, { positionX: 23, positionY: 1, player: player, map: SCENE_GAME_MAP_SHOP }))
+        this.scene.addObject(new WarpObject(scene, { positionX: 23, positionY: 1, player: this.player, map: SCENE_GAME_MAP_FARM_HOUSE }))
         this.scene.addObject(new SpriteObject(scene, {
           positionX: 23,
           positionY: 1,
@@ -200,5 +196,32 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     QuestBreakRocks.setup(this.scene);
     QuestCollectBerries.setup(this.scene);
     QuestClearPathToFarm.setup(this.scene);
+
+    // warps
+    const WARP_CONFIG_FARM = {
+      positionX: 0,
+      player: this.player,
+      map: SCENE_GAME_MAP_FARM,
+      width: 1,
+      isColliding: true,
+    };
+    this.scene.addObject(new WarpObject(scene, {
+      ...WARP_CONFIG_FARM,
+      positionY: 12
+    }));
+    this.scene.addObject(new WarpObject(scene, {
+      ...WARP_CONFIG_FARM,
+      positionY: 13
+    }));
+  }
+
+  onEnter(scene: Scene): void {
+    // fade in
+    this.scene.addObject(new TransitionObject(scene, {
+      animationCenterX: this.player.transform.position.world.x + (this.player.width / 2),
+      animationCenterY: this.player.transform.position.world.y + (this.player.height / 2),
+      animationType: 'circle',
+      animationLength: 2,
+    }));
   }
 }
