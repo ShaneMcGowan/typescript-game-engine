@@ -9,8 +9,11 @@ import { SpriteAnimation } from '@core/model/sprite-animation';
 import { Assets } from '@core/utils/assets.utils';
 import { ObjectFilter } from '@core/model/scene';
 import { Quest } from '@game/models/quest.model';
+import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { PlayerObject } from './player.object';
+import { TileConfig } from '@game/models/tile.model';
 
-const RENDERER_LAYER: number = 8;
 const DEFAULT_CAN_MOVE: boolean = false;
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_chicken', [
@@ -88,7 +91,7 @@ export class NpcObject extends SceneObject implements Interactable {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
-    this.renderer.layer = RENDERER_LAYER;
+    this.renderer.layer = PlayerObject.RENDERER_LAYER + 1;
 
     this.targetX = this.transform.position.local.x;
     this.targetY = this.transform.position.local.y;
@@ -104,24 +107,8 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    let animation = this.animations[this.state];
-    let frame = animation.currentFrame(this.animation.timer);
-
-    RenderUtils.renderSprite(
-      context,
-      Assets.images[animation.tileset],
-      frame.spriteX,
-      frame.spriteY,
-      this.transform.position.world.x,
-      this.transform.position.world.y,
-      undefined,
-      undefined,
-      {
-        opacity: this.renderer.opacity,
-        scale: this.renderer.scale,
-        centered: true,
-      }
-    );
+    this.renderSprite(context);
+    this.renderIcon(context);
   }
 
   onDestroy(): void { }
@@ -142,6 +129,40 @@ export class NpcObject extends SceneObject implements Interactable {
 
   get animations(): Record<NpcState, SpriteAnimation> {
     return DEFAULT_ANIMATIONS;
+  }
+
+  /**
+   * returns true if a quest intro has been seen but quest has not been completed
+   */
+  get hasActiveQuest(): boolean {
+    return this.quests.some(quest => {
+      const status = this.scene.globals.quests[quest.id];
+      
+      if(status.complete){
+        return false;
+      }
+
+      if(status.intro){
+        return true;
+      }
+
+      return false;
+    })
+  }
+
+  /**
+   * returns true if an quests are incomplete
+   */
+  get hasAvailableQuest(): boolean {
+    return this.quests.some(quest => {
+      const status = this.scene.globals.quests[quest.id];
+      
+      if(status.complete){
+        return false;
+      }
+
+      return true;
+    })
   }
 
   private updateAnimationTimer(delta: number): void {
@@ -285,4 +306,92 @@ export class NpcObject extends SceneObject implements Interactable {
       )
     );
   }
+
+  private renderSprite(context: CanvasRenderingContext2D): void {
+    let animation = this.animations[this.state];
+    let frame = animation.currentFrame(this.animation.timer);
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[animation.tileset],
+      frame.spriteX,
+      frame.spriteY,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
+      undefined,
+      undefined,
+      {
+        opacity: this.renderer.opacity,
+        scale: this.renderer.scale,
+        centered: true,
+      }
+    );
+  }
+
+  private renderIcon(context: CanvasRenderingContext2D): void {
+    if(this.hasActiveQuest){
+      this.iconRenderer(
+        context,
+        {
+          id: TilesetBasic.id,
+          tile: TilesetBasic.QuestionMark.White.Default
+        },
+        {
+          id: TilesetBasic.id,
+          tile: TilesetBasic.QuestionMark.Darker.Default
+        },
+      );
+      return;
+    }
+
+    if(this.hasAvailableQuest){
+      this.iconRenderer(
+        context,
+        {
+          id: TilesetBasic.id,
+          tile: TilesetBasic.ExclamationMark.White.Default
+        },
+        {
+          id: TilesetBasic.id,
+          tile: TilesetBasic.ExclamationMark.Darker.Default
+        },
+      );
+      return;
+    }
+  }
+
+  private iconRenderer(
+    context: CanvasRenderingContext2D,
+    foreground: {
+      id: string,
+      tile: TileConfig
+    },
+    background: {
+      id: string,
+      tile: TileConfig
+    }
+  ): void {
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[background.id],
+      background.tile.x,
+      background.tile.y,
+      this.transform.position.world.x - CanvasConstants.TILE_PIXEL_SIZE,
+      this.transform.position.world.y - 1 - CanvasConstants.TILE_PIXEL_SIZE,
+      background.tile.width,
+      background.tile.height,
+    );
+
+    RenderUtils.renderSprite(
+      context,
+      Assets.images[foreground.id],
+      foreground.tile.x,
+      foreground.tile.y,
+      this.transform.position.world.x,
+      this.transform.position.world.y - 1,
+      foreground.tile.width,
+      foreground.tile.height,
+    );
+  }
+
 }

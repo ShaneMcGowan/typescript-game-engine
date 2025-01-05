@@ -43,13 +43,14 @@ import { Direction, ObjectAnimation, PlayerActionAnimationCallback } from '@game
 
 const TILE_SET = 'tileset_player';
 
-const RENDERER_LAYER: number = 10;
-
 interface Config extends SceneObjectBaseConfig {
   playerIndex: number;
 }
 
 export class PlayerObject extends SceneObject {
+
+  static RENDERER_LAYER: number = 10;
+
   playerIndex: number; // player index to be used mainly for controller access for now
 
   targetX: number = -1;
@@ -93,7 +94,7 @@ export class PlayerObject extends SceneObject {
     super(scene, config);
     this.collision.enabled = true;
     this.renderer.enabled = true;
-    this.renderer.layer = RENDERER_LAYER;
+    this.renderer.layer = PlayerObject.RENDERER_LAYER;
 
     this.targetX = this.transform.position.local.x;
     this.targetY = this.transform.position.local.y;

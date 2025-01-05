@@ -176,4 +176,59 @@ export class TilesetBasic {
       }
     }
   }
+
+  static readonly ExclamationMark: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
+    White: {
+      Default: {
+        x: 38,
+        y: 13,
+        width: 1,
+        height: 1,
+      }
+    },
+    Dark: {
+      Default: {
+        x: 44,
+        y: 13,
+        width: 1,
+        height: 1,
+      }
+    },
+    Darker: {
+      Default: {
+        x: 53,
+        y: 13,
+        width: 1,
+        height: 1,
+      }
+    }
+  }
+
+  static readonly QuestionMark: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
+    White: {
+      Default: {
+        x: 42,
+        y: 12,
+        width: 1,
+        height: 1,
+      }
+    },
+    Dark: {
+      Default: {
+        x: 48,
+        y: 12,
+        width: 1,
+        height: 1,
+      }
+    },
+    Darker: {
+      Default: {
+        x: 51,
+        y: 12,
+        width: 1,
+        height: 1,
+      }
+    }
+
+  }
 }
