@@ -6,6 +6,7 @@ import { SCENE_GAME_MAP_FARM_HOUSE } from './maps/farm-house/map';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
 import { QuestName } from '@game/models/quest.model';
+import { SCENE_GAME_MAP_FARM } from './maps/farm/map';
 
 export interface QuestStatus {
   intro: boolean;
@@ -103,7 +104,8 @@ export class SCENE_GAME extends Scene {
     const MAP_MAP: Record<string, SceneMapConstructorSignature> = {
       'world': SCENE_GAME_MAP_WORLD,
       'underground': SCENE_GAME_MAP_UNDERGROUND,
-      'farm-house': SCENE_GAME_MAP_FARM_HOUSE
+      'farm-house': SCENE_GAME_MAP_FARM_HOUSE,
+      'farm': SCENE_GAME_MAP_FARM
     }
     const map: SceneMapConstructorSignature = MAP_MAP[mapParam] ?? SCENE_GAME_MAP_WORLD;
 

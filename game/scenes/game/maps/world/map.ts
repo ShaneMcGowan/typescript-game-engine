@@ -186,7 +186,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new TreeObject(this.scene, { positionX: 16, positionY: 4, type: 'small'}));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 2, positionY: 7, type: 'small'}));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 25, positionY: 7, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 11, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 10, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 13, positionY: 11, type: 'small'}));
     this.scene.addObject(new TreeObject(this.scene, { positionX: 7, positionY: 13, type: 'small' }));
 
