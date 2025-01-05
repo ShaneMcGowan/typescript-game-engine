@@ -42,14 +42,14 @@ export abstract class SceneMap {
   /**
    * Ran when map is entered
    */
-  onEnter?(): void;
+  onEnter?(scene: Scene): void;
   /**
    * Ran when map is left
    */
-  onLeave?(): void;
+  onLeave?(scene: Scene): void;
   /**
    * Ran when map is destroyed, after `onLeave`.
    * Not called if `flags.suspend` is true as the map is never destroyed
    */
-  onDestroy?(): void;
+  onDestroy?(scene: Scene): void;
 }

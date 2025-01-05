@@ -360,7 +360,7 @@ export abstract class Scene {
 
     if (this.map !== undefined) {
       if (this.map.onLeave) {
-        this.map.onLeave();
+        this.map.onLeave(this);
       }
 
       if (this.map.flags.suspend) {
@@ -371,7 +371,7 @@ export abstract class Scene {
       } else {
         // only call onDestroy if map.flags.suspend is false
         if (this.map.onDestroy) {
-          this.map.onDestroy();
+          this.map.onDestroy(this);
         }
       }
     }
@@ -400,7 +400,7 @@ export abstract class Scene {
     this.flaggedForMapChange = undefined;
 
     if (this.map.onEnter) {
-      this.map.onEnter();
+      this.map.onEnter(this);
     }
   }
 
