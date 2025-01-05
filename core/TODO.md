@@ -18,3 +18,6 @@ E.g. allowing for a structure as follows
 ```
 A.Children[0].Children[0].Children[0];
 ```
+
+
+renderSprite remove center

@@ -13,8 +13,8 @@ export function useHoe(scene: SCENE_GAME, player: PlayerObject): void {
     const object = new DirtObject(
       scene,
       {
-        positionX: x,
-        positionY: y,
+        x: x,
+        y: y,
       }
     );
     

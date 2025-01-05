@@ -10,8 +10,8 @@ export function useChicken(scene: SCENE_GAME): void {
   const object = new ChickenObject(
     scene,
     {
-      positionX: x,
-      positionY: y
+      x: x,
+      y: y
     }
   );
 

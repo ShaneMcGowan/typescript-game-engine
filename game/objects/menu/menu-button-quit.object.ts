@@ -33,8 +33,8 @@ export class MenuButtonQuitObject extends ButtonObject {
       new TransitionObject(
         this.scene,
         {
-          positionX: 0,
-          positionY: 0,
+          x: 0,
+          y: 0,
           animationLength: time,
           animationType: 'block',
           animationDirection: 'out',

@@ -261,8 +261,8 @@ export class PlayerObject extends SceneObject {
       let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.position.local.x = updatedMovement.positionX;
-      this.transform.position.local.y = updatedMovement.positionY;
+      this.transform.position.local.x = updatedMovement.x;
+      this.transform.position.local.y = updatedMovement.y;
     }
   }
 
@@ -403,8 +403,8 @@ export class PlayerObject extends SceneObject {
       new InventoryObject(
         this.scene,
         {
-          positionX: 0,
-          positionY: 0,
+          x: 0,
+          y: 0,
           player: this,
         }
       )
@@ -738,8 +738,8 @@ export class PlayerObject extends SceneObject {
     this.hotbarObject = new HotbarObject(
       this.scene, 
       { 
-        positionX: x, 
-        positionY: y, 
+        x: x, 
+        y: y, 
       }
     );
 

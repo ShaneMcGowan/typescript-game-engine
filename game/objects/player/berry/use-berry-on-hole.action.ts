@@ -20,8 +20,8 @@ export function useBerryOnHole(scene: SCENE_GAME, object: HoleObject): void {
   const tree = new TreeObject(
     scene,
     {
-      positionX: object.transform.position.world.x,
-      positionY: object.transform.position.world.y,
+      x: object.transform.position.world.x,
+      y: object.transform.position.world.y,
       type: 'big',
     }
   );

@@ -16,7 +16,7 @@ export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    const player = new PlayerObject(scene, { playerIndex: 0, positionX: 15, positionY: 8, });
+    const player = new PlayerObject(scene, { playerIndex: 0, x: 15, y: 8, });
     this.scene.addObject(player);
 
     // scene init
@@ -30,19 +30,19 @@ export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
 
     // collision
     // top
-    this.scene.addObject(new CollisionObject(scene, { positionX: 12, positionY: 5, width: 6 }))
+    this.scene.addObject(new CollisionObject(scene, { x: 12, y: 5, width: 6 }))
     // bottom
-    this.scene.addObject(new CollisionObject(scene, { positionX: 12, positionY: 12, width: 8 }))
+    this.scene.addObject(new CollisionObject(scene, { x: 12, y: 12, width: 8 }))
     // left
-    this.scene.addObject(new CollisionObject(scene, { positionX: 12, positionY: 5, height: 8 }))
+    this.scene.addObject(new CollisionObject(scene, { x: 12, y: 5, height: 8 }))
     // right
-    this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 5, height: 8 }))
+    this.scene.addObject(new CollisionObject(scene, { x: 19, y: 5, height: 8 }))
 
     // collision - ladder
-    this.scene.addObject(new CollisionObject(scene, { positionX: 17, positionY: 0, height: 5 }))
-    this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 0, height: 5 }))
+    this.scene.addObject(new CollisionObject(scene, { x: 17, y: 0, height: 5 }))
+    this.scene.addObject(new CollisionObject(scene, { x: 19, y: 0, height: 5 }))
 
     // exit
-    this.scene.addObject(new WarpObject(scene, { player, map: SCENE_GAME_MAP_WORLD, positionX: 18, positionY: 0, }));
+    this.scene.addObject(new WarpObject(scene, { player, map: SCENE_GAME_MAP_WORLD, x: 18, y: 0, }));
   }
 }

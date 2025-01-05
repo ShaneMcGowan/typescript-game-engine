@@ -23,8 +23,8 @@ export function useAxeOnTree(scene: SCENE_GAME, player: PlayerObject, object: Tr
         scene, 
         {
           type: object.type,
-          positionX: object.transform.position.world.x,
-          positionY: object.transform.position.world.y,
+          x: object.transform.position.world.x,
+          y: object.transform.position.world.y,
         }
       ));
     }
@@ -49,8 +49,8 @@ export function useAxeOnTree(scene: SCENE_GAME, player: PlayerObject, object: Tr
         scene, 
         {
           type: ItemType.Log,
-          positionX: object.transform.position.world.x + relativeX,
-          positionY: object.transform.position.world.y + relativeY,
+          x: object.transform.position.world.x + relativeX,
+          y: object.transform.position.world.y + relativeY,
         }
       ));
     }
@@ -61,8 +61,8 @@ export function useAxeOnTree(scene: SCENE_GAME, player: PlayerObject, object: Tr
           scene, 
           {
             type: ItemType.Berry,
-            positionX: object.transform.position.world.x + 1, // TODO: this should fall in an available space rather than a stack
-            positionY: object.transform.position.world.y,
+            x: object.transform.position.world.x + 1, // TODO: this should fall in an available space rather than a stack
+            y: object.transform.position.world.y,
           }
         ))
       }

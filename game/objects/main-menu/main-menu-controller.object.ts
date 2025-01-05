@@ -57,8 +57,8 @@ export class MainMenuControllerObject extends SceneObject {
     this.scene.addObject(new GenericSpriteObject(
       this.scene,
       {
-        positionX: CanvasConstants.CANVAS_TILE_WIDTH,
-        positionY: randomY,
+        x: CanvasConstants.CANVAS_TILE_WIDTH,
+        y: randomY,
         targetX: -1,
         targetY: randomY,
         tileset: 'tileset_egg',

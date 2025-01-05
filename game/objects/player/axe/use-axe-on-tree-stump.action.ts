@@ -20,8 +20,8 @@ export function useAxeOnTreeStump(scene: SCENE_GAME, player: PlayerObject, objec
       scene, 
       {
         type: ItemType.Log,
-        positionX: object.transform.position.world.x,
-        positionY: object.transform.position.world.y,
+        x: object.transform.position.world.x,
+        y: object.transform.position.world.y,
       }
     ));
   }

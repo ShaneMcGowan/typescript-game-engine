@@ -201,8 +201,8 @@ export class NpcObject extends SceneObject implements Interactable {
           this.targetY
         ),
         {
-          positionX: this.following.transform.position.world.x,
-          positionY: this.following.transform.position.world.y,
+          x: this.following.transform.position.world.x,
+          y: this.following.transform.position.world.y,
         }
       );
     } else {
@@ -251,8 +251,8 @@ export class NpcObject extends SceneObject implements Interactable {
       let movement = new Movement(this.transform.position.world.x, this.transform.position.world.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.position.world.x = updatedMovement.positionX;
-      this.transform.position.world.y = updatedMovement.positionY;
+      this.transform.position.world.x = updatedMovement.x;
+      this.transform.position.world.y = updatedMovement.y;
     }
   }
 

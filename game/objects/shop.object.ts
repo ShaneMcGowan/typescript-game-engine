@@ -257,8 +257,8 @@ export class ShopObject extends SceneObject {
       const item = ITEMS_FOR_SALE[i];
 
       const object = new ShopItemBuyObject(this.scene, {
-        positionX: this.transform.position.world.x + 3 + (i * 2.5),
-        positionY: this.transform.position.world.y + 3,
+        x: this.transform.position.world.x + 3 + (i * 2.5),
+        y: this.transform.position.world.y + 3,
         price: item.price,
         type: item.type,
       });
@@ -281,8 +281,8 @@ export class ShopObject extends SceneObject {
         }
 
         const object = new ShopItemSellObject(this.scene, {
-          positionX: this.transform.position.world.x + 19 + (col * 2.5),
-          positionY: this.transform.position.world.y + 3 + (row * 2.5),
+          x: this.transform.position.world.x + 19 + (col * 2.5),
+          y: this.transform.position.world.y + 3 + (row * 2.5),
           type: item.type,
           count: item.currentStackSize,
           index: index,

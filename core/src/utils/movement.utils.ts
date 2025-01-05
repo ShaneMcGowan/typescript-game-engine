@@ -25,8 +25,8 @@ export class Movement {
   }
 
   constructor(
-    public positionX: number,
-    public positionY: number,
+    public x: number,
+    public y: number,
     public targetX: number,
     public targetY: number
   ) {
@@ -47,31 +47,31 @@ export abstract class MovementUtils {
    * @param velocity
    */
   static moveTowardsPosition(movement: Movement, velocity: number): Movement {
-    if (movement.targetX > movement.positionX) { // right
-      movement.positionX += velocity;
-      if (movement.targetX < movement.positionX) {
-        movement.positionX = movement.targetX;
+    if (movement.targetX > movement.x) { // right
+      movement.x += velocity;
+      if (movement.targetX < movement.x) {
+        movement.x = movement.targetX;
       }
-    } else if (movement.targetX < movement.positionX) { // left
-      movement.positionX -= velocity;
-      if (movement.targetX > movement.positionX) {
-        movement.positionX = movement.targetX;
+    } else if (movement.targetX < movement.x) { // left
+      movement.x -= velocity;
+      if (movement.targetX > movement.x) {
+        movement.x = movement.targetX;
       }
-    } else if (movement.targetY > movement.positionY) { // down
-      movement.positionY += velocity;
-      if (movement.targetY < movement.positionY) {
-        movement.positionY = movement.targetY;
+    } else if (movement.targetY > movement.y) { // down
+      movement.y += velocity;
+      if (movement.targetY < movement.y) {
+        movement.y = movement.targetY;
       }
-    } else if (movement.targetY < movement.positionY) { // up
-      movement.positionY -= velocity;
-      if (movement.targetY > movement.positionY) {
-        movement.positionY = movement.targetY;
+    } else if (movement.targetY < movement.y) { // up
+      movement.y -= velocity;
+      if (movement.targetY > movement.y) {
+        movement.y = movement.targetY;
       }
     }
 
     return new Movement(
-      movement.positionX,
-      movement.positionY,
+      movement.x,
+      movement.y,
       movement.targetX,
       movement.targetY
     );
@@ -84,22 +84,22 @@ export abstract class MovementUtils {
    * @param targetMovement
    * @returns
    */
-  static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: { positionX: number; positionY: number; }): Movement {
+  static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: { x: number; y: number; }): Movement {
     // TODO: add some randomness to this, potentially via MathUtils.randomIntFromRange(1, 4);
 
-    if (targetMovement.positionX > currentMovement.positionX) {
+    if (targetMovement.x > currentMovement.x) {
       currentMovement.targetX += 1;
-    } else if (targetMovement.positionX < currentMovement.positionX) {
+    } else if (targetMovement.x < currentMovement.x) {
       currentMovement.targetX -= 1;
-    } else if (targetMovement.positionY > currentMovement.positionY) {
+    } else if (targetMovement.y > currentMovement.y) {
       currentMovement.targetY += 1;
-    } else if (targetMovement.positionY < currentMovement.positionY) {
+    } else if (targetMovement.y < currentMovement.y) {
       currentMovement.targetY -= 1;
     }
 
     return new Movement(
-      currentMovement.positionX,
-      currentMovement.positionY,
+      currentMovement.x,
+      currentMovement.y,
       currentMovement.targetX,
       currentMovement.targetY
     );
@@ -123,8 +123,8 @@ export abstract class MovementUtils {
     }
 
     return new Movement(
-      currentMovement.positionX,
-      currentMovement.positionY,
+      currentMovement.x,
+      currentMovement.y,
       currentMovement.targetX,
       currentMovement.targetY
     );

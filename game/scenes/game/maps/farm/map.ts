@@ -19,15 +19,15 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.scene.addObject(new IconsObject(this.scene, { positionX: 0, positionY: 0 }));
-    this.player = new PlayerObject(this.scene, { playerIndex: 0, positionX: 90, positionY: 10, });
+    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
+    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 90, y: 10, });
 
     this.scene.addObject(this.player);
 
     // warp
      // warps
      const WARP_CONFIG_FARM = {
-      positionX: 99,
+      x: 99,
       player: this.player,
       map: SCENE_GAME_MAP_WORLD,
       width: 1,
@@ -36,7 +36,7 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     };
     this.scene.addObject(new WarpObject(scene, {
       ...WARP_CONFIG_FARM,
-      positionY: 12
+      y: 12
     }));
   }
 

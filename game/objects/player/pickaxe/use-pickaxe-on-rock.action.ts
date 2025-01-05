@@ -22,8 +22,8 @@ export function usePickaxeOnRock(scene: SCENE_GAME, player: PlayerObject, object
       scene, 
       {
         type: ItemType.Rock,
-        positionX: object.transform.position.world.x,
-        positionY: object.transform.position.world.y,
+        x: object.transform.position.world.x,
+        y: object.transform.position.world.y,
       }
     ));
     

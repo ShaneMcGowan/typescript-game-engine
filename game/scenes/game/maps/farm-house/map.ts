@@ -22,22 +22,22 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
 
     // player
-    let player = new PlayerObject(scene, { playerIndex: 0, positionX: 16, positionY: 12, });
+    let player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
     // NPCS
     this.scene.addObject(player);
-    this.scene.addObject(new FarmerObject(scene, { positionX: 16, positionY: 8, }));
+    this.scene.addObject(new FarmerObject(scene, { x: 16, y: 8, }));
 
     // walls
     // top
-    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 6, width: 10 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 6, width: 10 }));
     // left
-    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 7, height: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 7, height: 5 }));
     // right
-    this.scene.addObject(new CollisionObject(scene, { positionX: 20, positionY: 7, height: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 7, height: 5 }));
     // bottom
-    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 12, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 17, positionY: 12, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 15, positionY: 13, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 12, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 17, y: 12, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 15, y: 13, width: 2 }));
 
     // exit door
     const warpConfig = {
@@ -50,11 +50,11 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
     this.scene.addObject(new WarpObject(scene, {
       ...warpConfig,
-      positionX: 15
+      x: 15
     }));
     this.scene.addObject(new WarpObject(scene, {
       ...warpConfig,
-      positionX: 16
+      x: 16
     }));
   }
 

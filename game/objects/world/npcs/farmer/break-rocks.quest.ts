@@ -29,14 +29,14 @@ export class QuestBreakRocks extends Quest {
   }
 
   static setup(scene: SCENE_GAME): void {
-    scene.addObject(new RockObject(scene, { positionX: 21, positionY: 6 }));
-    scene.addObject(new RockObject(scene, { positionX: 23, positionY: 8 }));
-    scene.addObject(new RockObject(scene, { positionX: 6, positionY: 10 }));
-    scene.addObject(new RockObject(scene, { positionX: 11, positionY: 13 }));
-    scene.addObject(new RockObject(scene, { positionX: 24, positionY: 14 }));
-    scene.addObject(new RockObject(scene, { positionX: 8, positionY: 15 }));
-    scene.addObject(new RockObject(scene, { positionX: 20, positionY: 11 }));
-    scene.addObject(new RockObject(scene, { positionX: 17, positionY: 16 }));
+    scene.addObject(new RockObject(scene, { x: 21, y: 6 }));
+    scene.addObject(new RockObject(scene, { x: 23, y: 8 }));
+    scene.addObject(new RockObject(scene, { x: 6, y: 10 }));
+    scene.addObject(new RockObject(scene, { x: 11, y: 13 }));
+    scene.addObject(new RockObject(scene, { x: 24, y: 14 }));
+    scene.addObject(new RockObject(scene, { x: 8, y: 15 }));
+    scene.addObject(new RockObject(scene, { x: 20, y: 11 }));
+    scene.addObject(new RockObject(scene, { x: 17, y: 16 }));
   }
   
 }

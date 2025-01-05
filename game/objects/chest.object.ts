@@ -52,8 +52,8 @@ export class ChestObject extends SceneObject implements Interactable {
     this.scene.addObject(new InventoryObject(
       this.scene,
       {
-        positionX: 0,
-        positionY: 0,
+        x: 0,
+        y: 0,
         chest: this,
         player: this.player,
       }

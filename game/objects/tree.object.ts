@@ -202,8 +202,8 @@ export class TreeObject extends SceneObject implements Interactable {
       this.scene, 
       { 
         type: ItemType.Berry,
-        positionX: position.x,
-        positionY: position.y,
+        x: position.x,
+        y: position.y,
       });
     this.scene.addObject(item);
   }

@@ -52,8 +52,8 @@ export class TreeStumpObject extends SceneObject implements Interactable {
       new TreeObject(
         this.scene,
         {
-          positionX: this.transform.position.world.x,
-          positionY: this.transform.position.world.y,
+          x: this.transform.position.world.x,
+          y: this.transform.position.world.y,
           type: this.type
         }
       )

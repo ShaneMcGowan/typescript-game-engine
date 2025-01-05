@@ -32,13 +32,13 @@ export class UndergroundIntroStoryControllerObject extends SceneObject {
     this.scene.globals.player.actionsEnabled = false;
 
     // chickens
-    this.addChild(new GregNpcObject(this.scene, { positionX: 15, positionY: 6, }));
-    this.addChild(new UnknownNpcObject(this.scene, { positionX: 13, positionY: 9, }));
-    this.addChild(new UnknownNpcObject(this.scene, { positionX: 18, positionY: 8, }));
-    this.addChild(new UnknownNpcObject(this.scene, { positionX: 16, positionY: 11, }));
+    this.addChild(new GregNpcObject(this.scene, { x: 15, y: 6, }));
+    this.addChild(new UnknownNpcObject(this.scene, { x: 13, y: 9, }));
+    this.addChild(new UnknownNpcObject(this.scene, { x: 18, y: 8, }));
+    this.addChild(new UnknownNpcObject(this.scene, { x: 16, y: 11, }));
 
     // collision
-    this.ladderCollision = new CollisionObject(this.scene, { positionX: 18, positionY: 5 });
+    this.ladderCollision = new CollisionObject(this.scene, { x: 18, y: 5 });
     this.addChild(this.ladderCollision);
   }
 
@@ -78,7 +78,7 @@ export class UndergroundIntroStoryControllerObject extends SceneObject {
     this.removeChild(this.ladderCollision);
 
     // add bridge
-    this.scene.addObject(new BridgeObject(this.scene, { positionX: 18, positionY: 0, height: 6, type: 'vertical' }))
+    this.scene.addObject(new BridgeObject(this.scene, { x: 18, y: 0, height: 6, type: 'vertical' }))
 
     this.stage = 'complete';
   }

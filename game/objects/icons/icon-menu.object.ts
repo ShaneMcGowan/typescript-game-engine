@@ -47,8 +47,8 @@ export class IconMenuObject extends IconObject {
   onClick(): void {
     this.scene.addObject(
       new MenuObject(this.scene, {
-        positionX: 0,
-        positionY: 0,
+        x: 0,
+        y: 0,
       })
     );
   }

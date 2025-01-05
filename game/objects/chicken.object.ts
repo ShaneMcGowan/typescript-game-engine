@@ -159,8 +159,8 @@ export class ChickenObject extends SceneObject implements Interactable {
           this.targetY
         ),
         {
-          positionX: this.following.transform.position.world.x,
-          positionY: this.following.transform.position.world.y,
+          x: this.following.transform.position.world.x,
+          y: this.following.transform.position.world.y,
         }
       );
     } else {
@@ -210,8 +210,8 @@ export class ChickenObject extends SceneObject implements Interactable {
       let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
       let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
 
-      this.transform.position.local.x = updatedMovement.positionX;
-      this.transform.position.local.y = updatedMovement.positionY;
+      this.transform.position.local.x = updatedMovement.x;
+      this.transform.position.local.y = updatedMovement.y;
 
       // set flag
       this.isMovingThisFrame = true;
@@ -251,7 +251,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       roundDirection = Math.floor;
     }
     this.scene.addObject(
-      new EggObject(this.scene, { positionX: roundDirection(this.transform.position.world.x), positionY: roundDirection(this.transform.position.world.y), })
+      new EggObject(this.scene, { x: roundDirection(this.transform.position.world.x), y: roundDirection(this.transform.position.world.y), })
     );
 
     this.eggTimer = 0;

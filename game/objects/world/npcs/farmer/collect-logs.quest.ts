@@ -25,10 +25,10 @@ export class QuestCollectLogs extends Quest {
   }
 
   static setup(scene: SCENE_GAME): void {
-    scene.addObject(new ItemObject(scene, { positionX: 7, positionY: 19, type: ItemType.Log }));
-    scene.addObject(new ItemObject(scene, { positionX: 10, positionY: 21, type: ItemType.Log }));
-    scene.addObject(new ItemObject(scene, { positionX: 14, positionY: 20, type: ItemType.Log }));
-    scene.addObject(new ItemObject(scene, { positionX: 18, positionY: 22, type: ItemType.Log }));
+    scene.addObject(new ItemObject(scene, { x: 7, y: 19, type: ItemType.Log }));
+    scene.addObject(new ItemObject(scene, { x: 10, y: 21, type: ItemType.Log }));
+    scene.addObject(new ItemObject(scene, { x: 14, y: 20, type: ItemType.Log }));
+    scene.addObject(new ItemObject(scene, { x: 18, y: 22, type: ItemType.Log }));
   }
   
 }

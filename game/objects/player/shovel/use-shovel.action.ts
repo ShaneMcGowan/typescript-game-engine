@@ -14,8 +14,8 @@ export function useShovel(scene: SCENE_GAME, player: PlayerObject): void {
     const object = new HoleObject(
       scene,
       {
-        positionX: x,
-        positionY: y,
+        x: x,
+        y: y,
       }
     ); 
     scene.addObject(object);

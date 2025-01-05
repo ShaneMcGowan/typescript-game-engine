@@ -41,8 +41,8 @@ interface Flags {
 }
 
 export interface SceneObjectBaseConfig {
-  positionX?: number;
-  positionY?: number;
+  x?: number;
+  y?: number;
 
   width?: number;
   height?: number;
@@ -147,8 +147,8 @@ export abstract class SceneObject {
       save: FLAGS_SAVE_DEFAULT,
     };
 
-    this.transform.position.local.x = config.positionX ?? this.transform.position.local.x;
-    this.transform.position.local.y = config.positionY ?? this.transform.position.local.y;
+    this.transform.position.local.x = config.x ?? this.transform.position.local.x;
+    this.transform.position.local.y = config.y ?? this.transform.position.local.y;
 
     this.collision.enabled = config.collisionEnabled ?? COLLISION_ENABLED_DEFAULT;
     this.collision.layer = config.collisionLayer ?? COLLISION_LAYER_DEFAULT;

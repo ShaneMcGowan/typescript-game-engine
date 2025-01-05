@@ -11,8 +11,8 @@ export function useChest(scene: SCENE_GAME, player: PlayerObject): void {
   const object = new ChestObject(
     scene,
     {
-      positionX: x,
-      positionY: y,
+      x: x,
+      y: y,
       player: player,
     }
   );

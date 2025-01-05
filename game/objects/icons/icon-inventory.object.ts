@@ -61,8 +61,8 @@ export class IconInventoryObject extends IconObject {
       new InventoryObject(
         this.scene,
         {
-          positionX: 0,
-          positionY: 0,
+          x: 0,
+          y: 0,
           player: this.player,
         }
       )

@@ -25,10 +25,10 @@ export class QuestCollectRocks extends Quest {
   }
 
   static setup(scene: SCENE_GAME): void {
-    scene.addObject(new ItemObject(scene, { positionX: 29, positionY: 15, type: ItemType.Rock }));
-    scene.addObject(new ItemObject(scene, { positionX: 24, positionY: 19, type: ItemType.Rock }));
-    scene.addObject(new ItemObject(scene, { positionX: 23, positionY: 21, type: ItemType.Rock }));
-    scene.addObject(new ItemObject(scene, { positionX: 28, positionY: 20, type: ItemType.Rock }));
+    scene.addObject(new ItemObject(scene, { x: 29, y: 15, type: ItemType.Rock }));
+    scene.addObject(new ItemObject(scene, { x: 24, y: 19, type: ItemType.Rock }));
+    scene.addObject(new ItemObject(scene, { x: 23, y: 21, type: ItemType.Rock }));
+    scene.addObject(new ItemObject(scene, { x: 28, y: 20, type: ItemType.Rock }));
   }
   
 }

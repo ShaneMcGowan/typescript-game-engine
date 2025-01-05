@@ -25,8 +25,8 @@ export class MenuObject extends SceneObject {
     this.scene.globals.player.enabled = false;
 
     this.fill = new FillObject(this.scene, {
-      positionX: 0,
-      positionY: 0,
+      x: 0,
+      y: 0,
       hexColourCode: '#00000066',
       width: CanvasConstants.CANVAS_TILE_WIDTH,
       height: CanvasConstants.CANVAS_TILE_HEIGHT

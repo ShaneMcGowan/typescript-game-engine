@@ -28,8 +28,8 @@ export class HotbarObject extends UiObject {
     for (let i = 0; i < this.hotbar.size; i++) {
       this.addChild(new HotbarSlotObject(this.scene, {
         index: i,
-        positionX: i * 2,
-        positionY: 0
+        x: i * 2,
+        y: 0
       }))
     }
   }

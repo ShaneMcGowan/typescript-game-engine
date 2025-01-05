@@ -7,10 +7,10 @@ export class SCENE_GAME_MAP_TEST_OBJECT_HIERARCHY extends SceneMap {
   constructor(protected scene: Scene) {
     super(scene);
 
-    const parent = new ObjectHierarchyTestObject(this.scene, { positionX: 1, positionY: 1, });
-    const child = new ObjectHierarchyTestObject(this.scene, { positionX: 1, positionY: 1, });
-    const grandchild = new ObjectHierarchyTestObject(this.scene, { positionX: 1, positionY: 1, });
-    const greatGrandChild = new ObjectHierarchyTestObject(this.scene, { positionX: 1, positionY: 1, });
+    const parent = new ObjectHierarchyTestObject(this.scene, { x: 1, y: 1, });
+    const child = new ObjectHierarchyTestObject(this.scene, { x: 1, y: 1, });
+    const grandchild = new ObjectHierarchyTestObject(this.scene, { x: 1, y: 1, });
+    const greatGrandChild = new ObjectHierarchyTestObject(this.scene, { x: 1, y: 1, });
 
     this.scene.addObject(parent);
 

@@ -43,62 +43,45 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
 
-    this.scene.addObject(new IconsObject(this.scene, { positionX: 0, positionY: 0 }));
+    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    this.player = new PlayerObject(this.scene, {playerIndex: 0, positionX: 17, positionY: 13, });
+    this.player = new PlayerObject(this.scene, {playerIndex: 0, x: 17, y: 13, });
     this.scene.addObject(this.player);
 
     // farmer's son
     this.scene.addObject(new FarmersSonObject(this.scene, {
-      positionX: 25, 
-      positionY: 16,
+      x: 25, 
+      y: 16,
     }));
 
     // chickens
-    this.scene.addObject(new ChickenObject(scene, { positionX: 10, positionY: 13, canMove: true, }));
-
-    // crops
-    // const dirtConfig = { positionX: 2, positionY: 2, growing: { stage: CropStage.FullyGrown, itemType: ItemType.WheatSeeds } };
-    // this.scene.addObjects([
-    //   // 2
-    //   ...([...Array(5)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 2 + i, positionY: 2 }))),
-    //   ...([...Array(4)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 14 + i, positionY: 2 }))),
-    //   // 3
-    //   ...([...Array(8)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 2 + i, positionY: 3 }))),
-    //   ...([...Array(7)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 11 + i, positionY: 3 }))),
-    //   // 4
-    //   ...([...Array(8)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 2 + i, positionY: 4 }))),
-    //   ...([...Array(7)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 11 + i, positionY: 4 }))),
-    //   // 5
-    //   ...([...Array(8)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 2 + i, positionY: 5 }))),
-    //   ...([...Array(7)].map((_, i) => new DirtObject(scene, { ...dirtConfig, positionX: 11 + i, positionY: 5 }))),
-    // ]);
+    this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));
 
     // horizontal
-    this.scene.addObject(new CollisionObject(scene, { positionX: 20, positionY: 0, width: 7 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 10, positionY: 1, width: 1 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 20, positionY: 1, width: 3 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 24, positionY: 1, width: 3 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 6, positionY: 2, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 1, positionY: 5, width: 1 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 2, width: 8 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 3, width: 2 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 2, positionY: 4, width: 2 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 7, width: 6, height: 2 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 11, positionY: 7, width: 9, height: 2 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 14, width: 5, height: 2 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 25, positionY: 22, width: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 0, width: 7 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 10, y: 1, width: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 1, width: 3 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 24, y: 1, width: 3 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 6, y: 2, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 1, y: 5, width: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 2, width: 8 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 4, y: 3, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 2, y: 4, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 4, y: 7, width: 6, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 7, width: 9, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 0, y: 14, width: 5, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 25, y: 22, width: 5 }));
 
-    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 23, width: 25 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 0, y: 23, width: 25 }));
     // vertical
-    this.scene.addObject(new CollisionObject(scene, { positionX: 0, positionY: 6, height: 6 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 4, positionY: 8, height: 6 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 19, positionY: 2, height: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 0, y: 6, height: 6 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 4, y: 8, height: 6 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 19, y: 2, height: 5 }));
 
-    this.scene.addObject(new CollisionObject(scene, { positionX: 30, positionY: 19, height: 3 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 31, positionY: 18, height: 1 }));
-    this.scene.addObject(new CollisionObject(scene, { positionX: 32, positionY: 0, height: 18 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 30, y: 19, height: 3 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 31, y: 18, height: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 32, y: 0, height: 18 }));
 
     // ambient floating items
     this.scene.addObject(new IntervalObject(this.scene, {
@@ -123,8 +106,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
         this.scene.addObject(new GenericSpriteObject(
           this.scene,
           {
-            positionX: 40,
-            positionY: randomY,
+            x: 40,
+            y: randomY,
             targetX: -1,
             targetY: randomY,
             tileset: tileset,
@@ -140,13 +123,13 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // mission - 
     // TODO: perhaps move these into some sort of Story Controller scene object
     this.scene.addObject(new LockedDoorObject(this.scene, {
-      positionX: 23,
-      positionY: 1,
+      x: 23,
+      y: 1,
       onDestroy: () => {
-        this.scene.addObject(new WarpObject(scene, { positionX: 23, positionY: 1, player: this.player, map: SCENE_GAME_MAP_FARM_HOUSE }))
+        this.scene.addObject(new WarpObject(scene, { x: 23, y: 1, player: this.player, map: SCENE_GAME_MAP_FARM_HOUSE }))
         this.scene.addObject(new SpriteObject(scene, {
-          positionX: 23,
-          positionY: 1,
+          x: 23,
+          y: 1,
           tileset: TilesetHouse.id,
           spriteX: TilesetHouse.Door.Default.AlmostClosed.x,
           spriteY: TilesetHouse.Door.Default.AlmostClosed.y,
@@ -154,36 +137,36 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       }
     }));
 
-    this.scene.addObject(new GateObject(this.scene, { positionX: 10, positionY: 7 }))
+    this.scene.addObject(new GateObject(this.scene, { x: 10, y: 7 }))
 
     // rocks
-    this.scene.addObject(new RockObject(this.scene, { positionX: 26, positionY: 2, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 27, positionY: 1, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 28, positionY: 1, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 29, positionY: 0, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 30, positionY: 0, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 31, positionY: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 26, y: 2, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 27, y: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 28, y: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 29, y: 0, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 30, y: 0, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: false }));
 
-    this.scene.addObject(new RockObject(this.scene, { positionX: 10, positionY: 2, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 2, canBeBroken: false }));
 
-    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 16, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 3, positionY: 16, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 2, positionY: 17, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 18, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 19, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 2, positionY: 20, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 1, positionY: 21, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 0, positionY: 22, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 16, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 3, y: 16, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 17, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 18, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 19, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 20, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 21, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 0, y: 22, canBeBroken: false }));
 
     // trees
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 2, type: 'small' }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 14, positionY: 1, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 16, positionY: 4, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 2, positionY: 7, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 25, positionY: 7, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 1, positionY: 10, type: 'small' }));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 13, positionY: 11, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { positionX: 7, positionY: 13, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { x: 1, y: 2, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { x: 14, y: 1, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { x: 16, y: 4, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { x: 2, y: 7, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { x: 25, y: 7, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { x: 1, y: 10, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { x: 13, y: 11, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { x: 7, y: 13, type: 'small' }));
 
     // quests
     QuestCollectLogs.setup(this.scene);
@@ -194,7 +177,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // warps
     const WARP_CONFIG_FARM = {
-      positionX: 0,
+      x: 0,
       player: this.player,
       map: SCENE_GAME_MAP_FARM,
       width: 1,
@@ -202,11 +185,11 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     };
     this.scene.addObject(new WarpObject(scene, {
       ...WARP_CONFIG_FARM,
-      positionY: 12
+      y: 12
     }));
     this.scene.addObject(new WarpObject(scene, {
       ...WARP_CONFIG_FARM,
-      positionY: 13
+      y: 13
     }));
   }
 

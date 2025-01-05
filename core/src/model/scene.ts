@@ -321,8 +321,8 @@ export abstract class Scene {
     return objects;
   }
 
-  isOutOfBounds(positionX: number, positionY: number): boolean {
-    return (positionX > this.map.width - 1 || positionY > this.map.height - 1 || positionX < 0 || positionY < 0);
+  isOutOfBounds(x: number, y: number): boolean {
+    return (x > this.map.width - 1 || y > this.map.height - 1 || x < 0 || y < 0);
   }
 
   setUpRenderingContexts(): void {

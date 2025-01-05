@@ -6,8 +6,8 @@ export abstract class RenderUtils {
     spriteSheet: HTMLImageElement, // TODO(shane): rather than having to call Assets.images[TILE_SET] all over the place when using this, change this to a user defined ENUM and call Assets.images[TILE_SET] internally, allowing for cleaner code and type safety
     spriteX: number,
     spriteY: number,
-    positionX: number,
-    positionY: number,
+    x: number,
+    y: number,
     spriteWidth?: number,
     spriteHeight?: number,
     options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; centered?: boolean; } = {} // TODO: implement tile vs pixel
@@ -32,8 +32,8 @@ export abstract class RenderUtils {
 
       if (updateRotation) {
         // translate to the center of the sprite, rotate, then translate back
-        let xTranslation = Math.floor((positionX + (spriteWidth / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
-        let yTranslation = Math.floor((positionY + (spriteHeight / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
+        let xTranslation = Math.floor((x + (spriteWidth / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
+        let yTranslation = Math.floor((y + (spriteHeight / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
 
         context.translate(xTranslation, yTranslation);
         // TODO: any angle that isn't 90, 180, 270, etc will cause blurring / weird sprite interoplation. This is a known issue with canvas and will need to see if this can be worked around
@@ -55,8 +55,8 @@ export abstract class RenderUtils {
       spriteY * CanvasConstants.TILE_SIZE, // translate sprite position to pixel position
       width,
       height,
-      Math.floor(positionX * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
-      Math.floor(positionY * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
+      Math.floor(x * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
+      Math.floor(y * CanvasConstants.TILE_SIZE), // translate grid position to pixel position, rounded to nearest pixel to prevent blurring
       width * scale,
       height * scale
     );
@@ -96,13 +96,13 @@ export abstract class RenderUtils {
     );
   }
 
-  static renderCircle(context: CanvasRenderingContext2D, positionX: number, positionY: number, options: { colour?: string; width?: number; } = {}): void {
+  static renderCircle(context: CanvasRenderingContext2D, x: number, y: number, options: { colour?: string; width?: number; } = {}): void {
     const radius = ((options.width * CanvasConstants.TILE_SIZE) / 2);
 
     context.beginPath();
     context.arc(
-      (positionX * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
-      (positionY * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      (x * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
+      (y * CanvasConstants.TILE_SIZE) + (CanvasConstants.TILE_SIZE / 2),
       radius,
       0,
       2 * Math.PI
@@ -115,8 +115,8 @@ export abstract class RenderUtils {
   // TODO: this is using a mixture of pixel and tile coordinates, need to standardize
   static fillRectangle(
     context: CanvasRenderingContext2D,
-    positionX: number,
-    positionY: number,
+    x: number,
+    y: number,
     width: number,
     height: number,
     options: { colour?: string; type?: 'pixel' | 'tile'; } = {}
@@ -125,8 +125,8 @@ export abstract class RenderUtils {
     context.fillStyle = options.colour ? options.colour : 'black';
     context.beginPath();
     context.rect(
-      Math.floor(positionX * CanvasConstants.TILE_SIZE) + 0.5, // +0.5 to prevent blurring but that causes additional issues
-      Math.floor(positionY * CanvasConstants.TILE_SIZE) + 0.5, // +0.5 to prevent blurring but that causes additional issues
+      Math.floor(x * CanvasConstants.TILE_SIZE) + 0.5, // +0.5 to prevent blurring but that causes additional issues
+      Math.floor(y * CanvasConstants.TILE_SIZE) + 0.5, // +0.5 to prevent blurring but that causes additional issues
       (width * (options.type === 'tile' ? CanvasConstants.TILE_SIZE : 1)) - 1,
       (height * (options.type === 'tile' ? CanvasConstants.TILE_SIZE : 1)) - 1
     );
@@ -134,13 +134,13 @@ export abstract class RenderUtils {
     context.fill();
   }
 
-  static strokeRectangle(context: CanvasRenderingContext2D, positionX: number, positionY: number, width: number, height: number, options: { type?: 'pixel' | 'tile'; colour?: string; } = {}): void {
+  static strokeRectangle(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, options: { type?: 'pixel' | 'tile'; colour?: string; } = {}): void {
     context.strokeStyle = options.colour ?? 'black';
     // canvas renders on a half pixel so we need to offset by .5 in order to get the stroke width to be 1px, otherwise it was 2px wide https://stackoverflow.com/a/13879402
     context.lineWidth = 1;
 
-    let x = options.type === 'tile' ? Math.floor(positionX * CanvasConstants.TILE_SIZE) : positionX;
-    let y = options.type === 'tile' ? Math.floor(positionY * CanvasConstants.TILE_SIZE) : positionY;
+    x = options.type === 'tile' ? Math.floor(x * CanvasConstants.TILE_SIZE) : x;
+    y = options.type === 'tile' ? Math.floor(y * CanvasConstants.TILE_SIZE) : y;
     let w = options.type === 'tile' ? Math.floor(width * CanvasConstants.TILE_SIZE) : width;
     let h = options.type === 'tile' ? Math.floor(height * CanvasConstants.TILE_SIZE) : height;
 
@@ -181,8 +181,8 @@ export abstract class RenderUtils {
   static renderText(
     context: CanvasRenderingContext2D,
     text: string,
-    positionX: number,
-    positionY: number,
+    x: number,
+    y: number,
     options: {
       size?: number;
       colour?: string;
@@ -206,8 +206,8 @@ export abstract class RenderUtils {
     context.direction = direction;
     context.textRendering = 'geometricPrecision';
 
-    const x = positionX * CanvasConstants.TILE_SIZE; // translate tile position to pixel position
-    const y = positionY * CanvasConstants.TILE_SIZE; // translate tile position to pixel position
+    x = x * CanvasConstants.TILE_SIZE; // translate tile position to pixel position
+    y = y * CanvasConstants.TILE_SIZE; // translate tile position to pixel position
 
     context.fillText(
       text,

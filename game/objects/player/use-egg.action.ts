@@ -10,8 +10,8 @@ export function useEgg(scene: SCENE_GAME): void {
   const object = new EggObject(
     scene,
     {
-      positionX: x,
-      positionY: y
+      x: x,
+      y: y
     }
   );
 

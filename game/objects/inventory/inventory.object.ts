@@ -127,8 +127,8 @@ export class InventoryObject extends SceneObject {
 
         slots.push(
           new InventorySlotObject(this.scene, {
-            positionX: positionX,
-            positionY: positionY,
+            x: positionX,
+            y: positionY,
             index: index
           })
         );
@@ -142,8 +142,8 @@ export class InventoryObject extends SceneObject {
         if (this.chest) {
           slots.push(
             new InventorySlotObject(this.scene, {
-              positionX: marginLeft + gap + (column * width),
-              positionY: marginTopChest + (row * height),
+              x: marginLeft + gap + (column * width),
+              y: marginTopChest + (row * height),
               index: index,
               chest: this.chest
             })
@@ -170,8 +170,8 @@ export class InventoryObject extends SceneObject {
     });
 
     this.addChild(new FillObject(this.scene, {
-      positionX: 0,
-      positionY: 0,
+      x: 0,
+      y: 0,
       hexColourCode: '#00000099',
       width: CanvasConstants.CANVAS_TILE_WIDTH,
       height: CanvasConstants.CANVAS_TILE_HEIGHT
@@ -260,8 +260,8 @@ export class InventoryObject extends SceneObject {
           const item = new ItemObject(
             this.scene,
             {
-              positionX: this.player.transform.position.world.x,
-              positionY: this.player.transform.position.world.y,
+              x: this.player.transform.position.world.x,
+              y: this.player.transform.position.world.y,
               type: this.dragging.item.type,
               dropped: true,
             }
@@ -315,8 +315,8 @@ export class InventoryObject extends SceneObject {
         item: slot.item,
         index: slot.index,
         width: CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 12 : 6,
-        positionX: slot.boundingBox.world.right,
-        positionY: slot.boundingBox.world.bottom,
+        x: slot.boundingBox.world.right,
+        y: slot.boundingBox.world.bottom,
       }
     );
     this.addChild(this.tooltip);

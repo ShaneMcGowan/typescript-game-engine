@@ -94,10 +94,10 @@ export class TextboxObject extends SceneObject {
       this.height -= 0.5;
     }
 
-    if (config.positionX === undefined) {
+    if (config.x === undefined) {
       this.transform.position.local.x = 0;
     }
-    if (config.positionY === undefined) {
+    if (config.y === undefined) {
       this.transform.position.local.y = CanvasConstants.CANVAS_TILE_HEIGHT - this.height; // bottom of canvas
     }
 
@@ -128,8 +128,8 @@ export class TextboxObject extends SceneObject {
       this.scene, 
       { 
         portrait: this.portrait,
-        positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 2,
-        positionY: (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 4,
+        x: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 2,
+        y: (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 4,
       }
     );
     this.scene.addObject(this.portraitObject);
@@ -138,8 +138,8 @@ export class TextboxObject extends SceneObject {
       this.namePlateObject = new TextboxNamePlateObject(
         this.scene,
         {
-          positionX: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (3), // 3 is 6 width / 2
-          positionY: CanvasConstants.CANVAS_TILE_HEIGHT / 2,
+          x: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - (3), // 3 is 6 width / 2
+          y: CanvasConstants.CANVAS_TILE_HEIGHT / 2,
           width: 6,
           height: 1.5,
           name: this.name,

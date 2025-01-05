@@ -23,8 +23,8 @@ export class IconsObject extends SceneObject {
     const yPadding = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 2 : 1.5; // gap between icons
 
     const icons = [
-      new IconMenuObject(this.scene, { positionX: x, }),
-      new IconInventoryObject(this.scene, { positionX: x }),
+      new IconMenuObject(this.scene, { x: x, }),
+      new IconInventoryObject(this.scene, { x: x }),
     ];
 
     icons.forEach((icon, index) => {
