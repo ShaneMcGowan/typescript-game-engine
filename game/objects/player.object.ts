@@ -40,6 +40,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
 import { Direction, ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
+import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 
 const TILE_SET = 'tileset_player';
 
@@ -101,7 +102,6 @@ export class PlayerObject extends SceneObject {
 
     this.playerIndex = config.playerIndex;
   }
-
 
   onAwake(): void {
     this.addHotbar();

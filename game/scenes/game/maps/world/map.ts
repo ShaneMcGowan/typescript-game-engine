@@ -100,8 +100,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { positionX: 31, positionY: 18, height: 1 }));
     this.scene.addObject(new CollisionObject(scene, { positionX: 32, positionY: 0, height: 18 }));
 
-    this.scene.addObject(new ObjectTrackingCameraObject(scene, { object: this.player }));
-
     // ambient floating items
     this.scene.addObject(new IntervalObject(this.scene, {
       duration: 4.5,
@@ -138,9 +136,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
         ));
       }
     }));
-
-    // warps
-    // this.scene.addObject(new HoleObject(this.scene, { positionX: 25, positionY: 16 }))
 
     // mission - 
     // TODO: perhaps move these into some sort of Story Controller scene object
@@ -216,6 +211,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
   }
 
   onEnter(scene: Scene): void {
+    // set renderer
+    this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
+
     // fade in
     this.scene.addObject(new TransitionObject(scene, {
       animationCenterX: this.player.transform.position.world.x + (this.player.width / 2),
@@ -223,5 +221,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       animationType: 'circle',
       animationLength: 2,
     }));
+  }
+
+  onLeave(scene: Scene): void {
+    this.scene.removeCustomerRenderer();
   }
 }
