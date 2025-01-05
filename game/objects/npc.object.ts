@@ -8,6 +8,7 @@ import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 import { Assets } from '@core/utils/assets.utils';
 import { ObjectFilter } from '@core/model/scene';
+import { Quest } from '@game/models/quest.model';
 
 const RENDERER_LAYER: number = 8;
 const DEFAULT_CAN_MOVE: boolean = false;
@@ -23,19 +24,35 @@ const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
 };
 const DEFAULT_MOVEMENT_SPEED: number = 2;
 const DEFAULT_MOVEMENT_DELAY: number | undefined = undefined;
+
 const DEFAULT_NAME: string = '???';
+const DEFAULT_PORTRAIT: Portrait = {
+  tileset: '',
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0
+};
+const DEFAULT_DIALOGUE_INTRO: string = '';
+const DEFAULT_DIALOGUE_DEFAULT: string = '';
 
 export type NpcState = 'idle' | 'moving';
+
+export interface NpcDetails {
+  name: string;
+  portrait: Portrait;
+}
+
+export interface NpcDialogue {
+  intro: string;
+  default: string;
+}
 
 export interface NpcObjectConfig extends SceneObjectBaseConfig {
   follows?: SceneObject; // object to follow
   canMove?: boolean;
-  dialogue?: string;
-  animations?: Record<NpcState, SpriteAnimation>;
   movementSpeed?: number;
   movementDelay?: number;
-  name?: string;
-  portrait?: Portrait;
   onInteractEnd?: () => void;
 }
 
@@ -51,11 +68,6 @@ export class NpcObject extends SceneObject implements Interactable {
     timer: 0, // TODO: enable adding random start with MathUtils.randomStartingDelta(4),
   };
 
-  name: string;
-  portrait?: Portrait;
-
-  animations: Record<string, SpriteAnimation>;
-
   // movement
   canMove: boolean;
   following: SceneObject | undefined;
@@ -63,8 +75,11 @@ export class NpcObject extends SceneObject implements Interactable {
   movementDelay: number | undefined; // seconds until next move
   movementTimer = MathUtils.randomStartingDelta(2);
 
-  // interaction
-  dialogue: string | undefined;
+  // config
+  quests: Quest[] = [];
+
+  // state
+  introSeen: boolean;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -79,12 +94,8 @@ export class NpcObject extends SceneObject implements Interactable {
     this.targetY = this.transform.position.local.y;
     this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
     this.following = config.follows;
-    this.dialogue = config.dialogue;
-    this.animations = config.animations ?? DEFAULT_ANIMATIONS;
     this.movementSpeed = config.movementSpeed ?? DEFAULT_MOVEMENT_SPEED;
     this.movementDelay = config.movementDelay ?? DEFAULT_MOVEMENT_DELAY;
-    this.name = config.name ?? DEFAULT_NAME;
-    this.portrait = config.portrait;
   }
 
   onUpdate(delta: number): void {
@@ -113,8 +124,24 @@ export class NpcObject extends SceneObject implements Interactable {
     );
   }
 
-  onDestroy(): void {
-    this.scene.globals.player.enabled = true;
+  onDestroy(): void { }
+
+  get details(): NpcDetails {
+    return {
+      name: DEFAULT_NAME,
+      portrait: DEFAULT_PORTRAIT,
+    }
+  }
+
+  get dialogue(): NpcDialogue {
+    return {
+      intro: DEFAULT_DIALOGUE_INTRO,
+      default: DEFAULT_DIALOGUE_DEFAULT,
+    }
+  }
+
+  get animations(): Record<NpcState, SpriteAnimation> {
+    return DEFAULT_ANIMATIONS;
   }
 
   private updateAnimationTimer(delta: number): void {
@@ -209,26 +236,34 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    if (this.dialogue === undefined) {
+    if(!this.introSeen){
+      this.introSeen = true;
+      this.say(
+        this.dialogue.intro,
+        () => { this.onIntro() },
+      );
       return;
     }
 
-    this.scene.globals.player.enabled = false;
-
-    let textbox = new TextboxObject(
-      this.scene,
-      {
-        name: this.name,
-        portrait: this.portrait,
-        text: this.dialogue,
-        onDestroy: () => {
-          this.scene.globals.player.enabled = true;
-          this.config?.onInteractEnd();
-        }
+    for (const quest of this.quests){
+      if(quest.isComplete){
+        continue;
       }
+
+      // run first incomplete quest 
+      quest.run();
+      return;
+    }
+
+    // default
+    this.say(
+      this.dialogue.default,
+      () => { this.onDefault() },
     );
-    this.scene.addObject(textbox);
   };
+
+  onIntro(): void {}
+  onDefault(): void {}
 
   say(text: string, onComplete?: () => void):void {
     this.scene.globals.player.enabled = false;
@@ -237,8 +272,8 @@ export class NpcObject extends SceneObject implements Interactable {
       new TextboxObject(
         this.scene,
         {
-          name: this.name,
-          portrait: this.portrait,
+          name: this.details.name,
+          portrait: this.details.portrait,
           text: text,
           onComplete: () => {
             if(onComplete){

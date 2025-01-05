@@ -1,6 +1,16 @@
-import { QuestName, QuestStatus, SCENE_GAME } from "@game/scenes/game/scene";
+import { QuestStatus, SCENE_GAME } from "@game/scenes/game/scene";
 import { NpcObject } from "@game/objects/npc.object";
 import { ItemType } from "./inventory.model";
+
+export enum QuestName {
+  default = 'default',
+  collect_wheat = 'collect_wheat',
+  break_rocks = 'break_rocks',
+  collect_logs = 'collect_logs',
+  collect_rocks = 'collect_rocks',
+  plant_tree = 'plant_tree',
+  collect_berries = 'collect_berries',
+}
 
 export interface QuestText {
   intro: string;
@@ -97,6 +107,10 @@ export abstract class Quest {
 
     this.scene.globals.inventory.removeItems(item, quantity);
     return true;
+  }
+
+  static setup(scene: SCENE_GAME): void {
+    // for setting up the world for the quest
   }
   
 }

@@ -1,5 +1,5 @@
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
+import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SpriteAnimation } from "@core/model/sprite-animation";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { Quest } from "@game/models/quest.model";
@@ -24,6 +24,7 @@ export interface Config extends NpcObjectConfig {
 
 export class FarmerObject extends NpcObject {
 
+  // config
   quests: Quest[] = [
     new QuestCollectLogs(this.scene, this),
     new QuestCollectRocks(this.scene, this),
@@ -37,29 +38,19 @@ export class FarmerObject extends NpcObject {
     protected scene: SCENE_GAME,
     protected config: Config
   ) {
-    config.animations = ANIMATION;
-    config.name = SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.name;
-    config.portrait = SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.portrait;
     super(scene, config);
   }
 
-  onUpdate(delta: number): void {
-    super.onUpdate(delta);
+  get details(): NpcDetails {
+    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details;
   }
 
-  interact(): void {
-    for (const quest of this.quests){
-      if(quest.isComplete){
-        continue;
-      }
+  get dialogue(): NpcDialogue {
+    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.dialogue;
+  }
 
-      // run first incomplete quest 
-      quest.run();
-      return;
-    }
-
-    // default
-    this.say(SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.no_more_quests);
-  };
+  get animations(): Record<NpcState, SpriteAnimation> {
+    return ANIMATION;
+  }
 
 }

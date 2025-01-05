@@ -32,10 +32,10 @@ export class UndergroundIntroStoryControllerObject extends SceneObject {
     this.scene.globals.player.actionsEnabled = false;
 
     // chickens
-    this.addChild(new GregNpcObject(this.scene, { positionX: 15, positionY: 6, name: 'Greg' }));
-    this.addChild(new UnknownNpcObject(this.scene, { positionX: 13, positionY: 9, dialogue: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.unknown_npc_1, }));
-    this.addChild(new UnknownNpcObject(this.scene, { positionX: 18, positionY: 8, dialogue: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.unknown_npc_2, }));
-    this.addChild(new UnknownNpcObject(this.scene, { positionX: 16, positionY: 11, dialogue: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.unknown_npc_3, }));
+    this.addChild(new GregNpcObject(this.scene, { positionX: 15, positionY: 6, }));
+    this.addChild(new UnknownNpcObject(this.scene, { positionX: 13, positionY: 9, }));
+    this.addChild(new UnknownNpcObject(this.scene, { positionX: 18, positionY: 8, }));
+    this.addChild(new UnknownNpcObject(this.scene, { positionX: 16, positionY: 11, }));
 
     // collision
     this.ladderCollision = new CollisionObject(this.scene, { positionX: 18, positionY: 5 });

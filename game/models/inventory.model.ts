@@ -116,7 +116,7 @@ export const TYPE_TO_NAME_MAP: Record<ItemType, string> = {
   [ItemType.Hoe]: 'Hoe',
   [ItemType.WateringCan]: 'Watering Can',
   [ItemType.Chest]: 'Chest',
-  [ItemType.GateKey]: 'Shop Key',
+  [ItemType.GateKey]: 'Gate Key',
   [ItemType.Axe]: 'Axe',
   [ItemType.Pickaxe]: 'Pickaxe',
   [ItemType.Rock]: 'Rock',

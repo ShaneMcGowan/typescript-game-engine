@@ -1,7 +1,6 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { NpcObject, NpcState, type NpcObjectConfig } from '@game/objects/npc.object';
+import { NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
-import { SpriteAnimation } from '@core/model/sprite-animation';
 
 type Stage = 'idle' | 'intro' | 'outro';
 
@@ -45,7 +44,23 @@ export class UnknownNpcObject extends NpcObject {
   }
 
   onDestroy(): void {
-    this.scene.globals.player.enabled = true;
+  }
+
+
+  get details(): NpcDetails {
+    // TODO: move to constants
+    return {
+      name: 'Greg',
+      portrait: PORTRAIT,
+    }
+  }
+
+  get dialogue(): NpcDialogue {
+    // TODO: move to constants
+    return {
+      intro: '',
+      default: '',
+    }
   }
 
   interact(): void {
@@ -65,9 +80,9 @@ export class UnknownNpcObject extends NpcObject {
       new TextboxObject(
         this.scene,
         {
-          text: this.dialogue,
+          text: this.dialogue.intro,
           portrait: PORTRAIT, // TODO: new to implement proper portrait system
-          name: this.name,
+          name: this.details.name,
           onComplete: () => {
             this.startStageOutro();
           },

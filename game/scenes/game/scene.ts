@@ -5,20 +5,15 @@ import { Inventory, Item, ItemType } from '@game/models/inventory.model';
 import { SCENE_GAME_MAP_SHOP } from './maps/shop/map';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
-
-export enum QuestName {
-  default = 'default',
-  collect_wheat = 'collect_wheat',
-  break_rocks = 'break_rocks',
-  collect_logs = 'collect_logs',
-  collect_rocks = 'collect_rocks',
-  plant_tree = 'plant_tree',
-  collect_berries = 'collect_berries',
-}
+import { QuestName } from '@game/models/quest.model';
 
 export interface QuestStatus {
   intro: boolean;
   complete: boolean;
+}
+
+export enum SceneFlags {
+  shack_door_open = 'shack_door_open'
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -32,9 +27,7 @@ interface Globals extends SceneGlobalsBaseConfig {
     actionsEnabled: boolean;
     interactEnabled: boolean;
   }
-  flags: {
-    shackDoorLocked: boolean; // is the shack door locked
-  }
+  flags: Record<SceneFlags, boolean>,
   quests: Record<QuestName, QuestStatus>;
 }
 
@@ -52,26 +45,26 @@ export class SCENE_GAME extends Scene {
       interactEnabled: true,
     },
     flags: {
-      shackDoorLocked: true,
+      [SceneFlags.shack_door_open]: false
     },
     quests: {
-      default: {
+      [QuestName.default]: {
         intro: false,
         complete: false,
       },
-      collect_wheat: {
+      [QuestName.collect_wheat]: {
         intro: false,
         complete: false,
       },
-      break_rocks: {
+      [QuestName.break_rocks]: {
         intro: false,
         complete: false,
       },
-      collect_logs: {
+      [QuestName.collect_logs]: {
         intro: false,
         complete: false,
       },
-      collect_rocks: {
+      [QuestName.collect_rocks]: {
         intro: false,
         complete: false,
       },
@@ -89,24 +82,15 @@ export class SCENE_GAME extends Scene {
   constructor(client: Client) {
     super(client);
 
+    this.globals.inventory.addToInventory(ItemType.GateKey);
+    
     /*
     this.globals.inventory.addToInventory(ItemType.Hoe);
     this.globals.inventory.addToInventory(ItemType.WateringCan);
     this.globals.inventory.addToInventory(ItemType.Axe);
     this.globals.inventory.addToInventory(ItemType.Shovel);
     this.globals.inventory.addToInventory(ItemType.Pickaxe);
-    this.globals.inventory.addToInventory(ItemType.GateKey);
     this.globals.inventory.addToInventory(ItemType.Berry);
-
-    // quest test
-    this.globals.inventory.addToInventory(ItemType.Rock);
-    this.globals.inventory.addToInventory(ItemType.Rock);
-    this.globals.inventory.addToInventory(ItemType.Rock);
-    this.globals.inventory.addToInventory(ItemType.Rock);
-    this.globals.inventory.addToInventory(ItemType.Log);
-    this.globals.inventory.addToInventory(ItemType.Log);
-    this.globals.inventory.addToInventory(ItemType.Log);
-    this.globals.inventory.addToInventory(ItemType.Log);
     */
 
     // this is for debugging, letting us launch into a specific map

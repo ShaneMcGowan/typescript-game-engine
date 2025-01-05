@@ -1,7 +1,8 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
+import { NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SCENE_GAME_MAP_UNDERGROUND_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 
 type Stage = 'idle' | 'hi' | 'pause' | 'bye';
 
@@ -12,6 +13,7 @@ const PORTRAIT: Portrait = {
   width: 1,
   height: 1,
 }
+
 export interface Config extends NpcObjectConfig {
 }
 
@@ -50,6 +52,22 @@ export class GregNpcObject extends NpcObject {
     }
   }
 
+  get details(): NpcDetails {
+    // TODO: move to constants
+    return {
+      name: 'Greg',
+      portrait: PORTRAIT,
+    }
+  }
+
+  get dialogue(): NpcDialogue {
+    // TODO: move to constants
+    return {
+      intro: '',
+      default: '',
+    }
+  }
+
   interact(): void {
     if (this.stage !== 'idle') {
       return;
@@ -69,7 +87,7 @@ export class GregNpcObject extends NpcObject {
         {
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_1,
           portrait: PORTRAIT,
-          name: this.name,
+          name: this.details.name,
           onComplete: () => {
             this.startStagePause();
           },
@@ -88,7 +106,7 @@ export class GregNpcObject extends NpcObject {
           showOverlay: false,
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_2,
           portrait: PORTRAIT,
-          name: this.name,
+          name: this.details.name,
           onComplete: () => {
             this.startStageBye();
           },
@@ -116,7 +134,7 @@ export class GregNpcObject extends NpcObject {
           showOverlay: false,
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_3,
           portrait: PORTRAIT,
-          name: this.name,
+          name: this.details.name,
           completionDuration: this.stageByeDuration,
         }
       )

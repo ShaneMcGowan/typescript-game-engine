@@ -23,6 +23,10 @@ import { TreeObject } from '@game/objects/tree.object';
 import { IconsObject } from '@game/objects/icons/icons.object';
 import { ItemObject } from '@game/objects/item.object';
 import { ItemType } from '@game/models/inventory.model';
+import { QuestCollectLogs } from '@game/objects/world/npcs/farmer/collect-logs.quest';
+import { QuestCollectRocks } from '@game/objects/world/npcs/farmer/collect-rocks.quest';
+import { QuestBreakRocks } from '@game/objects/world/npcs/farmer/break-rocks.quest';
+import { QuestCollectBerries } from '@game/objects/world/npcs/farmer/collect-berries.quest';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -37,11 +41,11 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new IconsObject(this.scene, { positionX: 0, positionY: 0 }));
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    let player = new PlayerObject(scene, {playerIndex: 0, positionX: 17, positionY: 13, });
+    let player = new PlayerObject(this.scene, {playerIndex: 0, positionX: 17, positionY: 13, });
     this.scene.addObject(player);
 
     // farmer's son
-    this.scene.addObject(new FarmersSonObject(scene, {
+    this.scene.addObject(new FarmersSonObject(this.scene, {
       positionX: 25, 
       positionY: 16,
     }));
@@ -192,21 +196,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new TreeObject(this.scene, { positionX: 7, positionY: 13, type: 'small' }));
 
     // quests
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 7, positionY: 19, type: ItemType.Log }));
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 10, positionY: 21, type: ItemType.Log }));
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 14, positionY: 20, type: ItemType.Log }));
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 18, positionY: 22, type: ItemType.Log }));
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 20, positionY: 17, type: ItemType.Rock }));
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 24, positionY: 19, type: ItemType.Rock }));
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 23, positionY: 21, type: ItemType.Rock }));
-    this.scene.addObject(new ItemObject(this.scene, { positionX: 28, positionY: 20, type: ItemType.Rock }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 21, positionY: 6 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 23, positionY: 8 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 6, positionY: 10 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 11, positionY: 13 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 24, positionY: 14 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 8, positionY: 15 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 20, positionY: 11 }));
-    this.scene.addObject(new RockObject(this.scene, { positionX: 17, positionY: 16 }));
+    QuestCollectLogs.setup(this.scene);
+    QuestCollectRocks.setup(this.scene);
+    QuestBreakRocks.setup(this.scene);
+    QuestCollectBerries.setup(this.scene);
   }
 }

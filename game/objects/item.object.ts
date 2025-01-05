@@ -10,6 +10,7 @@ import { MessageUtils } from "@game/utils/message.utils";
 interface Config extends SceneObjectBaseConfig {
   type: ItemType;
   dropped?: boolean;
+  pickupMessage?: string; // custom pickup message
 }
 
 export class ItemObject extends SceneObject implements Interactable {
@@ -81,6 +82,10 @@ export class ItemObject extends SceneObject implements Interactable {
     return this.inventory.hasRoomForItem(this.type);
   }
 
+  get pickupMessage(): string {
+    return this.config.pickupMessage ?? `You pick up the ${this.name}.`;
+  }
+
   private updatePickUpItem(): void {
     // don't automatically pick up interactable items
     if(Inventory.canItemBeInteractedWith(this.type)){
@@ -140,7 +145,7 @@ export class ItemObject extends SceneObject implements Interactable {
 
     MessageUtils.showMessage(
       this.scene,
-      `You pick up the ${this.name}.`,
+      this.pickupMessage,
     );
 
     this.inventory.addToInventory(this.type);

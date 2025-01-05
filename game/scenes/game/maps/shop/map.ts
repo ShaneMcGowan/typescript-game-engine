@@ -17,7 +17,7 @@ export class SCENE_GAME_MAP_SHOP extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.flags.suspend = false;
+    this.flags.suspend = true;
 
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map

@@ -1,6 +1,6 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneFlags, type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/interactable.model';
 import { Assets } from '@core/utils/assets.utils';
 import { TilesetHouse } from '@game/constants/tilesets/house.tileset';
@@ -25,7 +25,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
 
   onUpdate(delta: number): void {
     // destroy door when unlocked flag
-    if(this.scene.globals.flags.shackDoorLocked){
+    if(!this.scene.globals.flags[SceneFlags.shack_door_open]){
       return;
     }
 
