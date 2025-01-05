@@ -13,6 +13,7 @@ export enum QuestName {
   collect_logs = 'collect_logs',
   collect_rocks = 'collect_rocks',
   plant_tree = 'plant_tree',
+  collect_berries = 'collect_berries',
 }
 
 export interface QuestStatus {
@@ -71,6 +72,14 @@ export class SCENE_GAME extends Scene {
         complete: false,
       },
       collect_rocks: {
+        intro: false,
+        complete: false,
+      },
+      [QuestName.plant_tree]:  {
+        intro: false,
+        complete: false,
+      },
+      [QuestName.collect_berries]:  {
         intro: false,
         complete: false,
       },

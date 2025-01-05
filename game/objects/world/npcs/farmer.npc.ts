@@ -8,6 +8,7 @@ import { QuestBreakRocks } from "./farmer/break-rocks.quest";
 import { QuestCollectRocks } from "./farmer/collect-rocks.quest";
 import { QuestCollectLogs } from "./farmer/collect-logs.quest";
 import { QuestPlantTree } from "./farmer/plant-tree.quest";
+import { QuestCollectBerries } from "./farmer/collect-berries.quest";
 
 const ANIMATION: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_player', [
@@ -27,6 +28,7 @@ export class FarmerObject extends NpcObject {
     new QuestCollectLogs(this.scene, this),
     new QuestCollectRocks(this.scene, this),
     new QuestBreakRocks(this.scene, this),
+    new QuestCollectBerries(this.scene, this),
     new QuestPlantTree(this.scene, this),
     new QuestCollectWheat(this.scene, this),
   ];

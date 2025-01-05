@@ -20,17 +20,10 @@ export class QuestBreakRocks extends Quest {
   }
 
   onSuccess(): void {
-    // give key
-    this.scene.globals.inventory.addToInventory(ItemType.GateKey);
   }
 
   check(): boolean {
-    if(!this.scene.globals.inventory.hasItem(ItemType.Rock, 8)){
-      return false;
-    }
-
-    this.scene.globals.inventory.removeItems(ItemType.Rock, 8);
-    return true;
+    return this.checkItem(ItemType.Rock, 8);
   }
   
 }

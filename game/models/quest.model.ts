@@ -1,5 +1,6 @@
 import { QuestName, QuestStatus, SCENE_GAME } from "@game/scenes/game/scene";
 import { NpcObject } from "@game/objects/npc.object";
+import { ItemType } from "./inventory.model";
 
 export interface QuestText {
   intro: string;
@@ -86,6 +87,15 @@ export abstract class Quest {
   onSuccess(): void {}
 
   check(): boolean {
+    return true;
+  }
+  
+  protected checkItem(item: ItemType, quantity: number): boolean {
+    if(!this.scene.globals.inventory.hasItem(item, quantity)){
+      return false;
+    }
+
+    this.scene.globals.inventory.removeItems(item, quantity);
     return true;
   }
   

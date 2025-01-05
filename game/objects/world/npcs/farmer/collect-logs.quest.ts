@@ -20,12 +20,7 @@ export class QuestCollectLogs extends Quest {
   }
 
   check(): boolean {
-    if(!this.scene.globals.inventory.hasItem(ItemType.Log, 4)){
-      return false;
-    }
-
-    this.scene.globals.inventory.removeItems(ItemType.Log, 4);
-    return true;
+    return this.checkItem(ItemType.Log, 4);
   }
   
 }

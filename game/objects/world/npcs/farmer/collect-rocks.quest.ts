@@ -19,13 +19,13 @@ export class QuestCollectRocks extends Quest {
     return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_rocks;
   }
 
-  check(): boolean {
-    if(!this.scene.globals.inventory.hasItem(ItemType.Rock, 4)){
-      return false;
-    }
+  onSuccess(): void {
+    this.scene.globals.inventory.addToInventory(ItemType.Pickaxe);
+    this.scene.globals.inventory.addToInventory(ItemType.Axe);
+  }
 
-    this.scene.globals.inventory.removeItems(ItemType.Rock, 4);
-    return true;
+  check(): boolean {
+    return this.checkItem(ItemType.Rock, 4);
   }
   
 }

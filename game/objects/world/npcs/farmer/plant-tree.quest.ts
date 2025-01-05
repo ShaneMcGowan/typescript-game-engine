@@ -19,16 +19,8 @@ export class QuestPlantTree extends Quest {
     return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.plant_tree;
   }
 
-  onSuccess(): void {
-  }
-
   check(): boolean {
-    if(!this.scene.globals.inventory.hasItem(ItemType.Berry, 9)){
-      return false;
-    }
-
-    this.scene.globals.inventory.removeItems(ItemType.Berry, 9);
-    return true;
+    return this.checkItem(ItemType.Berry, 9);
   }
   
 }

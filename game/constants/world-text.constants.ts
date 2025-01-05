@@ -31,14 +31,19 @@ const NPC_FARMER = {
         success: `Great work, just a few more tasks and you'll be right on your way to being a farmer like me.`,
       },
       collect_rocks: {
-        intro: `Next we need to find some rocks, then I can start making you some tools. There should be some rocks up on the hill. Here is the key to the gate. Take it and bring me back 4 rocks.`,
-        failure: `Head up the the hill and bring me back 4 rocks, then I can make you some tools.`,
-        success: `Did you lock the gate again after you left? I don't want people wandering around up there, stealing my rocks. Anyway, let me take these and make you some tools.`,
+        intro: `Next we need to find some rocks, then I can start making you some tools. There should be some rocks on the beach. Bring me back 4 rocks.`,
+        failure: `Head down to the beach and bring me back 4 rocks, then I can make you some tools.`,
+        success: `Fantastic! Now I can make you some tools. Here is an Axe and a Pickaxe`,
       },
       break_rocks: { 
         intro: `Now that you've got some tools you can make yourself useful, I need someone to get rid of all those damn rocks in my field. You can't grow plants if there are rocks in the way. I used to break rocks all day long as part of a chain gang. Went down for 3 counts of not thanking the bus driver. I've since seen the error of my ways, but I refuse to ever break rocks myself again. Take this Pickaxe, it's not very strong but should be able to break through most of the rocks there. Bring me back 8 rocks.`,
         failure: `Come back to me once you've collected 8 rocks. Don't worry if some are too tough to break, we can deal with those later.`,
         success: `Great work, my field has never looked so rock free, and that's a compliment where I come from.`
+      },
+      collect_berries: {
+        intro: `Next we need to find some berries. There should be some berries up on the hill beside us. Here is the key to the gate. Take it and bring me back 4 berries.`,
+        failure: `Head up the the hill and bring me back 4 berries, then I can make you some tools.`,
+        success: `Did you lock the gate again after you left? I don't want people wandering around up there, stealing my berries. Anyway, take this shovel, now you can plant some berry trees. Also take this berry, you'll need to plant it. As for the other 3 berries, I ate them. They were tasty. Yum.`,
       },
       plant_tree: { // TODO:
         intro: `destruction breeds creation, dig a hole and plant this berry, bring me 9 berries`,
