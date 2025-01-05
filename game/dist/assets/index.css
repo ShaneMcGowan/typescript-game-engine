@@ -34,10 +34,40 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: black;
 }
 
 #render-area canvas {
-  height: 100%;
   background-color: black;
   image-rendering: pixelated;
+
+  /* 16 / 9 here is our aspect ratio. this should be added automatically by the client but hardcoding for now */
+  aspect-ratio: 16 / 9; 
+  width: min(100%, 100vh * 16 / 9); /* as far as i understand this should be vw not vh but vh works perfectly ??? so going to leave as is. */
+}
+
+/* TODO: make this message configurale via client config */
+@media only screen and (orientation: landscape) {
+  .mobile-rotate-overlay {
+    display: none;
+  }
+}
+
+@media only screen and (orientation: portrait) {
+  .mobile-rotate-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: black;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
 }
