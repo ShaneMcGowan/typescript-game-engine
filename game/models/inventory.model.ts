@@ -456,7 +456,7 @@ export class Inventory {
   }
 
   static getItemName(type: ItemType, plural: boolean = false): string {
-    return plural ? TYPE_TO_NAME_SINGULAR_MAP[type] : TYPE_TO_NAME_SINGULAR_MAP[type];
+    return plural ? TYPE_TO_NAME_PLURAL_MAP[type] : TYPE_TO_NAME_SINGULAR_MAP[type];
   }
 
   static getItemDescription(type: ItemType): string {
