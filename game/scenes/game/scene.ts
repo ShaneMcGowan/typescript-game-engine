@@ -86,28 +86,21 @@ export class SCENE_GAME extends Scene {
   constructor(client: Client) {
     super(client);
 
-    
-    this.globals.inventory.addToInventory(ItemType.GateKey);
-    this.globals.inventory.addToInventory(ItemType.Axe);
-    /*
-    this.globals.inventory.addToInventory(ItemType.Hoe);
-    this.globals.inventory.addToInventory(ItemType.WateringCan);
-    this.globals.inventory.addToInventory(ItemType.Shovel);
-    this.globals.inventory.addToInventory(ItemType.Pickaxe);
-    this.globals.inventory.addToInventory(ItemType.Berry);
-    */
+    const params = new URLSearchParams(window.location.search);
+
+    // this is for debugging, giving us all items
+    if (params.get('items')) {
+      Object.keys(ItemType).forEach(key => this.globals.inventory.addToInventory(key as ItemType));
+    }
 
     // this is for debugging, letting us launch into a specific map
-    const params = new URLSearchParams(window.location.search);
-    const mapParam = params.get('map');
-
     const MAP_MAP: Record<string, SceneMapConstructorSignature> = {
       'world': SCENE_GAME_MAP_WORLD,
       'underground': SCENE_GAME_MAP_UNDERGROUND,
       'farm-house': SCENE_GAME_MAP_FARM_HOUSE,
       'farm': SCENE_GAME_MAP_FARM
     }
-    const map: SceneMapConstructorSignature = MAP_MAP[mapParam] ?? SCENE_GAME_MAP_WORLD;
+    const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? SCENE_GAME_MAP_WORLD;
 
     this.changeMap(map);
   }

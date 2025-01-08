@@ -41,7 +41,7 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
     // exit door
     const warpConfig = {
-      positionY: 12,
+      y: 12,
       player: player,
       map: SCENE_GAME_MAP_WORLD,
       width: 1,

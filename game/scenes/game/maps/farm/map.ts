@@ -9,6 +9,8 @@ import { Scene } from '@core/model/scene';
 import { WarpObject } from '@game/objects/warp.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
+import { CollisionObject } from '@game/objects/collision.object';
+import { RockObject } from '@game/objects/rock.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -20,23 +22,70 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     super(scene);
 
     this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
-    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 90, y: 10, });
+    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 99, y: 12, });
 
     this.scene.addObject(this.player);
 
+    // collision
+    // horizontal
+    this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 1, width: 3 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 14, width: 18, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 70, y: 5, width: 6 }))
+    this.scene.addObject(new CollisionObject(this.scene, { x: 76, y: 3, width: 5 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 81, y: 1, width: 5 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 14, width: 15, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 3, width: 4 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 90, y: 2, width: 3 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 93, y: 0, width: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 94, y: 11, width: 6 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 62, y: 23, width: 38 }));
+
+    // vertical
+    this.scene.addObject(new CollisionObject(this.scene, { x: 62, y: 0, height: 23 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 66, y: 0, height: 3 }));
+
+    this.scene.addObject(new CollisionObject(this.scene, { x: 92, y: 0, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 80, y: 1, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 1, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 95, y: 1, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 2, height: 12 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 70, y: 2, height: 3 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 75, y: 3, height: 3 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 94, y: 3, height: 8 }));
+
+
+    // boundaries
+    this.scene.addObject(new RockObject(this.scene, { x: 62, y: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 63, y: 2, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 64, y: 3, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 65, y: 2, canBeBroken: false }));
+
+    this.scene.addObject(new RockObject(this.scene, { x: 92, y: 16, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 91, y: 17, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 92, y: 18, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 93, y: 19, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 93, y: 20, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 94, y: 21, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 93, y: 22, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 94, y: 23, canBeBroken: false }));
+
     // warp
-     // warps
-     const WARP_CONFIG_FARM = {
+    // warps
+    const WARP_CONFIG_FARM = {
       x: 99,
       player: this.player,
       map: SCENE_GAME_MAP_WORLD,
       width: 1,
-      height: 3,
+      height: 1,
       isColliding: true,
     };
     this.scene.addObject(new WarpObject(scene, {
       ...WARP_CONFIG_FARM,
       y: 12
+    }));
+    this.scene.addObject(new WarpObject(scene, {
+      ...WARP_CONFIG_FARM,
+      y: 13
     }));
   }
 
