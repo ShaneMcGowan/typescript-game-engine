@@ -1,6 +1,6 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
-import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneFlags, type SCENE_GAME } from '@game/scenes/game/scene';
 import { TransitionObject } from '@core/objects/transition.object';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
@@ -12,6 +12,8 @@ import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracki
 import { CollisionObject } from '@game/objects/collision.object';
 import { RockObject } from '@game/objects/rock.object';
 import { FarmableAreaObject } from '@game/objects/world-objects/farmable-area.object';
+import { MessageUtils } from '@game/utils/message.utils';
+import { TimerObject } from '@core/objects/timer.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -105,12 +107,29 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
     // fade in
-    this.scene.addObject(new TransitionObject(scene, {
+    const transitionLength = 2;
+    this.scene.addObject(new TransitionObject(this.scene, {
       animationCenterX: this.player.transform.position.world.x + (this.player.width / 2),
       animationCenterY: this.player.transform.position.world.y + (this.player.height / 2),
       animationType: 'circle',
-      animationLength: 2,
+      animationLength: transitionLength,
     }));
+
+    // first visit
+    if(!this.scene.globals.flags.get(SceneFlags.farm_visited)){
+      this.scene.globals.flags.set(SceneFlags.farm_visited, true);
+      this.scene.globals.player.enabled = false;
+
+      this.scene.addObject(new TimerObject(this.scene, {
+        duration: transitionLength,
+        onComplete: () => {
+          MessageUtils.showMessage(
+            this.scene,
+            `This must be the Farm. There is basically nothing here. This is going to be a lot of work...`
+          )
+        }
+      }));
+    }
   }
 
   onLeave(): void {

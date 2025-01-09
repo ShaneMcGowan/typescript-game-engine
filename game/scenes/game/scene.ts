@@ -16,6 +16,7 @@ export interface QuestStatus {
 export enum SceneFlags {
   shack_door_open = 'shack_door_open',
   path_to_farm_cleared = 'path_to_farm_cleared',
+  farm_visited = 'farm_visited',
 }
 
 interface Globals extends SceneGlobalsBaseConfig {

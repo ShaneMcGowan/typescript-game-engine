@@ -17,7 +17,8 @@ export class MessageUtils {
           }
           // reenable player
           scene.globals.player.enabled = true
-        }
+        },
+        showOverlay: false,
       }
     );
     
