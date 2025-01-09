@@ -5,8 +5,10 @@ import { PlayerObject } from "@game/objects/player.object";
 import { AnimationsPlayer, PlayerActionAnimation, PlayerActionAnimationCallback } from "@game/constants/animations/player.animations";
 import { ChestObject } from "../../chest.object";
 import { MovementUtils } from "@core/utils/movement.utils";
-import { ObjectFilter, Scene } from "@core/model/scene";
+import { ObjectFilter } from "@core/model/scene";
 import { SceneObject } from "@core/model/scene-object";
+import { UiObject } from "@core/objects/ui.object";
+import { FarmableAreaObject } from "@game/objects/world-objects/farmable-area.object";
 
 type Tool = ItemType.Axe | ItemType.Pickaxe | ItemType.Hoe;
 
@@ -30,11 +32,12 @@ export function useToolOnChest(scene: SCENE_GAME, player: PlayerObject, object: 
         ),
         collision: {
           enabled: true,
-        }
+        },
+        typeIgnore: [UiObject, FarmableAreaObject]
       }
 
       const collisionObject = scene.getObject(filter);
-      if(collisionObject == undefined){
+      if(collisionObject !== undefined){
         // object in the way, don't move
         return;
       }
