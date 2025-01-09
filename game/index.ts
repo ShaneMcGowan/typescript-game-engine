@@ -17,6 +17,11 @@ import { DeviceType } from '@core/model/device-type';
 
   const params = new URLSearchParams(window.location.search);
 
+  // debug 
+  if(params.get('debug')){
+    CanvasConstants.DEBUG_MODE = true;
+  }
+
   // viewport
   const deviceParam = params.get('device');
   if(deviceParam === 'mobile'){

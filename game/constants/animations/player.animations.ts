@@ -22,7 +22,7 @@ const UseHoeLength: number = 0.5;
 const UseAxeLength: number = 0.5;
 
 
-type PlayerActionAnimation = Record<Direction, ObjectAnimation>;
+export type PlayerActionAnimation = Record<Direction, ObjectAnimation>;
 export type PlayerActionAnimationCallback = () => void;
 
 export class AnimationsPlayer {

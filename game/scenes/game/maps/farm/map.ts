@@ -11,6 +11,7 @@ import { SCENE_GAME_MAP_WORLD } from '../world/map';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { RockObject } from '@game/objects/rock.object';
+import { FarmableAreaObject } from '@game/objects/world-objects/farmable-area.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -25,6 +26,16 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 99, y: 12, });
 
     this.scene.addObject(this.player);
+
+    // farmable areas
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 65, y: 3, width: 2, height: 15 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 68, y: 1, width: 27, height: 13 }));
+
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 67, y: 16, width: 17, height: 2 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 84, y: 17, width: 3, height: 1 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 87, y: 16, width: 6, height: 2 }));
+
+
 
     // collision
     // horizontal

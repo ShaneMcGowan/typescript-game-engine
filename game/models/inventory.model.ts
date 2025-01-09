@@ -252,12 +252,15 @@ export class Inventory {
     return this.rows * this.columns;
   }
 
+  get hasItems(): boolean {
+    return this.items.some(item => item !== undefined);
+  }
+
   /**
    * finds the index of first slot with room in stack (ignoring empty slots), otherwise returns undefined
    * @param type 
    * @returns 
    */
-
   getFirstSlotWithRoom(type: ItemType): number | undefined {
     for (let i = 0; i < this.size; i++) {
       const item = this.items[i];
@@ -313,7 +316,6 @@ export class Inventory {
 
     return undefined;
   }
-
 
   /**
    * Adds an item to an existing stack if there is room, returning the stack

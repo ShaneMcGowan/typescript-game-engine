@@ -1,9 +1,9 @@
+import { AnimationsPlayer } from "@game/constants/animations/player.animations";
+import { PlayerObject } from "@game/objects/player.object";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { MessageUtils } from "@game/utils/message.utils";
 
-export function useWateringCan(scene: SCENE_GAME): void {
-  MessageUtils.showMessage(
-    scene, 
-    `There is nothing to water...`
+export function useWateringCan(scene: SCENE_GAME, player: PlayerObject): void {  
+  player.startAnimation(
+    AnimationsPlayer.UseWateringCan[player.direction],
   );
 }

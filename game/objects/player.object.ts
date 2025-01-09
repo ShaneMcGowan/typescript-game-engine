@@ -41,6 +41,10 @@ import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
 import { Direction, ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
+import { FarmableAreaObject } from './world-objects/farmable-area.object';
+import { usePickaxe } from './player/pickaxe/use-pickaxe.action';
+import { ChestObject } from './chest.object';
+import { useToolOnChest } from './player/tool/use-tool-on-chest.action';
 
 const TILE_SET = 'tileset_player';
 
@@ -344,6 +348,7 @@ export class PlayerObject extends SceneObject {
 
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
+      typeIgnore: [UiObject, FarmableAreaObject],
       objectIgnore: new Map([
         [this, true]
       ]),
@@ -492,7 +497,7 @@ export class PlayerObject extends SceneObject {
         CanvasConstants.TILE_PIXEL_SIZE, 
         CanvasConstants.TILE_PIXEL_SIZE,
       ),
-      typeIgnore: [UiObject]
+      typeIgnore: [UiObject, FarmableAreaObject]
     }
     const object = this.scene.getObject(filter);
 
@@ -505,7 +510,7 @@ export class PlayerObject extends SceneObject {
           useHoe(this.scene, this);
           return;
         case ItemType.WateringCan:
-          useWateringCan(this.scene);
+          useWateringCan(this.scene, this);
           return;
         case ItemType.Chicken:
           useChicken(this.scene);
@@ -522,6 +527,9 @@ export class PlayerObject extends SceneObject {
           return;
         case ItemType.Shovel:
           useShovel(this.scene, this);
+          return;
+        case ItemType.Pickaxe:
+          usePickaxe(this.scene, this) 
           return;
         default:
           return;
@@ -568,6 +576,9 @@ export class PlayerObject extends SceneObject {
             case object instanceof TreeStumpObject:
               useAxeOnTreeStump(this.scene, this, object);
               return;
+            case object instanceof ChestObject:
+              useToolOnChest(this.scene, this, object, item.type);
+              return;
             default:
               return;
           }
@@ -578,6 +589,9 @@ export class PlayerObject extends SceneObject {
               return;
             case object instanceof RockObject:
               usePickaxeOnRock(this.scene, this, object);
+              return;
+            case object instanceof ChestObject:
+              useToolOnChest(this.scene, this, object, item.type);
               return;
             default:
               return;
@@ -597,6 +611,9 @@ export class PlayerObject extends SceneObject {
           switch(true){
             case object instanceof ChickenObject:
               useHoeOnChicken(this.scene, this, object);
+              return;
+            case object instanceof ChestObject:
+              useToolOnChest(this.scene, this, object, item.type);
               return;
             default:
               return;
@@ -641,7 +658,7 @@ export class PlayerObject extends SceneObject {
 
     const item = this.scene.selectedInventoryItem;
     // do not render cursor
-    if (item === undefined || item.radius === ItemRadius.None) {
+    if (item === undefined || item.radius === ItemRadius.None || item.radius === ItemRadius.Player) {
       return;
     }
 
@@ -651,12 +668,13 @@ export class PlayerObject extends SceneObject {
     }
 
     // don't render cursor if greater not a neighbouring tile to user
-    const neighbours = [...this.neighbourTiles];
-    if (
-      item.radius === ItemRadius.Player && !neighbours.some(n => n.x === x && n.y === y)
-    ){
-      return;
-    }
+    // removing this for now, but will
+    // const neighbours = [...this.neighbourTiles];
+    // if (
+    //   item.radius === ItemRadius.Player && !neighbours.some(n => n.x === x && n.y === y)
+    // ){
+    //   return;
+    // }
 
     RenderUtils.fillRectangle(
       context,
@@ -762,22 +780,42 @@ export class PlayerObject extends SceneObject {
 
   get neighbourTiles(): Coordinate[] {
     return [
+      // top
+      { 
+        x: this.transform.position.world.x - 1,
+        y: this.transform.position.world.y - 1,
+      },
+      { 
+        x: this.transform.position.world.x,
+        y: this.transform.position.world.y - 1,
+      },
+      { 
+        x: this.transform.position.world.x + 1,
+        y: this.transform.position.world.y - 1,
+      },
+      // left
+      { 
+        x: this.transform.position.world.x - 1,
+        y: this.transform.position.world.y,
+      },
+      // right
       { 
         x: this.transform.position.world.x + 1,
         y: this.transform.position.world.y,
       },
+      // bottom
       { 
         x: this.transform.position.world.x - 1,
-        y: this.transform.position.world.y,
+        y: this.transform.position.world.y + 1,
       },
       { 
         x: this.transform.position.world.x,
         y: this.transform.position.world.y + 1,
       },
       { 
-        x: this.transform.position.world.x,
-        y: this.transform.position.world.y - 1,
-      }
+        x: this.transform.position.world.x + 1,
+        y: this.transform.position.world.y + 1,
+      },
     ]
   }
 
