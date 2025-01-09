@@ -1,5 +1,7 @@
 import { type Vector } from '@core/model/vector';
 import { MathUtils } from './math.utils';
+import { type SceneObject } from '@core/model/scene-object';
+import { type Coordinate } from '@core/model/coordinate';
 
 export class Movement {
   get position(): {
@@ -152,5 +154,29 @@ export abstract class MovementUtils {
     }
 
     return movement;
+  }
+
+  static RelativePosition(objectA: SceneObject, objectB: SceneObject, max?: number): Coordinate {
+    let x = objectB.transform.position.world.x - objectA.transform.position.world.x;
+    let y = objectB.transform.position.world.y - objectA.transform.position.world.y;
+
+    if (max) {
+      if (x > 0) {
+        x = Math.min(x, max);
+      } else if (x < 0) {
+        x = Math.min(x, max * -1);
+      }
+
+      if (y > 0) {
+        y = Math.min(y, max);
+      } else if (y < 0) {
+        y = Math.min(y, max * -1);
+      }
+    }
+
+    return {
+      x,
+      y,
+    };
   }
 }
