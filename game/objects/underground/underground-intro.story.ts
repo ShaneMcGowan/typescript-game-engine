@@ -7,7 +7,7 @@ import { PlayerObject } from '../player.object';
 import { SceneObject } from '@core/model/scene-object';
 import { CollisionObject } from '../collision.object';
 import { ObjectFilter } from '@core/model/scene';
-import { BridgeObject } from '../bridge.object';
+import { BridgeObject } from '../world-objects/bridge.object';
 
 export interface Config extends NpcObjectConfig {
   player: PlayerObject

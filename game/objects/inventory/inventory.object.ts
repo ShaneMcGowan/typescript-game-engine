@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type ChestObject } from '@game/objects/chest.object';
+import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { GamepadKey, Input, MouseKey } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';

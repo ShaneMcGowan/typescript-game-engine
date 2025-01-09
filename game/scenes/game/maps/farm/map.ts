@@ -11,7 +11,7 @@ import { SCENE_GAME_MAP_WORLD } from '../world/map';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { RockObject } from '@game/objects/rock.object';
-import { FarmableAreaObject } from '@game/objects/world-objects/farmable-area.object';
+import { FarmableAreaObject } from '@game/objects/areas/farmable-area.object';
 import { MessageUtils } from '@game/utils/message.utils';
 import { TimerObject } from '@core/objects/timer.object';
 

@@ -6,7 +6,10 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class FarmableAreaObject extends SceneObject {
+/**
+ * Used to define areas of interaction etc
+ */
+export abstract class AreaObject extends SceneObject {
 
   constructor(
     protected scene: SCENE_GAME,
@@ -14,6 +17,10 @@ export class FarmableAreaObject extends SceneObject {
   ) {
     super(scene, config);
     this.renderer.enabled = true;
+  }
+
+  get colour(): string {
+    return `#FFFFFF`;
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -28,7 +35,7 @@ export class FarmableAreaObject extends SceneObject {
       this.width,
       this.height,
       {
-        colour: '#00FF0044',
+        colour: this.colour,
         type: 'tile',
       }
     )

@@ -5,7 +5,7 @@ import { type Interactable } from '@game/models/interactable.model';
 import { InventoryObject } from '@game/objects/inventory/inventory.object';
 import { Assets } from '@core/utils/assets.utils';
 import { Inventory } from '@game/models/inventory.model';
-import { PlayerObject } from './player.object';
+import { PlayerObject } from '@game/objects/player.object';
 
 const TILE_SET: string = 'tileset_chest';
 const RENDERER_LAYER = 8;

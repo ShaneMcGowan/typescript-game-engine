@@ -40,11 +40,10 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
 import { Direction, ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
-import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
-import { FarmableAreaObject } from './world-objects/farmable-area.object';
 import { usePickaxe } from './player/pickaxe/use-pickaxe.action';
-import { ChestObject } from './chest.object';
+import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { useToolOnChest } from './player/tool/use-tool-on-chest.action';
+import { AreaObject } from './areas/area.object';
 
 const TILE_SET = 'tileset_player';
 
@@ -348,7 +347,7 @@ export class PlayerObject extends SceneObject {
 
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
-      typeIgnore: [UiObject, FarmableAreaObject],
+      typeIgnore: [UiObject, AreaObject],
       objectIgnore: new Map([
         [this, true]
       ]),
@@ -497,7 +496,7 @@ export class PlayerObject extends SceneObject {
         CanvasConstants.TILE_PIXEL_SIZE, 
         CanvasConstants.TILE_PIXEL_SIZE,
       ),
-      typeIgnore: [UiObject, FarmableAreaObject]
+      typeIgnore: [UiObject, AreaObject]
     }
     const object = this.scene.getObject(filter);
 

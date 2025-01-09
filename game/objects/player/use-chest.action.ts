@@ -1,7 +1,7 @@
 import { Input } from "@core/utils/input.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { ChestObject } from "../chest.object";
-import { PlayerObject } from "../player.object";
+import { ChestObject } from '@game/objects/world-objects/chest.object';
+import { PlayerObject } from '@game/objects/player.object';
 
 export function useChest(scene: SCENE_GAME, player: PlayerObject): void {
 

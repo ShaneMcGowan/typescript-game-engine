@@ -3,12 +3,12 @@ import { ItemObject } from "@game/objects/item.object";
 import { ItemType } from "@game/models/inventory.model";
 import { PlayerObject } from "@game/objects/player.object";
 import { AnimationsPlayer, PlayerActionAnimation, PlayerActionAnimationCallback } from "@game/constants/animations/player.animations";
-import { ChestObject } from "../../chest.object";
 import { MovementUtils } from "@core/utils/movement.utils";
 import { ObjectFilter } from "@core/model/scene";
 import { SceneObject } from "@core/model/scene-object";
 import { UiObject } from "@core/objects/ui.object";
-import { FarmableAreaObject } from "@game/objects/world-objects/farmable-area.object";
+import { AreaObject } from "@game/objects/areas/area.object";
+import { ChestObject } from '@game/objects/world-objects/chest.object';
 
 type Tool = ItemType.Axe | ItemType.Pickaxe | ItemType.Hoe;
 
@@ -33,7 +33,7 @@ export function useToolOnChest(scene: SCENE_GAME, player: PlayerObject, object: 
         collision: {
           enabled: true,
         },
-        typeIgnore: [UiObject, FarmableAreaObject]
+        typeIgnore: [UiObject, AreaObject]
       }
 
       const collisionObject = scene.getObject(filter);

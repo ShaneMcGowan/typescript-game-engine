@@ -6,7 +6,7 @@ import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { InventoryObject } from "./inventory.object";
-import { ChestObject } from "../chest.object";
+import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 import { TilesetUI } from "@game/constants/tilesets/ui.tileset";
 
