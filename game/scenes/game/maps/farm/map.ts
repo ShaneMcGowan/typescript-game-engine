@@ -14,6 +14,8 @@ import { RockObject } from '@game/objects/rock.object';
 import { FarmableAreaObject } from '@game/objects/areas/farmable-area.object';
 import { MessageUtils } from '@game/utils/message.utils';
 import { TimerObject } from '@core/objects/timer.object';
+import { ItemSpawnAreaObject } from '@game/objects/areas/item-spawn-area.object';
+import { ItemType } from '@game/models/inventory.model';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -29,15 +31,16 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
 
     this.scene.addObject(this.player);
 
-    // farmable areas
+    // areas
+    // areas - farmable
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 65, y: 3, width: 2, height: 15 }));
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 68, y: 1, width: 27, height: 13 }));
 
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 67, y: 16, width: 17, height: 2 }));
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 84, y: 17, width: 3, height: 1 }));
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 87, y: 16, width: 6, height: 2 }));
-
-
+    // areas - 
+    this.scene.addObject(new ItemSpawnAreaObject(this.scene, { x: 63, y: 19, width: 30, height: 4, spawnableObjects: [ItemType.Log] }));
 
     // collision
     // horizontal
