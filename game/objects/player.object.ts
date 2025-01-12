@@ -14,7 +14,7 @@ import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar/hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
-import { Inventory, ItemRadius, ItemType, ItemTypeFurnitureFloors, ItemTypeFurnitureItem, ItemTypeFurnitureItems } from '@game/models/inventory.model';
+import { Inventory, ItemRadius, ItemType, ItemTypeFurnitureItem } from '@game/models/inventory.model';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 import { useShovel } from './player/shovel/use-shovel.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
@@ -33,7 +33,7 @@ import { useAxe } from './player/axe/use-axe.action';
 import { useBerry } from './player/berry/use-berry.action';
 import { FurnitureFloorObject } from './furniture/furniture-floor.object';
 import { FurnitureUtils } from '@game/utils/furniture.utils';
-import { FurnitureFloorAreaObject } from './areas/furniture-floor.object';
+import { use } from '@game/objects/player/use.action';
 
 const TILE_SET = 'tileset_player';
 
@@ -436,6 +436,9 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
+    // update direction based on action
+    this.direction = this.actionDirection;
+
     console.log(this.mouseTilePosition);
     
     // check if UI object at mouse position, if so, cancel this call
@@ -458,27 +461,7 @@ export class PlayerObject extends SceneObject {
 
     Input.clearPressed<Control>(CONTROL_SCHEME, Control.Action);
 
-    const item = this.scene.selectedInventoryItem;
-    // no item selected
-    if (item === undefined) {
-      return;
-    }
-
-    // item cannot be placed
-    if (item.radius === ItemRadius.None) {
-      return;
-    }
-
     const { x, y } = this.mouseTilePosition;
-    const neighbours = [...this.neighbourTiles];
-
-    if (
-      item.radius === ItemRadius.Player
-      && !neighbours.some(n => n.x === x && n.y === y)
-    ){
-      return;
-    }
-
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(
         x, 
@@ -490,8 +473,26 @@ export class PlayerObject extends SceneObject {
     }
     const object = this.scene.getObject(filter);
 
-    // update direction based on action
-    this.direction = this.actionDirection;
+    const item = this.scene.selectedInventoryItem;
+    // no item selected
+    if (item === undefined) {
+      use(this.scene, this, object);
+      return;
+    }
+
+    // item cannot be placed
+    if (item.radius === ItemRadius.None) {
+      return;
+    }
+
+    const neighbours = [...this.neighbourTiles];
+
+    if (
+      item.radius === ItemRadius.Player
+      && !neighbours.some(n => n.x === x && n.y === y)
+    ){
+      return;
+    }
 
     switch (item.type) {
       case ItemType.Hoe:
@@ -520,13 +521,14 @@ export class PlayerObject extends SceneObject {
         usePickaxe(this.scene, this, object) 
         return;
       case ItemType.FurnitureBed:
-        useFurnitureItem(this.scene, ItemType.FurnitureBed);
+      case ItemType.FurnitureTable:
+        useFurnitureItem(this.scene, item.type);
         return;
       case ItemType.FurniturePainting:
-        useFurnitureWall(this.scene, ItemType.FurniturePainting);
+        useFurnitureWall(this.scene, item.type);
         return;
       case ItemType.FurnitureRugLarge:
-        useFurnitureFloor(this.scene, ItemType.FurnitureRugLarge);
+        useFurnitureFloor(this.scene, item.type);
         return;
       case ItemType.Wheat:
       case ItemType.Tomato:

@@ -11,7 +11,7 @@ export enum ItemType {
   // furniture
   FurnitureBed = 'FurnitureBed',
   FurniturePainting = 'FurniturePainting',
-  // FurnitureTable = 'FurnitureTable',
+  FurnitureTable = 'FurnitureTable',
   // FurnitureChair = 'FurnitureChair',
   // FurnitureClock = 'FurnitureClock',
   // FurnitureRugSmall = 'FurnitureRugSmall',
@@ -35,8 +35,8 @@ export enum ItemType {
 
 
 // items
-export const ItemTypeFurnitureItems: ItemType[] = [ItemType.FurnitureBed];
-export type ItemTypeFurnitureItem = ItemType.FurnitureBed;
+export const ItemTypeFurnitureItems: ItemType[] = [ItemType.FurnitureBed, ItemType.FurnitureTable];
+export type ItemTypeFurnitureItem = ItemType.FurnitureBed | ItemType.FurnitureTable;
 // floors
 export const ItemTypeFurnitureFloors: ItemType[] = [ItemType.FurnitureRugLarge];
 export type ItemTypeFurnitureFloor = ItemType.FurnitureRugLarge;
@@ -45,7 +45,7 @@ export const ItemTypeFurnitureWalls: ItemType[] = [ItemType.FurniturePainting];
 export type ItemTypeFurnitureWall = ItemType.FurniturePainting;
 // all
 export const ItemTypeFurnitures: ItemType[] = [...ItemTypeFurnitureItems, ...ItemTypeFurnitureFloors, ...ItemTypeFurnitureWalls];
-export type ItemTypeFurniture = ItemTypeFurnitureItem & ItemTypeFurnitureFloor & ItemTypeFurnitureWall;
+export type ItemTypeFurniture = ItemTypeFurnitureItem | ItemTypeFurnitureFloor | ItemTypeFurnitureWall;
 
 /**
  * where the item can be placed
@@ -80,7 +80,7 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.FurnitureBed]: ItemRadius.Anywhere,
   [ItemType.FurniturePainting]: ItemRadius.Anywhere,
   [ItemType.FurnitureRugLarge]: ItemRadius.Anywhere,
-
+  [ItemType.FurnitureTable]: ItemRadius.Anywhere
 }
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
@@ -103,6 +103,7 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.FurnitureBed]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Bed.Blue.Default.x, y: TilesetFurniture.Bed.Blue.Default.y },
   [ItemType.FurniturePainting]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Painting.Flowers.Default.x, y: TilesetFurniture.Painting.Flowers.Default.y },
   [ItemType.FurnitureRugLarge]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Rug.Blue.Large.x, y: TilesetFurniture.Rug.Blue.Large.y },
+  [ItemType.FurnitureTable]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Table.Default.Default.x, y: TilesetFurniture.Table.Default.Default.y },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -125,6 +126,7 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.FurnitureBed]: 1,
   [ItemType.FurniturePainting]: 1,
   [ItemType.FurnitureRugLarge]: 1,
+  [ItemType.FurnitureTable]: 1,
 };
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
@@ -146,7 +148,8 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Shovel]: 0,
   [ItemType.FurnitureBed]: 0,
   [ItemType.FurniturePainting]: 0,
-  [ItemType.FurnitureRugLarge]: 0
+  [ItemType.FurnitureRugLarge]: 0,
+  [ItemType.FurnitureTable]: 0,
 }
 
 export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
@@ -168,7 +171,8 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.Shovel]: 'Shovel',
   [ItemType.FurnitureBed]: "Bed",
   [ItemType.FurniturePainting]: "Painting",
-  [ItemType.FurnitureRugLarge]: "Large Rug"
+  [ItemType.FurnitureRugLarge]: "Large Rug",
+  [ItemType.FurnitureTable]: "Table"
 }
 
 export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
@@ -190,7 +194,8 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.Shovel]: 'Shovels',
   [ItemType.FurnitureBed]: "Beds",
   [ItemType.FurniturePainting]: "Paintings",
-  [ItemType.FurnitureRugLarge]: "Large Rugs"
+  [ItemType.FurnitureRugLarge]: "Large Rugs",
+  [ItemType.FurnitureTable]: "Tables"
 }
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
@@ -212,7 +217,8 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.Shovel]: `A tool with a blunt head. I can use this to dig holes.`,
   [ItemType.FurnitureBed]: "Somewhere for me to sleep.",
   [ItemType.FurniturePainting]: "A lovely painting to hang on the wall.",
-  [ItemType.FurnitureRugLarge]: "A lovely rug to place on the floor."
+  [ItemType.FurnitureRugLarge]: "A lovely rug to place on the floor.",
+  [ItemType.FurnitureTable]: "La mesa",
 }
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
@@ -235,6 +241,7 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureBed]: true,
   [ItemType.FurniturePainting]: true,
   [ItemType.FurnitureRugLarge]: true,
+  [ItemType.FurnitureTable]: true
 }
 
 export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
@@ -257,6 +264,7 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureBed]: true,
   [ItemType.FurniturePainting]: true,
   [ItemType.FurnitureRugLarge]: true,
+  [ItemType.FurnitureTable]: true,
 }
 
 export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
@@ -279,6 +287,7 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureBed]: true,
   [ItemType.FurniturePainting]: true,
   [ItemType.FurnitureRugLarge]: false,
+  [ItemType.FurnitureTable]: false
 }
 
 export interface ItemSprite {

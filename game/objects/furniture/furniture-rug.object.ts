@@ -2,6 +2,7 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { FurnitureConfig } from "./furniture.object";
 import { TilesetFurniture } from "@game/constants/tilesets/furniture.tileset";
 import { FurnitureFloorObject } from "./furniture-floor.object";
+import { ItemTypeFurniture, ItemType } from "@game/models/inventory.model";
 
 interface Config extends FurnitureConfig {
 
@@ -17,6 +18,10 @@ export class FurnitureRugObject extends FurnitureFloorObject {
     config: Config
   ) {
     super(scene, config);
+  }
+
+  get type(): ItemTypeFurniture {
+    return ItemType.FurnitureRugLarge;
   }
 
   get sprite() {

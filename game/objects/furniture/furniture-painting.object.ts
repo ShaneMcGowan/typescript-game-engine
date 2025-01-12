@@ -1,9 +1,9 @@
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { FurnitureConfig } from "./furniture.object";
-import { TilesetFurniture } from "@game/constants/tilesets/furniture.tileset";
 import { FurnitureWallObject } from "./furniture-wall.object";
 import { MessageUtils } from "@game/utils/message.utils";
 import { Interactable } from "@game/models/interactable.model";
+import { ItemType, ItemTypeFurniture } from "@game/models/inventory.model";
 
 interface Config extends FurnitureConfig {
 
@@ -21,11 +21,8 @@ export class FurniturePaintingObject extends FurnitureWallObject implements Inte
     super(scene, config);
   }
 
-  get sprite() {
-    return {
-      id: TilesetFurniture.id,
-      config: TilesetFurniture.Painting.Flowers.Default,
-    }
+  get type(): ItemTypeFurniture {
+    return ItemType.FurniturePainting;
   }
 
   interact(): void {

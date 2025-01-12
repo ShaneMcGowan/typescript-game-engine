@@ -39,4 +39,15 @@ export class TilesetFurniture {
     },
   };
 
+  static readonly Table: Tile<'Default', 'Default'> = { 
+    Default: {
+      Default: {
+        x: 3, 
+        y: 3,
+        width: 1,
+        height: 1
+      },
+    },
+  };
+
 }

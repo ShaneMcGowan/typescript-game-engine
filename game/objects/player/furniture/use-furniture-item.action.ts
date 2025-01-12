@@ -6,6 +6,7 @@ import { FurnitureBedObject } from "@game/objects/furniture/furniture-bed.object
 import { FurnitureFloorAreaObject } from "@game/objects/areas/furniture-floor.object";
 import { FurnitureItemObject } from "@game/objects/furniture/furniture-item.object";
 import { FurnitureUtils } from "@game/utils/furniture.utils";
+import { FurnitureTableObject } from "@game/objects/furniture/furniture-table.object";
 
 export function useFurnitureItem(scene: SCENE_GAME, type: ItemTypeFurnitureItem): void {
 
@@ -28,6 +29,9 @@ export function useFurnitureItem(scene: SCENE_GAME, type: ItemTypeFurnitureItem)
   switch(type){
     case ItemType.FurnitureBed:
       object = new FurnitureBedObject(scene, {});
+      break;
+    case ItemType.FurnitureTable:
+      object = new FurnitureTableObject(scene, {});
       break;
     default:
       assertUnreachable(type)

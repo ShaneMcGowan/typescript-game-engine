@@ -1,7 +1,7 @@
 import { CanvasConstants } from "@core/constants/canvas.constants";
 import { ObjectFilter } from "@core/model/scene";
 import { SceneObject } from "@core/model/scene-object";
-import { Inventory, ItemType, ItemTypeFurnitureFloors, ItemTypeFurnitureItems, ItemTypeFurnitures, ItemTypeFurnitureWalls, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
+import { ItemType, ItemTypeFurnitureFloors, ItemTypeFurnitureItems, ItemTypeFurnitures, ItemTypeFurnitureWalls } from "@game/models/inventory.model";
 import { FurnitureFloorAreaObject } from "@game/objects/areas/furniture-floor.object";
 import { FurnitureWallAreaObject } from "@game/objects/areas/furniture-wall.object";
 import { FurnitureFloorObject } from "@game/objects/furniture/furniture-floor.object";
