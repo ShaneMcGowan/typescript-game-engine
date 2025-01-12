@@ -3,7 +3,7 @@ import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type Interactable } from '@game/models/interactable.model';
+import { type Interactable } from '@game/models/components/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 import { Assets } from '@core/utils/assets.utils';

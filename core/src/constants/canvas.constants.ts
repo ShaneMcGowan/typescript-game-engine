@@ -39,6 +39,13 @@ export abstract class CanvasConstants {
   }
 
   /**
+   * The last layer that objects should be rendered on
+   */
+  static get LAST_OBJECT_RENDER_LAYER(): number {
+    return CanvasConstants.OBJECT_RENDERING_LAYERS - 1;
+  }
+
+  /**
    * The first layer that UI elements should be rendered on
    */
   static get FIRST_UI_RENDER_LAYER(): number {

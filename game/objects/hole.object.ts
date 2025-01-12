@@ -1,6 +1,6 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { Interactable } from '@game/models/interactable.model';
+import { Interactable } from '@game/models/components/interactable.model';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MessageUtils } from '@game/utils/message.utils';
 

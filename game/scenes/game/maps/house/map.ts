@@ -8,6 +8,8 @@ import { JsonBackgroundMap } from '@core/model/background';
 import * as background from './background.json'
 import { FurnitureWallAreaObject } from '@game/objects/areas/furniture-wall.object';
 import { FurnitureFloorAreaObject } from '@game/objects/areas/furniture-floor.object';
+import { FurnitureLampObject } from '@game/objects/furniture/item/furniture-lamp.object';
+import { LightObject } from '@game/objects/lights/light.object';
 
 export class SCENE_GAME_MAP_HOUSE extends SceneMap {
 
@@ -18,9 +20,14 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
+    this.flags.suspend = true;
+
     // player
     this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
     this.scene.addObject(this.player);
+
+    this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13, y: 8 }));
+    this.scene.addObject(new FurnitureLampObject(this.scene, { x: 18, y: 8 }));
 
     // walls
     // top
@@ -37,6 +44,9 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     // areas
     this.scene.addObject(new FurnitureWallAreaObject(scene, { x: 12, y: 6, width: 8 }));
     this.scene.addObject(new FurnitureFloorAreaObject(scene, { x: 12, y: 7, width: 8, height: 5 }));
+
+    // lighting
+    this.scene.addObject(new LightObject(scene, { x: 0, y: 0,}));
 
     // exit door
     const warpConfig = {

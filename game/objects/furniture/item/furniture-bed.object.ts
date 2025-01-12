@@ -1,7 +1,7 @@
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { FurnitureConfig } from "../furniture.object";
 import { FurnitureItemObject } from "../furniture-item.object";
-import { Interactable } from "@game/models/interactable.model";
+import { Interactable } from "@game/models/components/interactable.model";
 import { MessageUtils } from "@game/utils/message.utils";
 import { ItemType, ItemTypeFurniture } from "@game/models/inventory.model";
 

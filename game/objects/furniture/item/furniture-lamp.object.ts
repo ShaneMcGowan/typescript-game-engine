@@ -2,14 +2,15 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { FurnitureConfig } from "../furniture.object";
 import { FurnitureItemObject } from "../furniture-item.object";
 import { ItemType, ItemTypeFurniture } from "@game/models/inventory.model";
-import { Interactable } from "@game/models/interactable.model";
+import { Interactable } from "@game/models/components/interactable.model";
 import { MessageUtils } from "@game/utils/message.utils";
+import { LightSource, LightSourceConfig } from "@game/models/components/lightsource.model";
 
 interface Config extends FurnitureConfig {
 
 }
 
-export class FurnitureLampObject extends FurnitureItemObject implements Interactable {
+export class FurnitureLampObject extends FurnitureItemObject implements Interactable, LightSource {
 
   width = 1;
   height = 1;
@@ -21,6 +22,10 @@ export class FurnitureLampObject extends FurnitureItemObject implements Interact
     config: Config
   ) {
     super(scene, config);
+  }
+
+  onRender(context: CanvasRenderingContext2D): void {
+    super.onRender(context);
   }
   
   get type(): ItemTypeFurniture {
@@ -34,6 +39,13 @@ export class FurnitureLampObject extends FurnitureItemObject implements Interact
       this.scene,
       this.active ?  `I turn the light on.` : `I turn the light off.`
     );
+  }
+
+  get lightSource(): LightSourceConfig {
+    return {
+      enabled: this.active,
+      radius: 1,
+    }
   }
 
 }

@@ -1,7 +1,7 @@
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { Assets } from "@core/utils/assets.utils";
 import { RenderUtils } from "@core/utils/render.utils";
-import { Interactable } from "@game/models/interactable.model";
+import { Interactable } from "@game/models/components/interactable.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { Inventory, ItemSprite, ItemType, TYPE_TO_NAME_SINGULAR_MAP, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
 import { PlayerObject } from "./player.object";

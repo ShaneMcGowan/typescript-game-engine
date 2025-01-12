@@ -2,7 +2,7 @@ import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { Assets } from '@core/utils/assets.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type Interactable } from '@game/models/interactable.model';
+import { type Interactable } from '@game/models/components/interactable.model';
 
 export class FenceType {
   static TopLeft = { x: 1, y: 0, };

@@ -4,7 +4,7 @@ import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from '@game/objects/egg.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type Interactable } from '@game/models/interactable.model';
+import { type Interactable } from '@game/models/components/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
 import { ObjectFilter } from '@core/model/scene';

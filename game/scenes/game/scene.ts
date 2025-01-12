@@ -92,7 +92,7 @@ export class SCENE_GAME extends Scene {
 
     // this is for debugging, giving us all items
     if (params.get('items')) {
-      Object.keys(ItemType).forEach(key => this.globals.inventory.addToInventory(key as ItemType));
+      // Object.keys(ItemType).forEach(key => this.globals.inventory.addToInventory(key as ItemType));
     }
 
     // this is for debugging, letting us launch into a specific map

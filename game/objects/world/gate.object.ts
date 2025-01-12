@@ -1,7 +1,7 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type Interactable } from '@game/models/interactable.model';
+import { type Interactable } from '@game/models/components/interactable.model';
 import { Assets } from '@core/utils/assets.utils';
 import { ItemType } from '@game/models/inventory.model';
 import { TextboxObject } from '../textbox.object';

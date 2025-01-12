@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { isInteractable } from '@game/models/interactable.model';
+import { isInteractable } from '@game/models/components/interactable.model';
 import { Input } from '@core/utils/input.utils';
 import { useHoe } from '@game/objects/player/hoe/use-hoe.action';
 import { useWateringCan } from '@game/objects/player/watering-can/use-watering-can.action';

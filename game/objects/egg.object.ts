@@ -3,7 +3,7 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { ChickenObject } from '@game/objects/chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { type Interactable } from '@game/models/interactable.model';
+import { type Interactable } from '@game/models/components/interactable.model';
 import { Assets } from '@core/utils/assets.utils';
 import { Inventory, ItemType } from '@game/models/inventory.model';
 

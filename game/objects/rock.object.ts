@@ -2,7 +2,7 @@ import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { Assets } from "@core/utils/assets.utils";
 import { RenderUtils } from "@core/utils/render.utils";
 import { TilesetGrassBiome } from "@game/constants/tilesets/grass-biome.tileset";
-import { Interactable } from "@game/models/interactable.model";
+import { Interactable } from "@game/models/components/interactable.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { MessageUtils } from "@game/utils/message.utils";
 
