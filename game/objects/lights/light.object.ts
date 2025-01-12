@@ -11,7 +11,7 @@ export class LightObject extends SceneObject {
 
   lightSources: (SceneObject & LightSource)[] = [];
   lightSourceCacheTimer: number = 0;
-  lightSourceCacheTimerMax: number = 1;
+  lightSourceCacheTimerMax: number = 0;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -21,7 +21,6 @@ export class LightObject extends SceneObject {
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.LAST_OBJECT_RENDER_LAYER;
   }
-
 
   onUpdate(delta: number): void {
     this.cacheLightSources(delta);
@@ -65,27 +64,38 @@ export class LightObject extends SceneObject {
       return;
     }
 
+    // context.fillStyle = '#FFFFFF00'; // the colour of our overlay
+
+
+    context.globalCompositeOperation = 'xor';
+
+
+    const x = object.centre.world.x;
+    const y = object.centre.world.y;
+    const radius = object.lightSource.radius;
+
+    // moveTo resolves issue with random intersections
+    // https://stackoverflow.com/a/31737509
+    // move to new position
+    context.moveTo(
+      (x + radius) * CanvasConstants.TILE_SIZE,
+      y * CanvasConstants.TILE_SIZE
+    );
+
     context.arc(
-      (object.centre.world.x) * CanvasConstants.TILE_SIZE,
-      (object.centre.world.y) * CanvasConstants.TILE_SIZE,
-      object.lightSource.radius * CanvasConstants.TILE_SIZE,
+      x * CanvasConstants.TILE_SIZE,
+      y * CanvasConstants.TILE_SIZE,
+      radius * CanvasConstants.TILE_SIZE,
       0,
       2 * Math.PI
     );
   }
 
-  private renderLight(context: CanvasRenderingContext2D): void {
-    // draw arc clockwise then draw rect counter clockwise to have rect with circle cut out of it
-    // https://stackoverflow.com/a/11770000
-    context.fillStyle = '#00000099'; // the colour of our overlay
+  private renderDarkness(context: CanvasRenderingContext2D): void {
+    context.fillStyle = '#000000';
 
-    // begin render
     context.beginPath();
-    
-    // loop all lights sources
-    this.lightSources.forEach(source => this.renderLightSource(context, source))
 
-    // render overlay
     context.rect(
       CanvasConstants.CANVAS_WIDTH,
       0,
@@ -93,8 +103,31 @@ export class LightObject extends SceneObject {
       CanvasConstants.CANVAS_HEIGHT
     );
 
-    // complete render
     context.fill();
+  }
+
+  private renderLight(context: CanvasRenderingContext2D): void {
+    // draw arc clockwise then draw rect counter clockwise to have rect with circle cut out of it
+    // https://stackoverflow.com/a/11770000
+    context.fillStyle = '#FFFFFF'; // the colour of our overlay
+    
+    this.renderDarkness(context);
+
+    // 
+    // context.save();
+
+    // context.globalCompositeOperation = 'destination-over';
+
+    // loop all lights sources
+    context.beginPath();
+
+    this.lightSources.forEach(source => this.renderLightSource(context, source))
+    
+    context.fill();
+    // complete render
+
+    //
+    // context.restore();
 }
 
 }

@@ -130,7 +130,7 @@ export abstract class RenderUtils {
       (width * (options.type === 'tile' ? CanvasConstants.TILE_SIZE : 1)) - 1,
       (height * (options.type === 'tile' ? CanvasConstants.TILE_SIZE : 1)) - 1
     );
-    context.stroke();
+    // context.stroke();
     context.fill();
   }
 

@@ -23,11 +23,14 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     this.flags.suspend = true;
 
     // player
-    this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
+    this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 10, });
     this.scene.addObject(this.player);
 
-    this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13, y: 8 }));
-    this.scene.addObject(new FurnitureLampObject(this.scene, { x: 18, y: 8 }));
+    for(let x = 0; x < 8; x++){
+      for(let y = 0; y < 3; y++){
+        this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13 + x, y: 7 + (y * 2), active: true, }));
+      }
+    }
 
     // walls
     // top
