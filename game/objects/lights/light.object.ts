@@ -2,6 +2,10 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { isLightSource, LightSource } from "@game/models/components/lightsource.model";
+import { RenderUtils } from "@core/utils/render.utils";
+
+const DEFAULT_DARKNESS_COLOUR: string = '#000000';
+const DEFAULT_DARKNESS_INTENSITY: number = 0.5;
 
 interface Config extends SceneObjectBaseConfig {
 
@@ -37,8 +41,6 @@ export class LightObject extends SceneObject {
    * @returns 
    */
   private cacheLightSources(delta: number): void {
-    console.log(this.lightSourceCacheTimer);
-
     this.lightSourceCacheTimer += delta;
 
     if(this.lightSourceCacheTimer < this.lightSourceCacheTimerMax){
@@ -64,12 +66,6 @@ export class LightObject extends SceneObject {
       return;
     }
 
-    // context.fillStyle = '#FFFFFF00'; // the colour of our overlay
-
-
-    context.globalCompositeOperation = 'xor';
-
-
     const x = object.centre.world.x;
     const y = object.centre.world.y;
     const radius = object.lightSource.radius;
@@ -92,14 +88,14 @@ export class LightObject extends SceneObject {
   }
 
   private renderDarkness(context: CanvasRenderingContext2D): void {
-    context.fillStyle = '#000000';
+    context.fillStyle = `${DEFAULT_DARKNESS_COLOUR}`;
 
     context.beginPath();
 
     context.rect(
-      CanvasConstants.CANVAS_WIDTH,
       0,
-      CanvasConstants.CANVAS_WIDTH * -1,
+      0,
+      CanvasConstants.CANVAS_WIDTH,
       CanvasConstants.CANVAS_HEIGHT
     );
 
@@ -109,25 +105,17 @@ export class LightObject extends SceneObject {
   private renderLight(context: CanvasRenderingContext2D): void {
     // draw arc clockwise then draw rect counter clockwise to have rect with circle cut out of it
     // https://stackoverflow.com/a/11770000
-    context.fillStyle = '#FFFFFF'; // the colour of our overlay
+
+    // set up
+    context.globalCompositeOperation = 'xor';
     
+    // darkness
     this.renderDarkness(context);
-
-    // 
-    // context.save();
-
-    // context.globalCompositeOperation = 'destination-over';
-
+    
     // loop all lights sources
     context.beginPath();
-
     this.lightSources.forEach(source => this.renderLightSource(context, source))
-    
     context.fill();
-    // complete render
-
-    //
-    // context.restore();
-}
+  }
 
 }
