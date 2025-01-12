@@ -1,6 +1,6 @@
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { FurnitureConfig } from "./furniture.object";
-import { FurnitureItemObject } from "./furniture-item.object";
+import { FurnitureConfig } from "../furniture.object";
+import { FurnitureItemObject } from "../furniture-item.object";
 import { ItemType, ItemTypeFurniture } from "@game/models/inventory.model";
 
 interface Config extends FurnitureConfig {

@@ -95,23 +95,6 @@ export class SCENE_GAME extends Scene {
       Object.keys(ItemType).forEach(key => this.globals.inventory.addToInventory(key as ItemType));
     }
 
-    this.globals.inventory.addToInventory(ItemType.FurnitureRugLarge);
-    this.globals.inventory.addToInventory(ItemType.FurnitureRugLarge);
-    this.globals.inventory.addToInventory(ItemType.FurnitureRugLarge);
-
-    this.globals.inventory.addToInventory(ItemType.FurnitureBed);
-    this.globals.inventory.addToInventory(ItemType.FurnitureBed);
-    this.globals.inventory.addToInventory(ItemType.FurnitureBed);
-
-    this.globals.inventory.addToInventory(ItemType.FurniturePainting);
-    this.globals.inventory.addToInventory(ItemType.FurniturePainting);
-    this.globals.inventory.addToInventory(ItemType.FurniturePainting);
-
-    this.globals.inventory.addToInventory(ItemType.FurnitureTable);
-    this.globals.inventory.addToInventory(ItemType.FurnitureTable);
-    this.globals.inventory.addToInventory(ItemType.FurnitureTable);
-
-
     // this is for debugging, letting us launch into a specific map
     const MAP_MAP: Record<string, SceneMapConstructorSignature> = {
       'world': SCENE_GAME_MAP_WORLD,

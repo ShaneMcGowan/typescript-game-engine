@@ -50,4 +50,16 @@ export class TilesetFurniture {
     },
   };
 
+
+  static readonly Lamp: Tile<Colour, 'Default'> = { 
+    Blue: {
+      Default: {
+        x: 4, 
+        y: 1,
+        width: 1,
+        height: 1
+      },
+    },
+  };
+
 }

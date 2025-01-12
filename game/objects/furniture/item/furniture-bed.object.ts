@@ -1,16 +1,16 @@
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { FurnitureConfig } from "./furniture.object";
-import { FurnitureWallObject } from "./furniture-wall.object";
-import { MessageUtils } from "@game/utils/message.utils";
+import { FurnitureConfig } from "../furniture.object";
+import { FurnitureItemObject } from "../furniture-item.object";
 import { Interactable } from "@game/models/interactable.model";
+import { MessageUtils } from "@game/utils/message.utils";
 import { ItemType, ItemTypeFurniture } from "@game/models/inventory.model";
 
 interface Config extends FurnitureConfig {
 
 }
 
-export class FurniturePaintingObject extends FurnitureWallObject implements Interactable {
-  
+export class FurnitureBedObject extends FurnitureItemObject implements Interactable {
+
   width = 1;
   height = 1;
 
@@ -20,15 +20,15 @@ export class FurniturePaintingObject extends FurnitureWallObject implements Inte
   ) {
     super(scene, config);
   }
-
+  
   get type(): ItemTypeFurniture {
-    return ItemType.FurniturePainting;
+    return ItemType.FurnitureBed;
   }
-
+  
   interact(): void {
     MessageUtils.showMessage(
       this.scene,
-      `It's a painting of some lovely flowers.`
+      `The bed looks really comfy.`
     )
   }
 

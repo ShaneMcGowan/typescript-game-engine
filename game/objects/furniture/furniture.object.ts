@@ -27,6 +27,10 @@ const SPRITES: Record<ItemTypeFurniture, {
   [ItemType.FurnitureTable]: {
     id: TilesetFurniture.id,
     config: TilesetFurniture.Table.Default.Default,
+  },
+  [ItemType.FurnitureLamp]: {
+    id: TilesetFurniture.id,
+    config: TilesetFurniture.Lamp.Blue.Default,
   }
 }
 

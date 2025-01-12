@@ -2,7 +2,7 @@ import { Input } from "@core/utils/input.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { ItemType, ItemTypeFurnitureWall } from "@game/models/inventory.model";
 import { assertUnreachable } from "@core/utils/typescript.utils";
-import { FurniturePaintingObject } from "@game/objects/furniture/furniture-painting.object";
+import { FurniturePaintingObject } from "@game/objects/furniture/wall/furniture-painting.object";
 import { FurnitureWallAreaObject } from "@game/objects/areas/furniture-wall.object";
 import { FurnitureWallObject } from "@game/objects/furniture/furniture-wall.object";
 import { FurnitureUtils } from "@game/utils/furniture.utils";

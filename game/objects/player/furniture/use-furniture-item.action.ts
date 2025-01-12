@@ -2,11 +2,12 @@ import { Input } from "@core/utils/input.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { ItemType, ItemTypeFurnitureItem } from "@game/models/inventory.model";
 import { assertUnreachable } from "@core/utils/typescript.utils";
-import { FurnitureBedObject } from "@game/objects/furniture/furniture-bed.object";
+import { FurnitureBedObject } from "@game/objects/furniture/item/furniture-bed.object";
 import { FurnitureFloorAreaObject } from "@game/objects/areas/furniture-floor.object";
 import { FurnitureItemObject } from "@game/objects/furniture/furniture-item.object";
 import { FurnitureUtils } from "@game/utils/furniture.utils";
-import { FurnitureTableObject } from "@game/objects/furniture/furniture-table.object";
+import { FurnitureTableObject } from "@game/objects/furniture/item/furniture-table.object";
+import { FurnitureLampObject } from "@game/objects/furniture/item/furniture-lamp.object";
 
 export function useFurnitureItem(scene: SCENE_GAME, type: ItemTypeFurnitureItem): void {
 
@@ -32,6 +33,9 @@ export function useFurnitureItem(scene: SCENE_GAME, type: ItemTypeFurnitureItem)
       break;
     case ItemType.FurnitureTable:
       object = new FurnitureTableObject(scene, {});
+      break;
+    case ItemType.FurnitureLamp:
+      object = new FurnitureLampObject(scene, {});
       break;
     default:
       assertUnreachable(type)

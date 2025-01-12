@@ -2,7 +2,7 @@ import { Input } from "@core/utils/input.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { ItemType, ItemTypeFurnitureFloor } from "@game/models/inventory.model";
 import { assertUnreachable } from "@core/utils/typescript.utils";
-import { FurnitureRugObject } from "@game/objects/furniture/furniture-rug.object";
+import { FurnitureRugObject } from "@game/objects/furniture/floor/furniture-rug.object";
 import { FurnitureFloorAreaObject } from "@game/objects/areas/furniture-floor.object";
 import { FurnitureFloorObject } from "@game/objects/furniture/furniture-floor.object";
 import { FurnitureUtils } from "@game/utils/furniture.utils";

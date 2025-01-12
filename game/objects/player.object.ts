@@ -522,6 +522,7 @@ export class PlayerObject extends SceneObject {
         return;
       case ItemType.FurnitureBed:
       case ItemType.FurnitureTable:
+      case ItemType.FurnitureLamp:
         useFurnitureItem(this.scene, item.type);
         return;
       case ItemType.FurniturePainting:
