@@ -33,9 +33,18 @@ export enum ItemType {
   Berry = 'Berry',
 }
 
+
+// items
+export const ItemTypeFurnitureItems: ItemType[] = [ItemType.FurnitureBed];
 export type ItemTypeFurnitureItem = ItemType.FurnitureBed;
+// floors
+export const ItemTypeFurnitureFloors: ItemType[] = [ItemType.FurnitureRugLarge];
 export type ItemTypeFurnitureFloor = ItemType.FurnitureRugLarge;
+// walls
+export const ItemTypeFurnitureWalls: ItemType[] = [ItemType.FurniturePainting];
 export type ItemTypeFurnitureWall = ItemType.FurniturePainting;
+// all
+export const ItemTypeFurnitures: ItemType[] = [...ItemTypeFurnitureItems, ...ItemTypeFurnitureFloors, ...ItemTypeFurnitureWalls];
 export type ItemTypeFurniture = ItemTypeFurnitureItem & ItemTypeFurnitureFloor & ItemTypeFurnitureWall;
 
 /**

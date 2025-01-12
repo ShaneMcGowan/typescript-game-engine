@@ -1,52 +1,26 @@
 import { Input } from "@core/utils/input.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { Inventory, ItemType, ItemTypeFurnitureWall } from "@game/models/inventory.model";
+import { ItemType, ItemTypeFurnitureWall } from "@game/models/inventory.model";
 import { assertUnreachable } from "@core/utils/typescript.utils";
 import { FurniturePaintingObject } from "@game/objects/furniture/furniture-painting.object";
-import { ObjectFilter } from "@core/model/scene";
-import { SceneObject } from "@core/model/scene-object";
-import { CanvasConstants } from "@core/constants/canvas.constants";
 import { FurnitureWallAreaObject } from "@game/objects/areas/furniture-wall.object";
-import { MessageUtils } from "@game/utils/message.utils";
-import { FurnitureFloorObject } from "@game/objects/furniture/furniture-floor.object";
 import { FurnitureWallObject } from "@game/objects/furniture/furniture-wall.object";
+import { FurnitureUtils } from "@game/utils/furniture.utils";
 
 export function useFurnitureWall(scene: SCENE_GAME, type: ItemTypeFurnitureWall): void {
 
   const x = Math.floor(Input.mouse.position.x + scene.globals.camera.startX);
   const y = Math.floor(Input.mouse.position.y + scene.globals.camera.startY);
 
-  const filterArea: ObjectFilter = {
-    boundingBox: SceneObject.calculateBoundingBox(
-      x,
-      y,
-      CanvasConstants.TILE_PIXEL_SIZE,
-      CanvasConstants.TILE_PIXEL_SIZE,
-    ),
-    typeMatch: [FurnitureWallAreaObject]
-  }
-  const area = scene.getObject(filterArea);
   // only place on wall area
-  if(area === undefined){
-    MessageUtils.showMessage(
-      scene,
-      `${Inventory.getItemName(type, true)} must be placed on a wall.`
-    );
+  const hasFloorArea = FurnitureUtils.hasFloorArea(scene, x,y ,FurnitureWallAreaObject)
+  if(!hasFloorArea){
     return;
   }
-
-  // don't allow placing furniture wall objects on top of one another
-  const filterFurnitureWall: ObjectFilter = {
-    boundingBox: SceneObject.calculateBoundingBox(
-      x,
-      y,
-      CanvasConstants.TILE_PIXEL_SIZE,
-      CanvasConstants.TILE_PIXEL_SIZE,
-    ),
-    typeMatch: [FurnitureWallObject]
-  }
-  const furnitureWall = scene.getObject(filterFurnitureWall);
-  if(furnitureWall){
+  
+  // don't allow placing furniture floor objects on top of one another
+  const hasObject = FurnitureUtils.hasObject(scene, x,y ,FurnitureWallObject)
+  if(hasObject){
     return;
   }
 

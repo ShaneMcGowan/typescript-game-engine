@@ -14,7 +14,7 @@ import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar/hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
-import { Inventory, ItemRadius, ItemType } from '@game/models/inventory.model';
+import { Inventory, ItemRadius, ItemType, ItemTypeFurnitureFloors, ItemTypeFurnitureItem, ItemTypeFurnitureItems } from '@game/models/inventory.model';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 import { useShovel } from './player/shovel/use-shovel.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
@@ -31,6 +31,9 @@ import { assertUnreachable } from '@core/utils/typescript.utils';
 import { useCrop } from './player/crop/use-crop.action';
 import { useAxe } from './player/axe/use-axe.action';
 import { useBerry } from './player/berry/use-berry.action';
+import { FurnitureFloorObject } from './furniture/furniture-floor.object';
+import { FurnitureUtils } from '@game/utils/furniture.utils';
+import { FurnitureFloorAreaObject } from './areas/furniture-floor.object';
 
 const TILE_SET = 'tileset_player';
 
@@ -334,7 +337,7 @@ export class PlayerObject extends SceneObject {
 
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
-      typeIgnore: [UiObject, AreaObject, CollisionObject],
+      typeIgnore: [UiObject, AreaObject, CollisionObject, FurnitureFloorObject],
       objectIgnore: new Map([
         [this, true]
       ]),
@@ -588,14 +591,25 @@ export class PlayerObject extends SceneObject {
     //   return;
     // }
 
+    let width: number = 1;
+    let height: number = 1;
+
+    // TODO: this is hardcoded and will need to be updated later if more furniture added
+    if(item.type === ItemType.FurnitureRugLarge){
+      width = 2;
+    }
+
+    const colourDefault: string = '#0000ff33';
+    const colour = FurnitureUtils.cursor(this.scene, x, y, item.type) ?? colourDefault;
+
     RenderUtils.fillRectangle(
       context,
       x,
       y,
-      1,
-      1,
+      width,
+      height,
       {
-        colour: '#0000ff33',
+        colour,
         type: 'tile'
       }
     );
