@@ -44,6 +44,11 @@ import { usePickaxe } from './player/pickaxe/use-pickaxe.action';
 import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { useToolOnChest } from './player/tool/use-tool-on-chest.action';
 import { AreaObject } from './areas/area.object';
+import { useFurnitureItem } from './player/furniture/use-furniture-item.action';
+import { useFurnitureWall } from './player/furniture/use-furniture-wall.action';
+import { useFurnitureFloor } from './player/furniture/use-furniture-floor.action';
+import { CollisionObject } from './collision.object';
+import { assertUnreachable } from '@core/utils/typescript.utils';
 
 const TILE_SET = 'tileset_player';
 
@@ -347,13 +352,13 @@ export class PlayerObject extends SceneObject {
 
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
-      typeIgnore: [UiObject, AreaObject],
+      typeIgnore: [UiObject, AreaObject, CollisionObject],
       objectIgnore: new Map([
         [this, true]
       ]),
     }
 
-    console.log(x, y)
+    console.log(x, y);
 
     const object = this.scene.getObject(filter);
 
@@ -496,7 +501,7 @@ export class PlayerObject extends SceneObject {
         CanvasConstants.TILE_PIXEL_SIZE, 
         CanvasConstants.TILE_PIXEL_SIZE,
       ),
-      typeIgnore: [UiObject, AreaObject]
+      typeIgnore: [UiObject, AreaObject, CollisionObject]
     }
     const object = this.scene.getObject(filter);
 
@@ -530,8 +535,25 @@ export class PlayerObject extends SceneObject {
         case ItemType.Pickaxe:
           usePickaxe(this.scene, this) 
           return;
-        default:
+        case ItemType.FurnitureBed:
+          useFurnitureItem(this.scene, ItemType.FurnitureBed);
           return;
+        case ItemType.FurniturePainting:
+          useFurnitureWall(this.scene, ItemType.FurniturePainting);
+          return;
+        case ItemType.FurnitureRugLarge:
+          useFurnitureFloor(this.scene, ItemType.FurnitureRugLarge);
+          return;
+        case ItemType.Axe:
+        case ItemType.Wheat:
+        case ItemType.Tomato:
+        case ItemType.GateKey:
+        case ItemType.Rock:
+        case ItemType.Log:
+        case ItemType.Berry:
+          return;
+        default:
+          assertUnreachable(item.type);
       }
     } else {
       switch (item.type) {
@@ -625,8 +647,19 @@ export class PlayerObject extends SceneObject {
             default:
               return;
           }
-        default:
+        case ItemType.FurnitureBed:
+        case ItemType.FurniturePainting:
+        case ItemType.FurnitureRugLarge:
+        case ItemType.Chicken:
+        case ItemType.Egg:
+        case ItemType.Chest:
+        case ItemType.GateKey:
+        case ItemType.Rock:
+        case ItemType.Log: {
           return;
+        }
+        default:
+          assertUnreachable(item.type);
       }
     }
   }
