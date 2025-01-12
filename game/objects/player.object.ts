@@ -2,53 +2,35 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { DirtObject } from '@game/objects/dirt.object';
 import { isInteractable } from '@game/models/interactable.model';
 import { Input } from '@core/utils/input.utils';
 import { useHoe } from '@game/objects/player/hoe/use-hoe.action';
 import { useWateringCan } from '@game/objects/player/watering-can/use-watering-can.action';
-import { useWateringCanOnDirt } from '@game/objects/player/watering-can/use-watering-can-on-dirt.action';
 import { useChicken } from '@game/objects/player/use-chicken.action';
 import { useEgg } from '@game/objects/player/use-egg.action';
 import { useSeed } from '@game/objects/player/use-seed.action';
-import { useSeedOnDirt } from '@game/objects/player/seed/use-seed-on-dirt.action';
-import { ChickenObject } from '@game/objects/chicken.object';
-import { useCropOnChicken } from '@game/objects/player/crop/use-crop-on-chicken.action';
 import { InventoryObject } from '@game/objects/inventory/inventory.object';
-import { useWateringCanOnChicken } from './player/watering-can/use-watering-can-on-chicken.action';
 import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar/hotbar.object';
 import { ObjectFilter } from '@core/model/scene';
 import { Inventory, ItemRadius, ItemType } from '@game/models/inventory.model';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
-import { useAxeOnChicken } from './player/axe/use-axe-on-chicken.action';
-import { usePickaxeOnChicken } from './player/pickaxe/use-pickaxe-on-chicken.action';
-import { RockObject } from './rock.object';
-import { usePickaxeOnRock } from './player/pickaxe/use-pickaxe-on-rock.action';
-import { TreeObject } from './tree.object';
-import { useAxeOnTree } from './player/axe/use-axe-on-tree.action';
-import { TreeStumpObject } from './tree-stump.object';
-import { useAxeOnTreeStump } from './player/axe/use-axe-on-tree-stump.action';
-import { useShovelOnChicken } from './player/shovel/use-shovel-on-chicken.action';
-import { useHoeOnChicken } from './player/hoe/use-hoe-on-chicken.action';
 import { useShovel } from './player/shovel/use-shovel.action';
-import { HoleObject } from './hole.object';
-import { useShovelOnHole } from './player/shovel/use-shovel-on-hole.action';
-import { useBerryOnHole } from './player/berry/use-berry-on-hole.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
 import { Direction, ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
 import { usePickaxe } from './player/pickaxe/use-pickaxe.action';
-import { ChestObject } from '@game/objects/world-objects/chest.object';
-import { useToolOnChest } from './player/tool/use-tool-on-chest.action';
 import { AreaObject } from './areas/area.object';
 import { useFurnitureItem } from './player/furniture/use-furniture-item.action';
 import { useFurnitureWall } from './player/furniture/use-furniture-wall.action';
 import { useFurnitureFloor } from './player/furniture/use-furniture-floor.action';
 import { CollisionObject } from './collision.object';
 import { assertUnreachable } from '@core/utils/typescript.utils';
+import { useCrop } from './player/crop/use-crop.action';
+import { useAxe } from './player/axe/use-axe.action';
+import { useBerry } from './player/berry/use-berry.action';
 
 const TILE_SET = 'tileset_player';
 
@@ -508,159 +490,57 @@ export class PlayerObject extends SceneObject {
     // update direction based on action
     this.direction = this.actionDirection;
 
-    if (object === undefined) {
-      switch (item.type) {
-        case ItemType.Hoe:
-          useHoe(this.scene, this);
-          return;
-        case ItemType.WateringCan:
-          useWateringCan(this.scene, this);
-          return;
-        case ItemType.Chicken:
-          useChicken(this.scene);
-          return;
-        case ItemType.Egg:
-          useEgg(this.scene);
-          return;
-        case ItemType.TomatoSeeds:
-        case ItemType.WheatSeeds:
-          useSeed(this.scene);
-          return;
-        case ItemType.Chest:
-          useChest(this.scene, this);
-          return;
-        case ItemType.Shovel:
-          useShovel(this.scene, this);
-          return;
-        case ItemType.Pickaxe:
-          usePickaxe(this.scene, this) 
-          return;
-        case ItemType.FurnitureBed:
-          useFurnitureItem(this.scene, ItemType.FurnitureBed);
-          return;
-        case ItemType.FurniturePainting:
-          useFurnitureWall(this.scene, ItemType.FurniturePainting);
-          return;
-        case ItemType.FurnitureRugLarge:
-          useFurnitureFloor(this.scene, ItemType.FurnitureRugLarge);
-          return;
-        case ItemType.Axe:
-        case ItemType.Wheat:
-        case ItemType.Tomato:
-        case ItemType.GateKey:
-        case ItemType.Rock:
-        case ItemType.Log:
-        case ItemType.Berry:
-          return;
-        default:
-          assertUnreachable(item.type);
-      }
-    } else {
-      switch (item.type) {
-        case ItemType.WateringCan:
-          switch (true) {
-            case object instanceof DirtObject:
-              useWateringCanOnDirt(this.scene, this, object);
-              return;
-            case object instanceof ChickenObject:
-              useWateringCanOnChicken(this.scene, this, object);
-              return;
-            default:
-              return;
-          }
-        case ItemType.TomatoSeeds:
-        case ItemType.WheatSeeds:
-          switch (true) {
-            case object instanceof DirtObject:
-              useSeedOnDirt(this.scene, object);
-              return;
-            default:
-              return;
-          }
-        case ItemType.Tomato:
-        case ItemType.Wheat:
-          switch (true) {
-            case object instanceof ChickenObject:
-              useCropOnChicken(this.scene, object);
-              return;
-            default:
-              return;
-          }
-        case ItemType.Axe:
-          switch(true){
-            case object instanceof ChickenObject:
-              useAxeOnChicken(this.scene, this, object);
-              return;
-            case object instanceof TreeObject:
-              useAxeOnTree(this.scene, this, object);
-              return;
-            case object instanceof TreeStumpObject:
-              useAxeOnTreeStump(this.scene, this, object);
-              return;
-            case object instanceof ChestObject:
-              useToolOnChest(this.scene, this, object, item.type);
-              return;
-            default:
-              return;
-          }
-        case ItemType.Pickaxe:
-          switch(true){
-            case object instanceof ChickenObject:
-              usePickaxeOnChicken(this.scene, this, object);
-              return;
-            case object instanceof RockObject:
-              usePickaxeOnRock(this.scene, this, object);
-              return;
-            case object instanceof ChestObject:
-              useToolOnChest(this.scene, this, object, item.type);
-              return;
-            default:
-              return;
-          }
-        case ItemType.Shovel:
-          switch(true){
-            case object instanceof ChickenObject:
-              useShovelOnChicken(this.scene, this, object);
-              return;
-            case object instanceof HoleObject:
-              useShovelOnHole(this.scene, this, object);
-              return;
-            default:
-              return;
-          }
-        case ItemType.Hoe:
-          switch(true){
-            case object instanceof ChickenObject:
-              useHoeOnChicken(this.scene, this, object);
-              return;
-            case object instanceof ChestObject:
-              useToolOnChest(this.scene, this, object, item.type);
-              return;
-            default:
-              return;
-          }
-        case ItemType.Berry:
-          switch(true){
-            case object instanceof HoleObject:
-              useBerryOnHole(this.scene, object);
-              return;
-            default:
-              return;
-          }
-        case ItemType.FurnitureBed:
-        case ItemType.FurniturePainting:
-        case ItemType.FurnitureRugLarge:
-        case ItemType.Chicken:
-        case ItemType.Egg:
-        case ItemType.Chest:
-        case ItemType.GateKey:
-        case ItemType.Rock:
-        case ItemType.Log: {
-          return;
-        }
-        default:
-          assertUnreachable(item.type);
-      }
+    switch (item.type) {
+      case ItemType.Hoe:
+        useHoe(this.scene, this, object);
+        return;
+      case ItemType.WateringCan:
+        useWateringCan(this.scene, this, object);
+        return;
+      case ItemType.Chicken:
+        useChicken(this.scene, this, object);
+        return;
+      case ItemType.Egg:
+        useEgg(this.scene, this, object);
+        return;
+      case ItemType.TomatoSeeds:
+      case ItemType.WheatSeeds:
+        useSeed(this.scene, this, object);
+        return;
+      case ItemType.Chest:
+        useChest(this.scene, this, object);
+        return;
+      case ItemType.Shovel:
+        useShovel(this.scene, this, object);
+        return;
+      case ItemType.Pickaxe:
+        usePickaxe(this.scene, this, object) 
+        return;
+      case ItemType.FurnitureBed:
+        useFurnitureItem(this.scene, ItemType.FurnitureBed);
+        return;
+      case ItemType.FurniturePainting:
+        useFurnitureWall(this.scene, ItemType.FurniturePainting);
+        return;
+      case ItemType.FurnitureRugLarge:
+        useFurnitureFloor(this.scene, ItemType.FurnitureRugLarge);
+        return;
+      case ItemType.Wheat:
+      case ItemType.Tomato:
+        useCrop(this.scene, this, object);
+        return;
+      case ItemType.Axe:
+        useAxe(this.scene, this, object);
+        return;
+      case ItemType.Berry:
+        useBerry(this.scene, this, object);
+        return;
+      case ItemType.GateKey:
+      case ItemType.Rock:
+      case ItemType.Log:
+        return;
+      default:
+        assertUnreachable(item.type);
     }
   }
 

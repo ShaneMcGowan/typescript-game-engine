@@ -1,18 +1,19 @@
 import { SCENE_GAME } from "@game/scenes/game/scene";
-import { TextboxObject } from "@game/objects/textbox.object";
+import { SceneObject } from "@core/model/scene-object";
+import { MessageUtils } from "@game/utils/message.utils";
+import { DirtObject } from "../dirt.object";
+import { useSeedOnDirt } from "./seed/use-seed-on-dirt.action";
+import { PlayerObject } from "../player.object";
 
-export function useSeed(scene: SCENE_GAME): void {
-  scene.globals.player.enabled = false;
+export function useSeed(scene: SCENE_GAME, player: PlayerObject, target?: SceneObject): void {
+  switch (true) {
+    case target instanceof DirtObject:
+      useSeedOnDirt(scene, target);
+      return;
+  }
 
-  const object = new TextboxObject(
+  MessageUtils.showMessage(
     scene,
-    {
-      text: 'Seeds can only be placed in watered dirt.',
-      onComplete: () => {
-        scene.globals.player.enabled = true;
-      },
-    }
-  )
-
-  scene.addObject(object);
+    `Seeds can only be placed in watered dirt.`
+  );
 }
