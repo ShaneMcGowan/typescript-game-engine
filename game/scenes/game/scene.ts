@@ -8,6 +8,8 @@ import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
 import { QuestName } from '@game/models/quest.model';
 import { SCENE_GAME_MAP_FARM } from './maps/farm/map';
 import { SCENE_GAME_MAP_HOUSE } from './maps/house/map';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SaveFileKeys, Store } from '@game/utils/store.utils';
 
 export interface QuestStatus {
   intro: boolean;
@@ -32,7 +34,7 @@ interface Globals extends SceneGlobalsBaseConfig {
     actionsEnabled: boolean;
     interactEnabled: boolean;
   }
-  flags: Map<SceneFlags, boolean>, // TODO: we seem to lose some sort of type safety here, consider changing this to a record in future
+  flags: Record<SceneFlags, boolean>, // TODO: we seem to lose some sort of type safety here, consider changing this to a record in future
   quests: Record<QuestName, QuestStatus>;
 }
 
@@ -49,7 +51,12 @@ export class SCENE_GAME extends Scene {
       actionsEnabled: true,
       interactEnabled: true,
     },
-    flags: new Map(),
+    flags: {
+      [SceneFlags.shack_door_open]: false,
+      [SceneFlags.path_to_farm_cleared]: false,
+      [SceneFlags.farm_visited]: false,
+      [SceneFlags.house_visited]: false
+    },
     quests: {
       [QuestName.default]: {
         intro: false,
@@ -88,6 +95,11 @@ export class SCENE_GAME extends Scene {
 
   constructor(client: Client) {
     super(client);
+
+    if(CanvasConstants.SAVE_FILE_ID){
+      this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
+      this.globals.flags = Store.get<Record<SceneFlags, boolean>>(SaveFileKeys.Flags);
+    }
 
     const params = new URLSearchParams(window.location.search);
 

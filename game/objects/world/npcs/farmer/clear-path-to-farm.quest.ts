@@ -25,12 +25,12 @@ export class QuestClearPathToFarm extends Quest {
   }
 
   check(): boolean {
-    return this.scene.globals.flags.get(SceneFlags.path_to_farm_cleared);
+    return this.scene.globals.flags[SceneFlags.path_to_farm_cleared];
   }
 
   static setup(scene: SCENE_GAME): void {
     const onDestroy = () => {
-      scene.globals.flags.set(SceneFlags.path_to_farm_cleared, true);
+      scene.globals.flags[SceneFlags.path_to_farm_cleared] = true;
     }
     scene.addObject(new TreeObject(scene, { x: 1, y: 12, type: 'small', logOnDestroy: false, stumpOnDestroy: false, onDestroy: onDestroy }));
     scene.addObject(new TreeObject(scene, { x: 2, y: 13, type: 'small', logOnDestroy: false, stumpOnDestroy: false, onDestroy: onDestroy }));

@@ -2,6 +2,7 @@ import { DeviceType } from '@core/model/device-type';
 
 export abstract class CanvasConstants {
   static DEBUG_MODE: boolean = false; // a flag to be used for enabling things for debugging
+  static SAVE_FILE_ID: string | undefined;
 
   static CANVAS_TILE_HEIGHT = 18; // total height in tiles
   static CANVAS_TILE_WIDTH = 32; // total width in tiles

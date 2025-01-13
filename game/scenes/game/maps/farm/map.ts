@@ -119,8 +119,8 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     }));
 
     // first visit
-    if(!this.scene.globals.flags.get(SceneFlags.farm_visited)){
-      this.scene.globals.flags.set(SceneFlags.farm_visited, true);
+    if(!this.scene.globals.flags[SceneFlags.farm_visited]){
+      this.scene.globals.flags[SceneFlags.farm_visited] = true;
       this.scene.globals.player.enabled = false;
 
       this.scene.addObject(new TimerObject(this.scene, {

@@ -88,8 +88,8 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     }));
 
     // first visit
-    if(!this.scene.globals.flags.get(SceneFlags.house_visited)){
-      this.scene.globals.flags.set(SceneFlags.house_visited, true);
+    if(!this.scene.globals.flags[SceneFlags.house_visited]){
+      this.scene.globals.flags[SceneFlags.house_visited] = true;
       this.scene.globals.player.enabled = false;
 
       this.scene.addObject(new TimerObject(this.scene, {
