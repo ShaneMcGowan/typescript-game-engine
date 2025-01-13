@@ -9,21 +9,34 @@ type LightType = 'v1' | 'v2';
 const DEFAULT_DARKNESS_COLOUR_V1: string = '011121';
 const DEFAULT_DARKNESS_COLOUR_V2: string = '000000';
 const DEFAULT_LIGHT_TYPE: LightType = 'v1';
+const DEFAULT_MAX_DARKNESS: number = 200;
+const DEFAULT_MINIMUM_DARKNESS: number = 0;
+const DEFAULT_TIME_MODIFIER: number = 10;
+const DEFAULT_LIGHT_SOURCE_CACHE_ENABLED: boolean = false;
 
 interface Config extends SceneObjectBaseConfig {
   type?: LightType;
+  timeModifier?: number;
+  maxDarkness?: number;
+  minimumDarkness?: number;
+  lightSourceCacheEnabled?: boolean;
 }
 
-export class LightObject extends SceneObject {
+export class LightingObject extends SceneObject {
 
   lightSources: (SceneObject & LightSource)[] = [];
+  lightSourceCacheEnabled: boolean;
   lightSourceCacheTimer: number = 0;
   lightSourceCacheTimerMax: number = 0;
 
+  enabled: boolean = false;
+
   type: LightType;
-  
-  alphaCounter: number = 0;
-  alphaCounterMax: number = 225; // any value below 16 bit hex max value of 255 is fine
+
+  alphaCounter: number = 200;
+  alphaSpeed: number;
+  alphaCounterMax: number; // any value below 16 bit hex max value of 255 is fine
+  alphaCounterMin: number; // any value above 0 is fine
   alphaDirection: 'increase' | 'decrease' = 'increase';
 
   constructor(
@@ -35,10 +48,20 @@ export class LightObject extends SceneObject {
     this.renderer.layer = CanvasConstants.LAST_OBJECT_RENDER_LAYER;
 
     this.type = config.type ?? DEFAULT_LIGHT_TYPE;
+    this.lightSourceCacheEnabled = config.lightSourceCacheEnabled ?? DEFAULT_LIGHT_SOURCE_CACHE_ENABLED;
+
+    this.alphaSpeed = config.timeModifier ?? DEFAULT_TIME_MODIFIER;
+    this.alphaCounterMax = config.maxDarkness ?? DEFAULT_MAX_DARKNESS;
+    this.alphaCounterMin = config.minimumDarkness ?? DEFAULT_MINIMUM_DARKNESS;
   }
 
   onUpdate(delta: number): void {
     this.cacheLightSources(delta);
+    
+    if(!this.enabled){
+      return;
+    }
+
     this.updateAlpha(delta);
   }
 
@@ -47,7 +70,7 @@ export class LightObject extends SceneObject {
   }
 
   get alpha(): string {
-    return MathUtils.numberToHexString(this.alphaCounter);
+    return MathUtils.numberToHexString(Math.floor(this.alphaCounter));
   }
 
   /**
@@ -58,7 +81,7 @@ export class LightObject extends SceneObject {
   private cacheLightSources(delta: number): void {
     this.lightSourceCacheTimer += delta;
 
-    if(this.lightSourceCacheTimer < this.lightSourceCacheTimerMax){
+    if(this.lightSourceCacheEnabled && this.lightSourceCacheTimer < this.lightSourceCacheTimerMax){
       return;
     }
 
@@ -77,16 +100,19 @@ export class LightObject extends SceneObject {
   }
 
   private updateAlpha(delta: number): void {
+    console.log(this.alphaCounter);
+    const time = delta * this.alphaSpeed;
+
     if(this.alphaDirection === 'increase'){
-      this.alphaCounter++;
+      this.alphaCounter += time;
       if(this.alphaCounter < this.alphaCounterMax){
         return;
       }
 
       this.alphaDirection = 'decrease';
     } else {
-      this.alphaCounter--;
-      if(this.alphaCounter > 0){
+      this.alphaCounter -= time;
+      if(this.alphaCounter > this.alphaCounterMin){
         return;
       }
 
@@ -161,13 +187,15 @@ export class LightObject extends SceneObject {
       context.fillStyle = `#${DEFAULT_DARKNESS_COLOUR_V2}${this.alpha}`;
     }
 
+    console.log(context.fillStyle);
+
     context.beginPath();
 
     context.rect(
       0,
       0,
-      CanvasConstants.CANVAS_WIDTH,
-      CanvasConstants.CANVAS_HEIGHT
+      this.scene.map.width * CanvasConstants.TILE_SIZE,
+      this.scene.map.height * CanvasConstants.TILE_SIZE,
     );
 
     context.fill();
@@ -196,6 +224,7 @@ export class LightObject extends SceneObject {
 
 }
 
+// from https://stackoverflow.com/a/10401701
 function addLight(ctx: CanvasRenderingContext2D, intsy: number, amb: string, xStart: number, yStart: number, rStart: number, xEnd: number, yEnd: number, rEnd: number, xOff?: number, yOff?: number) {
   xOff = xOff || 0;
   yOff = yOff || 0;

@@ -28,6 +28,7 @@ import { QuestCollectBerries } from '@game/objects/world/npcs/farmer/collect-ber
 import { QuestClearPathToFarm } from '@game/objects/world/npcs/farmer/clear-path-to-farm.quest';
 import { Scene } from '@core/model/scene';
 import { SCENE_GAME_MAP_FARM } from '../farm/map';
+import { LightingObject } from '@game/objects/lights/lighting.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 

@@ -18,6 +18,7 @@ export enum SceneFlags {
   shack_door_open = 'shack_door_open',
   path_to_farm_cleared = 'path_to_farm_cleared',
   farm_visited = 'farm_visited',
+  house_visited = 'house_visited',
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -92,15 +93,7 @@ export class SCENE_GAME extends Scene {
 
     // this is for debugging, giving us all items
     if (params.get('items')) {
-      // Object.keys(ItemType).forEach(key => this.globals.inventory.addToInventory(key as ItemType));
-      this.globals.inventory.addToInventory(ItemType.FurnitureBed);
-      this.globals.inventory.addToInventory(ItemType.FurnitureTable);
-      this.globals.inventory.addToInventory(ItemType.FurnitureTable);
-      this.globals.inventory.addToInventory(ItemType.FurniturePainting);
-      this.globals.inventory.addToInventory(ItemType.FurnitureLamp);
-      this.globals.inventory.addToInventory(ItemType.FurnitureLamp);
-      this.globals.inventory.addToInventory(ItemType.FurnitureRugLarge);
-      this.globals.inventory.addToInventory(ItemType.FurnitureRugLarge);
+      Object.keys(ItemType).forEach(key => this.globals.inventory.addToInventory(key as ItemType));
     }
 
     // this is for debugging, letting us launch into a specific map
