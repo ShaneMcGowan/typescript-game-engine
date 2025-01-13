@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { MathUtils } from '@core/utils/math.utils';
 import { Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/components/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
@@ -81,9 +81,6 @@ export class NpcObject extends SceneObject implements Interactable {
   // config
   quests: Quest[] = [];
 
-  // state
-  introSeen: boolean;
-
   constructor(
     protected scene: SCENE_GAME,
     protected config: NpcObjectConfig
@@ -137,12 +134,12 @@ export class NpcObject extends SceneObject implements Interactable {
   get hasActiveQuest(): boolean {
     return this.quests.some(quest => {
       const status = this.scene.globals.quests[quest.id];
-      
-      if(status.complete){
+
+      if (status.complete) {
         return false;
       }
 
-      if(status.intro){
+      if (status.intro) {
         return true;
       }
 
@@ -156,13 +153,21 @@ export class NpcObject extends SceneObject implements Interactable {
   get hasAvailableQuest(): boolean {
     return this.quests.some(quest => {
       const status = this.scene.globals.quests[quest.id];
-      
-      if(status.complete){
+
+      if (status.complete) {
         return false;
       }
 
       return true;
     })
+  }
+
+  get introFlag(): SceneFlag {
+    return SceneFlag.intro_default;
+  }
+
+  get introSeen(): boolean {
+    return this.scene.globals.flags[this.introFlag];
   }
 
   private updateAnimationTimer(delta: number): void {
@@ -257,8 +262,8 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    if(!this.introSeen){
-      this.introSeen = true;
+    if (!this.introSeen) {
+      this.scene.setFlag(this.introFlag, true);
       this.say(
         this.dialogue.intro,
         () => { this.onIntro() },
@@ -266,8 +271,8 @@ export class NpcObject extends SceneObject implements Interactable {
       return;
     }
 
-    for (const quest of this.quests){
-      if(quest.isComplete){
+    for (const quest of this.quests) {
+      if (quest.isComplete) {
         continue;
       }
 
@@ -283,10 +288,10 @@ export class NpcObject extends SceneObject implements Interactable {
     );
   };
 
-  onIntro(): void {}
-  onDefault(): void {}
+  onIntro(): void { }
+  onDefault(): void { }
 
-  say(text: string, onComplete?: () => void):void {
+  say(text: string, onComplete?: () => void): void {
     this.scene.globals.player.enabled = false;
 
     this.scene.addObject(
@@ -297,7 +302,7 @@ export class NpcObject extends SceneObject implements Interactable {
           portrait: this.details.portrait,
           text: text,
           onComplete: () => {
-            if(onComplete){
+            if (onComplete) {
               onComplete();
             }
             this.scene.globals.player.enabled = true;
@@ -329,7 +334,7 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   private renderIcon(context: CanvasRenderingContext2D): void {
-    if(this.hasActiveQuest){
+    if (this.hasActiveQuest) {
       this.iconRenderer(
         context,
         {
@@ -344,7 +349,7 @@ export class NpcObject extends SceneObject implements Interactable {
       return;
     }
 
-    if(this.hasAvailableQuest){
+    if (this.hasAvailableQuest) {
       this.iconRenderer(
         context,
         {

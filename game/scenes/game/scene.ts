@@ -16,7 +16,10 @@ export interface QuestStatus {
   complete: boolean;
 }
 
-export enum SceneFlags {
+export enum SceneFlag {
+  intro_default = 'intro_default', // not actually used, default for the NPC object
+  intro_farmer = 'intro_farmer',
+  intro_farmers_son = 'intro_farmers_son',
   shack_door_open = 'shack_door_open',
   path_to_farm_cleared = 'path_to_farm_cleared',
   farm_visited = 'farm_visited',
@@ -34,7 +37,7 @@ interface Globals extends SceneGlobalsBaseConfig {
     actionsEnabled: boolean;
     interactEnabled: boolean;
   }
-  flags: Record<SceneFlags, boolean>, // TODO: we seem to lose some sort of type safety here, consider changing this to a record in future
+  flags: Record<SceneFlag, boolean>,
   quests: Record<QuestName, QuestStatus>;
 }
 
@@ -52,10 +55,13 @@ export class SCENE_GAME extends Scene {
       interactEnabled: true,
     },
     flags: {
-      [SceneFlags.shack_door_open]: false,
-      [SceneFlags.path_to_farm_cleared]: false,
-      [SceneFlags.farm_visited]: false,
-      [SceneFlags.house_visited]: false
+      [SceneFlag.intro_default]: false,
+      [SceneFlag.intro_farmer]: false,
+      [SceneFlag.intro_farmers_son]: false,
+      [SceneFlag.shack_door_open]: false,
+      [SceneFlag.path_to_farm_cleared]: false,
+      [SceneFlag.farm_visited]: false,
+      [SceneFlag.house_visited]: false,
     },
     quests: {
       [QuestName.default]: {
@@ -96,9 +102,9 @@ export class SCENE_GAME extends Scene {
   constructor(client: Client) {
     super(client);
 
-    if(CanvasConstants.SAVE_FILE_ID){
+    if (CanvasConstants.SAVE_FILE_ID) {
       this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
-      this.globals.flags = Store.get<Record<SceneFlags, boolean>>(SaveFileKeys.Flags);
+      this.globals.flags = Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags);
     }
 
     const params = new URLSearchParams(window.location.search);
@@ -127,6 +133,18 @@ export class SCENE_GAME extends Scene {
 
   get selectedInventoryIndex(): number {
     return this.globals.hotbar_selected_index;
+  }
+
+  get flags(): Record<SceneFlag, boolean> {
+    return this.globals.flags;
+  }
+
+  setFlag(flag: SceneFlag, value: boolean): void {
+    this.flags[flag] = value;
+  }
+
+  getFlag(flag: SceneFlag): boolean {
+    return this.flags[flag];
   }
 
 }

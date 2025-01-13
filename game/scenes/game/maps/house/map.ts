@@ -1,6 +1,6 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
-import { SceneFlags, type SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { WarpObject } from '@game/objects/warp.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
@@ -30,8 +30,8 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
     this.scene.addObject(this.player);
 
-    for(let x = 0; x < 2; x++){
-      for(let y = 0; y < 2; y++){
+    for (let x = 0; x < 2; x++) {
+      for (let y = 0; y < 2; y++) {
         this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13 + (x * 3), y: 7 + (y * 2), active: true, }));
       }
     }
@@ -53,7 +53,7 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     this.scene.addObject(new FurnitureFloorAreaObject(scene, { x: 12, y: 7, width: 8, height: 5 }));
 
     // lighting
-    this.scene.addObject(new LightingObject(scene, { x: 0, y: 0,}));
+    this.scene.addObject(new LightingObject(scene, { x: 0, y: 0, }));
 
     // exit door
     const warpConfig = {
@@ -88,8 +88,8 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     }));
 
     // first visit
-    if(!this.scene.globals.flags[SceneFlags.house_visited]){
-      this.scene.globals.flags[SceneFlags.house_visited] = true;
+    if (!this.scene.globals.flags[SceneFlag.house_visited]) {
+      this.scene.globals.flags[SceneFlag.house_visited] = true;
       this.scene.globals.player.enabled = false;
 
       this.scene.addObject(new TimerObject(this.scene, {
