@@ -1,6 +1,6 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
-import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneFlags, type SCENE_GAME } from '@game/scenes/game/scene';
 import { WarpObject } from '@game/objects/warp.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
@@ -9,7 +9,11 @@ import * as background from './background.json'
 import { FurnitureWallAreaObject } from '@game/objects/areas/furniture-wall.object';
 import { FurnitureFloorAreaObject } from '@game/objects/areas/furniture-floor.object';
 import { FurnitureLampObject } from '@game/objects/furniture/item/furniture-lamp.object';
-import { LightObject } from '@game/objects/lights/light.object';
+import { LightingObject } from '@game/objects/lights/lighting.object';
+import { TimerObject } from '@core/objects/timer.object';
+import { MessageUtils } from '@game/utils/message.utils';
+import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
+import { TransitionObject } from '@core/objects/transition.object';
 
 export class SCENE_GAME_MAP_HOUSE extends SceneMap {
 
@@ -26,8 +30,11 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
     this.scene.addObject(this.player);
 
-    this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13, y: 8 }));
-    this.scene.addObject(new FurnitureLampObject(this.scene, { x: 18, y: 8 }));
+    for(let x = 0; x < 2; x++){
+      for(let y = 0; y < 2; y++){
+        this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13 + (x * 3), y: 7 + (y * 2), active: true, }));
+      }
+    }
 
     // walls
     // top
@@ -46,7 +53,7 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     this.scene.addObject(new FurnitureFloorAreaObject(scene, { x: 12, y: 7, width: 8, height: 5 }));
 
     // lighting
-    this.scene.addObject(new LightObject(scene, { x: 0, y: 0,}));
+    this.scene.addObject(new LightingObject(scene, { x: 0, y: 0,}));
 
     // exit door
     const warpConfig = {
@@ -68,6 +75,33 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
   }
 
   onEnter(): void {
+    // set renderer
+    this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
+
+    // fade in
+    const transitionLength = 2;
+    this.scene.addObject(new TransitionObject(this.scene, {
+      animationCenterX: this.player.transform.position.world.x + (this.player.width / 2),
+      animationCenterY: this.player.transform.position.world.y + (this.player.height / 2),
+      animationType: 'circle',
+      animationLength: transitionLength,
+    }));
+
+    // first visit
+    if(!this.scene.globals.flags.get(SceneFlags.house_visited)){
+      this.scene.globals.flags.set(SceneFlags.house_visited, true);
+      this.scene.globals.player.enabled = false;
+
+      this.scene.addObject(new TimerObject(this.scene, {
+        duration: transitionLength,
+        onComplete: () => {
+          MessageUtils.showMessage(
+            this.scene,
+            `So this is my new home. This place is quite dark and depressing... I need to decorate.`
+          )
+        }
+      }));
+    }
   }
 
   onLeave(): void {

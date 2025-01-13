@@ -22,4 +22,12 @@ export abstract class MathUtils {
 
     return values[index];
   }
+
+  static numberToHexString(value: number): string {
+    return value.toString(16);
+  }
+
+  static hexStringToNumber(value: string): number {
+    return parseInt(value, 16);
+  }
 }

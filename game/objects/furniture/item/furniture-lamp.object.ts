@@ -6,8 +6,10 @@ import { Interactable } from "@game/models/components/interactable.model";
 import { MessageUtils } from "@game/utils/message.utils";
 import { LightSource, LightSourceConfig } from "@game/models/components/lightsource.model";
 
-interface Config extends FurnitureConfig {
+const DEFAULT_ACTIVE: boolean = false;
 
+interface Config extends FurnitureConfig {
+  active?: boolean;
 }
 
 export class FurnitureLampObject extends FurnitureItemObject implements Interactable, LightSource {
@@ -22,6 +24,7 @@ export class FurnitureLampObject extends FurnitureItemObject implements Interact
     config: Config
   ) {
     super(scene, config);
+    this.active = config.active ?? DEFAULT_ACTIVE;
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -44,7 +47,7 @@ export class FurnitureLampObject extends FurnitureItemObject implements Interact
   get lightSource(): LightSourceConfig {
     return {
       enabled: this.active,
-      radius: 1,
+      radius: 2,
     }
   }
 
