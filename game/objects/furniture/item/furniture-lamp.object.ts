@@ -47,7 +47,7 @@ export class FurnitureLampObject extends FurnitureItemObject implements Interact
   get lightSource(): LightSourceConfig {
     return {
       enabled: this.active,
-      radius: 1,
+      radius: 2,
     }
   }
 

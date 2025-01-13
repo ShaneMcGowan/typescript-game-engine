@@ -26,9 +26,9 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 10, });
     this.scene.addObject(this.player);
 
-    for(let x = 0; x < 8; x++){
-      for(let y = 0; y < 3; y++){
-        this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13 + x, y: 7 + (y * 2), active: true, }));
+    for(let x = 0; x < 2; x++){
+      for(let y = 0; y < 2; y++){
+        this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13 + (x * 3), y: 7 + (y * 2), active: true, }));
       }
     }
 

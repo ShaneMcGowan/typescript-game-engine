@@ -2,13 +2,16 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { isLightSource, LightSource } from "@game/models/components/lightsource.model";
-import { RenderUtils } from "@core/utils/render.utils";
+import { MathUtils } from "@core/utils/math.utils";
 
-const DEFAULT_DARKNESS_COLOUR: string = '#000000';
-const DEFAULT_DARKNESS_INTENSITY: number = 0.5;
+type LightType = 'v1' | 'v2';
+
+const DEFAULT_DARKNESS_COLOUR_V1: string = '011121';
+const DEFAULT_DARKNESS_COLOUR_V2: string = '000000';
+const DEFAULT_LIGHT_TYPE: LightType = 'v1';
 
 interface Config extends SceneObjectBaseConfig {
-
+  type?: LightType;
 }
 
 export class LightObject extends SceneObject {
@@ -17,6 +20,12 @@ export class LightObject extends SceneObject {
   lightSourceCacheTimer: number = 0;
   lightSourceCacheTimerMax: number = 0;
 
+  type: LightType;
+  
+  alphaCounter: number = 0;
+  alphaCounterMax: number = 225; // any value below 16 bit hex max value of 255 is fine
+  alphaDirection: 'increase' | 'decrease' = 'increase';
+
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -24,15 +33,21 @@ export class LightObject extends SceneObject {
     super(scene, config);
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.LAST_OBJECT_RENDER_LAYER;
+
+    this.type = config.type ?? DEFAULT_LIGHT_TYPE;
   }
 
   onUpdate(delta: number): void {
     this.cacheLightSources(delta);
-    // TODO: update alpha for time of day
+    this.updateAlpha(delta);
   }
 
   onRender(context: CanvasRenderingContext2D): void {
     this.renderLight(context);
+  }
+
+  get alpha(): string {
+    return MathUtils.numberToHexString(this.alphaCounter);
   }
 
   /**
@@ -61,10 +76,39 @@ export class LightObject extends SceneObject {
     }
   }
 
-  private renderLightSource(context: CanvasRenderingContext2D, object: SceneObject & LightSource): void {
+  private updateAlpha(delta: number): void {
+    if(this.alphaDirection === 'increase'){
+      this.alphaCounter++;
+      if(this.alphaCounter < this.alphaCounterMax){
+        return;
+      }
+
+      this.alphaDirection = 'decrease';
+    } else {
+      this.alphaCounter--;
+      if(this.alphaCounter > 0){
+        return;
+      }
+
+      this.alphaDirection = 'increase';
+    }
+  }
+
+  /**
+   * Light rendering v1
+   * Works well but there isn't much control over opacity
+   * @param context 
+   * @param object 
+   * @returns 
+   */
+  private renderLightSourceV1(context: CanvasRenderingContext2D, object: SceneObject & LightSource): void {
     if(!object.lightSource.enabled){
       return;
     }
+
+    context.save();
+    context.globalCompositeOperation = 'destination-out';
+    context.beginPath();
 
     const x = object.centre.world.x;
     const y = object.centre.world.y;
@@ -73,22 +117,49 @@ export class LightObject extends SceneObject {
     // moveTo resolves issue with random intersections
     // https://stackoverflow.com/a/31737509
     // move to new position
-    context.moveTo(
-      (x + radius) * CanvasConstants.TILE_SIZE,
-      y * CanvasConstants.TILE_SIZE
-    );
+    // context.moveTo(
+    //   (x + radius) * CanvasConstants.TILE_SIZE,
+    //   y * CanvasConstants.TILE_SIZE
+    // );
 
     context.arc(
       x * CanvasConstants.TILE_SIZE,
       y * CanvasConstants.TILE_SIZE,
       radius * CanvasConstants.TILE_SIZE,
       0,
-      2 * Math.PI
+      2 * Math.PI,
     );
+
+    context.fill();
+    context.restore();
+  }
+
+  private renderLightSourceV2(context: CanvasRenderingContext2D, object: SceneObject & LightSource): void {
+    if(!object.lightSource.enabled){
+      return;
+    }
+
+    const ambientLight = .1;
+    const intensity = 2;
+    const amb = 'rgba(0,0,0,' + (1-ambientLight) + ')';
+    const radius = object.lightSource.radius * CanvasConstants.TILE_SIZE;
+    const x = object.centre.world.x * CanvasConstants.TILE_SIZE;
+    const y = object.centre.world.y * CanvasConstants.TILE_SIZE;
+
+    addLight(
+      context, intensity, amb, x, y, 0, x, y, radius
+    );
+
+    context.fillStyle = amb;
+    context.globalCompositeOperation = 'xor';
   }
 
   private renderDarkness(context: CanvasRenderingContext2D): void {
-    context.fillStyle = `${DEFAULT_DARKNESS_COLOUR}`;
+    if(this.type === 'v1'){
+      context.fillStyle = `#${DEFAULT_DARKNESS_COLOUR_V1}${this.alpha}`;
+    } else if(this.type === 'v2') {
+      context.fillStyle = `#${DEFAULT_DARKNESS_COLOUR_V2}${this.alpha}`;
+    }
 
     context.beginPath();
 
@@ -107,15 +178,31 @@ export class LightObject extends SceneObject {
     // https://stackoverflow.com/a/11770000
 
     // set up
-    context.globalCompositeOperation = 'xor';
+    // context.globalCompositeOperation = 'xor';
     
     // darkness
     this.renderDarkness(context);
     
     // loop all lights sources
-    context.beginPath();
-    this.lightSources.forEach(source => this.renderLightSource(context, source))
-    context.fill();
+    this.lightSources.forEach((source, index) => {
+      if(this.type === 'v1'){
+        this.renderLightSourceV1(context, source);
+      }
+      if(this.type === 'v2'){
+        this.renderLightSourceV2(context, source);
+      }
+    })
   }
 
+}
+
+function addLight(ctx: CanvasRenderingContext2D, intsy: number, amb: string, xStart: number, yStart: number, rStart: number, xEnd: number, yEnd: number, rEnd: number, xOff?: number, yOff?: number) {
+  xOff = xOff || 0;
+  yOff = yOff || 0;
+
+  var g = ctx.createRadialGradient(xStart, yStart, rStart, xEnd, yEnd, rEnd);
+  g.addColorStop(1, 'rgba(0,0,0,' + (1 - intsy) + ')');
+  g.addColorStop(0, amb);
+  ctx.fillStyle = g;
+  ctx.fillRect(xStart - rEnd + xOff, yStart - rEnd + yOff, xEnd + rEnd, yEnd + rEnd);
 }
