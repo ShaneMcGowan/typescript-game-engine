@@ -1,7 +1,7 @@
 import { type Client } from '@core/client';
 import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
-import { Inventory, Item, ItemType } from '@game/models/inventory.model';
+import { Inventory, Item, ItemList, ItemType } from '@game/models/inventory.model';
 import { SCENE_GAME_MAP_FARM_HOUSE } from './maps/farm-house/map';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
@@ -105,6 +105,13 @@ export class SCENE_GAME extends Scene {
     if (CanvasConstants.SAVE_FILE_ID) {
       this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
       this.globals.flags = Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags);
+      this.globals.inventory.items = Store.get<ItemList>(SaveFileKeys.Inventory).map(item => {
+        // JSON Store doesn't have undefined, only null so it needs to be mapped
+        if (item === null) {
+          return undefined;
+        }
+        return item;
+      });
     }
 
     const params = new URLSearchParams(window.location.search);

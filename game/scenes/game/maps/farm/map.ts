@@ -26,7 +26,6 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 99, y: 12, });
 
     this.scene.addObject(this.player);

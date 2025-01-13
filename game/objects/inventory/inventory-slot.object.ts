@@ -116,7 +116,7 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    if (this.item.maxStackSize === 1) {
+    if (Inventory.getItemMaxStackSize(this.item.type) === 1) {
       return;
     }
 

@@ -32,15 +32,15 @@ export class HotbarSlotObject extends UiObject {
   }
 
   onUpdate(delta: number): void {
-    if(!this.scene.globals.player.enabled){
+    if (!this.scene.globals.player.enabled) {
       return;
     }
 
-    if(!Input.isMousePressed(MouseKey.Left)){
+    if (!Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
-    if(!MouseUtils.isMouseWithinObject(this)){
+    if (!MouseUtils.isMouseWithinObject(this)) {
       return;
     }
 
@@ -103,7 +103,7 @@ export class HotbarSlotObject extends UiObject {
       return;
     }
 
-    if (this.item.maxStackSize === 1) {
+    if (Inventory.getItemMaxStackSize(this.item.type) === 1) {
       return;
     }
 

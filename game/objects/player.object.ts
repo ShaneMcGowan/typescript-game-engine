@@ -34,6 +34,7 @@ import { useBerry } from './player/berry/use-berry.action';
 import { FurnitureFloorObject } from './furniture/furniture-floor.object';
 import { FurnitureUtils } from '@game/utils/furniture.utils';
 import { use } from '@game/objects/player/use.action';
+import { IconsObject } from './icons/icons.object';
 
 const TILE_SET = 'tileset_player';
 
@@ -98,9 +99,10 @@ export class PlayerObject extends SceneObject {
 
   onAwake(): void {
     this.addHotbar();
+    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
   }
 
-  onUpdate(delta: number): void {    
+  onUpdate(delta: number): void {
     this.updateMovement(delta);
     this.updateAnimations(delta);
     this.updateAnimation(delta);
@@ -110,7 +112,7 @@ export class PlayerObject extends SceneObject {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    if(this.animation){
+    if (this.animation) {
       this.renderAnimation(context);
     } else {
       this.renderSprite(context);
@@ -132,15 +134,15 @@ export class PlayerObject extends SceneObject {
   }
 
   updateMovement(delta: number): void {
-    if(!this.scene.globals.player.enabled){
+    if (!this.scene.globals.player.enabled) {
       return;
     }
 
-    if(!this.scene.globals.player.movementEnabled){
+    if (!this.scene.globals.player.movementEnabled) {
       return;
     }
 
-    if(!this.isAnimating){
+    if (!this.isAnimating) {
       this.determineNextMovement(delta);
     }
 
@@ -154,7 +156,7 @@ export class PlayerObject extends SceneObject {
     }
 
     // check if button pressed
-    if(!Input.isPressed<Control>(CONTROL_SCHEME, [Control.Left, Control.Right, Control.Up, Control.Down])){
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, [Control.Left, Control.Right, Control.Up, Control.Down])) {
       return;
     }
 
@@ -271,7 +273,7 @@ export class PlayerObject extends SceneObject {
   }
 
   private updateAnimation(delta: number): void {
-    if(!this.isAnimating){
+    if (!this.isAnimating) {
       return;
     }
 
@@ -281,12 +283,12 @@ export class PlayerObject extends SceneObject {
     const finalFrameStart = frameLength * (this.animation.frames.length - 1);
 
     // run callback on start of final frame as it looks more natural than after animation has stopped
-    if(this.animationDelta > finalFrameStart && this.animationCallback){
+    if (this.animationDelta > finalFrameStart && this.animationCallback) {
       this.animationCallback();
       this.animationCallback = undefined;
     }
 
-    if(this.animationDelta > this.animation.length){
+    if (this.animationDelta > this.animation.length) {
       this.endAnimation();
     }
   }
@@ -303,15 +305,15 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(this.isAnimating){
+    if (this.isAnimating) {
       return;
     }
 
-    if(this.isMoving){
+    if (this.isMoving) {
       return;
     }
 
-    if(!Input.isPressed<Control>(CONTROL_SCHEME, Control.Interact)){
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Interact)) {
       return;
     }
 
@@ -385,11 +387,11 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(this.isAnimating){
+    if (this.isAnimating) {
       return;
     }
 
-    if(!Input.isPressed<Control>(CONTROL_SCHEME, Control.OpenInventory)){
+    if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.OpenInventory)) {
       return;
     }
 
@@ -424,14 +426,14 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    if(this.isAnimating){
+    if (this.isAnimating) {
       return;
     }
 
-    if(this.isMoving){
+    if (this.isMoving) {
       return;
     }
-    
+
     if (!Input.isPressed<Control>(CONTROL_SCHEME, Control.Action)) {
       return;
     }
@@ -440,13 +442,13 @@ export class PlayerObject extends SceneObject {
     this.direction = this.actionDirection;
 
     console.log(this.mouseTilePosition);
-    
+
     // check if UI object at mouse position, if so, cancel this call
     const uiFilter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(
-        Input.mouse.position.x, 
-        Input.mouse.position.y, 
-        CanvasConstants.TILE_PIXEL_SIZE, 
+        Input.mouse.position.x,
+        Input.mouse.position.y,
+        CanvasConstants.TILE_PIXEL_SIZE,
         CanvasConstants.TILE_PIXEL_SIZE,
       ),
       typeMatch: [UiObject]
@@ -454,7 +456,7 @@ export class PlayerObject extends SceneObject {
 
     const uiObject = this.scene.getObject(uiFilter, false);
 
-    if(uiObject){
+    if (uiObject) {
       console.log(uiObject);
       return;
     }
@@ -464,9 +466,9 @@ export class PlayerObject extends SceneObject {
     const { x, y } = this.mouseTilePosition;
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(
-        x, 
-        y, 
-        CanvasConstants.TILE_PIXEL_SIZE, 
+        x,
+        y,
+        CanvasConstants.TILE_PIXEL_SIZE,
         CanvasConstants.TILE_PIXEL_SIZE,
       ),
       typeIgnore: [UiObject, AreaObject, CollisionObject]
@@ -481,16 +483,16 @@ export class PlayerObject extends SceneObject {
     }
 
     // item cannot be placed
-    if (item.radius === ItemRadius.None) {
+    if (Inventory.getItemRadius(item.type) === ItemRadius.None) {
       return;
     }
 
     const neighbours = [...this.neighbourTiles];
 
     if (
-      item.radius === ItemRadius.Player
+      Inventory.getItemRadius(item.type) === ItemRadius.Player
       && !neighbours.some(n => n.x === x && n.y === y)
-    ){
+    ) {
       return;
     }
 
@@ -518,7 +520,7 @@ export class PlayerObject extends SceneObject {
         useShovel(this.scene, this, object);
         return;
       case ItemType.Pickaxe:
-        usePickaxe(this.scene, this, object) 
+        usePickaxe(this.scene, this, object)
         return;
       case ItemType.FurnitureBed:
       case ItemType.FurnitureTable:
@@ -576,7 +578,7 @@ export class PlayerObject extends SceneObject {
 
     const item = this.scene.selectedInventoryItem;
     // do not render cursor
-    if (item === undefined || item.radius === ItemRadius.None || item.radius === ItemRadius.Player) {
+    if (item === undefined || Inventory.getItemRadius(item.type) === ItemRadius.None || Inventory.getItemRadius(item.type) === ItemRadius.Player) {
       return;
     }
 
@@ -598,7 +600,7 @@ export class PlayerObject extends SceneObject {
     let height: number = 1;
 
     // TODO: this is hardcoded and will need to be updated later if more furniture added
-    if(item.type === ItemType.FurnitureRugLarge){
+    if (item.type === ItemType.FurnitureRugLarge) {
       width = 2;
     }
 
@@ -622,9 +624,9 @@ export class PlayerObject extends SceneObject {
     const frameLength: number = this.animation.length / this.animation.frames.length;
 
     let sprite;
-    for(let i = 0; i < this.animation.frames.length; i++){
+    for (let i = 0; i < this.animation.frames.length; i++) {
       const frameStart = frameLength * i;
-      if(this.animationDelta >= frameStart){
+      if (this.animationDelta >= frameStart) {
         sprite = this.animation.frames[i];
       }
     }
@@ -632,7 +634,7 @@ export class PlayerObject extends SceneObject {
     RenderUtils.renderSprite(
       context,
       Assets.images[this.animation.tileset],
-      sprite.x, 
+      sprite.x,
       sprite.y,
       this.transform.position.world.x - 1,
       this.transform.position.world.y - 1,
@@ -644,7 +646,7 @@ export class PlayerObject extends SceneObject {
   private renderControllerState(context: CanvasRenderingContext2D): void {
     // const gamepad = Input.gamepads.get(this.playerIndex);
     const gamepad = navigator.getGamepads()[this.playerIndex];
-    if(gamepad === null){
+    if (gamepad === null) {
       return;
     }
 
@@ -683,10 +685,10 @@ export class PlayerObject extends SceneObject {
     const y = CanvasConstants.CANVAS_TILE_HEIGHT - 2.5;
 
     this.hotbarObject = new HotbarObject(
-      this.scene, 
-      { 
-        x: x, 
-        y: y, 
+      this.scene,
+      {
+        x: x,
+        y: y,
       }
     );
 
@@ -710,38 +712,38 @@ export class PlayerObject extends SceneObject {
   get neighbourTiles(): Coordinate[] {
     return [
       // top
-      { 
+      {
         x: this.transform.position.world.x - 1,
         y: this.transform.position.world.y - 1,
       },
-      { 
+      {
         x: this.transform.position.world.x,
         y: this.transform.position.world.y - 1,
       },
-      { 
+      {
         x: this.transform.position.world.x + 1,
         y: this.transform.position.world.y - 1,
       },
       // left
-      { 
+      {
         x: this.transform.position.world.x - 1,
         y: this.transform.position.world.y,
       },
       // right
-      { 
+      {
         x: this.transform.position.world.x + 1,
         y: this.transform.position.world.y,
       },
       // bottom
-      { 
+      {
         x: this.transform.position.world.x - 1,
         y: this.transform.position.world.y + 1,
       },
-      { 
+      {
         x: this.transform.position.world.x,
         y: this.transform.position.world.y + 1,
       },
-      { 
+      {
         x: this.transform.position.world.x + 1,
         y: this.transform.position.world.y + 1,
       },
@@ -751,23 +753,23 @@ export class PlayerObject extends SceneObject {
   get actionDirection(): Direction {
     const { x: mouseX, y: mouseY } = this.mouseTilePosition;
     const { x: playerX, y: playerY } = this.playerTilePosition;
-    
-    const x = mouseX - playerX; 
+
+    const x = mouseX - playerX;
     const y = mouseY - playerY;
-    
-    if(y === -1){
+
+    if (y === -1) {
       return Direction.Up;
     }
 
-    if(y === 1){
+    if (y === 1) {
       return Direction.Down;
     }
 
-    if(x < 0){
+    if (x < 0) {
       return Direction.Left;
     }
 
-    if(x > 0){
+    if (x > 0) {
       return Direction.Right;
     }
 

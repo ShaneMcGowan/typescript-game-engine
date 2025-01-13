@@ -39,7 +39,7 @@ interface Grid {
 export class InventoryObject extends SceneObject {
   private player: PlayerObject;
   private chest: ChestObject | undefined = undefined;
-  
+
   private grid: Grid;
   private gridPosition: { x: number, y: number } = { x: 0, y: 0 };
 
@@ -105,9 +105,9 @@ export class InventoryObject extends SceneObject {
 
     for (let row = 0; row < rows; row++) {
       for (let column = 0; column < columns; column++) {
-        
+
         // initialise position array
-        if(column === 0){
+        if (column === 0) {
           this.grid.positions[row] = [];
         }
 
@@ -118,10 +118,10 @@ export class InventoryObject extends SceneObject {
 
         // store position
         this.grid.positions[row][column] = { x: positionX, y: positionY };
-        
+
 
         // skip extra slots rendered by grid, mainly for mobile
-        if(index >= this.scene.globals.inventory.size){
+        if (index >= this.scene.globals.inventory.size) {
           continue;
         }
 
@@ -159,7 +159,7 @@ export class InventoryObject extends SceneObject {
       new InventoryButtonTrashObject(this.scene, {}),
       new InventoryButtonDropObject(this.scene, {})
     ];
-    
+
     const x = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? CanvasConstants.CANVAS_TILE_WIDTH - 3 : CanvasConstants.CANVAS_TILE_WIDTH - 3;
     const y = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 1 : CanvasConstants.CANVAS_TILE_HEIGHT - 3;
 
@@ -182,19 +182,19 @@ export class InventoryObject extends SceneObject {
     this.updateMouseDragging();
     this.updateMouseAddTooltip();
     this.updateMouseRemoveTooltip();
-    
+
     this.updateControllerGridPosition();
     this.updateControllerQuickMove();
     this.updateControllerStopDragging();
     this.updateControllerStartDragging();
-    
+
     this.updateClose();
   }
 
   onRender(context: CanvasRenderingContext2D): void {
     this.renderMouseInventoryItem(context);
     this.renderMouseInventoryItemStackSize(context);
-    
+
     this.renderControllerInventoryItem(context);
     this.renderControllerInventoryItemStackSize(context);
     this.renderControllerInventorySelector(context);
@@ -225,7 +225,7 @@ export class InventoryObject extends SceneObject {
       return;
     }
 
-    if(this.dragging.type !== 'mouse'){
+    if (this.dragging.type !== 'mouse') {
       return;
     }
 
@@ -247,16 +247,16 @@ export class InventoryObject extends SceneObject {
     if (slot === undefined) {
       this.stopDraggingItem();
     } else if (slot instanceof InventoryButtonTrashObject) {
-      if(Inventory.canItemBeDestroyed(this.dragging.item.type)){
+      if (Inventory.canItemBeDestroyed(this.dragging.item.type)) {
         // destroy
         this.dragging = undefined;
       } else {
         this.stopDraggingItem();
       }
     } else if (slot instanceof InventoryButtonDropObject) {
-      if(Inventory.canItemBeDropped(this.dragging.item.type)){
+      if (Inventory.canItemBeDropped(this.dragging.item.type)) {
         // drop
-        for(let i = 0; i < this.dragging.item.currentStackSize; i++){
+        for (let i = 0; i < this.dragging.item.currentStackSize; i++) {
           const item = new ItemObject(
             this.scene,
             {
@@ -272,7 +272,7 @@ export class InventoryObject extends SceneObject {
         this.dragging = undefined;
       } else {
         this.stopDraggingItem();
-      } 
+      }
     } else if (slot instanceof InventorySlotObject) {
       // swap
       const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
@@ -286,7 +286,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateMouseAddTooltip(): void {
-    if(this.tooltip){
+    if (this.tooltip) {
       return;
     }
 
@@ -300,12 +300,12 @@ export class InventoryObject extends SceneObject {
       )
     }
     const slot = this.scene.getObject(filter) as InventorySlotObject;
-    
-    if(slot === undefined){
+
+    if (slot === undefined) {
       return;
     }
 
-    if(slot.item === undefined){
+    if (slot.item === undefined) {
       return;
     }
 
@@ -323,7 +323,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateMouseRemoveTooltip(): void {
-    if(this.tooltip === undefined){
+    if (this.tooltip === undefined) {
       return;
     }
 
@@ -337,8 +337,8 @@ export class InventoryObject extends SceneObject {
       )
     }
     const slot = this.scene.getObject(filter) as InventorySlotObject;
-    
-    if(this.dragging || slot === undefined || slot.index !== this.tooltip.index){
+
+    if (this.dragging || slot === undefined || slot.index !== this.tooltip.index) {
       this.removeChild(this.tooltip);
       this.tooltip = undefined;
     }
@@ -350,12 +350,12 @@ export class InventoryObject extends SceneObject {
     }
 
     Input.clearPressed<Control>(CONTROL_SCHEME, Control.CloseInventory);
-    
+
     this.destroy();
   }
 
   private updateControllerGridPosition(): void {
-    if(!Input.gamepad.connected){
+    if (!Input.gamepad.connected) {
       return;
     }
 
@@ -363,20 +363,20 @@ export class InventoryObject extends SceneObject {
       return;
     }
 
-    if(Input.isPressed<Control>(CONTROL_SCHEME, Control.Up)){
-      if(this.gridPosition.y > 0){
+    if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Up)) {
+      if (this.gridPosition.y > 0) {
         this.gridPosition.y--;
       }
-    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Right)){
-      if(this.gridPosition.x < this.grid.rows - 1){
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Right)) {
+      if (this.gridPosition.x < this.grid.rows - 1) {
         this.gridPosition.x++;
       }
     } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Down)) {
-      if(this.gridPosition.y < this.grid.columns - 1){
+      if (this.gridPosition.y < this.grid.columns - 1) {
         this.gridPosition.y++;
       }
-    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Left)){
-      if(this.gridPosition.x > 0){
+    } else if (Input.isPressed<Control>(CONTROL_SCHEME, Control.Left)) {
+      if (this.gridPosition.x > 0) {
         this.gridPosition.x--;
       }
     }
@@ -385,7 +385,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateControllerQuickMove(): void {
-    if(!Input.gamepad.connected){
+    if (!Input.gamepad.connected) {
       return;
     }
 
@@ -407,8 +407,8 @@ export class InventoryObject extends SceneObject {
       )
     }
     const slot = this.scene.getObject(filter);
-    
-    if(slot === undefined){
+
+    if (slot === undefined) {
       return;
     }
 
@@ -419,7 +419,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateControllerStartDragging(): void {
-    if(!Input.gamepad.connected){
+    if (!Input.gamepad.connected) {
       return;
     }
 
@@ -439,12 +439,12 @@ export class InventoryObject extends SceneObject {
       }
     }
     const slot = this.scene.getObject(filter) as InventorySlotObject;
-    
-    if(slot === undefined){
+
+    if (slot === undefined) {
       return;
     }
 
-    if(slot.item === undefined){
+    if (slot.item === undefined) {
       return;
     }
 
@@ -456,7 +456,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private updateControllerStopDragging(): void {
-    if(!Input.gamepad.connected){
+    if (!Input.gamepad.connected) {
       return;
     }
 
@@ -464,7 +464,7 @@ export class InventoryObject extends SceneObject {
       return;
     }
 
-    if(this.dragging.type !== 'controller'){
+    if (this.dragging.type !== 'controller') {
       return;
     }
 
@@ -487,7 +487,7 @@ export class InventoryObject extends SceneObject {
     if (slot === undefined) {
       this.stopDraggingItem();
     } else if (slot instanceof InventoryButtonTrashObject) {
-      if(Inventory.canItemBeDestroyed(this.dragging.item.type)){
+      if (Inventory.canItemBeDestroyed(this.dragging.item.type)) {
         // destroy
         this.dragging = undefined;
       } else {
@@ -510,15 +510,17 @@ export class InventoryObject extends SceneObject {
       return;
     }
 
-    if(this.dragging.type !== 'mouse'){
+    if (this.dragging.type !== 'mouse') {
       return;
     }
 
+    const sprite = Inventory.getItemSprite(this.dragging.item.type);
+
     RenderUtils.renderSprite(
       context,
-      Assets.images[this.dragging.item.sprite.tileset],
-      this.dragging.item.sprite.x,
-      this.dragging.item.sprite.y,
+      Assets.images[sprite.tileset],
+      sprite.x,
+      sprite.y,
       Input.mouse.position.x - 0.5,
       Input.mouse.position.y - 0.5,
     );
@@ -529,15 +531,17 @@ export class InventoryObject extends SceneObject {
       return;
     }
 
-    if(this.dragging.type !== 'controller'){
+    if (this.dragging.type !== 'controller') {
       return;
     }
 
+    const sprite = Inventory.getItemSprite(this.dragging.item.type);
+
     RenderUtils.renderSprite(
       context,
-      Assets.images[this.dragging.item.sprite.tileset],
-      this.dragging.item.sprite.x,
-      this.dragging.item.sprite.y,
+      Assets.images[sprite.tileset],
+      sprite.x,
+      sprite.y,
       this.controllerSelectorPosition.x + 0.5,
       this.controllerSelectorPosition.y + 0.5,
     );
@@ -576,7 +580,7 @@ export class InventoryObject extends SceneObject {
   }
 
   private renderInventoryItemStackSize(context: CanvasRenderingContext2D, x: number, y: number): void {
-    if (this.dragging.item.maxStackSize === 1) {
+    if (Inventory.getItemMaxStackSize(this.dragging.item.type) === 1) {
       return;
     }
 
@@ -589,15 +593,15 @@ export class InventoryObject extends SceneObject {
   }
 
   private renderControllerInventorySelector(context: CanvasRenderingContext2D): void {
-    if(!Input.gamepad.connected){
+    if (!Input.gamepad.connected) {
       return;
     }
 
-    if(this.grid === undefined){
+    if (this.grid === undefined) {
       return;
     }
 
-    if(this.controllerSelectorPosition === undefined){
+    if (this.controllerSelectorPosition === undefined) {
       return;
     }
 
