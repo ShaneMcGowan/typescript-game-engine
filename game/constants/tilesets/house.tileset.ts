@@ -57,8 +57,26 @@ export class TilesetHouse {
     },
   };
 
-  static readonly Roof: Tile<'Default', 'BottomLeft' | 'Bottom' | 'BottomRight'> = { 
+  static readonly Roof: Tile<'Default', 'TopLeft' | 'Top' | 'TopRight' | 'BottomLeft' | 'Bottom' | 'BottomRight'> = { 
     Default: {
+      TopLeft: {
+        x: 4.5, 
+        y: 0.5,
+        width: 1,
+        height: 1
+      },
+      Top: {
+        x: 5, 
+        y: 0.5,
+        width: 1,
+        height: 1
+      },
+      TopRight: {
+        x: 5.5, 
+        y: 0.5,
+        width: 1,
+        height: 1
+      },
       BottomLeft: {
         x: 4.5, 
         y: 3.5,

@@ -14,6 +14,7 @@ import { TimerObject } from '@core/objects/timer.object';
 import { MessageUtils } from '@game/utils/message.utils';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { TransitionObject } from '@core/objects/transition.object';
+import { SCENE_GAME_MAP_FARM } from '@game/scenes/game/maps/farm/map';
 
 export class SCENE_GAME_MAP_HOUSE extends SceneMap {
 
@@ -29,12 +30,6 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     // player
     this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
     this.scene.addObject(this.player);
-
-    for(let x = 0; x < 2; x++){
-      for(let y = 0; y < 2; y++){
-        this.scene.addObject(new FurnitureLampObject(this.scene, { x: 13 + (x * 3), y: 7 + (y * 2), active: true, }));
-      }
-    }
 
     // walls
     // top
@@ -59,7 +54,7 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     const warpConfig = {
       y: 12,
       player: this.player,
-      map: SCENE_GAME_MAP_WORLD,
+      map: SCENE_GAME_MAP_FARM,
       width: 1,
       isColliding: true,
     };

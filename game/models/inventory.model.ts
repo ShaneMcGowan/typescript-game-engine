@@ -31,6 +31,7 @@ export enum ItemType {
   Rock = 'Rock',
   Log = 'Log',
   Berry = 'Berry',
+  HouseKey = 'HouseKey',
 }
 
 
@@ -71,6 +72,7 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.WateringCan]: ItemRadius.Player,
   [ItemType.Chest]: ItemRadius.Anywhere,
   [ItemType.GateKey]: ItemRadius.None,
+  [ItemType.HouseKey]: ItemRadius.None,
   [ItemType.Axe]: ItemRadius.Player,
   [ItemType.Pickaxe]: ItemRadius.Player,
   [ItemType.Rock]: ItemRadius.None,
@@ -106,6 +108,7 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.FurnitureRugLarge]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Rug.Blue.Large.x, y: TilesetFurniture.Rug.Blue.Large.y },
   [ItemType.FurnitureTable]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Table.Default.Default.x, y: TilesetFurniture.Table.Default.Default.y },
   [ItemType.FurnitureLamp]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Lamp.Blue.Default.x, y: TilesetFurniture.Lamp.Blue.Default.y },
+  [ItemType.HouseKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -119,6 +122,7 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.WateringCan]: 1,
   [ItemType.Chest]: 1,
   [ItemType.GateKey]: 1,
+  [ItemType.HouseKey]: 1,
   [ItemType.Axe]: 1,
   [ItemType.Pickaxe]: 1,
   [ItemType.Rock]: 9,
@@ -143,6 +147,7 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.WateringCan]: 0,
   [ItemType.Chest]: 0,
   [ItemType.GateKey]: 0,
+  [ItemType.HouseKey]: 0,
   [ItemType.Axe]: 0,
   [ItemType.Pickaxe]: 0,
   [ItemType.Rock]: 1,
@@ -167,6 +172,7 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.WateringCan]: 'Watering Can',
   [ItemType.Chest]: 'Chest',
   [ItemType.GateKey]: 'Gate Key',
+  [ItemType.HouseKey]: 'House Key',
   [ItemType.Axe]: 'Axe',
   [ItemType.Pickaxe]: 'Pickaxe',
   [ItemType.Rock]: 'Rock',
@@ -191,6 +197,7 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.WateringCan]: 'Watering Cans',
   [ItemType.Chest]: 'Chests',
   [ItemType.GateKey]: 'Gate Keys',
+  [ItemType.HouseKey]: 'House Keys',
   [ItemType.Axe]: 'Axes',
   [ItemType.Pickaxe]: 'Pickaxes',
   [ItemType.Rock]: 'Rocks',
@@ -215,6 +222,7 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.WateringCan]: 'I can use this to water dirt.',
   [ItemType.Chest]: 'I can put my treasures in here, or maybe just my socks or something.',
   [ItemType.GateKey]: `A key for a Gate, it's old and rusty looking. It tastes kinda funny too.`,
+  [ItemType.HouseKey]: `A key for the House at the farm. This is the key to my future.`,
   [ItemType.Axe]: `A tool with a sharp blade. I can use this to chop down trees.`,
   [ItemType.Pickaxe]: `A tool with a pointed blunt head. I can use this to break rocks.`,
   [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make things.`,
@@ -239,6 +247,7 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: true,
   [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: true,
@@ -263,6 +272,7 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: true,
   [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: true,
@@ -287,6 +297,7 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: false,
   [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: false,

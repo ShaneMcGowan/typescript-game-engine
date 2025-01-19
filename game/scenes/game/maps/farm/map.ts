@@ -16,6 +16,7 @@ import { MessageUtils } from '@game/utils/message.utils';
 import { TimerObject } from '@core/objects/timer.object';
 import { ItemSpawnAreaObject } from '@game/objects/areas/item-spawn-area.object';
 import { ItemType } from '@game/models/inventory.model';
+import { HouseObject } from '@game/objects/house.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -30,6 +31,8 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 99, y: 12, });
 
     this.scene.addObject(this.player);
+
+    this.scene.addObject(new HouseObject(scene, { x: 81, y: 2, width: 5, height: 2, player: this.player }));
 
     // areas
     // areas - farmable

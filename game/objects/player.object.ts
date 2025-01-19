@@ -542,6 +542,7 @@ export class PlayerObject extends SceneObject {
         useBerry(this.scene, this, object);
         return;
       case ItemType.GateKey:
+      case ItemType.HouseKey:
       case ItemType.Rock:
       case ItemType.Log:
         return;
