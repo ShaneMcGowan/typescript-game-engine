@@ -6,6 +6,12 @@ import { QuestName } from "@game/models/quest.model";
 import { Quest2 } from "@game/models/quest2.model";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 
+interface UiRow {
+  type: 'quest' | 'step' | 'goal';
+  text: string;
+  colour?: 'green' | 'red' | 'yellow'
+}
+
 interface Config extends SceneObjectBaseConfig {}
 
 export class UiQuestObject extends SceneObject {
@@ -22,7 +28,10 @@ export class UiQuestObject extends SceneObject {
       return;
     }
 
-    this.renderQuests(context);
+    const rows = this.formatUI(this.quests);
+
+    this.renderBackground(context, rows);
+    this.renderQuests(context, rows);
   }
 
   get enabled(): boolean {
@@ -45,17 +54,25 @@ export class UiQuestObject extends SceneObject {
     }).filter(quest => quest !== undefined);
   }
 
-  formatUI(quests: Quest2[]): any[] {
-    const output: any[] = [];
+  formatUI(quests: Quest2[]): UiRow[] {
+    const output: UiRow[] = [];
 
     quests.forEach((quest, index) => {
-      output.push({ type: 'quest', text: quest.title});
+      output.push({ type: 'quest', text: quest.title, colour: quest.isActive ? 'yellow' : undefined });
 
       quest.steps.forEach((step, index) => {
-        output.push({ type: 'step', text: step.title});
+        output.push({ 
+          type: 'step', 
+          text: step.title, 
+          colour: step.isComplete ? 'green' : step.active ? 'yellow' : undefined
+        });
 
         step.goals.forEach((goal, index) => {
-          output.push({ type: 'goal', text: `${goal.description} (${goal.current} / ${goal.target})`});
+          output.push({ 
+            type: 'goal', 
+            text: `${goal.description} (${goal.current} / ${goal.target})`,
+            colour: goal.isComplete ? 'green' : undefined
+          });
           
         });
       });
@@ -64,8 +81,7 @@ export class UiQuestObject extends SceneObject {
     return output;
   }
 
-  private renderQuests(context: CanvasRenderingContext2D): void {
-    const rows = this.formatUI(this.quests);
+  private renderQuests(context: CanvasRenderingContext2D, rows: UiRow[]): void {
 
     rows.forEach((row, index) => {
       let xOffset = 0;
@@ -82,9 +98,24 @@ export class UiQuestObject extends SceneObject {
         this.transform.position.world.x + 1 + xOffset,
         this.transform.position.world.y + 1 + index,
         {
-          baseline: 'top'
+          baseline: 'top',
+          colour: row.colour
         }
       );
     });
+  }
+
+  private renderBackground(context: CanvasRenderingContext2D, rows: UiRow[]): void {
+    RenderUtils.fillRectangle(
+      context,
+      this.transform.position.world.x + 0.5,
+      this.transform.position.world.y + 0.5,
+      14,
+      rows.length + 1,
+      {
+        colour: '#FFFFFF99',
+        type: 'tile'
+      }
+    )
   }
 }

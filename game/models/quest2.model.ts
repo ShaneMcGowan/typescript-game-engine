@@ -23,6 +23,8 @@ export abstract class QuestStep {
 
   goals: QuestGoal[] = [];
 
+  active: boolean = false;
+
   constructor(protected scene: SCENE_GAME){}
 
   get isComplete(): boolean {
@@ -59,7 +61,11 @@ export abstract class QuestGoal {
     return this.current >= this.target;
   }
 
-  setup(): void { }
+  setup(): void {}
+
+  setupDefault(): void {}
+  setupActive(): void {}
+  setupComplete(): void {}
 
 }
  
@@ -112,58 +118,6 @@ export abstract class Quest2 {
       this.failure();
     }
   }
-
-  intro(): void {
-    this.npc.say(
-      this.text.intro,
-      () => {
-        this.status.active = true;
-        this.onIntro();
-      },
-    );
-  }
-
-  onIntro(): void { }
-
-  failure(): void {
-    this.npc.say(
-      this.text.failure,
-      () => {
-        this.onFailure();
-      }
-    );
-  }
-
-  onFailure(): void { }
-
-  success(): void {
-    this.npc.say(
-      this.text.success,
-      () => {
-        this.status.complete = true;
-        this.onSuccess();
-      }
-    );
-  }
-
-  onSuccess(): void { }
-
-  check(): boolean {
-    return true;
-  }
-
-  protected checkItem(item: ItemType, quantity: number): boolean {
-    if (!this.scene.globals.inventory.hasItem(item, quantity)) {
-      return false;
-    }
-
-    this.scene.globals.inventory.removeItems(item, quantity);
-    return true;
-  }
-
-  static setup(scene: SCENE_GAME): void {
-    // for setting up the world for the quest
-  }
-    */
+  */
 
 }

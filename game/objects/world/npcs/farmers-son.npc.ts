@@ -2,6 +2,8 @@ import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
 import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
+import { Quests } from "@game/constants/quests.constants";
+import { QuestName } from "@game/models/quest.model";
 
 const ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_player', [
@@ -43,6 +45,10 @@ export class FarmersSonObject extends NpcObject {
   onIntro(): void {
     // open the shack door
     this.scene.globals.flags[SceneFlag.shack_door_open] = true;
+  }
+
+  interact(): void {
+    Quests.StartQuest(this.scene, QuestName.collect_berries);
   }
 
 }

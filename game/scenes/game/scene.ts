@@ -11,7 +11,8 @@ import { SCENE_GAME_MAP_HOUSE } from './maps/house/map';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SaveFileKeys, Store } from '@game/utils/store.utils';
 import { QuestGoalKey, QuestStatus } from '@game/models/quest2.model';
-import { QuestCollectBerries2, Quests } from '@game/constants/quests.constants';
+import { Quests } from '@game/constants/quests.constants';
+import { QuestCollectBerries2 } from '@game/objects/world/npcs/farmer/collect-berries.quest2';
 
 export enum SceneFlag {
   intro_default = 'intro_default', // not actually used, default for the NPC object
@@ -109,7 +110,7 @@ export class SCENE_GAME extends Scene {
 
     // TODO: set up quests;
     Quests.State[QuestName.collect_berries] = new QuestCollectBerries2(this);
-    this.globals.quests[QuestName.collect_berries].active = true;
+    // this.globals.quests[QuestName.collect_berries].active = true;
 
     if (CanvasConstants.SAVE_FILE_ID) {
       this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
