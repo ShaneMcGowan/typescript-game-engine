@@ -35,6 +35,7 @@ import { FurnitureFloorObject } from './furniture/furniture-floor.object';
 import { FurnitureUtils } from '@game/utils/furniture.utils';
 import { use } from '@game/objects/player/use.action';
 import { IconsObject } from './icons/icons.object';
+import { UiQuestObject } from './ui/ui-quest.object';
 
 const TILE_SET = 'tileset_player';
 
@@ -100,6 +101,7 @@ export class PlayerObject extends SceneObject {
   onAwake(): void {
     this.addHotbar();
     this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
+    this.scene.addObject(new UiQuestObject(this.scene, { x: 0, y: 0 }));
   }
 
   onUpdate(delta: number): void {

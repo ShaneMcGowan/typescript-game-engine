@@ -10,11 +10,8 @@ import { SCENE_GAME_MAP_FARM } from './maps/farm/map';
 import { SCENE_GAME_MAP_HOUSE } from './maps/house/map';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SaveFileKeys, Store } from '@game/utils/store.utils';
-
-export interface QuestStatus {
-  intro: boolean;
-  complete: boolean;
-}
+import { QuestGoalKey, QuestStatus } from '@game/models/quest2.model';
+import { QuestCollectBerries2, Quests } from '@game/constants/quests.constants';
 
 export enum SceneFlag {
   intro_default = 'intro_default', // not actually used, default for the NPC object
@@ -39,6 +36,7 @@ interface Globals extends SceneGlobalsBaseConfig {
   }
   flags: Record<SceneFlag, boolean>,
   quests: Record<QuestName, QuestStatus>;
+  quests_goals: Record<QuestGoalKey, number>;
 }
 
 export class SCENE_GAME extends Scene {
@@ -65,45 +63,57 @@ export class SCENE_GAME extends Scene {
     },
     quests: {
       [QuestName.default]: {
-        intro: false,
+        active: false,
         complete: false,
       },
       [QuestName.collect_wheat]: {
-        intro: false,
+        active: false,
         complete: false,
       },
       [QuestName.break_rocks]: {
-        intro: false,
+        active: false,
         complete: false,
       },
       [QuestName.collect_logs]: {
-        intro: false,
+        active: false,
         complete: false,
       },
       [QuestName.collect_rocks]: {
-        intro: false,
+        active: false,
         complete: false,
       },
       [QuestName.plant_tree]: {
-        intro: false,
+        active: false,
         complete: false,
       },
       [QuestName.collect_berries]: {
-        intro: false,
+        active: false,
         complete: false,
       },
       [QuestName.clear_path_to_farm]: {
-        intro: false,
+        active: false,
         complete: false,
-      }
+      },
+    },
+    quests_goals: {
+      [QuestGoalKey.default]: 0,
+      [QuestGoalKey.collect_berries__open_gate]: 0,
+      [QuestGoalKey.collect_berries__find_berries]: 0,
+      [QuestGoalKey.collect_berries__find_watering_can]: 0,
+      [QuestGoalKey.collect_berries__return_to_farmer]: 0
     }
   };
 
   constructor(client: Client) {
     super(client);
 
+    // TODO: set up quests;
+    Quests.State[QuestName.collect_berries] = new QuestCollectBerries2(this);
+    this.globals.quests[QuestName.collect_berries].active = true;
+
     if (CanvasConstants.SAVE_FILE_ID) {
       this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
+      this.globals.quests_goals = Store.get<Record<QuestGoalKey, number>>(SaveFileKeys.QuestGoalKey);
       this.globals.flags = Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags);
       this.globals.inventory.items = Store.get<ItemList>(SaveFileKeys.Inventory).map(item => {
         // JSON Store doesn't have undefined, only null so it needs to be mapped

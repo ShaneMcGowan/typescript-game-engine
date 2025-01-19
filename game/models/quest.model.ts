@@ -1,6 +1,7 @@
-import { QuestStatus, SCENE_GAME } from "@game/scenes/game/scene";
+import { SCENE_GAME } from "@game/scenes/game/scene";
 import { NpcObject } from "@game/objects/npc.object";
 import { ItemType } from "./inventory.model";
+import { QuestStatus } from "./quest2.model";
 
 export enum QuestName {
   default = 'default',
@@ -19,6 +20,7 @@ export interface QuestText {
   failure: string;
 }
 
+ 
 export abstract class Quest {
 
   id: QuestName = QuestName.collect_wheat;
@@ -49,7 +51,7 @@ export abstract class Quest {
       return;
     }
 
-    if (!this.status.intro) {
+    if (!this.status.active) {
       this.intro();
       return;
     }
@@ -66,7 +68,7 @@ export abstract class Quest {
     this.npc.say(
       this.text.intro,
       () => {
-        this.status.intro = true;
+        this.status.active = true;
         this.onIntro();
       },
     );

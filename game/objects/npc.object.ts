@@ -139,7 +139,7 @@ export class NpcObject extends SceneObject implements Interactable {
         return false;
       }
 
-      if (status.intro) {
+      if (status.active) {
         return true;
       }
 

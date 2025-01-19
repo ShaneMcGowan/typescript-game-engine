@@ -8,6 +8,8 @@ import { TextboxObject } from '../textbox.object';
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"
 import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
 import { MessageUtils } from '@game/utils/message.utils';
+import { Quests } from '@game/constants/quests.constants';
+import { QuestGoalType } from '@game/models/quest2.model';
 
 interface Config extends SceneObjectBaseConfig {
 
@@ -107,6 +109,9 @@ export class GateObject extends SceneObject implements Interactable {
   private interactWithKey(index: number): void {
     // remove key from inventory
     this.scene.globals.inventory.removeFromInventoryByIndex(index, 1);
+
+    // flag quest as complete
+    Quests.RecordAction(this.scene, QuestGoalType.Action, 'OpenGate');
 
     MessageUtils.showMessage(
       this.scene,

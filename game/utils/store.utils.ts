@@ -3,6 +3,7 @@ import { ItemType } from "@game/models/inventory.model";
 export enum SaveFileKeys {
   Id = 'Id',
   Quests = 'Quests',
+  QuestGoalKey = 'QuestGoalKey',
   Flags = 'Flags',
   Inventory = 'Inventory',
 };
