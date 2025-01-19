@@ -26,7 +26,7 @@ export abstract class Quest {
   constructor(
     protected scene: SCENE_GAME,
     protected npc: NpcObject
-  ){}
+  ) { }
 
   get status(): QuestStatus {
     return this.scene.globals.quests[this.id];
@@ -45,17 +45,17 @@ export abstract class Quest {
   }
 
   run(): void {
-    if(this.status.complete){
+    if (this.status.complete) {
       return;
     }
 
-    if(!this.status.intro){
+    if (!this.status.intro) {
       this.intro();
       return;
-    } 
-    
+    }
+
     const check = this.check();
-    if(check){
+    if (check) {
       this.success();
     } else {
       this.failure();
@@ -65,14 +65,14 @@ export abstract class Quest {
   intro(): void {
     this.npc.say(
       this.text.intro,
-      () => { 
-        this.status.intro = true; 
+      () => {
+        this.status.intro = true;
         this.onIntro();
       },
     );
   }
 
-  onIntro(): void {}
+  onIntro(): void { }
 
   failure(): void {
     this.npc.say(
@@ -83,26 +83,26 @@ export abstract class Quest {
     );
   }
 
-  onFailure(): void {}
+  onFailure(): void { }
 
   success(): void {
     this.npc.say(
       this.text.success,
-      () => { 
+      () => {
         this.status.complete = true;
         this.onSuccess();
       }
     );
   }
 
-  onSuccess(): void {}
+  onSuccess(): void { }
 
   check(): boolean {
     return true;
   }
-  
+
   protected checkItem(item: ItemType, quantity: number): boolean {
-    if(!this.scene.globals.inventory.hasItem(item, quantity)){
+    if (!this.scene.globals.inventory.hasItem(item, quantity)) {
       return false;
     }
 
@@ -113,5 +113,5 @@ export abstract class Quest {
   static setup(scene: SCENE_GAME): void {
     // for setting up the world for the quest
   }
-  
+
 }

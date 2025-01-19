@@ -12,7 +12,7 @@ export class QuestCollectLogs extends Quest {
   constructor(
     protected scene: SCENE_GAME,
     protected npc: NpcObject
-  ){
+  ) {
     super(scene, npc);
   }
 
@@ -30,5 +30,5 @@ export class QuestCollectLogs extends Quest {
     scene.addObject(new ItemObject(scene, { x: 14, y: 20, type: ItemType.Log }));
     scene.addObject(new ItemObject(scene, { x: 18, y: 22, type: ItemType.Log }));
   }
-  
+
 }

@@ -1,6 +1,6 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
-import { SceneFlags, type SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { TransitionObject } from '@core/objects/transition.object';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
@@ -27,7 +27,6 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 99, y: 12, });
 
     this.scene.addObject(this.player);
@@ -122,8 +121,8 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     }));
 
     // first visit
-    if(!this.scene.globals.flags[SceneFlags.farm_visited]){
-      this.scene.globals.flags[SceneFlags.farm_visited] = true;
+    if (!this.scene.globals.flags[SceneFlag.farm_visited]) {
+      this.scene.globals.flags[SceneFlag.farm_visited] = true;
       this.scene.globals.player.enabled = false;
 
       this.scene.addObject(new TimerObject(this.scene, {

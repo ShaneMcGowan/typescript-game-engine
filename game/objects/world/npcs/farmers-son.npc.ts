@@ -1,4 +1,4 @@
-import { SCENE_GAME, SceneFlags } from "@game/scenes/game/scene";
+import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
 import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
@@ -36,9 +36,13 @@ export class FarmersSonObject extends NpcObject {
     return ANIMATIONS;
   }
 
+  get introFlag(): SceneFlag {
+    return SceneFlag.intro_farmers_son;
+  }
+
   onIntro(): void {
     // open the shack door
-    this.scene.globals.flags[SceneFlags.shack_door_open] = true;
+    this.scene.globals.flags[SceneFlag.shack_door_open] = true;
   }
 
 }

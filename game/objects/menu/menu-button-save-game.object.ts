@@ -1,10 +1,10 @@
-import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { ButtonObject } from '../button.object';
 import { SaveFileKeys, Store } from '@game/utils/store.utils';
 import { QuestName } from '@game/models/quest.model';
-import { QuestStatus, SCENE_GAME, SceneFlags } from '@game/scenes/game/scene';
+import { QuestStatus, SCENE_GAME, SceneFlag } from '@game/scenes/game/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
+import { Item, ItemList } from '@game/models/inventory.model';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -24,12 +24,13 @@ export class MenuButtonSaveGameObject extends ButtonObject {
 
   onClick(): void {
     // if no previous save, create an ID
-    if(!CanvasConstants.SAVE_FILE_ID){
+    if (!CanvasConstants.SAVE_FILE_ID) {
       Store.set<string>(SaveFileKeys.Id, crypto.randomUUID());
     }
 
     Store.set<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests, this.scene.globals.quests);
-    Store.set<Record<SceneFlags, boolean>>(SaveFileKeys.Flags, this.scene.globals.flags);
+    Store.set<Record<SceneFlag, boolean>>(SaveFileKeys.Flags, this.scene.globals.flags);
+    Store.set<ItemList>(SaveFileKeys.Inventory, this.scene.globals.inventory.items);
 
     alert('Saved');
   }

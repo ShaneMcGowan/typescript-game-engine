@@ -16,11 +16,9 @@ import { LockedDoorObject } from '@game/objects/world/locked-door.object';
 import { SCENE_GAME_MAP_FARM_HOUSE } from '../farm-house/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
-import { GateObject } from '@game/objects/world/gate.object';
 import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
 import { RockObject } from '@game/objects/rock.object';
 import { TreeObject } from '@game/objects/tree.object';
-import { IconsObject } from '@game/objects/icons/icons.object';
 import { QuestCollectLogs } from '@game/objects/world/npcs/farmer/collect-logs.quest';
 import { QuestCollectRocks } from '@game/objects/world/npcs/farmer/collect-rocks.quest';
 import { QuestBreakRocks } from '@game/objects/world/npcs/farmer/break-rocks.quest';
@@ -28,7 +26,6 @@ import { QuestCollectBerries } from '@game/objects/world/npcs/farmer/collect-ber
 import { QuestClearPathToFarm } from '@game/objects/world/npcs/farmer/clear-path-to-farm.quest';
 import { Scene } from '@core/model/scene';
 import { SCENE_GAME_MAP_FARM } from '../farm/map';
-import { LightingObject } from '@game/objects/lights/lighting.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -44,15 +41,14 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // Set up UI
     MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
 
-    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    this.player = new PlayerObject(this.scene, {playerIndex: 0, x: 17, y: 13, });
+    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 17, y: 13, });
     this.scene.addObject(this.player);
 
     // farmer's son
     this.scene.addObject(new FarmersSonObject(this.scene, {
-      x: 25, 
+      x: 25,
       y: 16,
     }));
 
@@ -138,8 +134,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       }
     }));
 
-    this.scene.addObject(new GateObject(this.scene, { x: 10, y: 7 }))
-
     // rocks
     this.scene.addObject(new RockObject(this.scene, { x: 26, y: 2, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { x: 27, y: 1, canBeBroken: false }));
@@ -161,12 +155,12 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // trees
     this.scene.addObject(new TreeObject(this.scene, { x: 1, y: 2, type: 'small' }));
-    this.scene.addObject(new TreeObject(this.scene, { x: 14, y: 1, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { x: 16, y: 4, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { x: 2, y: 7, type: 'small'}));
-    this.scene.addObject(new TreeObject(this.scene, { x: 25, y: 7, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { x: 14, y: 1, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { x: 16, y: 4, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { x: 2, y: 7, type: 'small' }));
+    this.scene.addObject(new TreeObject(this.scene, { x: 25, y: 7, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { x: 1, y: 10, type: 'small' }));
-    this.scene.addObject(new TreeObject(this.scene, { x: 13, y: 11, type: 'small'}));
+    this.scene.addObject(new TreeObject(this.scene, { x: 13, y: 11, type: 'small' }));
     this.scene.addObject(new TreeObject(this.scene, { x: 7, y: 13, type: 'small' }));
 
     // quests

@@ -320,21 +320,20 @@ export interface ItemSprite {
 export interface Item {
   type: ItemType;
   currentStackSize: number;
-  maxStackSize: number;
-  sprite: { tileset: string; x: number; y: number; };
-  radius: ItemRadius;
 }
+
+export type ItemList = Array<Item | undefined>;
 
 /**
  * A reusable inventory class for managing item storage with utilities
  */
 export class Inventory {
 
-  items: (Item | undefined)[] = [];
+  items: ItemList = [];
   rows: number;
   columns: number;
 
-  constructor(rows: number, columns: number){
+  constructor(rows: number, columns: number) {
     this.rows = rows;
     this.columns = columns;
   }
@@ -355,19 +354,19 @@ export class Inventory {
   getFirstSlotWithRoom(type: ItemType): number | undefined {
     for (let i = 0; i < this.size; i++) {
       const item = this.items[i];
-      
-      if(item === undefined){
-        continue;
-      }
-      
-      if(item.type !== type){
+
+      if (item === undefined) {
         continue;
       }
 
-      if(item.currentStackSize >= item.maxStackSize){
+      if (item.type !== type) {
+        continue;
+      }
+
+      if (item.currentStackSize >= Inventory.getItemMaxStackSize(item.type)) {
         continue
       }
-      
+
       return i;
     }
 
@@ -378,9 +377,9 @@ export class Inventory {
    * finds the index of the first free slot, if none available, returns undefined
    * @returns 
    */
-   getFirstSlotAvailable(): number | undefined {
+  getFirstSlotAvailable(): number | undefined {
     for (let i = 0; i < this.size; i++) {
-      if(this.items[i] === undefined){
+      if (this.items[i] === undefined) {
         return i;
       }
     }
@@ -388,19 +387,19 @@ export class Inventory {
     return undefined;
   }
 
-   /**
-   * finds the index of the first slot for a given type, if none found, returns undefined
-   * @returns 
-   */
-   getFirstIndexForType(type: ItemType): number | undefined {
+  /**
+  * finds the index of the first slot for a given type, if none found, returns undefined
+  * @returns 
+  */
+  getFirstIndexForType(type: ItemType): number | undefined {
     for (let i = 0; i < this.size; i++) {
       const item = this.items[i];
 
-      if(item === undefined){
+      if (item === undefined) {
         continue;
       }
-      
-      if(item.type === type){
+
+      if (item.type === type) {
         return i;
       }
     }
@@ -420,7 +419,7 @@ export class Inventory {
 
     // existing stack
     const stackIndex = this.getFirstSlotWithRoom(type);
-    if(stackIndex !== undefined){
+    if (stackIndex !== undefined) {
       const item = this.items[stackIndex];
       item.currentStackSize++;
       return item;
@@ -428,7 +427,7 @@ export class Inventory {
 
     // blank slot
     const blankIndex = this.getFirstSlotAvailable();
-    if(blankIndex !== undefined){
+    if (blankIndex !== undefined) {
       const item = this.createItem(type);
       this.items[blankIndex] = item;
       return item;
@@ -446,12 +445,12 @@ export class Inventory {
    */
   removeFromInventoryByIndex(index: number, amount: number): Item | undefined {
     const item = this.items[index];
-    
+
     if (item === undefined) {
       return;
     }
 
-    if(item.currentStackSize < amount){
+    if (item.currentStackSize < amount) {
       return;
     }
 
@@ -470,11 +469,11 @@ export class Inventory {
    * @param type 
    * @param amount 
    */
-  hasItem(type: ItemType, amount: number): boolean{
+  hasItem(type: ItemType, amount: number): boolean {
     const items = this.items.filter(item => item !== undefined && item.type === type);
     const total = items.reduce((acc, curr) => acc + curr.currentStackSize, 0)
 
-    if(total >= amount){
+    if (total >= amount) {
       return true;
     }
 
@@ -489,22 +488,22 @@ export class Inventory {
   removeItems(type: ItemType, amount: number): boolean {
     let removed = 0;
 
-    for(const [index, item] of this.items.entries()){
-      if(item === undefined){
+    for (const [index, item] of this.items.entries()) {
+      if (item === undefined) {
         continue;
       }
 
-      if(item.type !== type){
+      if (item.type !== type) {
         continue;
       }
 
       const yetToBeRemoved = amount - removed;
       // no more to be removed, return;
-      if(yetToBeRemoved === 0){
+      if (yetToBeRemoved === 0) {
         return true;
       }
 
-      if(yetToBeRemoved >= item.currentStackSize){
+      if (yetToBeRemoved >= item.currentStackSize) {
         // amount greater than stack, remove stack
         removed += item.currentStackSize;
         item.currentStackSize = 0;
@@ -520,7 +519,7 @@ export class Inventory {
   }
 
   hasRoomForItem(type: ItemType): boolean {
-    if(this.getFirstSlotWithRoom(type) !== undefined){
+    if (this.getFirstSlotWithRoom(type) !== undefined) {
       return true;
     }
 
@@ -528,22 +527,19 @@ export class Inventory {
   }
 
   private createItem(type: ItemType, stackSize?: number): Item {
-    const maxStackSize =  TYPE_TO_MAX_STACK_MAP[type] ?? DEFAULT_MAX_STACK;
-    
+    const maxStackSize = TYPE_TO_MAX_STACK_MAP[type] ?? DEFAULT_MAX_STACK;
+
     let currentStackSize = 1;
     if (stackSize !== undefined) {
-      if(stackSize > maxStackSize){
+      if (stackSize > maxStackSize) {
         currentStackSize = maxStackSize;
       } else {
         currentStackSize = stackSize;
       }
     }
-    
+
     return {
-      type : type,
-      maxStackSize : maxStackSize,
-      sprite : TYPE_TO_SPRITE_MAP[type] ?? DEFAULT_SPRITE,
-      radius : TYPE_TO_RADIUS_MAP[type] ?? DEFAULT_INVENTORY_ITEM_RADIUS,
+      type: type,
       currentStackSize: currentStackSize
     }
   }
@@ -554,6 +550,18 @@ export class Inventory {
 
   static getItemDescription(type: ItemType): string {
     return TYPE_TO_DESCRIPTION_MAP[type];
+  }
+
+  static getItemRadius(type: ItemType): string {
+    return TYPE_TO_RADIUS_MAP[type];
+  }
+
+  static getItemSprite(type: ItemType): ItemSprite {
+    return TYPE_TO_SPRITE_MAP[type];
+  }
+
+  static getItemMaxStackSize(type: ItemType): number {
+    return TYPE_TO_MAX_STACK_MAP[type];
   }
 
   static canItemBeDestroyed(type: ItemType): boolean {
@@ -567,5 +575,5 @@ export class Inventory {
   static canItemBeInteractedWith(type: ItemType): boolean {
     return TYPE_TO_CAN_INTERACT_MAP[type];
   }
-  
+
 }

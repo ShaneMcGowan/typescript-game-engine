@@ -1,13 +1,16 @@
+import { ItemType } from "@game/models/inventory.model";
+
 export enum SaveFileKeys {
   Id = 'Id',
   Quests = 'Quests',
   Flags = 'Flags',
+  Inventory = 'Inventory',
 };
 
 export abstract class Store {
   static get<T>(key: string): T | null {
     const value = localStorage.getItem(key);
-    if(value === null){
+    if (value === null) {
       return null;
     }
 

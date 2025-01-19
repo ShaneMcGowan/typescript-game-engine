@@ -1,4 +1,4 @@
-import { SCENE_GAME } from "@game/scenes/game/scene";
+import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
 import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SpriteAnimation } from "@core/model/sprite-animation";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
@@ -52,6 +52,10 @@ export class FarmerObject extends NpcObject {
 
   get animations(): Record<NpcState, SpriteAnimation> {
     return ANIMATION;
+  }
+
+  get introFlag(): SceneFlag {
+    return SceneFlag.intro_farmer;
   }
 
 }

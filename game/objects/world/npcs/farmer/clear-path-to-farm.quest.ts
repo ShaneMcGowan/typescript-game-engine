@@ -1,4 +1,4 @@
-import { SCENE_GAME, SceneFlags } from "@game/scenes/game/scene";
+import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { ItemType } from "@game/models/inventory.model";
 import { NpcObject } from "@game/objects/npc.object";
@@ -12,7 +12,7 @@ export class QuestClearPathToFarm extends Quest {
   constructor(
     protected scene: SCENE_GAME,
     protected npc: NpcObject
-  ){
+  ) {
     super(scene, npc);
   }
 
@@ -25,15 +25,15 @@ export class QuestClearPathToFarm extends Quest {
   }
 
   check(): boolean {
-    return this.scene.globals.flags[SceneFlags.path_to_farm_cleared];
+    return this.scene.globals.flags[SceneFlag.path_to_farm_cleared];
   }
 
   static setup(scene: SCENE_GAME): void {
     const onDestroy = () => {
-      scene.globals.flags[SceneFlags.path_to_farm_cleared] = true;
+      scene.globals.flags[SceneFlag.path_to_farm_cleared] = true;
     }
     scene.addObject(new TreeObject(scene, { x: 1, y: 12, type: 'small', logOnDestroy: false, stumpOnDestroy: false, onDestroy: onDestroy }));
     scene.addObject(new TreeObject(scene, { x: 2, y: 13, type: 'small', logOnDestroy: false, stumpOnDestroy: false, onDestroy: onDestroy }));
   }
-  
+
 }
