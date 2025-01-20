@@ -19,16 +19,9 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.player = new PlayerObject(scene, { playerIndex: 0, x: 27, y: 37, });
+    this.player = new PlayerObject(scene, { playerIndex: 0, x: 10, y: 35, });
+    
     this.scene.addObject(this.player);
-
-    // scene init
-    this.scene.addObject(new TransitionObject(scene, {
-      animationType: 'circle',
-      animationLength: 7,
-      animationCenterX: this.player.transform.position.world.x + 0.5,
-      animationCenterY: this.player.transform.position.world.y + 0.5
-    }));
 
     // collision - horizontal
     this.scene.addObject(new CollisionObject(scene, { x: 0, y: 14, width: 5 }));
@@ -86,9 +79,28 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
     }));
   }
 
-  onEnter(scene: Scene): void {
+  onEnter(scene: SCENE_GAME): void {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
+
+    if(scene.globals.warp.position){
+      this.player.transform.position.local.x = scene.globals.warp.position.x;
+      this.player.transform.position.local.y = scene.globals.warp.position.y;
+      scene.globals.warp.position = null;
+    }
+
+    if(scene.globals.warp.target){
+      this.player.targetX = scene.globals.warp.target.x;
+      this.player.targetY = scene.globals.warp.target.y;
+      scene.globals.warp.target = null;
+    }
+
+    this.scene.addObject(new TransitionObject(scene, {
+      animationType: 'circle',
+      animationLength: 7,
+      animationCenterX: this.player.transform.position.world.x + 0.5,
+      animationCenterY: this.player.transform.position.world.y + 0.5
+    }));
   }
 
   onLeave(): void {

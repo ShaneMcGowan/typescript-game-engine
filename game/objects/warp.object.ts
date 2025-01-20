@@ -4,10 +4,13 @@ import { TimerObject } from '@core/objects/timer.object';
 import { TransitionObject } from '@core/objects/transition.object';
 import { SCENE_GAME } from '@game/scenes/game/scene';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
+import { Coordinate } from '@core/model/coordinate';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
   map: SceneMapConstructorSignature;
+  position?: Coordinate;
+  target?: Coordinate;
   isColliding?: boolean; // if true, don't check for warp until player moves off of position
 }
 
@@ -23,7 +26,7 @@ export class WarpObject extends SceneObject {
 
   constructor(
     protected scene: SCENE_GAME,
-    config: Config
+    protected config: Config
   ) {
     super(scene, config);
     this.player = config.player;
@@ -50,6 +53,19 @@ export class WarpObject extends SceneObject {
 
     // disable input
     this.scene.globals.player.enabled = false;
+
+    // set up position and target
+    if(this.config.position){
+      this.scene.globals.warp.position = {
+        ...this.config.position
+      };
+    }
+
+    if(this.config.target){
+      this.scene.globals.warp.target = {
+        ...this.config.target
+      };
+    }
 
     this.isWarping = true;
     this.isColliding = true;

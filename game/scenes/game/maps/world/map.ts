@@ -196,6 +196,14 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       player: this.player,
       map: SCENE_GAME_MAP_TOWN,
       width: 1,
+      position: {
+        x: 10, 
+        y: 38,
+      },
+      target: {
+        x: 10, 
+        y: 37,
+      }
     }));
 
     // warp - town - beach

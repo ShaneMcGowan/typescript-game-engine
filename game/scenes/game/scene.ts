@@ -11,6 +11,7 @@ import { SCENE_GAME_MAP_HOUSE } from './maps/house/map';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SaveFileKeys, Store } from '@game/utils/store.utils';
 import { SCENE_GAME_MAP_TOWN } from './maps/town/map';
+import { Coordinate } from '@core/model/coordinate';
 
 export interface QuestStatus {
   intro: boolean;
@@ -40,6 +41,10 @@ interface Globals extends SceneGlobalsBaseConfig {
   }
   flags: Record<SceneFlag, boolean>,
   quests: Record<QuestName, QuestStatus>;
+  warp: {
+    position: Coordinate | null,
+    target: Coordinate | null,
+  }
 }
 
 export class SCENE_GAME extends Scene {
@@ -96,8 +101,12 @@ export class SCENE_GAME extends Scene {
       [QuestName.clear_path_to_farm]: {
         intro: false,
         complete: false,
-      }
-    }
+      },
+    },
+    warp: {
+      position: null,
+      target: null,
+    },
   };
 
   constructor(client: Client) {
