@@ -10,6 +10,7 @@ import { SCENE_GAME_MAP_FARM } from './maps/farm/map';
 import { SCENE_GAME_MAP_HOUSE } from './maps/house/map';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SaveFileKeys, Store } from '@game/utils/store.utils';
+import { SCENE_GAME_MAP_TOWN } from './maps/town/map';
 
 export interface QuestStatus {
   intro: boolean;
@@ -128,6 +129,7 @@ export class SCENE_GAME extends Scene {
       'farm-house': SCENE_GAME_MAP_FARM_HOUSE,
       'farm': SCENE_GAME_MAP_FARM,
       'house': SCENE_GAME_MAP_HOUSE,
+      'town': SCENE_GAME_MAP_TOWN,
     }
     const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? SCENE_GAME_MAP_WORLD;
 
