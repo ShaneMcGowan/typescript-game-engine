@@ -19,7 +19,7 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.player = new PlayerObject(scene, { playerIndex: 0, x: 1, y: 36, });
+    this.player = new PlayerObject(scene, { playerIndex: 0, x: 27, y: 37, });
     this.scene.addObject(this.player);
 
     // scene init
@@ -45,6 +45,13 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { x: 8, y: 19, width: 3 }));
     this.scene.addObject(new CollisionObject(scene, { x: 9, y: 5, width: 3 }));
     this.scene.addObject(new CollisionObject(scene, { x: 12, y: 4, width: 20 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 35, width: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 38, width: 7, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 36, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 24, y: 37, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 26, y: 32, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 27, y: 38, width: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 28, y: 31, width: 4 }));
 
     // collision - vertical
     this.scene.addObject(new CollisionObject(scene, { x: 0, y: 36 }));
@@ -65,8 +72,9 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { x: 12, y: 36, height: 4 }));
     this.scene.addObject(new CollisionObject(scene, { x: 13, y: 24, height: 5 }));
     this.scene.addObject(new CollisionObject(scene, { x: 13, y: 31, height: 5 }));
-    this.scene.addObject(new CollisionObject(scene, { x: 32, y: 4, height: 36 }));
     this.scene.addObject(new CollisionObject(scene, { x: 19, y: 14, height: 26 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 25, y: 33, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 32, y: 4, height: 36 }));
 
     // warps
     // bottom of map, warp to farm

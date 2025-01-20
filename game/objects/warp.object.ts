@@ -39,7 +39,7 @@ export class WarpObject extends SceneObject {
       return;
     }
 
-    if (this.transform.position.world.x !== this.player.transform.position.world.x || this.transform.position.world.y !== this.player.transform.position.world.y) {
+    if(!this.isCollidingWith(this.player)){
       this.isColliding = false;
       return;
     }
@@ -68,8 +68,8 @@ export class WarpObject extends SceneObject {
       new TransitionObject(this.scene, {
         animationType: 'circle',
         animationDirection: 'out',
-        animationCenterX: this.transform.position.world.x + (this.width / 2),
-        animationCenterY: this.transform.position.world.y + (this.height / 2),
+        animationCenterX: this.player.transform.position.world.x,
+        animationCenterY: this.player.transform.position.world.y,
         animationLength: duration,
       })
     );

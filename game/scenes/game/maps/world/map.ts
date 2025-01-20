@@ -26,6 +26,7 @@ import { QuestCollectBerries } from '@game/objects/world/npcs/farmer/collect-ber
 import { QuestClearPathToFarm } from '@game/objects/world/npcs/farmer/clear-path-to-farm.quest';
 import { Scene } from '@core/model/scene';
 import { SCENE_GAME_MAP_FARM } from '../farm/map';
+import { SCENE_GAME_MAP_TOWN } from '../town/map';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -57,7 +58,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // horizontal
     this.scene.addObject(new CollisionObject(scene, { x: 20, y: 0, width: 7 }));
-    this.scene.addObject(new CollisionObject(scene, { x: 10, y: 1, width: 1 }));
     this.scene.addObject(new CollisionObject(scene, { x: 20, y: 1, width: 3 }));
     this.scene.addObject(new CollisionObject(scene, { x: 24, y: 1, width: 3 }));
     this.scene.addObject(new CollisionObject(scene, { x: 6, y: 2, width: 4 }));
@@ -69,13 +69,13 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new CollisionObject(scene, { x: 11, y: 7, width: 9, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { x: 0, y: 14, width: 5, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { x: 25, y: 22, width: 5 }));
-
     this.scene.addObject(new CollisionObject(scene, { x: 0, y: 23, width: 25 }));
     // vertical
     this.scene.addObject(new CollisionObject(scene, { x: 0, y: 6, height: 6 }));
     this.scene.addObject(new CollisionObject(scene, { x: 4, y: 8, height: 6 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 9, y: 0, height: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 0, height: 2 }));
     this.scene.addObject(new CollisionObject(scene, { x: 19, y: 2, height: 5 }));
-
     this.scene.addObject(new CollisionObject(scene, { x: 30, y: 19, height: 3 }));
     this.scene.addObject(new CollisionObject(scene, { x: 31, y: 18, height: 1 }));
     this.scene.addObject(new CollisionObject(scene, { x: 32, y: 0, height: 18 }));
@@ -135,14 +135,16 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
 
     // rocks
-    this.scene.addObject(new RockObject(this.scene, { x: 26, y: 2, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 27, y: 1, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 28, y: 1, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 29, y: 0, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 30, y: 0, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 26, y: 2, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 27, y: 1, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 28, y: 1, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 29, y: 0, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 30, y: 0, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: true }));
 
-    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 2, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 0, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 1, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 2, canBeBroken: true }));
 
     this.scene.addObject(new RockObject(this.scene, { x: 1, y: 16, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { x: 3, y: 16, canBeBroken: false }));
@@ -185,6 +187,24 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new WarpObject(scene, {
       ...WARP_CONFIG_FARM,
       y: 13
+    }));
+
+    // warp - town - through the hill
+    this.scene.addObject(new WarpObject(scene, {
+      x: 10,
+      y: 0,
+      player: this.player,
+      map: SCENE_GAME_MAP_TOWN,
+      width: 1,
+    }));
+
+    // warp - town - beach
+    this.scene.addObject(new WarpObject(scene, {
+      x: 27,
+      y: 0,
+      player: this.player,
+      map: SCENE_GAME_MAP_TOWN,
+      width: 5,
     }));
   }
 

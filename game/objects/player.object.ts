@@ -134,15 +134,19 @@ export class PlayerObject extends SceneObject {
   }
 
   updateMovement(delta: number): void {
-    if (!this.scene.globals.player.enabled) {
-      return;
-    }
+    // if (!this.scene.globals.player.enabled) {
+    //   return;
+    // }
 
-    if (!this.scene.globals.player.movementEnabled) {
-      return;
-    }
+    // if (!this.scene.globals.player.movementEnabled) {
+    //   return;
+    // }
 
-    if (!this.isAnimating) {
+    if (
+      this.scene.globals.player.enabled
+      && this.scene.globals.player.movementEnabled
+      && !this.isAnimating
+    ) {
       this.determineNextMovement(delta);
     }
 

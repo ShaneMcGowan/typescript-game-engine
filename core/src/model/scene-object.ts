@@ -298,27 +298,29 @@ export abstract class SceneObject {
   }
 
   isCollidingWith(object: SceneObject): boolean {
-    return this.isWithinHorizontalBounds(object) && this.isWithinVerticalBounds(object);
-  }
-
-  isWithinHorizontalBounds(object: SceneObject): boolean {
-    if (object.boundingBox.world.left >= this.boundingBox.world.left && object.boundingBox.world.left <= this.boundingBox.world.right) {
-      return true;
-    }
-
-    if (object.boundingBox.world.right >= this.boundingBox.world.left && object.boundingBox.world.right <= this.boundingBox.world.right) {
+    if (this.isCollidingWithHorizontally(object) && this.isCollidingWithVertically(object)) {
       return true;
     }
 
     return false;
   }
 
-  isWithinVerticalBounds(object: SceneObject): boolean {
-    if (object.boundingBox.world.top >= this.boundingBox.world.top && object.boundingBox.world.top <= this.boundingBox.world.bottom) {
+  isCollidingWithHorizontally(object: SceneObject): boolean {
+    if (
+      this.boundingBox.world.left < object.boundingBox.world.right &&
+      this.boundingBox.world.right > object.boundingBox.world.left
+    ) {
       return true;
     }
 
-    if (object.boundingBox.world.bottom >= this.boundingBox.world.top && object.boundingBox.world.bottom <= this.boundingBox.world.bottom) {
+    return false;
+  }
+
+  isCollidingWithVertically(object: SceneObject): boolean {
+    if (
+      this.boundingBox.world.top < object.boundingBox.world.bottom &&
+      this.boundingBox.world.bottom > object.boundingBox.world.top
+    ) {
       return true;
     }
 
