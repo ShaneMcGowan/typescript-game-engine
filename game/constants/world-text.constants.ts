@@ -112,6 +112,106 @@ const NPC_CHICKEN = {
   details: { ...NPC_CHICKEN_DETAILS },
 }
 
+const NPC_FURNITURE_SALESMAN: Npc = {
+  details: { 
+    name: `Furniture Salesman`,
+    portrait: {
+      tileset: 'tileset_emotes',
+      x: 0,
+      y: 0,
+      width: 2,
+      height: 2,
+    }
+   },
+  text: {
+    quests: {},
+    dialogue: {
+      intro: `Hi, I'm the Furniture Salesman. Great of you to reach out so that we could touch base. I sell all sorts of furniture that can help you hit the ground running in your new home. So you can check out my wares or we can just chat and circle back later. `,
+      default: `What's it gonna take to get you into a new bed today?`
+    }
+  }
+};
+
+const NPC_FARMING_SALESMAN: Npc = {
+  details: { 
+    name: `Farming Salesman`,
+    portrait: {
+      tileset: 'tileset_emotes',
+      x: 0,
+      y: 0,
+      width: 2,
+      height: 2,
+    }
+   },
+  text: {
+    quests: {},
+    dialogue: {
+      intro: `Hi, I'm the Farming Salesman. I buy and sell all things fruit and veg.`,
+      default: `What can I help you with today?`
+    }
+  }
+};
+
+const NPC_TOOL_SALESMAN: Npc = {
+  details: { 
+    name: `Tool Salesman`,
+    portrait: {
+      tileset: 'tileset_emotes',
+      x: 0,
+      y: 0,
+      width: 2,
+      height: 2,
+    }
+   },
+  text: {
+    quests: {},
+    dialogue: {
+      intro: `Hi, I'm the Tool Salesman. I have all sorts of tools for sales. Check out my wares.`,
+      default: `I've got tools if you've got gold!`
+    }
+  }
+};
+
+const NPC_FOREMAN: Npc = {
+  details: { 
+    name: `George the Foreman`,
+    portrait: {
+      tileset: 'tileset_emotes',
+      x: 0,
+      y: 0,
+      width: 2,
+      height: 2,
+    }
+   },
+  text: {
+    quests: {},
+    dialogue: {
+      intro: `Hey, I'm the Foreman. George the Foreman. No relation. I can't let you go up ahead. Rockslide. It's not safe. We'll have it cleared out eventually but the union says we can only work 14 minutes per day.`,
+      default: `Quit grillin' me kid, I'm on break. The rockslide will be cleared when it's cleared. Did I mention I'm paid hourly?`
+    }
+  }
+};
+
+const NPC_WORKER: Npc = {
+  details: { 
+    name: `Worker`,
+    portrait: {
+      tileset: 'tileset_emotes',
+      x: 0,
+      y: 0,
+      width: 2,
+      height: 2,
+    }
+   },
+  text: {
+    quests: {},
+    dialogue: {
+      intro: `I can't let you go up ahead. Rockslide. It's not safe. We'll have it cleared out eventually but the union says we can only work 14 minutes per day.`,
+      default: `Beat it kid, I'm on break. The rockslide will be cleared when it's cleared. Did I mention I'm paid hourly?`
+    }
+  }
+};
+
 const OBJECT_GATE = {
   interact: {
     intro: 'The gate is locked.',
@@ -131,7 +231,11 @@ export const SCENE_GAME_MAP_WORLD_TEXT =  {
   npcs: {
     farmer: { ...NPC_FARMER },
     farmers_son: { ...NPC_FARMERS_SON },
-    chicken: { ...NPC_CHICKEN }
+    chicken: { ...NPC_CHICKEN },
+    furniture_salesman: { ...NPC_FURNITURE_SALESMAN },
+    farming_salesman: {...NPC_FARMING_SALESMAN},
+    tool_salesman: {...NPC_TOOL_SALESMAN},
+    workman: {...NPC_FOREMAN},
   },
   objects: {
     gate: { ...OBJECT_GATE },

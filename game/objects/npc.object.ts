@@ -13,6 +13,7 @@ import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { PlayerObject } from './player.object';
 import { TileConfig } from '@game/models/tile.model';
+import { Direction } from '@game/models/direction.model';
 
 const DEFAULT_CAN_MOVE: boolean = false;
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
@@ -38,6 +39,7 @@ const DEFAULT_PORTRAIT: Portrait = {
 };
 const DEFAULT_DIALOGUE_INTRO: string = '';
 const DEFAULT_DIALOGUE_DEFAULT: string = '';
+const DEFAULT_DIRECTION: Direction = Direction.Down;
 
 export type NpcState = 'idle' | 'moving';
 
@@ -57,6 +59,7 @@ export interface NpcObjectConfig extends SceneObjectBaseConfig {
   movementSpeed?: number;
   movementDelay?: number;
   onInteractEnd?: () => void;
+  direction?: Direction;
 }
 
 export class NpcObject extends SceneObject implements Interactable {
@@ -66,9 +69,10 @@ export class NpcObject extends SceneObject implements Interactable {
   targetY: number = -1;
 
   // animation
+  direction: Direction;
   animation = {
     index: 0,
-    timer: 0, // TODO: enable adding random start with MathUtils.randomStartingDelta(4),
+    timer: MathUtils.randomStartingDelta(4),
   };
 
   // movement
@@ -96,6 +100,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.following = config.follows;
     this.movementSpeed = config.movementSpeed ?? DEFAULT_MOVEMENT_SPEED;
     this.movementDelay = config.movementDelay ?? DEFAULT_MOVEMENT_DELAY;
+    this.direction = config.direction ?? DEFAULT_DIRECTION;
   }
 
   onUpdate(delta: number): void {
@@ -321,10 +326,10 @@ export class NpcObject extends SceneObject implements Interactable {
       Assets.images[animation.tileset],
       frame.spriteX,
       frame.spriteY,
-      this.transform.position.world.x,
-      this.transform.position.world.y,
-      undefined,
-      undefined,
+      this.transform.position.world.x - (((frame.spriteWidth ?? 1) - 1) / 2),
+      this.transform.position.world.y - (((frame.spriteHeight ?? 1) - 1) / 2),
+      frame.spriteWidth ?? 1,
+      frame.spriteHeight ?? 1,
       {
         opacity: this.renderer.opacity,
         scale: this.renderer.scale,

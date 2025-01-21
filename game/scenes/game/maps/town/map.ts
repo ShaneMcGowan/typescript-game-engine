@@ -8,6 +8,10 @@ import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { Warps } from '@game/constants/warp.constants';
+import { FurnitureSalesmanObject } from '@game/objects/npcs/town/furniture-salesman.npc';
+import { FarmingSalesmanObject } from '@game/objects/npcs/town/farming-salesman.npc';
+import { ToolSalesmanObject } from '@game/objects/npcs/town/tool-salesman.npc';
+import { StoryTownRockslideObject } from '@game/objects/story/town/rockslide/story';
 
 export class SCENE_GAME_MAP_TOWN extends SceneMap {
 
@@ -18,9 +22,17 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.player = new PlayerObject(scene, { playerIndex: 0, x: 10, y: 35, });
+    this.player = new PlayerObject(scene, { playerIndex: 0, x: 6, y: 20, });
     
     this.scene.addObject(this.player);
+
+    // npcs
+    this.scene.addObject(new FurnitureSalesmanObject(scene, { x: 8, y: 22 }));
+    this.scene.addObject(new FarmingSalesmanObject(scene, { x: 4, y: 24 }));
+    this.scene.addObject(new ToolSalesmanObject(scene, { x: 8, y: 27 }));
+
+    // story
+    this.scene.addObject(new StoryTownRockslideObject(scene, { x: 0, y: 0 }));
 
     // collision - horizontal
     this.scene.addObject(new CollisionObject(scene, { x: 0, y: 14, width: 5 }));

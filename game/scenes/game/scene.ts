@@ -19,9 +19,17 @@ export interface QuestStatus {
 }
 
 export enum SceneFlag {
+  // story
+  story_town_rockslide = 'story_town_rockslide',
+  // npc intros
   intro_default = 'intro_default', // not actually used, default for the NPC object
   intro_farmer = 'intro_farmer',
   intro_farmers_son = 'intro_farmers_son',
+  intro_furniture_salesman = 'intro_furniture_salesman',
+  intro_farming_salesman = 'intro_farming_salesman',
+  intro_tool_salesman = 'intro_tool_salesman',
+  intro_workman = 'intro_workman',
+  // rest
   shack_door_open = 'shack_door_open',
   path_to_farm_cleared = 'path_to_farm_cleared',
   farm_visited = 'farm_visited',
@@ -61,9 +69,17 @@ export class SCENE_GAME extends Scene {
       interactEnabled: true,
     },
     flags: {
+      // story
+      [SceneFlag.story_town_rockslide]: false,
+      // npc intros
       [SceneFlag.intro_default]: false,
       [SceneFlag.intro_farmer]: false,
       [SceneFlag.intro_farmers_son]: false,
+      [SceneFlag.intro_furniture_salesman]: false,
+      [SceneFlag.intro_farming_salesman]: false,
+      [SceneFlag.intro_tool_salesman]: false,
+      [SceneFlag.intro_workman]: false,
+      // rest
       [SceneFlag.shack_door_open]: false,
       [SceneFlag.path_to_farm_cleared]: false,
       [SceneFlag.farm_visited]: false,

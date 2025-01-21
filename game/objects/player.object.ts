@@ -20,7 +20,7 @@ import { useShovel } from './player/shovel/use-shovel.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
 import { Coordinate } from '@core/model/coordinate';
-import { Direction, ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
+import { ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
 import { usePickaxe } from './player/pickaxe/use-pickaxe.action';
 import { AreaObject } from './areas/area.object';
 import { useFurnitureItem } from './player/furniture/use-furniture-item.action';
@@ -35,6 +35,7 @@ import { FurnitureFloorObject } from './furniture/furniture-floor.object';
 import { FurnitureUtils } from '@game/utils/furniture.utils';
 import { use } from '@game/objects/player/use.action';
 import { IconsObject } from './icons/icons.object';
+import { Direction } from '@game/models/direction.model';
 
 const TILE_SET = 'tileset_player';
 

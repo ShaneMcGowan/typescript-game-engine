@@ -1,9 +1,4 @@
-export enum Direction {
-  Up = 'Up',
-  Down = 'Down',
-  Left = 'Left',
-  Right = 'Right'
-}
+import { Direction } from "@game/models/direction.model";
 
 export interface ObjectAnimation {
   tileset: string;

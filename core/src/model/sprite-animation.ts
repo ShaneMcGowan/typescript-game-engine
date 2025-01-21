@@ -26,5 +26,7 @@ export class SpriteAnimation {
 export interface SpriteAnimationFrame {
   spriteX: number;
   spriteY: number;
+  spriteWidth?: number;
+  spriteHeight?: number;
   duration: number; // length of animation in seconds
 }
