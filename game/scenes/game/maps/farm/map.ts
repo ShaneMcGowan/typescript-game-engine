@@ -1,10 +1,8 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
 import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
-import { TransitionObject } from '@core/objects/transition.object';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
-import { IconsObject } from '@game/objects/icons/icons.object';
 import { Scene } from '@core/model/scene';
 import { WarpObject } from '@game/objects/warp.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
@@ -17,6 +15,7 @@ import { TimerObject } from '@core/objects/timer.object';
 import { ItemSpawnAreaObject } from '@game/objects/areas/item-spawn-area.object';
 import { ItemType } from '@game/models/inventory.model';
 import { HouseObject } from '@game/objects/house.object';
+import { Warps } from '@game/constants/warp.constants';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -87,23 +86,34 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { x: 93, y: 22, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { x: 94, y: 23, canBeBroken: false }));
 
-    // warp
-    // warps
-    const WARP_CONFIG_FARM = {
+    // warps - hill - world
+    this.scene.addObject(new WarpObject(scene, {
       x: 99,
+      y: 12,
+      width: 1,
+      height: 2,
       player: this.player,
       map: SCENE_GAME_MAP_WORLD,
-      width: 1,
-      height: 1,
+      position: {
+        x: Warps.Farm.Hill.Town.Hill.position.x,
+        y: Warps.Farm.Hill.Town.Hill.position.y,
+      },
       isColliding: true,
-    };
-    this.scene.addObject(new WarpObject(scene, {
-      ...WARP_CONFIG_FARM,
-      y: 12
     }));
+
+    // warps - beach - world
     this.scene.addObject(new WarpObject(scene, {
-      ...WARP_CONFIG_FARM,
-      y: 13
+      x: 99,
+      y: 16,
+      width: 1,
+      height: 7,
+      player: this.player,
+      map: SCENE_GAME_MAP_WORLD,
+      position: {
+        x: Warps.Farm.Hill.Town.Beach.position.x,
+        y: Warps.Farm.Hill.Town.Beach.position.y,
+      },
+      isColliding: true,
     }));
   }
 
@@ -111,22 +121,16 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
-    // fade in
-    const transitionLength = 2;
-    this.scene.addObject(new TransitionObject(this.scene, {
-      animationCenterX: this.player.transform.position.world.x + (this.player.width / 2),
-      animationCenterY: this.player.transform.position.world.y + (this.player.height / 2),
-      animationType: 'circle',
-      animationLength: transitionLength,
-    }));
-
+    Warps.onMapEnter(this.scene, this.player);
+    
     // first visit
+    // TODO: only show if entering from a certain direction
     if (!this.scene.globals.flags[SceneFlag.farm_visited]) {
       this.scene.globals.flags[SceneFlag.farm_visited] = true;
       this.scene.globals.player.enabled = false;
 
       this.scene.addObject(new TimerObject(this.scene, {
-        duration: transitionLength,
+        duration: 2,
         onComplete: () => {
           MessageUtils.showMessage(
             this.scene,

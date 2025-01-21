@@ -5,7 +5,6 @@ import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MouseUtils } from '@core/utils/mouse.utils';
 import { CollisionObject } from '@game/objects/collision.object';
-import { TransitionObject } from '@core/objects/transition.object';
 import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
@@ -27,6 +26,7 @@ import { QuestClearPathToFarm } from '@game/objects/world/npcs/farmer/clear-path
 import { Scene } from '@core/model/scene';
 import { SCENE_GAME_MAP_FARM } from '../farm/map';
 import { SCENE_GAME_MAP_TOWN } from '../town/map';
+import { Warps } from '@game/constants/warp.constants';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -134,7 +134,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       }
     }));
 
-    // rocks
+    // rocks - beach town blockade
     this.scene.addObject(new RockObject(this.scene, { x: 26, y: 2, canBeBroken: true }));
     this.scene.addObject(new RockObject(this.scene, { x: 27, y: 1, canBeBroken: true }));
     this.scene.addObject(new RockObject(this.scene, { x: 28, y: 1, canBeBroken: true }));
@@ -142,18 +142,20 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { x: 30, y: 0, canBeBroken: true }));
     this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: true }));
 
+    // rocks - hill to town blockade
     this.scene.addObject(new RockObject(this.scene, { x: 10, y: 0, canBeBroken: true }));
     this.scene.addObject(new RockObject(this.scene, { x: 10, y: 1, canBeBroken: true }));
     this.scene.addObject(new RockObject(this.scene, { x: 10, y: 2, canBeBroken: true }));
 
-    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 16, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 3, y: 16, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 17, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 18, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 19, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 20, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 21, canBeBroken: false }));
-    this.scene.addObject(new RockObject(this.scene, { x: 0, y: 22, canBeBroken: false }));
+    // rocks - beach farm blockade
+    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 16, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 4, y: 16, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 3, y: 17, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 18, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 19, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 3, y: 20, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 21, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 22, canBeBroken: true }));
 
     // trees
     this.scene.addObject(new TreeObject(this.scene, { x: 1, y: 2, type: 'small' }));
@@ -172,47 +174,60 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     QuestCollectBerries.setup(this.scene);
     QuestClearPathToFarm.setup(this.scene);
 
-    // warps
-    const WARP_CONFIG_FARM = {
+    // warp - farm - through the hill
+    this.scene.addObject(new WarpObject(scene, {
       x: 0,
-      player: this.player,
-      map: SCENE_GAME_MAP_FARM,
+      y: 12,
       width: 1,
+      height: 2,
+      player: this.player,
       isColliding: true,
-    };
-    this.scene.addObject(new WarpObject(scene, {
-      ...WARP_CONFIG_FARM,
-      y: 12
-    }));
-    this.scene.addObject(new WarpObject(scene, {
-      ...WARP_CONFIG_FARM,
-      y: 13
+      map: SCENE_GAME_MAP_FARM,
+      position: {
+        x: Warps.World.Hill.Farm.Hill.position.x, 
+        y: Warps.World.Hill.Farm.Hill.position.y,
+      },
     }));
 
     // warp - town - through the hill
     this.scene.addObject(new WarpObject(scene, {
       x: 10,
       y: 0,
+      width: 1,
+      height: 1,
       player: this.player,
       map: SCENE_GAME_MAP_TOWN,
-      width: 1,
       position: {
-        x: 10, 
-        y: 38,
+        x: Warps.World.Hill.Town.Hill.position.x, 
+        y: Warps.World.Hill.Town.Hill.position.y,
       },
-      target: {
-        x: 10, 
-        y: 37,
-      }
     }));
 
     // warp - town - beach
     this.scene.addObject(new WarpObject(scene, {
       x: 27,
       y: 0,
+      width: 5,
+      height: 1,
       player: this.player,
       map: SCENE_GAME_MAP_TOWN,
-      width: 5,
+      position: {
+        x: Warps.World.Beach.Town.position.x, 
+        y: Warps.World.Beach.Town.position.y,
+      },
+    }));
+
+    this.scene.addObject(new WarpObject(scene, {
+      x: 0,
+      y: 16,
+      width: 1,
+      height: 7,
+      player: this.player,
+      map: SCENE_GAME_MAP_FARM,
+      position: {
+        x: Warps.World.Beach.Farm.position.x, 
+        y: Warps.World.Beach.Farm.position.y,
+      },
     }));
   }
 
@@ -220,13 +235,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
-    // fade in
-    this.scene.addObject(new TransitionObject(scene, {
-      animationCenterX: this.player.transform.position.world.x + (this.player.width / 2),
-      animationCenterY: this.player.transform.position.world.y + (this.player.height / 2),
-      animationType: 'circle',
-      animationLength: 2,
-    }));
+    Warps.onMapEnter(this.scene, this.player);
   }
 
   onLeave(scene: Scene): void {

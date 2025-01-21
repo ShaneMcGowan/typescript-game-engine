@@ -1,14 +1,13 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { TransitionObject } from '@core/objects/transition.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { WarpObject } from '@game/objects/warp.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
-import { Scene } from '@core/model/scene';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
+import { Warps } from '@game/constants/warp.constants';
 
 export class SCENE_GAME_MAP_TOWN extends SceneMap {
 
@@ -83,24 +82,7 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
-    if(scene.globals.warp.position){
-      this.player.transform.position.local.x = scene.globals.warp.position.x;
-      this.player.transform.position.local.y = scene.globals.warp.position.y;
-      scene.globals.warp.position = null;
-    }
-
-    if(scene.globals.warp.target){
-      this.player.targetX = scene.globals.warp.target.x;
-      this.player.targetY = scene.globals.warp.target.y;
-      scene.globals.warp.target = null;
-    }
-
-    this.scene.addObject(new TransitionObject(scene, {
-      animationType: 'circle',
-      animationLength: 7,
-      animationCenterX: this.player.transform.position.world.x + 0.5,
-      animationCenterY: this.player.transform.position.world.y + 0.5
-    }));
+    Warps.onMapEnter(scene, this.player);
   }
 
   onLeave(): void {

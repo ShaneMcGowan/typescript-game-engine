@@ -59,6 +59,10 @@ export class WarpObject extends SceneObject {
       this.scene.globals.warp.position = {
         ...this.config.position
       };
+      // default target to new position or we will start moving
+      this.scene.globals.warp.target = {
+        ...this.config.position
+      };
     }
 
     if(this.config.target){
