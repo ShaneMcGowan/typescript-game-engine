@@ -138,11 +138,11 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
 
 export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   // tools
-  [ItemType.Axe]: 0,
-  [ItemType.Hoe]: 0,
-  [ItemType.Shovel]: 0,
-  [ItemType.WateringCan]: 0,
-  [ItemType.Pickaxe]: 0,
+  [ItemType.Axe]: 50,
+  [ItemType.Hoe]: 50,
+  [ItemType.Shovel]: 50,
+  [ItemType.WateringCan]: 50,
+  [ItemType.Pickaxe]: 50,
   // furniture
   [ItemType.FurnitureBed]: 100,
   [ItemType.FurniturePainting]: 50,
@@ -157,7 +157,7 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.TomatoSeeds]: 5,
   [ItemType.Tomato]: 10,
 
-  [ItemType.Chest]: 0,
+  [ItemType.Chest]: 150,
   [ItemType.GateKey]: 0,
   [ItemType.HouseKey]: 0,
 
@@ -168,11 +168,11 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   // tools
-  [ItemType.Axe]: 0,
-  [ItemType.Hoe]: 0,
-  [ItemType.Shovel]: 0,
-  [ItemType.WateringCan]: 0,
-  [ItemType.Pickaxe]: 0,
+  [ItemType.Axe]: 5,
+  [ItemType.Hoe]: 5,
+  [ItemType.Shovel]: 5,
+  [ItemType.WateringCan]: 5,
+  [ItemType.Pickaxe]: 5,
   // furniture
   [ItemType.FurnitureBed]: 5,
   [ItemType.FurniturePainting]: 5,
@@ -186,7 +186,7 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Wheat]: 10,
   [ItemType.TomatoSeeds]: 5,
   [ItemType.Tomato]: 10,
-  [ItemType.Chest]: 0,
+  [ItemType.Chest]: 30,
   [ItemType.GateKey]: 0,
   [ItemType.HouseKey]: 0,
   [ItemType.Rock]: 1,
@@ -267,6 +267,31 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.FurnitureRugLarge]: "A lovely rug to place on the floor.",
   [ItemType.FurnitureTable]: "La mesa",
   [ItemType.FurnitureLamp]: "Lamps"
+}
+
+export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
+  [ItemType.Chicken]: true,
+  [ItemType.Egg]: true,
+  [ItemType.WheatSeeds]: true,
+  [ItemType.Wheat]: true,
+  [ItemType.TomatoSeeds]: true,
+  [ItemType.Tomato]: true,
+  [ItemType.Hoe]: true,
+  [ItemType.WateringCan]: true,
+  [ItemType.Chest]: true,
+  [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
+  [ItemType.Axe]: true,
+  [ItemType.Pickaxe]: true,
+  [ItemType.Rock]: true,
+  [ItemType.Log]: true,
+  [ItemType.Berry]: true,
+  [ItemType.Shovel]: true,
+  [ItemType.FurnitureBed]: true,
+  [ItemType.FurniturePainting]: true,
+  [ItemType.FurnitureRugLarge]: true,
+  [ItemType.FurnitureTable]: true,
+  [ItemType.FurnitureLamp]: true,
 }
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
@@ -611,6 +636,10 @@ export class Inventory {
 
   static canItemBeDropped(type: ItemType): boolean {
     return TYPE_TO_CAN_DROP_MAP[type];
+  }
+
+  static canItemBeSold(type: ItemType): boolean {
+    return TYPE_TO_CAN_SELL_MAP[type];
   }
 
   static canItemBeInteractedWith(type: ItemType): boolean {

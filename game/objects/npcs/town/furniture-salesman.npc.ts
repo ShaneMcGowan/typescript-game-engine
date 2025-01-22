@@ -11,6 +11,7 @@ const INVENTORY = [
   ItemType.FurniturePainting,
   ItemType.FurnitureRugLarge,
   ItemType.FurnitureTable,
+  ItemType.Chest,
 ];
 
 const ANIMATIONS: Record<NpcState, SpriteAnimation> = {

@@ -55,6 +55,7 @@ export class InventorySlotObject extends SceneObject {
     this.renderContainer(context);
     this.renderItem(context);
     this.renderStackSize(context);
+    this.renderValue(context);
   }
 
   private updateClicked(): void {
@@ -122,6 +123,11 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
+    // can be sold
+    if(!Inventory.canItemBeSold(this.item.type)){
+      return;
+    }
+
     // give price
     const value = Inventory.getItemSellValue(this.item.type);
     this.scene.globals.gold += value;
@@ -153,6 +159,8 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
+    const opacity = (this.type === SlotType.ShopSell && !Inventory.canItemBeSold(this.item.type) ? 0.25 : 1)
+
     RenderUtils.renderSprite(
       context,
       Assets.images[this.sprite.tileset],
@@ -162,12 +170,16 @@ export class InventorySlotObject extends SceneObject {
       this.transform.position.world.y + 0.5,
       1,
       1,
-      { centered: true }
+      { opacity: opacity }
     );
   }
 
   private renderStackSize(context: CanvasRenderingContext2D): void {
     if (this.item === undefined) {
+      return;
+    }
+
+    if(this.type === SlotType.ShopBuy){
       return;
     }
 
@@ -180,6 +192,33 @@ export class InventorySlotObject extends SceneObject {
       `${this.item.currentStackSize}`,
       this.transform.position.world.x + 1.25,
       this.transform.position.world.y + 1.75,
+    );
+  }
+  
+  private renderValue(context: CanvasRenderingContext2D): void {
+    if (this.item === undefined) {
+      return;
+    }
+    
+    if(this.type === SlotType.Inventory){
+      return;
+    }
+
+    if(this.type === SlotType.ShopSell && !Inventory.canItemBeSold(this.item.type)){
+      return;
+    }
+
+    const value = this.type === SlotType.ShopBuy ? Inventory.getItemBuyValue(this.item.type) : Inventory.getItemSellValue(this.item.type)
+
+    RenderUtils.renderText(
+      context,
+      `$${value}`,
+      this.transform.position.world.x + 0.25,
+      this.transform.position.world.y + 0.75,
+      {
+        colour: 'black',
+        align: 'left'
+      }
     );
   }
 
@@ -202,4 +241,5 @@ export class InventorySlotObject extends SceneObject {
 
     return TYPE_TO_SPRITE_MAP[this.item.type];
   }
+
 }
