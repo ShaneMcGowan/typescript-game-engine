@@ -15,7 +15,7 @@ import { PlayerObject } from './player.object';
 import { TileConfig } from '@game/models/tile.model';
 import { Direction } from '@game/models/direction.model';
 import { Inventory } from '@game/models/inventory.model';
-import { InventoryObject } from './inventory/inventory.object';
+import { InventoryObject, InventoryType } from './inventory/inventory.object';
 
 const DEFAULT_CAN_MOVE: boolean = false;
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
@@ -66,7 +66,7 @@ export interface NpcObjectConfig extends SceneObjectBaseConfig {
 export class NpcObject extends SceneObject implements Interactable {
   state: NpcState = 'idle';
 
-  inventory: Inventory = new Inventory(5 ,5);
+  inventory: Inventory = new Inventory(5, 3);
 
   targetX: number = -1;
   targetY: number = -1;
@@ -411,9 +411,14 @@ export class NpcObject extends SceneObject implements Interactable {
     this.scene.addObject(new InventoryObject(
       this.scene,
       {
-        otherInventory: this.inventory
+        otherInventory: this.inventory,
+        type: this.inventoryType,
       }
     ))
+  }
+
+  get inventoryType(): InventoryType {
+    return InventoryType.Inventory;
   }
 
 }

@@ -5,7 +5,7 @@ import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { RenderUtils } from '@core/utils/render.utils';
 import { GamepadKey, Input, MouseKey } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
-import { InventorySlotObject } from './inventory-slot.object';
+import { InventorySlotObject, SlotType } from './inventory-slot.object';
 import { ObjectFilter } from '@core/model/scene';
 import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
@@ -17,9 +17,17 @@ import { InventoryButtonDropObject } from './inventory-button-drop.object';
 import { ItemObject } from '../item.object';
 import { PlayerObject } from '../player.object';
 import { DeviceType } from '@core/model/device-type';
+import { InventoryGoldCountObject } from './inventory-gold-count.object';
+import { PortraitObject } from '../portrait.object';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 
 type DraggingSource = 'inventory' | 'chest';
 type DraggingType = 'mouse' | 'controller';
+
+export enum InventoryType {
+  Inventory = 'Inventory',
+  Shop = 'Shop',
+}
 
 interface Config extends SceneObjectBaseConfig {
   player?: PlayerObject;
@@ -27,6 +35,7 @@ interface Config extends SceneObjectBaseConfig {
   
   otherInventory?: Inventory;
   onClose?: () => void;
+  type?: InventoryType;
 }
 
 interface Grid {
@@ -44,6 +53,8 @@ export class InventoryObject extends SceneObject {
 
   otherInventory?: Inventory;
   onClose?: () => void;
+  type: InventoryType = InventoryType.Inventory;
+  
 
   private grid: Grid;
   private gridPosition: { x: number, y: number } = { x: 0, y: 0 };
@@ -69,6 +80,7 @@ export class InventoryObject extends SceneObject {
     this.player = config.player;
     this.otherInventory = config.otherInventory;
     this.onClose = config.onClose;
+    this.type = config.type ?? this.type;
   }
 
   onAwake(): void {
@@ -134,7 +146,8 @@ export class InventoryObject extends SceneObject {
           new InventorySlotObject(this.scene, {
             x: positionX,
             y: positionY,
-            index: index
+            index: index,
+            type: this.type === InventoryType.Inventory ? SlotType.Inventory : SlotType.ShopSell
           })
         );
       }
@@ -150,7 +163,8 @@ export class InventoryObject extends SceneObject {
               x: marginLeft + gap + (column * width),
               y: marginTopChest + (row * height),
               index: index,
-              otherInventory: this.otherInventory
+              otherInventory: this.otherInventory,
+              type: this.type === InventoryType.Inventory ? SlotType.Inventory : SlotType.ShopBuy
             })
           );
         }
@@ -173,6 +187,15 @@ export class InventoryObject extends SceneObject {
       button.transform.position.local.y = y;
       this.addChild(button);
     });
+
+    this.addChild(new InventoryGoldCountObject(
+      this.scene,
+      {
+        x: 2,
+        y: 2,
+        width: 2,
+      }
+    ));
 
     this.addChild(new FillObject(this.scene, {
       x: 0,

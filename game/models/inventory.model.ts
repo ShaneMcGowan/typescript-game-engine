@@ -136,29 +136,62 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.FurnitureLamp]: 1,
 };
 
-export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
+export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
+  // tools
+  [ItemType.Axe]: 0,
+  [ItemType.Hoe]: 0,
+  [ItemType.Shovel]: 0,
+  [ItemType.WateringCan]: 0,
+  [ItemType.Pickaxe]: 0,
+  // furniture
+  [ItemType.FurnitureBed]: 100,
+  [ItemType.FurniturePainting]: 50,
+  [ItemType.FurnitureRugLarge]: 30,
+  [ItemType.FurnitureTable]: 40,
+  [ItemType.FurnitureLamp]: 20,
+  // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
   [ItemType.WheatSeeds]: 5,
   [ItemType.Wheat]: 10,
   [ItemType.TomatoSeeds]: 5,
   [ItemType.Tomato]: 10,
-  [ItemType.Hoe]: 0,
-  [ItemType.WateringCan]: 0,
+
   [ItemType.Chest]: 0,
   [ItemType.GateKey]: 0,
   [ItemType.HouseKey]: 0,
-  [ItemType.Axe]: 0,
-  [ItemType.Pickaxe]: 0,
+
   [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
+}
+
+export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
+  // tools
+  [ItemType.Axe]: 0,
+  [ItemType.Hoe]: 0,
   [ItemType.Shovel]: 0,
-  [ItemType.FurnitureBed]: 0,
-  [ItemType.FurniturePainting]: 0,
-  [ItemType.FurnitureRugLarge]: 0,
-  [ItemType.FurnitureTable]: 0,
-  [ItemType.FurnitureLamp]: 0
+  [ItemType.WateringCan]: 0,
+  [ItemType.Pickaxe]: 0,
+  // furniture
+  [ItemType.FurnitureBed]: 5,
+  [ItemType.FurniturePainting]: 5,
+  [ItemType.FurnitureRugLarge]: 5,
+  [ItemType.FurnitureTable]: 5,
+  [ItemType.FurnitureLamp]: 5,
+  // other
+  [ItemType.Chicken]: 0,
+  [ItemType.Egg]: 0,
+  [ItemType.WheatSeeds]: 5,
+  [ItemType.Wheat]: 10,
+  [ItemType.TomatoSeeds]: 5,
+  [ItemType.Tomato]: 10,
+  [ItemType.Chest]: 0,
+  [ItemType.GateKey]: 0,
+  [ItemType.HouseKey]: 0,
+  [ItemType.Rock]: 1,
+  [ItemType.Log]: 1,
+  [ItemType.Berry]: 5,
 }
 
 export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
@@ -562,6 +595,14 @@ export class Inventory {
 
   static getItemMaxStackSize(type: ItemType): number {
     return TYPE_TO_MAX_STACK_MAP[type];
+  }
+
+  static getItemBuyValue(type: ItemType): number {
+    return TYPE_TO_BUY_VALUE_MAP[type];
+  }
+
+  static getItemSellValue(type: ItemType): number {
+    return TYPE_TO_SELL_VALUE_MAP[type];
   }
 
   static canItemBeDestroyed(type: ItemType): boolean {

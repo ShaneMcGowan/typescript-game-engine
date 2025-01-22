@@ -9,6 +9,12 @@ import { InventoryObject } from "./inventory.object";
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 import { TilesetUI } from "@game/constants/tilesets/ui.tileset";
 
+export enum SlotType {
+  Inventory = 'Inventory',
+  ShopBuy = 'ShopBuy',
+  ShopSell = 'ShopSell',
+}
+
 enum Controls {
   QuickMove = 'shift'
 }
@@ -16,6 +22,7 @@ enum Controls {
 interface Config extends SceneObjectBaseConfig {
   otherInventory?: Inventory;
   index: number;
+  type?: SlotType;
 }
 
 export class InventorySlotObject extends SceneObject {
@@ -24,6 +31,7 @@ export class InventorySlotObject extends SceneObject {
 
   otherInventory?: Inventory;
   index: number;
+  type: SlotType = SlotType.Inventory;
 
   constructor(
     protected scene: SCENE_GAME,
@@ -36,6 +44,7 @@ export class InventorySlotObject extends SceneObject {
 
     this.otherInventory = config.otherInventory;
     this.index = config.index;
+    this.type = config.type ?? this.type;
   }
 
   onUpdate(delta: number): void {
@@ -68,12 +77,57 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
+    if(this.type === SlotType.Inventory){
+      this.onClickInventory();
+    } else if(this.type === SlotType.ShopBuy){
+      this.onClickShopBuy();
+    } else if(this.type === SlotType.ShopSell){
+      this.onClickShopSell();
+    }
+  }
+
+  private onClickInventory(): void {
     if (Input.isKeyPressed(Controls.QuickMove)) {
       (this.parent as InventoryObject).quickMove(this.otherInventory ? 'chest' : 'inventory', this.index);
     } else {
       (this.parent as InventoryObject).startDraggingItem('mouse', this.otherInventory ? 'chest' : 'inventory', this.index);
     }
+  }
 
+  private onClickShopBuy(): void {
+    if(this.item === undefined){
+      return;
+    }
+
+    // check if enough room
+    if(!this.inventory.hasRoomForItem(this.item.type)){
+      return;
+    }
+
+    // can afford
+    const value = Inventory.getItemBuyValue(this.item.type);
+    if(value > this.scene.globals.gold){
+      return;
+    }
+
+    // deduct price
+    this.scene.globals.gold -= value;
+
+    // add item to inventory
+    this.inventory.addToInventory(this.item.type);
+  }
+
+  private onClickShopSell(): void {
+    if(this.item === undefined){
+      return;
+    }
+
+    // give price
+    const value = Inventory.getItemSellValue(this.item.type);
+    this.scene.globals.gold += value;
+
+    // remove item from inventory
+    this.inventory.removeFromInventoryByIndex(this.index, 1);
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {

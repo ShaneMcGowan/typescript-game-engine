@@ -3,6 +3,7 @@ import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from ".
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
 import { ItemType } from "@game/models/inventory.model";
+import { InventoryType } from "@game/objects/inventory/inventory.object";
 
 const INVENTORY = [
   ItemType.FurnitureBed,
@@ -58,6 +59,10 @@ export class FurnitureSalesmanObject extends NpcObject {
 
   onDefault(): void {
     this.openInventory();
+  }
+
+  get inventoryType(): InventoryType {
+    return InventoryType.Shop;
   }
 
 }
