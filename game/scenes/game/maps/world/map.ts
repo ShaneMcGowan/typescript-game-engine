@@ -135,12 +135,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     }));
 
     // rocks - beach town blockade
-    this.scene.addObject(new RockObject(this.scene, { x: 26, y: 2, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 27, y: 1, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 28, y: 1, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 29, y: 0, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 30, y: 0, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 26, y: 2, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 28, y: 1, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: false }));
 
     // rocks - hill to town blockade
     this.scene.addObject(new RockObject(this.scene, { x: 10, y: 0, canBeBroken: true }));
@@ -148,14 +145,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { x: 10, y: 2, canBeBroken: true }));
 
     // rocks - beach farm blockade
-    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 16, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 4, y: 16, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 3, y: 17, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 18, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 19, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 3, y: 20, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 21, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 22, canBeBroken: true }));
+    this.scene.addObject(new RockObject(this.scene, { x: 4, y: 16, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 2, y: 19, canBeBroken: false }));
+    this.scene.addObject(new RockObject(this.scene, { x: 1, y: 22, canBeBroken: false }));
 
     // trees
     this.scene.addObject(new TreeObject(this.scene, { x: 1, y: 2, type: 'small' }));
