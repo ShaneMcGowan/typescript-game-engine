@@ -22,8 +22,11 @@ type DraggingSource = 'inventory' | 'chest';
 type DraggingType = 'mouse' | 'controller';
 
 interface Config extends SceneObjectBaseConfig {
-  player: PlayerObject;
-  chest?: ChestObject
+  player?: PlayerObject;
+  // chest?: ChestObject;
+  
+  otherInventory?: Inventory;
+  onClose?: () => void;
 }
 
 interface Grid {
@@ -37,8 +40,10 @@ interface Grid {
 }
 
 export class InventoryObject extends SceneObject {
-  private player: PlayerObject;
-  private chest: ChestObject | undefined = undefined;
+  private player?: PlayerObject;
+
+  otherInventory?: Inventory;
+  onClose?: () => void;
 
   private grid: Grid;
   private gridPosition: { x: number, y: number } = { x: 0, y: 0 };
@@ -61,12 +66,14 @@ export class InventoryObject extends SceneObject {
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 2;
     this.collision.layer = CanvasConstants.UI_COLLISION_LAYER;
 
-    this.scene.globals.player.enabled = false;
     this.player = config.player;
-    this.chest = config.chest;
+    this.otherInventory = config.otherInventory;
+    this.onClose = config.onClose;
   }
 
   onAwake(): void {
+    this.scene.globals.player.enabled = false; // we disable it here in onAwake as there are some callbacks that reenable this after object creation.
+
     this.grid = {
       columns: 0,
       rows: 0,
@@ -79,21 +86,19 @@ export class InventoryObject extends SceneObject {
 
     const slots = [];
 
-
-
     // inventory size
     const rows = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 5 : 7;
     const columns = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? 5 : 4;
 
-    const rowsChest = this.chest ? this.chest.rows : 0;
-    const columnsChest = this.chest ? this.chest.columns : 0;
+    const rowsChest = this.otherInventory ? this.otherInventory.rows : 0;
+    const columnsChest = this.otherInventory ? this.otherInventory.columns : 0;
     // inventory slots
     const width = 2;
     const height = 2;
     const gap = (columns + 1) * width;
 
-    const rowsTotal = rows + (this.chest ? rowsChest + 1 : 0); // 1 is a gap
-    const columnsTotal = columns + (this.chest ? columnsChest + 1 : 0); // 1 is a gap
+    const rowsTotal = rows + (this.otherInventory ? rowsChest + 1 : 0); // 1 is a gap
+    const columnsTotal = columns + (this.otherInventory ? columnsChest + 1 : 0); // 1 is a gap
 
     const marginTopInventory = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rows * height)) / 2);
     const marginTopChest = ((CanvasConstants.CANVAS_TILE_HEIGHT - (rowsChest * height)) / 2);
@@ -139,13 +144,13 @@ export class InventoryObject extends SceneObject {
       for (let column = 0; column < columnsChest; column++) {
         const index = (row * columnsChest) + column;
 
-        if (this.chest) {
+        if (this.otherInventory) {
           slots.push(
             new InventorySlotObject(this.scene, {
               x: marginLeft + gap + (column * width),
               y: marginTopChest + (row * height),
               index: index,
-              chest: this.chest
+              otherInventory: this.otherInventory
             })
           );
         }
@@ -156,8 +161,8 @@ export class InventoryObject extends SceneObject {
 
     const buttons = [
       new InventoryButtonCloseObject(this.scene, {}),
-      new InventoryButtonTrashObject(this.scene, {}),
-      new InventoryButtonDropObject(this.scene, {})
+      ...(this.player ? [new InventoryButtonTrashObject(this.scene, {})] : []),
+      ...(this.player ? [new InventoryButtonDropObject(this.scene, {})] : []),
     ];
 
     const x = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? CanvasConstants.CANVAS_TILE_WIDTH - 3 : CanvasConstants.CANVAS_TILE_WIDTH - 3;
@@ -179,7 +184,8 @@ export class InventoryObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {
-    this.updateMouseDragging();
+    this.updateStopMouseDragging();
+
     this.updateMouseAddTooltip();
     this.updateMouseRemoveTooltip();
 
@@ -203,8 +209,8 @@ export class InventoryObject extends SceneObject {
   onDestroy(): void {
     this.stopDraggingItem();
     this.scene.globals.player.enabled = true;
-    if (this.chest) {
-      this.chest.actionClose();
+    if (this.onClose) {
+      this.onClose();
     }
   }
 
@@ -220,7 +226,7 @@ export class InventoryObject extends SceneObject {
     return this.grid.positions[this.gridPosition.y][this.gridPosition.x]
   }
 
-  private updateMouseDragging(): void {
+  private updateStopMouseDragging(): void {
     if (this.dragging === undefined) {
       return;
     }
@@ -229,9 +235,11 @@ export class InventoryObject extends SceneObject {
       return;
     }
 
-    if (Input.isMousePressed(MouseKey.Left)) {
+    if (!Input.isMousePressed(MouseKey.Left)) {
       return;
     }
+
+    Input.clearMousePressed(MouseKey.Left);
 
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(
@@ -260,8 +268,8 @@ export class InventoryObject extends SceneObject {
           const item = new ItemObject(
             this.scene,
             {
-              x: this.player.transform.position.world.x,
-              y: this.player.transform.position.world.y,
+              x: this.player?.transform.position.world.x || 0,
+              y: this.player?.transform.position.world.y || 0,
               type: this.dragging.item.type,
               dropped: true,
             }
@@ -275,8 +283,8 @@ export class InventoryObject extends SceneObject {
       }
     } else if (slot instanceof InventorySlotObject) {
       // swap
-      const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
-      const target = slot.chest === undefined ? this.inventory : this.chest.inventory;
+      const source = this.dragging.source === 'inventory' ? this.inventory : this.otherInventory;
+      const target = slot.otherInventory === undefined ? this.inventory : this.otherInventory;
 
       source.items[this.dragging.index] = target.items[slot.index];
       target.items[slot.index] = this.dragging.item;
@@ -495,8 +503,8 @@ export class InventoryObject extends SceneObject {
       }
     } else if (slot instanceof InventorySlotObject) {
       // swap
-      const source = this.dragging.source === 'inventory' ? this.inventory : this.chest.inventory;
-      const target = slot.chest === undefined ? this.inventory : this.chest.inventory;
+      const source = this.dragging.source === 'inventory' ? this.inventory : this.otherInventory;
+      const target = slot.otherInventory === undefined ? this.inventory : this.otherInventory;
 
       source.items[this.dragging.index] = target.items[slot.index];
       target.items[slot.index] = this.dragging.item;
@@ -629,12 +637,12 @@ export class InventoryObject extends SceneObject {
   }
 
   quickMove(source: DraggingSource, inventoryIndex: number): void {
-    if (this.chest === undefined) {
+    if (this.otherInventory === undefined) {
       return;
     }
 
-    const sourceInventory = source === 'inventory' ? this.inventory : this.chest.inventory;
-    const targetInventory = source === 'inventory' ? this.chest.inventory : this.inventory;
+    const sourceInventory = source === 'inventory' ? this.inventory : this.otherInventory;
+    const targetInventory = source === 'inventory' ? this.otherInventory : this.inventory;
 
     // no slot to move to
     const index = targetInventory.getFirstSlotAvailable();
@@ -654,14 +662,14 @@ export class InventoryObject extends SceneObject {
     if (this.dragging.source === 'inventory') {
       this.inventory.items[this.dragging.index] = this.dragging.item;
     } else if (this.dragging.source === 'chest') {
-      this.chest.inventory.items[this.dragging.index] = this.dragging.item;
+      this.otherInventory.items[this.dragging.index] = this.dragging.item;
     }
   }
 
   private getInventoryFromSource(source: DraggingSource): Inventory {
     switch (source) {
       case 'chest':
-        return this.chest.inventory;
+        return this.otherInventory;
       case 'inventory':
       default: ''
         return this.inventory;

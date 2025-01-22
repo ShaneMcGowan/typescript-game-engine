@@ -54,7 +54,8 @@ export class ChestObject extends SceneObject implements Interactable {
       {
         x: 0,
         y: 0,
-        chest: this,
+        otherInventory: this.inventory,
+        onClose: () => { this.actionClose() },
         player: this.player,
       }
     ));
@@ -70,28 +71,22 @@ export class ChestObject extends SceneObject implements Interactable {
         context,
         Assets.images[TILE_SET],
         13,
-        1,
+        0,
         this.transform.position.world.x,
-        this.transform.position.world.y,
+        this.transform.position.world.y - 1,
         1,
         2,
-        {
-          centered: true,
-        }
       );
     } else {
       RenderUtils.renderSprite(
         context,
         Assets.images[TILE_SET],
         1,
-        1,
+        0,
         this.transform.position.world.x,
-        this.transform.position.world.y,
+        this.transform.position.world.y - 1,
         1,
         2,
-        {
-          centered: true,
-        }
       );
     }
   }

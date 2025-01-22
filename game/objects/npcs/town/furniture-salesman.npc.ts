@@ -2,6 +2,15 @@ import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
 import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
+import { ItemType } from "@game/models/inventory.model";
+
+const INVENTORY = [
+  ItemType.FurnitureBed,
+  ItemType.FurnitureLamp,
+  ItemType.FurniturePainting,
+  ItemType.FurnitureRugLarge,
+  ItemType.FurnitureTable,
+];
 
 const ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_player', [
@@ -22,6 +31,9 @@ export class FurnitureSalesmanObject extends NpcObject {
     protected config: Config
   ) {
     super(scene, config);
+
+    // inventory
+    INVENTORY.forEach(type => this.inventory.addToInventory(type));
   }
 
   get details(): NpcDetails {
@@ -38,6 +50,14 @@ export class FurnitureSalesmanObject extends NpcObject {
 
   get introFlag(): SceneFlag {
     return SceneFlag.intro_furniture_salesman;
+  }
+
+  onIntro(): void {
+    this.openInventory();
+  }
+
+  onDefault(): void {
+    this.openInventory();
   }
 
 }

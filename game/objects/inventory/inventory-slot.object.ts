@@ -3,10 +3,9 @@ import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input } from "@core/utils/input.utils";
+import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { InventoryObject } from "./inventory.object";
-import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 import { TilesetUI } from "@game/constants/tilesets/ui.tileset";
 
@@ -15,7 +14,7 @@ enum Controls {
 }
 
 interface Config extends SceneObjectBaseConfig {
-  chest?: ChestObject;
+  otherInventory?: Inventory;
   index: number;
 }
 
@@ -23,7 +22,7 @@ export class InventorySlotObject extends SceneObject {
   width: number = 2;
   height: number = 2;
 
-  chest?: ChestObject;
+  otherInventory?: Inventory;
   index: number;
 
   constructor(
@@ -35,7 +34,7 @@ export class InventorySlotObject extends SceneObject {
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER + 1;
 
-    this.chest = config.chest;
+    this.otherInventory = config.otherInventory;
     this.index = config.index;
   }
 
@@ -55,7 +54,7 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    if (!Input.isMousePressed()) {
+    if (!Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
@@ -63,14 +62,16 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
+    Input.clearMousePressed(MouseKey.Left);
+
     if (this.item === undefined) {
       return;
     }
 
     if (Input.isKeyPressed(Controls.QuickMove)) {
-      (this.parent as InventoryObject).quickMove(this.chest ? 'chest' : 'inventory', this.index);
+      (this.parent as InventoryObject).quickMove(this.otherInventory ? 'chest' : 'inventory', this.index);
     } else {
-      (this.parent as InventoryObject).startDraggingItem('mouse', this.chest ? 'chest' : 'inventory', this.index);
+      (this.parent as InventoryObject).startDraggingItem('mouse', this.otherInventory ? 'chest' : 'inventory', this.index);
     }
 
   }
@@ -129,8 +130,8 @@ export class InventorySlotObject extends SceneObject {
   }
 
   get item(): Item | undefined {
-    if (this.chest) {
-      return this.chest.inventory.items[this.index];
+    if (this.otherInventory) {
+      return this.otherInventory.items[this.index];
     }
 
     return this.inventory.items[this.index];
