@@ -110,8 +110,8 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
       player: this.player,
       map: SCENE_GAME_MAP_WORLD,
       position: {
-        x: Warps.Farm.Hill.Town.Beach.position.x,
-        y: Warps.Farm.Hill.Town.Beach.position.y,
+        x: Warps.Farm.Beach.Town.Beach.position.x,
+        y: Warps.Farm.Beach.Town.Beach.position.y,
       },
       isColliding: true,
     }));

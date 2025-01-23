@@ -5,6 +5,8 @@ import { TransitionObject } from '@core/objects/transition.object';
 import { SCENE_GAME } from '@game/scenes/game/scene';
 import { SceneMapConstructorSignature } from '@core/model/scene-map';
 import { Coordinate } from '@core/model/coordinate';
+import { RenderUtils } from '@core/utils/render.utils';
+import { CanvasConstants } from '@core/constants/canvas.constants';
 
 interface Config extends SceneObjectBaseConfig {
   player: PlayerObject;
@@ -29,6 +31,9 @@ export class WarpObject extends SceneObject {
     protected config: Config
   ) {
     super(scene, config);
+    this.renderer.enabled = true;
+    this.renderer.layer = CanvasConstants.LAST_OBJECT_RENDER_LAYER;
+    
     this.player = config.player;
     this.map = config.map;
 
@@ -93,6 +98,20 @@ export class WarpObject extends SceneObject {
         animationLength: duration,
       })
     );
+  }
+
+  onRender(context: CanvasRenderingContext2D): void {
+    RenderUtils.fillRectangle(
+      context,
+      this.transform.position.world.x,
+      this.transform.position.world.y,
+      this.width,
+      this.height,
+      {
+        type: 'tile',
+        colour: '#00000022'
+      }
+    )
   }
 
   private reset(): void {

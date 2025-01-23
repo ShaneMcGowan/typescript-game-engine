@@ -16,7 +16,7 @@ export abstract class Warps {
       Farm: {
         Hill: {
           position: {
-            x: 99,
+            x: 98,
             y: 12,
           }
         }
@@ -25,17 +25,17 @@ export abstract class Warps {
     Beach: {
       Town: {
         position: {
-          x: 31,
-          y: 39,
+          x: 30,
+          y: 38,
         }
       },
       Farm: {
         position: {
-          x: 99,
+          x: 98,
           y: 19,
         }
       }
-    }
+    },
   }
 
   static Farm = {
@@ -43,14 +43,41 @@ export abstract class Warps {
       Town: {
         Hill: {
           position: {
-            x: 0,
-            y: 12,
+            x: 1,
+            y: 13,
           }
         },
+      }
+    },
+    Beach: {
+      Town:{
         Beach: {
           position: {
-            x: 0,
+            x: 1,
             y: 19,
+          }
+        }
+      }
+    }
+  }
+
+  static Town = {
+    Hill: {
+      World: {
+        Hill: {
+          position: {
+            x: 10,
+            y: 1,
+          }
+        },
+      }
+    },
+    Beach: {
+      World: {
+        Beach: {
+          position: {
+            x: 29,
+            y: 1,
           }
         }
       }
