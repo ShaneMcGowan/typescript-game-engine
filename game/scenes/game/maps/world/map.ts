@@ -140,9 +140,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: false }));
 
     // rocks - hill to town blockade
-    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 0, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 1, canBeBroken: true }));
-    this.scene.addObject(new RockObject(this.scene, { x: 10, y: 2, canBeBroken: true }));
+    this.scene.addObject(new TreeObject(this.scene, { x: 10, y: 2, type: 'small', logOnDestroy: false, stumpOnDestroy: false }));
 
     // rocks - beach farm blockade
     this.scene.addObject(new RockObject(this.scene, { x: 4, y: 16, canBeBroken: false }));
