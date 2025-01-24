@@ -19,8 +19,6 @@ export interface QuestStatus {
 }
 
 export enum SceneFlag {
-  // story
-  story_town_rockslide = 'story_town_rockslide',
   // npc intros
   intro_default = 'intro_default', // not actually used, default for the NPC object
   intro_farmer = 'intro_farmer',
@@ -34,6 +32,13 @@ export enum SceneFlag {
   path_to_farm_cleared = 'path_to_farm_cleared',
   farm_visited = 'farm_visited',
   house_visited = 'house_visited',
+}
+
+export enum StoryFlag {
+  default_started = 'default_started',
+  default_completed = 'default_completed',
+  town_rockslide_started = 'town_rockslide_started',
+  town_rockslide_complete = 'town_rockslide_complete',
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -52,7 +57,8 @@ interface Globals extends SceneGlobalsBaseConfig {
   warp: {
     position: Coordinate | null,
     target: Coordinate | null,
-  }
+  },
+  story_flags: Record<StoryFlag, boolean>;
 }
 
 export class SCENE_GAME extends Scene {
@@ -69,8 +75,6 @@ export class SCENE_GAME extends Scene {
       interactEnabled: true,
     },
     flags: {
-      // story
-      [SceneFlag.story_town_rockslide]: false,
       // npc intros
       [SceneFlag.intro_default]: false,
       [SceneFlag.intro_farmer]: false,
@@ -123,6 +127,12 @@ export class SCENE_GAME extends Scene {
       position: null,
       target: null,
     },
+    story_flags: {
+      [StoryFlag.default_started]: false,
+      [StoryFlag.default_completed]: false,
+      [StoryFlag.town_rockslide_started]: true,
+      [StoryFlag.town_rockslide_complete]: false,
+    }
   };
 
   constructor(client: Client) {
@@ -179,6 +189,18 @@ export class SCENE_GAME extends Scene {
 
   getFlag(flag: SceneFlag): boolean {
     return this.flags[flag];
+  }
+
+  get storyFlags(): Record<StoryFlag, boolean> {
+    return this.globals.story_flags;
+  }
+
+  setStoryFlag(flag: StoryFlag, value: boolean): void {
+    this.storyFlags[flag] = value;
+  }
+
+  getStoryFlag(flag: StoryFlag): boolean {
+    return this.storyFlags[flag];
   }
 
 }

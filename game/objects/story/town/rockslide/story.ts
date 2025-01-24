@@ -1,18 +1,20 @@
-import { SceneObject, SceneObjectBaseConfig } from '@core/model/scene-object';
+import { SceneObjectBaseConfig } from '@core/model/scene-object';
 import { WorkmanObject } from '@game/objects/npcs/town/workman.npc';
 import { RockObject } from '@game/objects/rock.object';
-import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
+import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { WorkerObject } from './worker.npc';
 import { TransitionObject } from '@core/objects/transition.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { Direction } from '@game/models/direction.model';
+import { StoryObject } from '../../story.object';
 
 export interface Config extends SceneObjectBaseConfig {
 }
 
 
-export class StoryTownRockslideObject extends SceneObject {
+export class StoryTownRockslideObject extends StoryObject {
 
+  started: boolean = false;
   completing: boolean = false;
 
   constructor(
@@ -22,11 +24,15 @@ export class StoryTownRockslideObject extends SceneObject {
     super(scene, config);
   }
 
-  onAwake(): void {
-    if(this.scene.getFlag(SceneFlag.story_town_rockslide)){
-      return;
-    }
-    
+  get flagStart(): StoryFlag {
+    return StoryFlag.town_rockslide_started;
+  }
+
+  get flagComplete(): StoryFlag {
+    return StoryFlag.town_rockslide_complete;
+  }
+
+  onStart(): void {
     // rocks
     this.addChild(new RockObject(this.scene, { x: 5, y: 17, canBeBroken: false }));
     this.addChild(new RockObject(this.scene, { x: 7, y: 18, canBeBroken: false }));
@@ -46,17 +52,7 @@ export class StoryTownRockslideObject extends SceneObject {
     this.addChild(new WorkerObject(this.scene, { x: 9, y: 16, direction: Direction.Left}));
   }
 
-  onUpdate(delta: number): void {
-    if(!this.scene.getFlag(SceneFlag.story_town_rockslide)){
-      return;
-    }
-
-    if(this.completing){
-      return;
-    }
-
-    this.completing = true;
-    
+  onComplete(): void {
     const duration = 3;
 
     // disable movement
