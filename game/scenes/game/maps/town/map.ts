@@ -22,7 +22,7 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.player = new PlayerObject(scene, { playerIndex: 0, x: 24, y: 33, });
+    this.player = new PlayerObject(scene, { playerIndex: 0, x: 6, y: 20, });
     
     this.scene.addObject(this.player);
 

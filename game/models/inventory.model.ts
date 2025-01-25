@@ -48,6 +48,10 @@ export type ItemTypeFurnitureWall = ItemType.FurniturePainting;
 export const ItemTypeFurnitures: ItemType[] = [...ItemTypeFurnitureItems, ...ItemTypeFurnitureFloors, ...ItemTypeFurnitureWalls];
 export type ItemTypeFurniture = ItemTypeFurnitureItem | ItemTypeFurnitureFloor | ItemTypeFurnitureWall;
 
+// keys
+export type ItemTypeKey = Extract<ItemType, ItemType.GateKey | ItemType.HouseKey>;
+export const ItemTypeKeys: ItemTypeKey[] = [ItemType.GateKey, ItemType.HouseKey];
+
 /**
  * where the item can be placed
  */

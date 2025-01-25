@@ -1,4 +1,4 @@
-import { Inventory, ItemType } from "@game/models/inventory.model";
+import { Inventory, ItemType, ItemTypeKey } from "@game/models/inventory.model";
 import { QuestName, QuestText } from "@game/models/quest.model";
 import { NpcDetails } from "@game/objects/npc.object";
 import { Portrait } from "@game/objects/textbox.object";
@@ -215,8 +215,9 @@ const NPC_WORKER: Npc = {
 const OBJECT_GATE = {
   interact: {
     intro: 'The gate is locked.',
-    key: 'I insert the Gate Key into the lock. The lock clicks open. The key gets stuck though, oopsie...',
+    key: (type: ItemType) => `I insert the ${Inventory.getItemName(type)} into the lock. The lock clicks open. The key gets stuck though, oopsie...`,
     no_key: `Looks like I'll need to find a key. Or I could break it... but Mum didn't raise me that way.`,
+    wrong_key: (type: ItemType) => `The ${Inventory.getItemName(type)} doesn't fit. I'll need to find the correct key.`,
   }
 };
 

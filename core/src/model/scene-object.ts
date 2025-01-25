@@ -223,6 +223,7 @@ export abstract class SceneObject {
    */
   destroy(): void {
     this.flags.destroy = true;
+    // this.flags.update = true; TODO: should update be disabled for SceneObjects that are marked for deletion?
 
     // flag children for destroy
     this.children.forEach(child => { child.destroy(); });

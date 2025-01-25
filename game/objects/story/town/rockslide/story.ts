@@ -14,9 +14,6 @@ export interface Config extends SceneObjectBaseConfig {
 
 export class StoryTownRockslideObject extends StoryObject {
 
-  started: boolean = false;
-  completing: boolean = false;
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config

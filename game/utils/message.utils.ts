@@ -3,7 +3,7 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 
 export class MessageUtils {
 
-  static showMessage(scene: SCENE_GAME, text: string, onComplete?: () => void){
+  static showMessage(scene: SCENE_GAME, text: string, onComplete?: () => void, enableOnComplete: boolean = true){
     // disable player
     scene.globals.player.enabled = false;
 
@@ -16,7 +16,9 @@ export class MessageUtils {
             onComplete();
           }
           // reenable player
-          scene.globals.player.enabled = true
+          if(enableOnComplete){
+            scene.globals.player.enabled = true
+          }
         },
         showOverlay: false,
       }

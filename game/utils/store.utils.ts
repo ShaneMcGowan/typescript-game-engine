@@ -4,6 +4,7 @@ export enum SaveFileKeys {
   Id = 'Id',
   Quests = 'Quests',
   Flags = 'Flags',
+  StoryFlags = 'StoryFlags',
   Inventory = 'Inventory',
 };
 

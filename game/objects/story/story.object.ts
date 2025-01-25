@@ -25,6 +25,16 @@ export class StoryObject extends SceneObject {
     return StoryFlag.default_completed;
   }
 
+  onAwake(): void {
+    if(!this.scene.getStoryFlag(this.flagComplete)){
+      return;
+    }
+    
+    this.flags.update = false;
+
+    this.destroy();
+  }
+
   onUpdate(): void {
     if(!this.scene.getStoryFlag(this.flagStart)){
       return;

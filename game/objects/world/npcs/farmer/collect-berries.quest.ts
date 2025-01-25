@@ -47,7 +47,6 @@ export class QuestCollectBerries extends Quest {
       return;
     }
 
-    scene.addObject(new GateObject(scene, { x: 10, y: 7 })) // gate
     scene.addObject(new ItemObject(scene, { x: 1, y: 7, type: ItemType.Berry }));
     scene.addObject(new ItemObject(scene, { x: 2, y: 8, type: ItemType.Berry }));
     scene.addObject(new ItemObject(scene, { x: 17, y: 4, type: ItemType.Berry }));

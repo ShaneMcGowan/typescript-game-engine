@@ -3,8 +3,6 @@ import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"
 import { ItemType } from "@game/models/inventory.model";
 import { NpcObject } from "@game/objects/npc.object";
 import { Quest, QuestName, QuestText } from "@game/models/quest.model";
-import { TreeObject } from "@game/objects/tree.object";
-import { RockObject } from "@game/objects/rock.object";
 
 export class QuestClearPathToFarm extends Quest {
 
@@ -29,13 +27,5 @@ export class QuestClearPathToFarm extends Quest {
     return this.scene.globals.flags[SceneFlag.path_to_farm_cleared];
   }
 
-  static setup(scene: SCENE_GAME): void {
-    const onDestroy = () => {
-      scene.globals.flags[SceneFlag.path_to_farm_cleared] = true;
-    }
-    
-    scene.addObject(new RockObject(scene, { x: 1, y: 12, onDestroy: onDestroy }));
-    scene.addObject(new RockObject(scene, { x: 2, y: 13, onDestroy: onDestroy }));
-  }
 
 }

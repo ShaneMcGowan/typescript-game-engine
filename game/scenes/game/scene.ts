@@ -37,8 +37,16 @@ export enum SceneFlag {
 export enum StoryFlag {
   default_started = 'default_started',
   default_completed = 'default_completed',
+  // town
   town_rockslide_started = 'town_rockslide_started',
   town_rockslide_complete = 'town_rockslide_complete',
+  // world
+  world_hill_gate_started = 'world_hill_gate_started',
+  world_hill_gate_completed = 'world_hill_gate_completed',
+  world_hill_path_to_town_blockade_started = 'world_hill_path_to_town_blockade_started',
+  world_hill_path_to_town_blockade_completed = 'world_hill_path_to_town_blockade_completed',
+  world_hill_path_to_farm_blockade_started = 'world_hill_path_to_farm_blockade_started',
+  world_hill_path_to_farm_blockade_completed = 'world_hill_path_to_farm_blockade_completed',
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -130,8 +138,16 @@ export class SCENE_GAME extends Scene {
     story_flags: {
       [StoryFlag.default_started]: false,
       [StoryFlag.default_completed]: false,
+      // town
       [StoryFlag.town_rockslide_started]: true,
       [StoryFlag.town_rockslide_complete]: false,
+      // world
+      [StoryFlag.world_hill_gate_started]: true,
+      [StoryFlag.world_hill_gate_completed]: false,
+      [StoryFlag.world_hill_path_to_town_blockade_started]: true,
+      [StoryFlag.world_hill_path_to_town_blockade_completed]: false,
+      [StoryFlag.world_hill_path_to_farm_blockade_started]: true,
+      [StoryFlag.world_hill_path_to_farm_blockade_completed]: false
     }
   };
 
@@ -141,6 +157,7 @@ export class SCENE_GAME extends Scene {
     if (CanvasConstants.SAVE_FILE_ID) {
       this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
       this.globals.flags = Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags);
+      this.globals.story_flags = Store.get<Record<StoryFlag, boolean>>(SaveFileKeys.StoryFlags);
       this.globals.inventory.items = Store.get<ItemList>(SaveFileKeys.Inventory).map(item => {
         // JSON Store doesn't have undefined, only null so it needs to be mapped
         if (item === null) {

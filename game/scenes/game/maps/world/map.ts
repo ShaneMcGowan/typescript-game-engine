@@ -22,11 +22,13 @@ import { QuestCollectLogs } from '@game/objects/world/npcs/farmer/collect-logs.q
 import { QuestCollectRocks } from '@game/objects/world/npcs/farmer/collect-rocks.quest';
 import { QuestBreakRocks } from '@game/objects/world/npcs/farmer/break-rocks.quest';
 import { QuestCollectBerries } from '@game/objects/world/npcs/farmer/collect-berries.quest';
-import { QuestClearPathToFarm } from '@game/objects/world/npcs/farmer/clear-path-to-farm.quest';
 import { Scene } from '@core/model/scene';
 import { SCENE_GAME_MAP_FARM } from '../farm/map';
 import { SCENE_GAME_MAP_TOWN } from '../town/map';
 import { Warps } from '@game/constants/warp.constants';
+import { StoryWorldHillGateObject } from '@game/objects/story/world/hill-gate/story';
+import { StoryWorldHillPathToTownBlockadeObject } from '@game/objects/story/world/hill-path-to-town-blockade/story';
+import { StoryWorldHillPathToFarmBlockadeObject } from '@game/objects/story/world/hill-path-to-farm-blockade/story';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -39,19 +41,18 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    // Set up UI
-    MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
+    // npcs
+    this.scene.addObject(new FarmersSonObject(this.scene, { x: 25, y: 16, }));
+
+    // stories
+    this.scene.addObject(new StoryWorldHillGateObject(scene, { x: 0, y: 0 }));
+    this.scene.addObject(new StoryWorldHillPathToTownBlockadeObject(scene, {x: 0, y: 0}));
+    this.scene.addObject(new StoryWorldHillPathToFarmBlockadeObject(scene, {x: 0, y: 0}));
 
     // instanciate objects
     // this is quite verbose but it will do for now, we want control over individual objects and their constructors
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 17, y: 13, });
     this.scene.addObject(this.player);
-
-    // farmer's son
-    this.scene.addObject(new FarmersSonObject(this.scene, {
-      x: 25,
-      y: 16,
-    }));
 
     // chickens
     this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));
@@ -139,9 +140,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { x: 28, y: 1, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { x: 31, y: 1, canBeBroken: false }));
 
-    // rocks - hill to town blockade
-    this.scene.addObject(new TreeObject(this.scene, { x: 10, y: 2, type: 'small', logOnDestroy: false, stumpOnDestroy: false }));
-
     // rocks - beach farm blockade
     this.scene.addObject(new RockObject(this.scene, { x: 4, y: 16, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { x: 2, y: 19, canBeBroken: false }));
@@ -162,7 +160,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     QuestCollectRocks.setup(this.scene);
     QuestBreakRocks.setup(this.scene);
     QuestCollectBerries.setup(this.scene);
-    QuestClearPathToFarm.setup(this.scene);
 
     // warp - farm - through the hill
     this.scene.addObject(new WarpObject(scene, {
