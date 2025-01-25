@@ -1,61 +1,74 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { MouseUtils } from '@core/utils/mouse.utils';
 import { WarpObject } from '@game/objects/warp.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import * as background from './background.json'
 import { FarmerObject } from '@game/objects/world/npcs/farmer.npc';
+import { FurnitureBedObject } from '@game/objects/furniture/item/furniture-bed.object';
+import { FurnitureLampObject } from '@game/objects/furniture/item/furniture-lamp.object';
+import { Warps } from '@game/constants/warp.constants';
 
 export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
   background: JsonBackgroundMap = background;
+  player: PlayerObject;
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);
-
     this.flags.suspend = true;
 
-    // Set up UI
-    MouseUtils.setCursor(this.scene.displayContext.canvas, '/assets/sample/Mouse sprites/Triangle Mouse icon 1.png'); // TODO: remove this when no longer debugging as it will be set in start menu map
-
     // player
-    let player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
-    // NPCS
-    this.scene.addObject(player);
-    this.scene.addObject(new FarmerObject(scene, { x: 16, y: 8, }));
+    this.player = new PlayerObject(scene, { playerIndex: 0, x: 16, y: 12, });
+    this.scene.addObject(this.player);
 
-    // walls
-    // top
-    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 6, width: 10 }));
-    // left
-    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 7, height: 5 }));
-    // right
-    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 7, height: 5 }));
-    // bottom
-    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 12, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { x: 17, y: 12, width: 4 }));
+    // npcs
+    this.scene.addObject(new FarmerObject(scene, { x: 11, y: 9, }));
+
+    // stories
+
+    // collision - vertical - sort by y
+    this.scene.addObject(new CollisionObject(scene, { x: 8, y: 3, width: 16 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 19, y: 4, width: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 9, y: 7, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 19, y: 7, width: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 10, y: 8, width: 1 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 19, y: 9, width: 3 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 19, y: 10, width: 3 }));
+
+    // collision - horizontal - sort by x
+    this.scene.addObject(new CollisionObject(scene, { x: 8, y: 12, width: 7 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 17, y: 12, width: 7 }));
     this.scene.addObject(new CollisionObject(scene, { x: 15, y: 13, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 8, y: 4, height: 8 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 14, y: 4, height: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 17, y: 4, height: 4 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 23, y: 4, height: 8 }));
 
-    // exit door
-    const warpConfig = {
+    // warps
+    this.scene.addObject(new WarpObject(scene, {
+      x: 15,
       y: 12,
-      player: player,
+      width: 2,
+      height: 1,
+      player: this.player,
       map: SCENE_GAME_MAP_WORLD,
-      width: 1,
       isColliding: true,
-    };
+      position: {
+        x: Warps.FarmHouse.Door.World.House.position.x,
+        y: Warps.FarmHouse.Door.World.House.position.y,
+      }
+    }));
 
-    this.scene.addObject(new WarpObject(scene, {
-      ...warpConfig,
-      x: 15
-    }));
-    this.scene.addObject(new WarpObject(scene, {
-      ...warpConfig,
-      x: 16
-    }));
+    // furniture - sorted by y then x
+    this.scene.addObject(new FurnitureLampObject(scene, { x: 9, y: 4 }));
+    this.scene.addObject(new FurnitureBedObject(scene, { x: 10, y: 4, canSave: true, }));
+    this.scene.addObject(new FurnitureBedObject(scene, { x: 21, y: 4, canSave: true, }));
+    this.scene.addObject(new FurnitureLampObject(scene, { x: 22, y: 4 }));
+    this.scene.addObject(new FurnitureLampObject(scene, { x: 15, y: 5 }));
+
   }
 
   onEnter(): void {

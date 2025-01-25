@@ -36,7 +36,7 @@ export class MenuObject extends SceneObject {
     const buttons = [
       new MenuButtonContinueObject(this.scene, {}),
       new MenuButtonFullscreenObject(this.scene, {}),
-      new MenuButtonSaveGameObject(this.scene, {}),
+      ...(CanvasConstants.DEBUG_MODE ? [new MenuButtonSaveGameObject(this.scene, {})] : []),
       new MenuButtonQuitObject(this.scene, {}),
     ];
 

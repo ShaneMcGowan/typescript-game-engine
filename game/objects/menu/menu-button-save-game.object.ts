@@ -4,7 +4,7 @@ import { SaveFileKeys, Store } from '@game/utils/store.utils';
 import { QuestName } from '@game/models/quest.model';
 import { QuestStatus, SCENE_GAME, SceneFlag, StoryFlag } from '@game/scenes/game/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { Item, ItemList } from '@game/models/inventory.model';
+import { ItemList } from '@game/models/inventory.model';
 
 interface Config extends SceneObjectBaseConfig {
 }
