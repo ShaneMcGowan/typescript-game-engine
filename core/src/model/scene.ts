@@ -47,7 +47,7 @@ export type CustomRendererSignature = (renderingContext: SceneRenderingContext) 
 export abstract class Scene {
   // objects
   objects: Map<string, SceneObject> = new Map<string, SceneObject>();
-  // TODO: how do we access types for this from the scene object?
+  persistentObjects: Map<string, SceneObject> = new Map<string, SceneObject>(); // these objects will exist across all maps, and will be available in the objects map
 
   // a place to store flags for the scene
   readonly globals: SceneGlobalsBaseConfig = {
@@ -391,6 +391,11 @@ export abstract class Scene {
 
     // copy objects from map cache to scene
     this.map.objects.forEach(o => this.objects.set(o.id, o));
+
+    // copy persistentObjects to objects
+    this.persistentObjects.forEach(o => {
+      this.objects.set(o.id, o);
+    });
 
     // set up rendering contexts
     // custom renderers in objects for maps require this
