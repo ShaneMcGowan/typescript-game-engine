@@ -12,6 +12,7 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SaveFileKeys, Store } from '@game/utils/store.utils';
 import { SCENE_GAME_MAP_TOWN } from './maps/town/map';
 import { Coordinate } from '@core/model/coordinate';
+import { WorldTimeObject } from '@game/objects/world-time.object';
 
 export interface QuestStatus {
   intro: boolean;
@@ -67,6 +68,7 @@ interface Globals extends SceneGlobalsBaseConfig {
     target: Coordinate | null,
   },
   story_flags: Record<StoryFlag, boolean>;
+  time: number;
 }
 
 export class SCENE_GAME extends Scene {
@@ -148,11 +150,20 @@ export class SCENE_GAME extends Scene {
       [StoryFlag.world_hill_path_to_town_blockade_completed]: false,
       [StoryFlag.world_hill_path_to_farm_blockade_started]: true,
       [StoryFlag.world_hill_path_to_farm_blockade_completed]: false
-    }
+    },
+    time: 0,
   };
 
   constructor(client: Client) {
     super(client);
+
+    // persistent objects
+    [
+      new WorldTimeObject(this, { x: 0, y: 0})
+    ].forEach(object => {
+      this.persistentObjects.set(object.id, object);
+      this.objects.set(object.id, object);
+    });
 
     if (CanvasConstants.SAVE_FILE_ID) {
       this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
