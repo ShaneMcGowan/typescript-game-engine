@@ -391,6 +391,10 @@ export abstract class SceneObject {
       y: (this.height / 2) - (spriteHeight / 2),
     };
   }
+
+  moveBy(vector: Vector): void {
+    // TODO: not implemented yet
+  }
 }
 
 function getRootParent(object: SceneObject): SceneObject {

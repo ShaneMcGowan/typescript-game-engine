@@ -151,13 +151,11 @@ export class ChickenObject extends SceneObject implements Interactable {
     if (this.following) {
       // move towards player
       // TODO: add some randomness to movement, can be done later
-      movement = MovementUtils.moveTowardsOtherEntity(
-        new Movement(
-          this.transform.position.world.x,
-          this.transform.position.world.y,
-          this.targetX,
-          this.targetY
-        ),
+      movement = MovementUtils.MoveTowardsTarget(
+        {
+          x: this.transform.position.world.x,
+          y: this.transform.position.world.y,
+        },
         {
           x: this.following.transform.position.world.x,
           y: this.following.transform.position.world.y,
@@ -165,14 +163,10 @@ export class ChickenObject extends SceneObject implements Interactable {
       );
     } else {
       // move in a random direction
-      movement = MovementUtils.moveInRandomDirection(
-        new Movement(
-          this.transform.position.world.x,
-          this.transform.position.world.y,
-          this.targetX,
-          this.targetY
-        )
-      );
+      movement = MovementUtils.MoveInRandomDirection({
+        x: this.transform.position.world.x,
+        y: this.transform.position.world.y
+      });
     }
 
     const filter: ObjectFilter = {
@@ -206,16 +200,27 @@ export class ChickenObject extends SceneObject implements Interactable {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
-      let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
-      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
-
-      this.transform.position.local.x = updatedMovement.x;
-      this.transform.position.local.y = updatedMovement.y;
-
-      // set flag
-      this.isMovingThisFrame = true;
+    if (this.targetX === this.transform.position.local.x && this.targetY === this.transform.position.local.y) {
+      return;
     }
+
+    const coordinates = MovementUtils.MoveTowardsPosition(
+      {
+        x: this.transform.position.local.x,
+        y: this.transform.position.local.y,
+      },
+      {
+        x: this.targetX,
+        y: this.targetY,
+      },
+      MovementUtils.FrameSpeed(this.movementSpeed, delta)
+    );
+
+    this.transform.position.local.x = coordinates.x;
+    this.transform.position.local.y = coordinates.y;
+
+    // set flag
+    this.isMovingThisFrame = true;
   }
 
   private updateEgg(delta: number): void {

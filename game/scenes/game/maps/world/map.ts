@@ -3,7 +3,6 @@ import { SpriteObject } from '@core/objects/sprite.object';
 import { ChickenObject } from '@game/objects/chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { MouseUtils } from '@core/utils/mouse.utils';
 import { CollisionObject } from '@game/objects/collision.object';
 import { IntervalObject } from '@core/objects/interval.object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
@@ -41,18 +40,17 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
+    // instanciate objects
+    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 17, y: 13, });
+    this.scene.addObject(this.player);
+
     // npcs
-    this.scene.addObject(new FarmersSonObject(this.scene, { x: 25, y: 16, }));
+    this.scene.addObject(new FarmersSonObject(this.scene, { x: 25, y: 16 }));
 
     // stories
     this.scene.addObject(new StoryWorldHillGateObject(scene, { x: 0, y: 0 }));
     this.scene.addObject(new StoryWorldHillPathToTownBlockadeObject(scene, {x: 0, y: 0}));
     this.scene.addObject(new StoryWorldHillPathToFarmBlockadeObject(scene, {x: 0, y: 0}));
-
-    // instanciate objects
-    // this is quite verbose but it will do for now, we want control over individual objects and their constructors
-    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 17, y: 13, });
-    this.scene.addObject(this.player);
 
     // chickens
     this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));

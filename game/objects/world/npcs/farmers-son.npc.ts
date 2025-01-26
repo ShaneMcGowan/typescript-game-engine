@@ -1,5 +1,5 @@
 import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
-import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
+import { MovementType, NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
 
@@ -22,6 +22,7 @@ export class FarmersSonObject extends NpcObject {
     protected config: Config
   ) {
     super(scene, config);
+    this.movementType = MovementType.Goal;
   }
 
   get details(): NpcDetails {
@@ -43,6 +44,8 @@ export class FarmersSonObject extends NpcObject {
   onIntro(): void {
     // open the shack door
     this.scene.globals.flags[SceneFlag.shack_door_open] = true;
+
+    this.setPositionGoal(3, 3);
   }
 
 }

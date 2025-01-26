@@ -1,13 +1,12 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { MathUtils } from '@core/utils/math.utils';
-import { Movement, MovementUtils } from '@core/utils/movement.utils';
+import { MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/components/interactable.model';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 import { Assets } from '@core/utils/assets.utils';
-import { ObjectFilter } from '@core/model/scene';
 import { Quest } from '@game/models/quest.model';
 import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
 import { CanvasConstants } from '@core/constants/canvas.constants';
@@ -16,8 +15,16 @@ import { TileConfig } from '@game/models/tile.model';
 import { Direction } from '@game/models/direction.model';
 import { Inventory } from '@game/models/inventory.model';
 import { InventoryObject, InventoryType } from './inventory/inventory.object';
+import { assertUnreachable } from '@core/utils/typescript.utils';
+import { Coordinate } from '@core/model/coordinate';
 
-const DEFAULT_CAN_MOVE: boolean = false;
+export enum MovementType {
+  None = 'None', // doesn't move
+  Follow = 'Follow', // follows a target if provided, otherwise same as None
+  Random = 'Random', // moves in a random direction
+  Goal = 'Goal', // move to target x and target y
+}
+
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_chicken', [
     { spriteX: 0, spriteY: 0, duration: 3.5, },
@@ -28,6 +35,8 @@ const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
     { spriteX: 1, spriteY: 0, duration: 0.5, }
   ]),
 };
+
+const DEFAULT_MOVEMENT_TYPE: MovementType = MovementType.None;
 const DEFAULT_MOVEMENT_SPEED: number = 2;
 const DEFAULT_MOVEMENT_DELAY: number | undefined = undefined;
 
@@ -57,8 +66,7 @@ export interface NpcDialogue {
 
 export interface NpcObjectConfig extends SceneObjectBaseConfig {
   follows?: SceneObject; // object to follow
-  canMove?: boolean;
-  movementSpeed?: number;
+  movementType?: MovementType;
   movementDelay?: number;
   direction?: Direction;
 }
@@ -68,9 +76,6 @@ export class NpcObject extends SceneObject implements Interactable {
 
   inventory: Inventory = new Inventory(5, 3);
 
-  targetX: number = -1;
-  targetY: number = -1;
-
   // animation
   direction: Direction;
   animation = {
@@ -79,11 +84,13 @@ export class NpcObject extends SceneObject implements Interactable {
   };
 
   // movement
-  canMove: boolean;
+  movementType: MovementType;
+  movementDelayTimer = 0;
   following: SceneObject | undefined;
-  movementSpeed: number; // tiles per second
-  movementDelay: number | undefined; // seconds until next move
-  movementTimer = MathUtils.randomStartingDelta(2);
+  
+  target: Coordinate = { x: 0, y: 0 };
+  goal: Coordinate | undefined = undefined;
+  path: Coordinate[] | undefined = undefined;
 
   // config
   quests: Quest[] = [];
@@ -97,17 +104,17 @@ export class NpcObject extends SceneObject implements Interactable {
     this.renderer.enabled = true;
     this.renderer.layer = PlayerObject.RENDERER_LAYER + 1;
 
-    this.targetX = this.transform.position.local.x;
-    this.targetY = this.transform.position.local.y;
-    this.canMove = config.canMove ?? DEFAULT_CAN_MOVE;
+    this.target.x = this.transform.position.local.x;
+    this.target.y = this.transform.position.local.y;
+
+    this.movementType = config.movementType ?? DEFAULT_MOVEMENT_TYPE;
     this.following = config.follows;
-    this.movementSpeed = config.movementSpeed ?? DEFAULT_MOVEMENT_SPEED;
-    this.movementDelay = config.movementDelay ?? DEFAULT_MOVEMENT_DELAY;
     this.direction = config.direction ?? DEFAULT_DIRECTION;
   }
 
   onUpdate(delta: number): void {
-    this.updateMovement(delta);
+    this.updateTargetPosition(delta);
+    this.updatePosition(delta);
     this.updateAnimationTimer(delta);
   }
 
@@ -117,6 +124,18 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   onDestroy(): void { }
+
+  get movementSpeed(): number {
+    return DEFAULT_MOVEMENT_SPEED;
+  }
+
+  get movementDelay(): number | undefined {
+    return DEFAULT_MOVEMENT_DELAY;
+  }
+
+  get atTarget(): boolean {
+    return this.transform.position.local.x === this.target.x && this.transform.position.local.y === this.target.y;
+  }
 
   get details(): NpcDetails {
     return {
@@ -182,91 +201,112 @@ export class NpcObject extends SceneObject implements Interactable {
     this.animation.timer = (this.animation.timer + delta) % this.animations[this.state].duration;
   }
 
-  private updateMovement(delta: number): void {
-    if (!this.canMove) {
+  private updatePosition(delta: number): void {
+    if(this.atTarget){
       return;
     }
 
-    this.movementTimer += delta;
+    const coordinates = MovementUtils.MoveTowardsPosition(
+      {
+        x: this.transform.position.local.x,
+        y: this.transform.position.local.y,
+      },
+      {
+        x: this.target.x,
+        y: this.target.y,
+      },
+      MovementUtils.FrameSpeed(this.movementSpeed, delta)
+    );
 
-    // determine next movement
-    if ((this.movementDelay === undefined && this.movementTimer > this.movementSpeed) || this.movementTimer > this.movementDelay) {
-      this.determineNextMovement(delta);
-    }
-
-    // process movement
-    this.processMovement(delta);
+    this.transform.position.local.x = coordinates.x;
+    this.transform.position.local.y = coordinates.y;
   }
 
-  private determineNextMovement(delta: number): void {
-    this.movementTimer = 0;
-
-    let movement: Movement;
-    if (this.following) {
-      // move towards object
-      // TODO: add some randomness to movement, can be done later
-      // TODO: this logic is dumb and can get stuck if no clear path
-      movement = MovementUtils.moveTowardsOtherEntity(
-        new Movement(
-          this.transform.position.world.x,
-          this.transform.position.world.y,
-          this.targetX,
-          this.targetY
-        ),
-        {
-          x: this.following.transform.position.world.x,
-          y: this.following.transform.position.world.y,
-        }
-      );
-    } else {
-      // move in a random direction
-      movement = MovementUtils.moveInRandomDirection(
-        new Movement(
-          this.transform.position.world.x,
-          this.transform.position.world.y,
-          this.targetX,
-          this.targetY
-        )
-      );
-    }
-
-    // cancel if next position would be on top of another entity
-    const filter: ObjectFilter = {
-      boundingBox: SceneObject.calculateBoundingBox(
-        movement.targetX,
-        movement.targetY,
-        this.width,
-        this.height
-      ),
-      objectIgnore: new Map([
-        [this, true]
-      ])
-    }
-    if (this.scene.getObject(filter)) {
+  private updateTargetPosition(delta: number): void {
+    if (this.movementType === MovementType.None) {
+      this.target.x = this.transform.position.local.x;
+      this.target.y = this.transform.position.local.y;
       return;
     }
 
-    // TODO: disable for now, see player.object.ts for info
-    // if (this.scene.willHaveCollisionAtPosition(movement.targetX, movement.targetY, this)) {
-    //   return;
-    // }
-
-    if (this.scene.isOutOfBounds(movement.targetX, movement.targetY)) {
+    if(!this.atTarget){
       return;
     }
 
-    this.targetX = movement.targetX;
-    this.targetY = movement.targetY;
+    // delay
+    this.movementDelayTimer += delta;
+    if(this.movementDelay && this.movementDelayTimer < this.movementDelay){
+      return;
+    }
+    this.movementDelayTimer = 0;
+
+    // update target
+    switch(this.movementType){
+      case MovementType.Follow:
+        this.updateTargetPositionObject();
+        return;
+      case MovementType.Goal:
+        this.updateTargetPositionGoal();
+        return;
+      case MovementType.Random:
+        this.updateTargetPositionRandom();
+        break;
+      default:
+        assertUnreachable(this.movementType)
+    }
   }
 
-  private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.position.world.x || this.targetY !== this.transform.position.world.y) {
-      let movement = new Movement(this.transform.position.world.x, this.transform.position.world.y, this.targetX, this.targetY);
-      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
+  private updateTargetPositionGoal(): void {
+    console.log(`[${this.constructor.name}] updateTargetPositionGoal`);
 
-      this.transform.position.world.x = updatedMovement.x;
-      this.transform.position.world.y = updatedMovement.y;
+    if(this.goal === undefined){
+      return;
     }
+
+    // TODO: check if path is undefined
+    //          exists          - continue
+    //          does not exist  - calculate
+
+    // TODO: check if next coordinate in path is valid
+    //          valid       - set target to next coordinate
+    //          not valid   - invalidate path, recalculate path
+
+    this.target.x = this.goal.x;
+    this.target.y = this.goal.y;
+  }
+
+
+  private updateTargetPositionObject(): void {
+    console.log(`[${this.constructor.name}] updateTargetPositionObject`);
+
+    if (this.following === undefined) {
+      return;
+    }
+
+    // TODO: check if path is undefined
+    //          exists          - continue
+    //          does not exist  - calculate
+
+    // TODO: check if next coordinate in path is valid
+    //          valid       - set target to next coordinate
+    //          not valid   - invalidate path, recalculate path
+
+    this.target.x = this.following.transform.position.world.x;
+    this.target.y = this.following.transform.position.world.y;
+  }
+
+  private updateTargetPositionRandom(): void {
+    console.log(`[${this.constructor.name}] updateTargetPositionRandom`);
+
+    const movement = MovementUtils.MoveInRandomDirection({
+      x: this.transform.position.world.x,
+      y: this.transform.position.world.y,
+    });
+
+    // TODO: check if position is valid, if not, don't move
+
+    this.target.x = movement.target.x;
+    this.target.y = movement.target.y;
   }
 
   interact(): void {
@@ -419,6 +459,13 @@ export class NpcObject extends SceneObject implements Interactable {
 
   get inventoryType(): InventoryType {
     return InventoryType.Inventory;
+  }
+
+  setPositionGoal(x: number, y: number): void {
+    this.goal = {
+      x,
+      y,
+    }
   }
 
 }

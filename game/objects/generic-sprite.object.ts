@@ -74,12 +74,21 @@ export class GenericSpriteObject extends SceneObject {
       return;
     }
 
-    let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
-    let velocity = this.movementSpeed * delta;
-    let updatedMovement = MovementUtils.moveTowardsPosition(movement, velocity);
+    const velocity = this.movementSpeed * delta;
+    const coordinates = MovementUtils.MoveTowardsPosition(
+      {
+        x: this.transform.position.local.x,
+        y: this.transform.position.local.y
+      },
+      {
+        x: this.targetX,
+        y: this.targetY,
+      }, 
+      velocity
+    );
 
-    this.transform.position.local.x = updatedMovement.x;
-    this.transform.position.local.y = updatedMovement.y;
+    this.transform.position.local.x = coordinates.x;
+    this.transform.position.local.y = coordinates.y;
   }
 
   onRender(context: CanvasRenderingContext2D): void {

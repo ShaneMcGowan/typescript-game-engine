@@ -104,6 +104,8 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
   }
 
   private onWake(): void {
+    this.scene.globals.time = 0;
+    
     const callback = () => {
       MessageUtils.showMessage(
         this.scene,

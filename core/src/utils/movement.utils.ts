@@ -7,18 +7,16 @@ export class Movement {
   get position(): {
     x: number;
     y: number;
-    // boundingBox: SceneObjectBoundingBox // TODO: should we add this in here?
   } {
     return {
-      x: this.targetX,
-      y: this.targetY,
+      x: this.x,
+      y: this.y,
     };
   }
 
   get target(): {
     x: number;
     y: number;
-    // boundingBox: SceneObjectBoundingBox // TODO: should we add this in here?
   } {
     return {
       x: this.targetX,
@@ -48,35 +46,33 @@ export abstract class MovementUtils {
    * @param movement
    * @param velocity
    */
-  static moveTowardsPosition(movement: Movement, velocity: number): Movement {
-    if (movement.targetX > movement.x) { // right
-      movement.x += velocity;
-      if (movement.targetX < movement.x) {
-        movement.x = movement.targetX;
+  static MoveTowardsPosition(current: Coordinate, target: Coordinate, velocity: number): Coordinate {
+    if (target.x > current.x) { // right
+      current.x += velocity;
+      if (target.x < current.x) {
+        current.x = target.x;
       }
-    } else if (movement.targetX < movement.x) { // left
-      movement.x -= velocity;
-      if (movement.targetX > movement.x) {
-        movement.x = movement.targetX;
+    } else if (target.x < current.x) { // left
+      current.x -= velocity;
+      if (target.x > current.x) {
+        current.x = target.x;
       }
-    } else if (movement.targetY > movement.y) { // down
-      movement.y += velocity;
-      if (movement.targetY < movement.y) {
-        movement.y = movement.targetY;
+    } else if (target.y > current.y) { // down
+      current.y += velocity;
+      if (target.y < current.y) {
+        current.y = target.y;
       }
-    } else if (movement.targetY < movement.y) { // up
-      movement.y -= velocity;
-      if (movement.targetY > movement.y) {
-        movement.y = movement.targetY;
+    } else if (target.y < current.y) { // up
+      current.y -= velocity;
+      if (target.y > current.y) {
+        current.y = target.y;
       }
     }
 
-    return new Movement(
-      movement.x,
-      movement.y,
-      movement.targetX,
-      movement.targetY
-    );
+    return {
+      x: current.x,
+      y: current.y,
+    };
   }
 
   /**
@@ -86,49 +82,59 @@ export abstract class MovementUtils {
    * @param targetMovement
    * @returns
    */
-  static moveTowardsOtherEntity(currentMovement: Movement, targetMovement: { x: number; y: number; }): Movement {
-    // TODO: add some randomness to this, potentially via MathUtils.randomIntFromRange(1, 4);
+  static MoveTowardsTarget(currentPosition: Coordinate, targetPosition: Coordinate): Movement {
+    let x = 0;
+    let y = 0;
 
-    if (targetMovement.x > currentMovement.x) {
-      currentMovement.targetX += 1;
-    } else if (targetMovement.x < currentMovement.x) {
-      currentMovement.targetX -= 1;
-    } else if (targetMovement.y > currentMovement.y) {
-      currentMovement.targetY += 1;
-    } else if (targetMovement.y < currentMovement.y) {
-      currentMovement.targetY -= 1;
+    if (targetPosition.x > currentPosition.x) {
+      x = 1;
+    } else if (targetPosition.x < currentPosition.x) {
+      x = -1;
+    } else if (targetPosition.y > currentPosition.y) {
+      y = 1;
+    } else if (targetPosition.y < currentPosition.y) {
+      y = -1;
     }
 
     return new Movement(
-      currentMovement.x,
-      currentMovement.y,
-      currentMovement.targetX,
-      currentMovement.targetY
+      currentPosition.x,
+      currentPosition.y,
+      currentPosition.x + x,
+      currentPosition.y + y
     );
   }
 
-  static moveInRandomDirection(currentMovement: Movement): Movement {
-    let randomValue = MathUtils.randomIntFromRange(1, 4);
-    switch (randomValue) {
+  /**
+   * Move in a random direction
+   * @param coordinate
+   * @returns
+   */
+  static MoveInRandomDirection(coordinate: Coordinate, magnitude: number = 1): Movement {
+    const random = MathUtils.randomIntFromRange(1, 4);
+
+    let x = 0;
+    let y = 0;
+
+    switch (random) {
       case 1:
-        currentMovement.targetX += 1;
+        x = magnitude;
         break;
       case 2:
-        currentMovement.targetX -= 1;
+        x = -magnitude;
         break;
       case 3:
-        currentMovement.targetY += 1;
+        y = magnitude;
         break;
       case 4:
-        currentMovement.targetY -= 1;
+        y = -magnitude;
         break;
     }
 
     return new Movement(
-      currentMovement.x,
-      currentMovement.y,
-      currentMovement.targetX,
-      currentMovement.targetY
+      coordinate.x,
+      coordinate.y,
+      coordinate.x + x,
+      coordinate.y + y
     );
   }
 
@@ -138,7 +144,7 @@ export abstract class MovementUtils {
    * @param delta time since last frame
    * @returns
    */
-  static frameSpeed(speed: number, delta: number): number {
+  static FrameSpeed(speed: number, delta: number): number {
     return speed * delta;
   }
 

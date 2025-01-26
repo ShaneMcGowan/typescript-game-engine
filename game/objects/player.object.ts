@@ -257,13 +257,24 @@ export class PlayerObject extends SceneObject {
   }
 
   private processMovement(delta: number): void {
-    if (this.targetX !== this.transform.position.local.x || this.targetY !== this.transform.position.local.y) {
-      let movement = new Movement(this.transform.position.local.x, this.transform.position.local.y, this.targetX, this.targetY);
-      let updatedMovement = MovementUtils.moveTowardsPosition(movement, MovementUtils.frameSpeed(this.movementSpeed, delta));
-
-      this.transform.position.local.x = updatedMovement.x;
-      this.transform.position.local.y = updatedMovement.y;
+    if (this.targetX === this.transform.position.local.x && this.targetY === this.transform.position.local.y) {
+      return;
     }
+
+    const coordinates = MovementUtils.MoveTowardsPosition(
+      {
+        x: this.transform.position.local.x,
+        y: this.transform.position.local.y,
+      },
+      {
+        x: this.targetX,
+        y: this.targetY,
+      },
+      MovementUtils.FrameSpeed(this.movementSpeed, delta)
+    );
+
+    this.transform.position.local.x = coordinates.x;
+    this.transform.position.local.y = coordinates.y;
   }
 
   startAnimation(animation: any, callback?: PlayerActionAnimationCallback): void {
