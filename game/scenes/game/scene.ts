@@ -51,6 +51,8 @@ export enum StoryFlag {
   world_hill_path_to_town_blockade_completed = 'world_hill_path_to_town_blockade_completed',
   world_hill_path_to_farm_blockade_started = 'world_hill_path_to_farm_blockade_started',
   world_hill_path_to_farm_blockade_completed = 'world_hill_path_to_farm_blockade_completed',
+  world_farmers_house_locked_started = 'world_farmers_house_locked_started',
+  world_farmers_house_locked_completed = 'world_farmers_house_locked_completed',
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -152,7 +154,9 @@ export class SCENE_GAME extends Scene {
       [StoryFlag.world_hill_path_to_town_blockade_started]: true,
       [StoryFlag.world_hill_path_to_town_blockade_completed]: false,
       [StoryFlag.world_hill_path_to_farm_blockade_started]: true,
-      [StoryFlag.world_hill_path_to_farm_blockade_completed]: false
+      [StoryFlag.world_hill_path_to_farm_blockade_completed]: false,
+      [StoryFlag.world_farmers_house_locked_started]: true,
+      [StoryFlag.world_farmers_house_locked_completed]: false
     },
     time: 0,
   };

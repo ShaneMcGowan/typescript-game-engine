@@ -40,7 +40,7 @@ const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
 const DEFAULT_MOVEMENT_TYPE: MovementType = MovementType.None;
 const DEFAULT_MOVEMENT_SPEED: number = 2;
 const DEFAULT_MOVEMENT_DELAY: number | undefined = undefined;
-const MAX_PATH_RADIUS: number = 8; // TODO: this is inefficient, currently takes 2 frames to run (33ms)
+const DEFAULT_PATH_RADIUS: number = 8;
 const DEFAULT_PATH_DELAY: number = 2;
 
 const DEFAULT_NAME: string = '???';
@@ -74,6 +74,7 @@ export interface NpcObjectConfig extends SceneObjectBaseConfig {
   direction?: Direction;
 
   goal?: Coordinate;
+  onGoal?: () => void;
 }
 
 export class NpcObject extends SceneObject implements Interactable {
@@ -96,6 +97,7 @@ export class NpcObject extends SceneObject implements Interactable {
   
   target: Coordinate = { x: 0, y: 0 };
   goal: Coordinate | undefined = undefined;
+  onGoal: () => void = () => {};
   path: Coordinate[] = [];
 
   // config
@@ -117,6 +119,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.following = config.follows;
     this.direction = config.direction ?? DEFAULT_DIRECTION;
     this.goal = config.goal ?? this.goal;
+    this.onGoal = config.onGoal ?? this.onGoal;
     this.pathDelayTimer = this.pathDelay;
   }
 
@@ -144,6 +147,10 @@ export class NpcObject extends SceneObject implements Interactable {
 
   get movementDelay(): number | undefined {
     return DEFAULT_MOVEMENT_DELAY;
+  }
+
+  get pathRadius(): number {
+    return DEFAULT_PATH_RADIUS;
   }
 
   get pathDelay(): number {
@@ -290,6 +297,7 @@ export class NpcObject extends SceneObject implements Interactable {
 
     if(this.goal.x === this.transform.position.world.x && this.goal.y === this.transform.position.world.y){
       this.goal = undefined;
+      this.onGoal();
       return;
     }
 
@@ -576,11 +584,12 @@ export class NpcObject extends SceneObject implements Interactable {
     return InventoryType.Inventory;
   }
 
-  setPositionGoal(x: number, y: number): void {
+  setPositionGoal(x: number, y: number, callback: () => void): void {
     this.goal = {
       x,
       y,
     }
+    this.onGoal = callback;
   }
 
   private generatePath(target: Coordinate): void {
@@ -598,11 +607,11 @@ export class NpcObject extends SceneObject implements Interactable {
     }
 
     // prevent outside radius
-    if(Math.abs(start.x - target.x) > MAX_PATH_RADIUS){
+    if(Math.abs(start.x - target.x) > this.pathRadius){
       return;
     }
 
-    if(Math.abs(start.y - target.y) > MAX_PATH_RADIUS){
+    if(Math.abs(start.y - target.y) > this.pathRadius){
       return;
     }
 
@@ -624,11 +633,11 @@ export class NpcObject extends SceneObject implements Interactable {
         const nY = neighbours[i].y;
 
         // limit radius
-        if(Math.abs(nX - target.x) > MAX_PATH_RADIUS){
+        if(Math.abs(nX - target.x) > this.pathRadius){
           continue;
         }
 
-        if(Math.abs(nY - target.y) > MAX_PATH_RADIUS){
+        if(Math.abs(nY - target.y) > this.pathRadius){
           continue;
         }
         
@@ -690,10 +699,10 @@ export class NpcObject extends SceneObject implements Interactable {
   private renderRadius(context: CanvasRenderingContext2D): void {
     RenderUtils.fillRectangle(
       context,
-      this.transform.position.world.x - MAX_PATH_RADIUS,
-      this.transform.position.world.y - MAX_PATH_RADIUS,
-      MAX_PATH_RADIUS * 2 + 1,
-      MAX_PATH_RADIUS * 2 + 1,
+      this.transform.position.world.x - this.pathRadius,
+      this.transform.position.world.y - this.pathRadius,
+      this.pathRadius * 2 + 1,
+      this.pathRadius * 2 + 1,
       {
         colour: '#00FF0033',
         type: 'tile',

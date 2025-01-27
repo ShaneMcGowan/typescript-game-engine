@@ -70,7 +70,7 @@ export abstract class Scene {
     objects: [],
   };
 
-  private customRenderer?: CustomRendererSignature;
+  customRenderer?: CustomRendererSignature;
 
   // from client
   renderContext: CanvasRenderingContext2D;
@@ -411,6 +411,10 @@ export abstract class Scene {
 
   changeScene(sceneClass: any): void {
     this.client.changeScene(sceneClass);
+  }
+
+  getCustomRenderer(): CustomRendererSignature | undefined {
+    return this.customRenderer;
   }
 
   setCustomRenderer(renderer: CustomRendererSignature): void {

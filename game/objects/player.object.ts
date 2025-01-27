@@ -36,6 +36,7 @@ import { FurnitureUtils } from '@game/utils/furniture.utils';
 import { use } from '@game/objects/player/use.action';
 import { IconsObject } from './icons/icons.object';
 import { Direction } from '@game/models/direction.model';
+import { WarpObject } from './warp.object';
 
 const TILE_SET = 'tileset_player';
 
@@ -355,7 +356,7 @@ export class PlayerObject extends SceneObject {
 
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(x, y, 1, 1),
-      typeIgnore: [UiObject, AreaObject, CollisionObject, FurnitureFloorObject],
+      typeIgnore: [UiObject, AreaObject, CollisionObject, FurnitureFloorObject, WarpObject],
       objectIgnore: new Map([
         [this, true]
       ]),

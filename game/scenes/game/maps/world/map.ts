@@ -10,7 +10,6 @@ import { MathUtils } from '@core/utils/math.utils';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { WarpObject } from '@game/objects/warp.object';
 import { TilesetHouse } from '@game/constants/tilesets/house.tileset';
-import { LockedDoorObject } from '@game/objects/world/locked-door.object';
 import { SCENE_GAME_MAP_FARM_HOUSE } from '../farm-house/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
@@ -28,6 +27,7 @@ import { Warps } from '@game/constants/warp.constants';
 import { StoryWorldHillGateObject } from '@game/objects/story/world/hill-gate/story';
 import { StoryWorldHillPathToTownBlockadeObject } from '@game/objects/story/world/hill-path-to-town-blockade/story';
 import { StoryWorldHillPathToFarmBlockadeObject } from '@game/objects/story/world/hill-path-to-farm-blockade/story';
+import { StoryWorldFarmersHouseLockedObject } from '@game/objects/story/world/farmers-house/story';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -45,12 +45,12 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(this.player);
 
     // npcs
-    this.scene.addObject(new FarmersSonObject(this.scene, { x: 25, y: 16 }));
 
     // stories
     this.scene.addObject(new StoryWorldHillGateObject(scene, { x: 0, y: 0 }));
     this.scene.addObject(new StoryWorldHillPathToTownBlockadeObject(scene, {x: 0, y: 0}));
     this.scene.addObject(new StoryWorldHillPathToFarmBlockadeObject(scene, {x: 0, y: 0}));
+    this.scene.addObject(new StoryWorldFarmersHouseLockedObject(scene, {x: 0, y: 0}));
 
     // chickens
     this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));
@@ -113,23 +113,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
             canMove: true,
           }
         ));
-      }
-    }));
-
-    // mission - 
-    // TODO: perhaps move these into some sort of Story Controller scene object
-    this.scene.addObject(new LockedDoorObject(this.scene, {
-      x: 23,
-      y: 1,
-      onDestroy: () => {
-        this.scene.addObject(new WarpObject(scene, { x: 23, y: 1, player: this.player, map: SCENE_GAME_MAP_FARM_HOUSE }))
-        this.scene.addObject(new SpriteObject(scene, {
-          x: 23,
-          y: 1,
-          tileset: TilesetHouse.id,
-          spriteX: TilesetHouse.Door.Default.AlmostClosed.x,
-          spriteY: TilesetHouse.Door.Default.AlmostClosed.y,
-        }));
       }
     }));
 
@@ -202,6 +185,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
       },
     }));
 
+    // warp - farm - beach
     this.scene.addObject(new WarpObject(scene, {
       x: 0,
       y: 16,
@@ -214,6 +198,9 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
         y: Warps.World.Beach.Farm.position.y,
       },
     }));
+
+    // warp - house
+    this.scene.addObject(new WarpObject(this.scene, { x: 23, y: 1, player: this.player, map: SCENE_GAME_MAP_FARM_HOUSE }))
   }
 
   onEnter(scene: Scene): void {
