@@ -5,6 +5,10 @@ import { SpriteAnimation } from "@core/model/sprite-animation";
 import { ObjectTrackingCameraObject } from "@core/objects/renderer/object-tracking-camera.object";
 import { TransitionObject } from "@core/objects/transition.object";
 import { MessageUtils } from "@game/utils/message.utils";
+import { CustomRendererSignature } from "@core/model/scene";
+
+type Next = () => void
+type Step = (next: Next | undefined) => void;
 
 const ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_player', [
@@ -19,6 +23,12 @@ export interface Config extends NpcObjectConfig {
 }
 
 export class FarmersSonObject extends NpcObject {
+
+  private store: {
+    camera: CustomRendererSignature
+  } = {
+    camera: undefined
+  }
 
   constructor(
     protected scene: SCENE_GAME,
@@ -53,61 +63,109 @@ export class FarmersSonObject extends NpcObject {
   }
 
   onIntro(): void {    
-    this.scene.globals.player.enabled = false;
+
+
+    const steps: Step[] = [
+      this.stepStart,
+      this.stepWalkToDoor,
+      this.stepOpenDoor,
+      this.stepFadeOut,
+      this.stepFadeIn,
+      this.stepEnd,
+    ];
+
+    this.run(undefined, steps);
+  }
+
+  private stepStart: Step = (next: Next): void => {
+    this.scene.globals.player.enabled = false; // TODO: this is being overwritten by NPC.say
 
     // store previous camera
-    const currentCamera = this.scene.getCustomRenderer();
+    this.store.camera = this.scene.getCustomRenderer();
 
     // add new camera
     const newCamera = new ObjectTrackingCameraObject(this.scene, { object: this }); // this is transient scene object, is this a bad pattern?
 
+    next();
+  }
+
+  private stepWalkToDoor: Step = (next: Next): void => {
+    console.log('stepWalkToDoor', next);
+    this.setPositionGoal(23, 2, () => { next() });
+  }
+
+  private stepOpenDoor: Step = (next: Next): void => {
+    console.log('stepOpenDoor');
+
+    this.scene.globals.flags[SceneFlag.shack_door_open] = true;
+
+    next();
+  }
+
+  private stepFadeOut: Step = (next: Next): void => {
+    console.log('stepFadeOut');
+
     const duration = 2;
-    const callbackOnGoal = () => {
-      // open the shack door
-      this.scene.globals.flags[SceneFlag.shack_door_open] = true;
-      
-      this.scene.addObject(
-        new TransitionObject(
-          this.scene,
-          {
-            x: 0,
-            y: 0,
-            animationLength: duration,
-            animationType: 'block',
-            animationDirection: 'out',
-            onDestroy: () => {
-              this.destroy();
-              this.scene.setCustomRenderer(currentCamera);
 
-              this.scene.addObject(
-                new TransitionObject(
-                  this.scene,
-                  {
-                    x: 0,
-                    y: 0,
-                    animationLength: duration,
-                    animationType: 'block',
-                    animationDirection: 'in',
-                    onDestroy: () => {
-                      MessageUtils.showMessage(
-                        this.scene, 
-                        `I should go see the farmer.`,
-                        () => {
-                          this.scene.globals.player.enabled = true;
-                          this.scene.setStoryFlag(StoryFlag.world_farmers_house_locked_completed, true);
-                        }
-                      )
-                    }
-                  }
-                )
-              );
-            }
-          }
-        )
+    this.scene.addObject(
+      new TransitionObject(
+        this.scene,
+        {
+          x: 0,
+          y: 0,
+          animationLength: duration,
+          animationType: 'block',
+          animationDirection: 'out',
+          onDestroy: next
+        }
       )
-    };
+    );
+  }
 
-    this.setPositionGoal(23, 2, callbackOnGoal);
+  private stepFadeIn: Step = (next: Next): void => {
+    console.log('stepFadeIn');
+
+    const duration = 2;
+
+    this.destroy();
+    this.scene.setCustomRenderer(this.store.camera);
+
+    this.scene.addObject(
+      new TransitionObject(
+        this.scene,
+        {
+          x: 0,
+          y: 0,
+          animationLength: duration,
+          animationType: 'block',
+          animationDirection: 'in',
+          onDestroy: next
+        }
+      )
+    );
+  }
+
+  private stepEnd: Step = (): void => {
+    console.log('stepEnd');
+
+    MessageUtils.showMessage(
+      this.scene, 
+      `I should go see the farmer.`,
+      () => {
+        this.scene.globals.player.enabled = true;
+        this.scene.setStoryFlag(StoryFlag.world_farmers_house_locked_completed, true);
+      }
+    );
+  }
+
+  private run(next: Next, steps: Step[]){
+    const step = steps.pop();
+    
+    if(step === undefined){
+      next();
+    } else {
+      this.run(() => { step(next) }, steps);
+    }
   }
 
 }
