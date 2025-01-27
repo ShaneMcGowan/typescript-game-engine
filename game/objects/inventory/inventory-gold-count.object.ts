@@ -1,12 +1,13 @@
 import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
+import { UiObject } from "@core/objects/ui.object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class InventoryGoldCountObject extends SceneObject {
+export class InventoryGoldCountObject extends UiObject {
 
 
   constructor(

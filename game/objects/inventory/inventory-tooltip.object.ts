@@ -3,13 +3,14 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Inventory, Item } from '@game/models/inventory.model';
+import { UiObject } from '@core/objects/ui.object';
 
 interface Config extends SceneObjectBaseConfig {
   item: Item,
   index: number,
 }
 
-export class InventoryTooltipObject extends SceneObject {
+export class InventoryTooltipObject extends UiObject {
   
   private item: Item;
   index: number;

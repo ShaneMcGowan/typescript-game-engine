@@ -6,6 +6,7 @@ import { MouseUtils } from "@core/utils/mouse.utils";
 import { Input, MouseKey } from "@core/utils/input.utils";
 import { Assets } from "@core/utils/assets.utils";
 import { TilesetBasic } from "@game/constants/tilesets/basic.tileset";
+import { UiObject } from "@core/objects/ui.object";
 
 enum ButtonState {
   Default,// not pressed && colliding
@@ -16,7 +17,7 @@ enum ButtonState {
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class InventoryButtonCloseObject extends SceneObject {
+export class InventoryButtonCloseObject extends UiObject {
   width: number = 2;
   height: number = 2;
   inventoryIndex: number;

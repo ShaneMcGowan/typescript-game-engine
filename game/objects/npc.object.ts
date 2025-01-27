@@ -18,6 +18,8 @@ import { InventoryObject, InventoryType } from './inventory/inventory.object';
 import { assertUnreachable } from '@core/utils/typescript.utils';
 import { Coordinate } from '@core/model/coordinate';
 import { ObjectFilter } from '@core/model/scene';
+import { UiObject } from '@core/objects/ui.object';
+import { AreaObject } from './areas/area.object';
 
 export enum MovementType {
   None = 'None', // doesn't move
@@ -330,6 +332,7 @@ export class NpcObject extends SceneObject implements Interactable {
       objectIgnore: new Map([
         [this, true]
       ]),
+      typeIgnore: [UiObject, AreaObject],
     };
 
     const object = this.scene.getObject(filter);
@@ -406,6 +409,7 @@ export class NpcObject extends SceneObject implements Interactable {
       objectIgnore: new Map([
         [this, true]
       ]),
+      typeIgnore: [UiObject, AreaObject],
     };
 
     const object = this.scene.getObject(filter);
@@ -651,6 +655,7 @@ export class NpcObject extends SceneObject implements Interactable {
             this.width,
             this.height,
           ),
+          typeIgnore: [UiObject, AreaObject],
           collision: {
             enabled: true,
           }

@@ -6,11 +6,12 @@ import { Assets } from "@core/utils/assets.utils";
 import { TilesetBasic } from "@game/constants/tilesets/basic.tileset";
 import { InventoryObject } from "./inventory.object";
 import { MouseUtils } from "@core/utils/mouse.utils";
+import { UiObject } from "@core/objects/ui.object";
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class InventoryButtonTrashObject extends SceneObject {
+export class InventoryButtonTrashObject extends UiObject {
   width: number = 2;
   height: number = 2;
   inventoryIndex: number;

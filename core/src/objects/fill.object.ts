@@ -1,7 +1,8 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
-import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
+import { UiObject } from './ui.object';
 
 const DEFAULT_HEX_COLOUR_CODE = '#00000099';
 
@@ -10,7 +11,7 @@ interface Config extends SceneObjectBaseConfig {
   renderLayer?: number;
 }
 
-export class FillObject extends SceneObject {
+export class FillObject extends UiObject {
   constructor(protected scene: Scene, protected config: Config) {
     super(scene, config);
 

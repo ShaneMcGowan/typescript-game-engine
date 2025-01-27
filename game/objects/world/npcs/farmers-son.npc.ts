@@ -6,9 +6,7 @@ import { ObjectTrackingCameraRenderer } from "@core/objects/renderer/object-trac
 import { TransitionObject } from "@core/objects/transition.object";
 import { MessageUtils } from "@game/utils/message.utils";
 import { CustomRendererSignature } from "@core/model/scene";
-
-type Next = () => void
-type Step = (next: Next | undefined) => void;
+import { Sequence, Step, Next, Run } from "@core/model/sequence";
 
 const ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_player', [
@@ -63,7 +61,7 @@ export class FarmersSonObject extends NpcObject {
   }
 
   onIntro(): void {    
-    const steps: Step[] = [
+    const steps: Sequence = [
       this.stepStart,
       this.stepWalkToDoor,
       this.stepOpenDoor,
@@ -73,7 +71,7 @@ export class FarmersSonObject extends NpcObject {
       this.stepEnd,
     ];
 
-    this.run(undefined, steps);
+    Run(steps);
   }
 
   private stepStart: Step = (next: Next): void => {
@@ -154,16 +152,6 @@ export class FarmersSonObject extends NpcObject {
         this.scene.setStoryFlag(StoryFlag.world_farmers_house_locked_completed, true);
       }
     );
-  }
-
-  private run(next: Next, steps: Step[]){
-    const step = steps.pop();
-    
-    if(step === undefined){
-      next();
-    } else {
-      this.run(() => { step(next) }, steps);
-    }
   }
 
 }

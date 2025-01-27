@@ -20,6 +20,7 @@ import { DeviceType } from '@core/model/device-type';
 import { InventoryGoldCountObject } from './inventory-gold-count.object';
 import { PortraitObject } from '../portrait.object';
 import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { UiObject } from '@core/objects/ui.object';
 
 type DraggingSource = 'inventory' | 'chest';
 type DraggingType = 'mouse' | 'controller';
@@ -48,7 +49,7 @@ interface Grid {
   }
 }
 
-export class InventoryObject extends SceneObject {
+export class InventoryObject extends UiObject {
   private player?: PlayerObject;
 
   otherInventory?: Inventory;
