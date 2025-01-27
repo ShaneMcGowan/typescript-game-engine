@@ -2,7 +2,7 @@ import { SCENE_GAME, SceneFlag, StoryFlag } from "@game/scenes/game/scene";
 import { MovementType, NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
-import { ObjectTrackingCameraObject } from "@core/objects/renderer/object-tracking-camera.object";
+import { ObjectTrackingCameraRenderer } from "@core/objects/renderer/object-tracking-camera.renderer";
 import { TransitionObject } from "@core/objects/transition.object";
 import { MessageUtils } from "@game/utils/message.utils";
 import { CustomRendererSignature } from "@core/model/scene";
@@ -63,12 +63,11 @@ export class FarmersSonObject extends NpcObject {
   }
 
   onIntro(): void {    
-
-
     const steps: Step[] = [
       this.stepStart,
       this.stepWalkToDoor,
       this.stepOpenDoor,
+      this.stepEnterDoor,
       this.stepFadeOut,
       this.stepFadeIn,
       this.stepEnd,
@@ -84,27 +83,28 @@ export class FarmersSonObject extends NpcObject {
     this.store.camera = this.scene.getCustomRenderer();
 
     // add new camera
-    const newCamera = new ObjectTrackingCameraObject(this.scene, { object: this }); // this is transient scene object, is this a bad pattern?
+    this.scene.setCustomRenderer(
+      ObjectTrackingCameraRenderer(this.scene, { object: this })
+    );
 
     next();
   }
 
   private stepWalkToDoor: Step = (next: Next): void => {
-    console.log('stepWalkToDoor', next);
     this.setPositionGoal(23, 2, () => { next() });
   }
 
   private stepOpenDoor: Step = (next: Next): void => {
-    console.log('stepOpenDoor');
-
     this.scene.globals.flags[SceneFlag.shack_door_open] = true;
 
     next();
   }
 
-  private stepFadeOut: Step = (next: Next): void => {
-    console.log('stepFadeOut');
+  private stepEnterDoor: Step = (next: Next): void => {
+    this.setPositionGoal(23, 1, () => { next() }, 1);
+  }
 
+  private stepFadeOut: Step = (next: Next): void => {
     const duration = 2;
 
     this.scene.addObject(
@@ -123,8 +123,6 @@ export class FarmersSonObject extends NpcObject {
   }
 
   private stepFadeIn: Step = (next: Next): void => {
-    console.log('stepFadeIn');
-
     const duration = 2;
 
     this.destroy();

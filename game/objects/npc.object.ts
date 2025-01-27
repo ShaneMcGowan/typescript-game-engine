@@ -584,12 +584,15 @@ export class NpcObject extends SceneObject implements Interactable {
     return InventoryType.Inventory;
   }
 
-  setPositionGoal(x: number, y: number, callback: () => void): void {
+  setPositionGoal(x: number, y: number, callback: () => void, delay?: number): void {
     this.goal = {
       x,
       y,
     }
     this.onGoal = callback;
+    
+    // set delay so we move immediately
+    this.pathDelayTimer = delay ? this.pathDelay - delay : this.pathDelay;
   }
 
   private generatePath(target: Coordinate): void {
