@@ -25,6 +25,13 @@ export class StoryObject extends SceneObject {
     return StoryFlag.default_completed;
   }
 
+  /**
+   * these flags will be set to true on quest completion
+   */
+  get flagNext(): StoryFlag[] | undefined {
+    return undefined;
+  }
+
   onAwake(): void {
     if(!this.scene.getStoryFlag(this.flagComplete)){
       return;
@@ -56,6 +63,12 @@ export class StoryObject extends SceneObject {
 
     this.completing = true;
     this.onComplete();
+
+    if(this.flagNext === undefined){
+      return;
+    }
+
+    this.flagNext.forEach(flag => this.scene.setStoryFlag(flag, true));
   }
 
   onStart(): void {
