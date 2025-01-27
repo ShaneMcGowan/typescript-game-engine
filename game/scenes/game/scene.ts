@@ -13,7 +13,9 @@ import { SaveFileKeys, Store } from '@game/utils/store.utils';
 import { SCENE_GAME_MAP_TOWN } from './maps/town/map';
 import { Coordinate } from '@core/model/coordinate';
 import { WorldTimeObject } from '@game/objects/world-time.object';
-import { SCENE_GAME_MAP_TEST_PATHING } from './maps/test/pathing/map';
+import { SCENE_GAME_MAP_TEST_PATHING_1 } from './maps/test/pathing/map.1';
+import { SCENE_GAME_MAP_TEST_PATHING_2 } from './maps/test/pathing/map.2';
+import { SCENE_GAME_MAP_TEST_PATHING_3 } from './maps/test/pathing/map.3';
 
 export interface QuestStatus {
   intro: boolean;
@@ -194,7 +196,9 @@ export class SCENE_GAME extends Scene {
       'farm': SCENE_GAME_MAP_FARM,
       'house': SCENE_GAME_MAP_HOUSE,
       'town': SCENE_GAME_MAP_TOWN,
-      'test/pathing': SCENE_GAME_MAP_TEST_PATHING,
+      'test/pathing/1': SCENE_GAME_MAP_TEST_PATHING_1,
+      'test/pathing/2': SCENE_GAME_MAP_TEST_PATHING_2,
+      'test/pathing/3': SCENE_GAME_MAP_TEST_PATHING_3,
     }
     const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? SCENE_GAME_MAP_WORLD;
 

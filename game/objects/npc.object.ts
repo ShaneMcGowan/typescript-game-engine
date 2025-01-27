@@ -17,6 +17,7 @@ import { Inventory } from '@game/models/inventory.model';
 import { InventoryObject, InventoryType } from './inventory/inventory.object';
 import { assertUnreachable } from '@core/utils/typescript.utils';
 import { Coordinate } from '@core/model/coordinate';
+import { ObjectFilter } from '@core/model/scene';
 
 export enum MovementType {
   None = 'None', // doesn't move
@@ -39,6 +40,8 @@ const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
 const DEFAULT_MOVEMENT_TYPE: MovementType = MovementType.None;
 const DEFAULT_MOVEMENT_SPEED: number = 2;
 const DEFAULT_MOVEMENT_DELAY: number | undefined = undefined;
+const MAX_PATH_RADIUS: number = 8; // TODO: this is inefficient, currently takes 2 frames to run (33ms)
+const DEFAULT_PATH_DELAY: number = 2;
 
 const DEFAULT_NAME: string = '???';
 const DEFAULT_PORTRAIT: Portrait = {
@@ -69,6 +72,8 @@ export interface NpcObjectConfig extends SceneObjectBaseConfig {
   movementType?: MovementType;
   movementDelay?: number;
   direction?: Direction;
+
+  goal?: Coordinate;
 }
 
 export class NpcObject extends SceneObject implements Interactable {
@@ -85,12 +90,13 @@ export class NpcObject extends SceneObject implements Interactable {
 
   // movement
   movementType: MovementType;
-  movementDelayTimer = 0;
+  movementDelayTimer: number = 0;
+  pathDelayTimer: number; // wait 2 seconds before trying to calculate path as it is expensive 
   following: SceneObject | undefined;
   
   target: Coordinate = { x: 0, y: 0 };
   goal: Coordinate | undefined = undefined;
-  path: Coordinate[] | undefined = undefined;
+  path: Coordinate[] = [];
 
   // config
   quests: Quest[] = [];
@@ -110,6 +116,8 @@ export class NpcObject extends SceneObject implements Interactable {
     this.movementType = config.movementType ?? DEFAULT_MOVEMENT_TYPE;
     this.following = config.follows;
     this.direction = config.direction ?? DEFAULT_DIRECTION;
+    this.goal = config.goal ?? this.goal;
+    this.pathDelayTimer = this.pathDelay;
   }
 
   onUpdate(delta: number): void {
@@ -121,6 +129,11 @@ export class NpcObject extends SceneObject implements Interactable {
   onRender(context: CanvasRenderingContext2D): void {
     this.renderSprite(context);
     this.renderIcon(context);
+
+    if(CanvasConstants.DEBUG_MODE){
+      this.renderRadius(context);
+      this.renderPath(context);
+    }
   }
 
   onDestroy(): void { }
@@ -131,6 +144,10 @@ export class NpcObject extends SceneObject implements Interactable {
 
   get movementDelay(): number | undefined {
     return DEFAULT_MOVEMENT_DELAY;
+  }
+
+  get pathDelay(): number {
+    return DEFAULT_PATH_DELAY;
   }
 
   get atTarget(): boolean {
@@ -243,10 +260,10 @@ export class NpcObject extends SceneObject implements Interactable {
     // update target
     switch(this.movementType){
       case MovementType.Follow:
-        this.updateTargetPositionObject();
+        this.updateTargetPositionObject(delta);
         return;
       case MovementType.Goal:
-        this.updateTargetPositionGoal();
+        this.updateTargetPositionGoal(delta);
         return;
       case MovementType.Random:
         this.updateTargetPositionRandom();
@@ -256,47 +273,145 @@ export class NpcObject extends SceneObject implements Interactable {
     }
   }
 
-  private updateTargetPositionGoal(): void {
-    console.log(`[${this.constructor.name}] updateTargetPositionGoal`);
+  /**
+   *  check if path is undefined
+   *      exists          - continue
+   *      does not exist  - calculate
+   *  check if next coordinate in path is valid
+   *      valid       - set target to next coordinate
+   *      not valid   - invalidate path, recalculate path
+   * @returns 
+   */
+  private updateTargetPositionGoal(delta: number): void {
 
     if(this.goal === undefined){
       return;
     }
 
-    // TODO: check if path is undefined
-    //          exists          - continue
-    //          does not exist  - calculate
+    if(this.goal.x === this.transform.position.world.x && this.goal.y === this.transform.position.world.y){
+      this.goal = undefined;
+      return;
+    }
 
-    // TODO: check if next coordinate in path is valid
-    //          valid       - set target to next coordinate
-    //          not valid   - invalidate path, recalculate path
+    this.pathDelayTimer += delta;
 
-    this.target.x = this.goal.x;
-    this.target.y = this.goal.y;
+    if(this.path.length === 0 && this.pathDelayTimer > this.pathDelay){
+      this.pathDelayTimer = 0;
+
+      this.generatePath({
+        x: this.goal.x,
+        y: this.goal.y
+      });
+    }
+
+    const target = this.path.pop();
+    if(target === undefined){
+      return;
+    }
+
+    const filter: ObjectFilter = {
+      boundingBox: SceneObject.calculateBoundingBox(
+        target.x,
+        target.y,
+        this.width,
+        this.height,
+      ),
+      collision: {
+        enabled: true,
+      },
+      objectIgnore: new Map([
+        [this, true]
+      ]),
+    };
+
+    const object = this.scene.getObject(filter);
+    if(object){
+      this.path = [];
+      return;
+    }
+
+    this.target.x = target.x;
+    this.target.y = target.y;
   }
 
-
-  private updateTargetPositionObject(): void {
-    console.log(`[${this.constructor.name}] updateTargetPositionObject`);
+  /**
+   *  check if path is undefined
+   *      exists          - continue
+   *      does not exist  - calculate
+   *  check if next coordinate in path is valid
+   *      valid       - set target to next coordinate
+   *      not valid   - invalidate path, recalculate path
+   * @param delta 
+   * @returns 
+   */
+  private updateTargetPositionObject(delta: number): void {
 
     if (this.following === undefined) {
       return;
     }
 
-    // TODO: check if path is undefined
-    //          exists          - continue
-    //          does not exist  - calculate
+    // clear path
+    if(this.path.length > 0){
+      this.pathDelayTimer = DEFAULT_PATH_DELAY;
+      this.path = [];
+    }
 
-    // TODO: check if next coordinate in path is valid
-    //          valid       - set target to next coordinate
-    //          not valid   - invalidate path, recalculate path
+    const x = this.following.transform.position.world.x;
+    const y = this.following.transform.position.world.y;
 
-    this.target.x = this.following.transform.position.world.x;
-    this.target.y = this.following.transform.position.world.y;
+    const xDifference = Math.abs(x - this.transform.position.world.x);
+    const yDifference = Math.abs(y - this.transform.position.world.y);
+
+    if(
+      (xDifference === 1 && yDifference === 0) ||
+      (xDifference === 0 && yDifference === 1) 
+    ){
+      return;
+    }
+
+    this.pathDelayTimer += delta;
+
+    if(this.path.length === 0 && this.pathDelayTimer > this.pathDelay){
+      this.pathDelayTimer = 0;
+    }
+
+    this.generatePath({
+      x: Math.floor(x),
+      y: Math.floor(y)
+    });
+
+    const target = this.path.pop();
+    if(target === undefined){
+      return;
+    }
+
+    const filter: ObjectFilter = {
+      boundingBox: SceneObject.calculateBoundingBox(
+        target.x,
+        target.y,
+        this.width,
+        this.height,
+      ),
+      collision: {
+        enabled: true,
+      },
+      objectIgnore: new Map([
+        [this, true]
+      ]),
+    };
+
+    const object = this.scene.getObject(filter);
+    if(object){
+      this.path = [];
+      return;
+    }
+
+    this.target.x = target.x;
+    this.target.y = target.y;
+
   }
 
   private updateTargetPositionRandom(): void {
-    console.log(`[${this.constructor.name}] updateTargetPositionRandom`);
 
     const movement = MovementUtils.MoveInRandomDirection({
       x: this.transform.position.world.x,
@@ -466,6 +581,140 @@ export class NpcObject extends SceneObject implements Interactable {
       x,
       y,
     }
+  }
+
+  private generatePath(target: Coordinate): void {
+    // clear path
+    this.path = [];
+
+    const parentForCell = new Map();
+
+    const queue: Coordinate[] = [];
+
+    // start position
+    const start: Coordinate = {
+      x: this.transform.position.world.x,
+      y: this.transform.position.world.y,
+    }
+
+    // prevent outside radius
+    if(Math.abs(start.x - target.x) > MAX_PATH_RADIUS){
+      return;
+    }
+
+    if(Math.abs(start.y - target.y) > MAX_PATH_RADIUS){
+      return;
+    }
+
+    queue.push(start);
+
+    while(queue.length > 0){
+      const current = queue.shift();
+      const currentKey = `${current.x}x${current.y}`;
+
+      const neighbours = [
+        { x: current.x - 1, y: current.y },
+        { x: current.x, y: current.y + 1 },
+        { x: current.x + 1, y: current.y },
+        { x: current.x, y: current.y - 1 },
+      ];
+
+      for (let i = 0; i < neighbours.length; ++i) {
+        const nX = neighbours[i].x;
+        const nY = neighbours[i].y;
+
+        // limit radius
+        if(Math.abs(nX - target.x) > MAX_PATH_RADIUS){
+          continue;
+        }
+
+        if(Math.abs(nY - target.y) > MAX_PATH_RADIUS){
+          continue;
+        }
+        
+        const filter: ObjectFilter = {
+          boundingBox: SceneObject.calculateBoundingBox(
+            nX,
+            nY,
+            this.width,
+            this.height,
+          ),
+          collision: {
+            enabled: true,
+          }
+        };
+        const object = this.scene.getObject(filter);
+        if(object && (target.x !== nX || target.y !== nY)){
+          continue;
+        }
+
+        const key = `${nX}x${nY}`;
+
+        // already visited
+        if (parentForCell.get(key)) {
+          continue;
+        }
+
+        parentForCell.set(
+          key, 
+          {
+            key: currentKey,
+            cell: current
+          }
+        );
+
+        queue.push(neighbours[i])
+      }
+    }
+
+    let currentKey = `${target.x}x${target.y}`;
+    let current = target;
+
+    while (current !== start) {
+      this.path.push(current)
+
+      console.log(this.path);
+
+      if(parentForCell.get(currentKey) === undefined){
+        // too far away / no path
+        this.path = [];
+        return;
+      }
+      const { key, cell } = parentForCell.get(currentKey);
+
+      currentKey = key;
+      current = cell;
+    }
+  }
+
+  private renderRadius(context: CanvasRenderingContext2D): void {
+    RenderUtils.fillRectangle(
+      context,
+      this.transform.position.world.x - MAX_PATH_RADIUS,
+      this.transform.position.world.y - MAX_PATH_RADIUS,
+      MAX_PATH_RADIUS * 2 + 1,
+      MAX_PATH_RADIUS * 2 + 1,
+      {
+        colour: '#00FF0033',
+        type: 'tile',
+      }
+    );
+  }
+
+  private renderPath(context: CanvasRenderingContext2D): void {
+    this.path.forEach(position => {
+      RenderUtils.fillRectangle(
+        context,
+        position.x,
+        position.y,
+        1,
+        1,
+        {
+          colour: '#FF00FF33',
+          type: 'tile',
+        }
+      );
+    });
   }
 
 }
