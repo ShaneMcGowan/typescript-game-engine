@@ -11,7 +11,7 @@ import { UiObject } from "@core/objects/ui.object";
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class InventoryButtonTrashObject extends UiObject {
+export class InventoryButtonTrashObject extends SceneObject {
   width: number = 2;
   height: number = 2;
   inventoryIndex: number;

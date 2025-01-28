@@ -4,7 +4,7 @@ import { ItemType } from "@game/models/inventory.model";
 import { NpcObject } from "@game/objects/npc.object";
 import { Quest, QuestName, QuestText } from "@game/models/quest.model";
 import { ItemObject } from "@game/objects/item.object";
-import { GateObject } from "../../gate.object";
+import { LockObject } from "../../../lock.object";
 
 const QUEST_NAME: QuestName = QuestName.collect_berries;
 

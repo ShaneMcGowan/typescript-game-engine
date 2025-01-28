@@ -10,7 +10,7 @@ interface Config extends SceneObjectBaseConfig {
   index: number,
 }
 
-export class InventoryTooltipObject extends UiObject {
+export class InventoryTooltipObject extends SceneObject {
   
   private item: Item;
   index: number;

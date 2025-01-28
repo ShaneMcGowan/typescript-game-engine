@@ -10,6 +10,10 @@ import { FarmerObject } from '@game/objects/world/npcs/farmer.npc';
 import { FurnitureBedObject } from '@game/objects/furniture/item/furniture-bed.object';
 import { FurnitureLampObject } from '@game/objects/furniture/item/furniture-lamp.object';
 import { Warps } from '@game/constants/warp.constants';
+import { StoryFarmHouseBedroomDoorLockedObject } from '@game/objects/story/farm-house/bedroom-door-locked/story';
+import { ChestObject } from '@game/objects/world-objects/chest.object';
+import { ItemType } from '@game/models/inventory.model';
+import { FarmersSonObject } from '@game/objects/story/farm-house/bedroom-door-locked/farmers-son.npc';
 
 export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
@@ -26,8 +30,10 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
     // npcs
     this.scene.addObject(new FarmerObject(scene, { x: 11, y: 9, }));
+    this.scene.addObject(new FarmersSonObject(this.scene, { x: 17, y: 9 }));
 
     // stories
+    this.scene.addObject(new StoryFarmHouseBedroomDoorLockedObject(scene, { }))
 
     // collision - vertical - sort by y
     this.scene.addObject(new CollisionObject(scene, { x: 8, y: 3, width: 16 }));
@@ -69,14 +75,19 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
     this.scene.addObject(new FurnitureLampObject(scene, { x: 22, y: 4 }));
     this.scene.addObject(new FurnitureLampObject(scene, { x: 15, y: 5 }));
 
+    // farmer's chest
+    const farmersChest = new ChestObject(scene, { x: 12, y: 4, player: this.player})
+    farmersChest.inventory.addToInventory(ItemType.Chicken);
+    this.scene.addObject(farmersChest);
+
   }
 
   onEnter(): void {
-    this.scene.globals.player.actionsEnabled = false;
+    // this.scene.globals.player.actionsEnabled = false;
   }
 
   onLeave(): void {
-    this.scene.globals.player.actionsEnabled = true;
+    // this.scene.globals.player.actionsEnabled = true;
   }
 
 }

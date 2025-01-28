@@ -1,13 +1,13 @@
 import { SceneObjectBaseConfig } from '@core/model/scene-object';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { StoryObject } from '../../story.object';
-import { HillGateObject } from './hill-gate.object';
+import { FarmHouseBedroomDoorObject } from './bedroom-door.object';
 
 export interface Config extends SceneObjectBaseConfig {
 }
 
 
-export class StoryWorldHillGateObject extends StoryObject {
+export class StoryFarmHouseBedroomDoorLockedObject extends StoryObject {
 
   constructor(
     protected scene: SCENE_GAME,
@@ -17,16 +17,15 @@ export class StoryWorldHillGateObject extends StoryObject {
   }
 
   get flagStart(): StoryFlag {
-    return StoryFlag.world_hill_gate_started;
+    return StoryFlag.farm_house_bedroom_door_locked_started;
   }
 
   get flagComplete(): StoryFlag {
-    return StoryFlag.world_hill_gate_completed;
+    return StoryFlag.farm_house_bedroom_door_locked_completed;
   }
 
   onStart(): void {
-    // rocks
-    this.addChild(new HillGateObject(this.scene, { x: 10, y: 7  }));
+    this.addChild(new FarmHouseBedroomDoorObject(this.scene, {  x: 18, y: 7 }));
   }
 
   onComplete(): void {

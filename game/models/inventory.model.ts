@@ -19,6 +19,11 @@ export enum ItemType {
   FurnitureLamp = 'FurnitureLamp',
   // FurniturePlant = 'FurniturePlant',
 
+  // keys
+  HouseKey = 'HouseKey',
+  GateKey = 'GateKey',
+  RoomKeyFarmersSonBedroom = 'RoomKeyFarmersSonBedroom', 
+
   // other
   Chicken = 'Chicken',
   Egg = 'Egg',
@@ -27,11 +32,10 @@ export enum ItemType {
   TomatoSeeds = 'TomatoSeeds',
   Tomato = 'Tomato',
   Chest = 'Chest',
-  GateKey = 'GateKey',
   Rock = 'Rock',
   Log = 'Log',
   Berry = 'Berry',
-  HouseKey = 'HouseKey',
+
 }
 
 
@@ -49,8 +53,8 @@ export const ItemTypeFurnitures: ItemType[] = [...ItemTypeFurnitureItems, ...Ite
 export type ItemTypeFurniture = ItemTypeFurnitureItem | ItemTypeFurnitureFloor | ItemTypeFurnitureWall;
 
 // keys
-export type ItemTypeKey = Extract<ItemType, ItemType.GateKey | ItemType.HouseKey>;
-export const ItemTypeKeys: ItemTypeKey[] = [ItemType.GateKey, ItemType.HouseKey];
+export type ItemTypeKey = Extract<ItemType, ItemType.GateKey | ItemType.HouseKey | ItemType.RoomKeyFarmersSonBedroom >;
+export const ItemTypeKeys: ItemTypeKey[] = [ItemType.GateKey, ItemType.HouseKey, ItemType.RoomKeyFarmersSonBedroom];
 
 /**
  * where the item can be placed
@@ -87,7 +91,8 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.FurniturePainting]: ItemRadius.Anywhere,
   [ItemType.FurnitureRugLarge]: ItemRadius.Anywhere,
   [ItemType.FurnitureTable]: ItemRadius.Anywhere,
-  [ItemType.FurnitureLamp]: ItemRadius.Anywhere
+  [ItemType.FurnitureLamp]: ItemRadius.Anywhere,
+  [ItemType.RoomKeyFarmersSonBedroom]: ItemRadius.None
 }
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
@@ -113,6 +118,7 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.FurnitureTable]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Table.Default.Default.x, y: TilesetFurniture.Table.Default.Default.y },
   [ItemType.FurnitureLamp]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Lamp.Blue.Default.x, y: TilesetFurniture.Lamp.Blue.Default.y },
   [ItemType.HouseKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
+  [ItemType.RoomKeyFarmersSonBedroom]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -138,6 +144,7 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.FurnitureRugLarge]: 1,
   [ItemType.FurnitureTable]: 1,
   [ItemType.FurnitureLamp]: 1,
+  [ItemType.RoomKeyFarmersSonBedroom]: 1
 };
 
 export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
@@ -153,6 +160,11 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.FurnitureRugLarge]: 30,
   [ItemType.FurnitureTable]: 40,
   [ItemType.FurnitureLamp]: 20,
+  // keys
+  [ItemType.GateKey]: 0,
+  [ItemType.HouseKey]: 0,
+  [ItemType.RoomKeyFarmersSonBedroom]: 0,
+
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -160,11 +172,7 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Wheat]: 10,
   [ItemType.TomatoSeeds]: 5,
   [ItemType.Tomato]: 10,
-
   [ItemType.Chest]: 150,
-  [ItemType.GateKey]: 0,
-  [ItemType.HouseKey]: 0,
-
   [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
@@ -183,6 +191,10 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.FurnitureRugLarge]: 5,
   [ItemType.FurnitureTable]: 5,
   [ItemType.FurnitureLamp]: 5,
+  // keys
+  [ItemType.GateKey]: 0,
+  [ItemType.HouseKey]: 0,
+  [ItemType.RoomKeyFarmersSonBedroom]: 0,
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -191,14 +203,17 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.TomatoSeeds]: 5,
   [ItemType.Tomato]: 10,
   [ItemType.Chest]: 30,
-  [ItemType.GateKey]: 0,
-  [ItemType.HouseKey]: 0,
   [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
 }
 
 export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
+  // keys
+  [ItemType.GateKey]: 'Gate Key',
+  [ItemType.HouseKey]: 'House Key',
+  [ItemType.RoomKeyFarmersSonBedroom]: `Farmer's Son's Bedroom Key`,
+  //
   [ItemType.Chicken]: 'Chicken',
   [ItemType.Egg]: 'Egg',
   [ItemType.WheatSeeds]: 'Wheat Seeds',
@@ -208,8 +223,6 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.Hoe]: 'Hoe',
   [ItemType.WateringCan]: 'Watering Can',
   [ItemType.Chest]: 'Chest',
-  [ItemType.GateKey]: 'Gate Key',
-  [ItemType.HouseKey]: 'House Key',
   [ItemType.Axe]: 'Axe',
   [ItemType.Pickaxe]: 'Pickaxe',
   [ItemType.Rock]: 'Rock',
@@ -220,10 +233,15 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.FurniturePainting]: "Painting",
   [ItemType.FurnitureRugLarge]: "Large Rug",
   [ItemType.FurnitureTable]: "Table",
-  [ItemType.FurnitureLamp]: "Lamp"
+  [ItemType.FurnitureLamp]: "Lamp",
 }
 
 export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
+  // keys
+  [ItemType.GateKey]: 'Gate Keys',
+  [ItemType.HouseKey]: 'House Keys',
+  [ItemType.RoomKeyFarmersSonBedroom]: `Farmer's Son's Bedroom Keys`,
+  //
   [ItemType.Chicken]: 'Chickens',
   [ItemType.Egg]: 'Eggs',
   [ItemType.WheatSeeds]: 'Wheat Seeds',
@@ -233,8 +251,6 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.Hoe]: 'Hoes',
   [ItemType.WateringCan]: 'Watering Cans',
   [ItemType.Chest]: 'Chests',
-  [ItemType.GateKey]: 'Gate Keys',
-  [ItemType.HouseKey]: 'House Keys',
   [ItemType.Axe]: 'Axes',
   [ItemType.Pickaxe]: 'Pickaxes',
   [ItemType.Rock]: 'Rocks',
@@ -245,10 +261,15 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.FurniturePainting]: "Paintings",
   [ItemType.FurnitureRugLarge]: "Large Rugs",
   [ItemType.FurnitureTable]: "Tables",
-  [ItemType.FurnitureLamp]: "Lamps"
+  [ItemType.FurnitureLamp]: "Lamps",
 }
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
+  // keys
+  [ItemType.GateKey]: `A key for a Gate, it's old and rusty looking. It tastes kinda funny too.`,
+  [ItemType.HouseKey]: `A key for the House at the farm. This is the key to my future.`,
+  [ItemType.RoomKeyFarmersSonBedroom]: `A key to the Farmer's Son's bedroom.`,
+  //
   [ItemType.Chicken]: 'The thing that comes out of an Egg.',
   [ItemType.Egg]: 'The thing that comes out of a Chicken.',
   [ItemType.WheatSeeds]: 'If I plant these they will grow into Wheat.',
@@ -258,8 +279,6 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.Hoe]: `A long-handled gardening tool with a thin metal blade. I can use this to prepare the ground for planting seeds. Some bearded guy in a red jacket is always raving on about these.`,
   [ItemType.WateringCan]: 'I can use this to water dirt.',
   [ItemType.Chest]: 'I can put my treasures in here, or maybe just my socks or something.',
-  [ItemType.GateKey]: `A key for a Gate, it's old and rusty looking. It tastes kinda funny too.`,
-  [ItemType.HouseKey]: `A key for the House at the farm. This is the key to my future.`,
   [ItemType.Axe]: `A tool with a sharp blade. I can use this to chop down trees.`,
   [ItemType.Pickaxe]: `A tool with a pointed blunt head. I can use this to break rocks.`,
   [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make things.`,
@@ -270,10 +289,15 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.FurniturePainting]: "A lovely painting to hang on the wall.",
   [ItemType.FurnitureRugLarge]: "A lovely rug to place on the floor.",
   [ItemType.FurnitureTable]: "La mesa",
-  [ItemType.FurnitureLamp]: "Lamps"
+  [ItemType.FurnitureLamp]: "Lamps",
 }
 
 export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
+  // keys
+  [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
+  [ItemType.RoomKeyFarmersSonBedroom]: false,
+  //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
   [ItemType.WheatSeeds]: true,
@@ -283,8 +307,6 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.Hoe]: true,
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: true,
-  [ItemType.GateKey]: false,
-  [ItemType.HouseKey]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: true,
@@ -299,6 +321,11 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
 }
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
+  // keys
+  [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
+  [ItemType.RoomKeyFarmersSonBedroom]: false,
+  //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
   [ItemType.WheatSeeds]: true,
@@ -308,8 +335,6 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Hoe]: true,
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: true,
-  [ItemType.GateKey]: false,
-  [ItemType.HouseKey]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: true,
@@ -324,6 +349,11 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
 }
 
 export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
+  // keys
+  [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
+  [ItemType.RoomKeyFarmersSonBedroom]: false,
+  //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
   [ItemType.WheatSeeds]: true,
@@ -333,8 +363,6 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.Hoe]: true,
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: true,
-  [ItemType.GateKey]: false,
-  [ItemType.HouseKey]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: true,
@@ -349,6 +377,11 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
 }
 
 export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
+  // keys
+  [ItemType.GateKey]: false,
+  [ItemType.HouseKey]: false,
+  [ItemType.RoomKeyFarmersSonBedroom]: false,
+  //
   [ItemType.Chicken]: false,
   [ItemType.Egg]: false,
   [ItemType.WheatSeeds]: false,
@@ -358,8 +391,6 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.Hoe]: true,
   [ItemType.WateringCan]: true,
   [ItemType.Chest]: false,
-  [ItemType.GateKey]: false,
-  [ItemType.HouseKey]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
   [ItemType.Rock]: false,

@@ -7,7 +7,7 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class InventoryGoldCountObject extends UiObject {
+export class InventoryGoldCountObject extends SceneObject {
 
 
   constructor(

@@ -1,7 +1,7 @@
 import { SceneObjectBaseConfig } from '@core/model/scene-object';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { StoryObject } from '../../story.object';
-import { GateObject } from '@game/objects/world/gate.object';
+import { LockObject } from '@game/objects/lock.object';
 import { ItemType } from '@game/models/inventory.model';
 import { TreeObject } from '@game/objects/tree.object';
 

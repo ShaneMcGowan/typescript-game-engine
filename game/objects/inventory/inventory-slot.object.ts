@@ -9,6 +9,7 @@ import { InventoryObject } from "./inventory.object";
 import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
 import { TilesetUI } from "@game/constants/tilesets/ui.tileset";
 import { UiObject } from "@core/objects/ui.object";
+import { Scene } from "@core/model/scene";
 
 export enum SlotType {
   Inventory = 'Inventory',
@@ -26,7 +27,7 @@ interface Config extends SceneObjectBaseConfig {
   type?: SlotType;
 }
 
-export class InventorySlotObject extends UiObject {
+export class InventorySlotObject extends SceneObject {
   width: number = 2;
   height: number = 2;
 

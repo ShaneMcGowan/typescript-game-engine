@@ -49,7 +49,7 @@ interface Grid {
   }
 }
 
-export class InventoryObject extends UiObject {
+export class InventoryObject extends SceneObject {
   private player?: PlayerObject;
 
   otherInventory?: Inventory;

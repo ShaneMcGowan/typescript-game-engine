@@ -17,7 +17,7 @@ enum ButtonState {
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class InventoryButtonCloseObject extends UiObject {
+export class InventoryButtonCloseObject extends SceneObject {
   width: number = 2;
   height: number = 2;
   inventoryIndex: number;
