@@ -1,16 +1,8 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
+import { InteractionStage, NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 
 type Stage = 'idle' | 'intro' | 'outro';
-
-const PORTRAIT: Portrait = {
-  tileset: 'tileset_chicken',
-  x: 0,
-  y: 0,
-  width: 1,
-  height: 1,
-}
 
 export interface Config extends NpcObjectConfig {
 }
@@ -46,43 +38,39 @@ export class UnknownNpcObject extends NpcObject {
   onDestroy(): void {
   }
 
-
-  get details(): NpcDetails {
-    // TODO: move to constants
-    return {
-      name: 'Greg',
-      portrait: PORTRAIT,
-    }
+  get name(): string {
+    return '???';
   }
 
-  get dialogue(): NpcDialogue {
-    // TODO: move to constants
+  get portrait(): Portrait {
     return {
-      intro: '',
-      default: '',
-    }
+      tileset: 'tileset_chicken',
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1,
+    };
   }
 
-  interact(): void {
-    if (this.stage !== 'idle') {
-      return;
+  get default(): InteractionStage {
+    return {
+      text: '',
+      callback: () => { this.startStageIntro(); }
     }
-
-    this.scene.globals.player.enabled = false;
-
-    this.startStageIntro();
-  };
+  }
 
   private startStageIntro(): void {
+    this.scene.globals.player.enabled = false;
+
     this.stage = 'intro';
 
     this.scene.addObject(
       new TextboxObject(
         this.scene,
         {
-          text: this.dialogue.intro,
-          portrait: PORTRAIT, // TODO: new to implement proper portrait system
-          name: this.details.name,
+          name: this.name,
+          portrait: this.portrait,
+          text: 'TODO(shane):',
           onComplete: () => {
             this.startStageOutro();
           },

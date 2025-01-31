@@ -1,7 +1,7 @@
 import { SceneObjectBaseConfig } from '@core/model/scene-object';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { StoryObject } from '../../story.object';
-import { FarmersSonObject } from '@game/objects/world/npcs/farmers-son.npc';
+import { FarmersSonObject } from '@game/objects/npcs/world/farmers-son.npc';
 import { LockedDoorObject } from '@game/objects/world/locked-door.object';
 
 export interface Config extends SceneObjectBaseConfig {

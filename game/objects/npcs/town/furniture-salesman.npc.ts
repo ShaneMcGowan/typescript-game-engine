@@ -1,9 +1,10 @@
 import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
-import { NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
+import { InteractionStage, InteractionStageIntro, NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
 import { ItemType } from "@game/models/inventory.model";
 import { InventoryType } from "@game/objects/inventory/inventory.object";
+import { Portrait } from "@game/objects/textbox.object";
 
 const INVENTORY = [
   ItemType.FurnitureBed,
@@ -38,28 +39,31 @@ export class FurnitureSalesmanObject extends NpcObject {
     INVENTORY.forEach(type => this.inventory.addToInventory(type));
   }
 
-  get details(): NpcDetails {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.furniture_salesman.details;
+  get name(): string {
+      return SCENE_GAME_MAP_WORLD_TEXT.npcs.furniture_salesman.details.name;
+    }
+  
+  get portrait(): Portrait {
+    return SCENE_GAME_MAP_WORLD_TEXT.npcs.furniture_salesman.details.portrait;
   }
 
-  get dialogue(): NpcDialogue {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.furniture_salesman.text.dialogue;
+  get intro(): InteractionStageIntro {
+    return {
+      text: SCENE_GAME_MAP_WORLD_TEXT.npcs.furniture_salesman.text.dialogue.intro,
+      flag: SceneFlag.intro_furniture_salesman,
+      callback: () => { this.openInventory(); }
+    };
+  }
+
+  get default(): InteractionStage {
+    return {
+      text: SCENE_GAME_MAP_WORLD_TEXT.npcs.furniture_salesman.text.dialogue.default,
+      callback: () => { this.openInventory(); }
+    }
   }
 
   get animations(): Record<NpcState, SpriteAnimation> {
     return ANIMATIONS;
-  }
-
-  get introFlag(): SceneFlag {
-    return SceneFlag.intro_furniture_salesman;
-  }
-
-  onIntro(): void {
-    this.openInventory();
-  }
-
-  onDefault(): void {
-    this.openInventory();
   }
 
   get inventoryType(): InventoryType {

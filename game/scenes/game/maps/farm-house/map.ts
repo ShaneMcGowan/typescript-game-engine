@@ -1,19 +1,19 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
-import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { WarpObject } from '@game/objects/warp.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import * as background from './background.json'
-import { FarmerObject } from '@game/objects/world/npcs/farmer.npc';
+import { FarmerObject } from '@game/objects/npcs/farm-house/farmer.npc';
 import { FurnitureBedObject } from '@game/objects/furniture/item/furniture-bed.object';
 import { FurnitureLampObject } from '@game/objects/furniture/item/furniture-lamp.object';
 import { Warps } from '@game/constants/warp.constants';
 import { StoryFarmHouseBedroomDoorLockedObject } from '@game/objects/story/farm-house/bedroom-door-locked/story';
 import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { ItemType } from '@game/models/inventory.model';
-import { FarmersSonObject } from '@game/objects/story/farm-house/bedroom-door-locked/farmers-son.npc';
+import { FarmersSonObject } from '@game/objects/npcs/farm-house/farmers-son.npc';
 
 export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
@@ -71,7 +71,7 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
     // furniture - sorted by y then x
     this.scene.addObject(new FurnitureLampObject(scene, { x: 9, y: 4 }));
     this.scene.addObject(new FurnitureBedObject(scene, { x: 10, y: 4, canSave: true, }));
-    this.scene.addObject(new FurnitureBedObject(scene, { x: 21, y: 4, canSave: true, }));
+    this.scene.addObject(new FurnitureBedObject(scene, { x: 21, y: 4, canSave: true, onSave: () => { this.scene.setFlag(SceneFlag.slept_in_farm_house_bed, true); } }));
     this.scene.addObject(new FurnitureLampObject(scene, { x: 22, y: 4 }));
     this.scene.addObject(new FurnitureLampObject(scene, { x: 15, y: 5 }));
 

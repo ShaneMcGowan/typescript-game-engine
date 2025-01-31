@@ -1,8 +1,8 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { SCENE_GAME_MAP_UNDERGROUND_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
-import { UnknownNpcObject } from '../npcs/unknown.npc';
-import { GregNpcObject } from '../npcs/greg.npc';
+import { UnknownNpcObject } from '../npcs/underground/unknown.npc';
+import { GregNpcObject } from '../npcs/underground/greg.npc';
 import { PlayerObject } from '../player.object';
 import { SceneObject } from '@core/model/scene-object';
 import { CollisionObject } from '../collision.object';

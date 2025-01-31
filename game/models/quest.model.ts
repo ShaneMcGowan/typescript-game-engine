@@ -11,6 +11,7 @@ export enum QuestName {
   plant_tree = 'plant_tree',
   collect_berries = 'collect_berries',
   clear_path_to_farm = 'clear_path_to_farm',
+  get_some_sleep = 'get_some_sleep',
 }
 
 export interface QuestText {

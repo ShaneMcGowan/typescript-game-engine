@@ -28,6 +28,15 @@ export enum MovementType {
   Goal = 'Goal', // move to target x and target y
 }
 
+export interface InteractionStage {
+  text: string;
+  callback?: () => void;
+}
+
+export interface InteractionStageIntro extends InteractionStage {
+  flag: SceneFlag;
+}
+
 const DEFAULT_ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_chicken', [
     { spriteX: 0, spriteY: 0, duration: 3.5, },
@@ -53,8 +62,6 @@ const DEFAULT_PORTRAIT: Portrait = {
   width: 0,
   height: 0
 };
-const DEFAULT_DIALOGUE_INTRO: string = '';
-const DEFAULT_DIALOGUE_DEFAULT: string = '';
 const DEFAULT_DIRECTION: Direction = Direction.Down;
 
 export type NpcState = 'idle' | 'moving';
@@ -163,18 +170,20 @@ export class NpcObject extends SceneObject implements Interactable {
     return this.transform.position.local.x === this.target.x && this.transform.position.local.y === this.target.y;
   }
 
-  get details(): NpcDetails {
-    return {
-      name: DEFAULT_NAME,
-      portrait: DEFAULT_PORTRAIT,
-    }
+  get intro(): InteractionStageIntro | undefined {
+    return undefined;
   }
 
-  get dialogue(): NpcDialogue {
-    return {
-      intro: DEFAULT_DIALOGUE_INTRO,
-      default: DEFAULT_DIALOGUE_DEFAULT,
-    }
+  get default(): InteractionStage | undefined {
+    return undefined;
+  }
+
+  get name (): string {
+    return DEFAULT_NAME;
+  }
+
+  get portrait (): Portrait {
+    return DEFAULT_PORTRAIT;
   }
 
   get animations(): Record<NpcState, SpriteAnimation> {
@@ -213,14 +222,6 @@ export class NpcObject extends SceneObject implements Interactable {
 
       return true;
     })
-  }
-
-  get introFlag(): SceneFlag {
-    return SceneFlag.intro_default;
-  }
-
-  get introSeen(): boolean {
-    return this.scene.globals.flags[this.introFlag];
   }
 
   private updateAnimationTimer(delta: number): void {
@@ -437,11 +438,13 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    if (!this.introSeen) {
-      this.scene.setFlag(this.introFlag, true);
+    // intro
+    if(this.intro && !this.scene.getFlag(this.intro.flag)){
+      this.scene.setFlag(this.intro.flag, true);
+      
       this.say(
-        this.dialogue.intro,
-        () => { this.onIntro() },
+        this.intro.text,
+        () => { if(this.intro.callback) { this.intro.callback(); } },
       );
       return;
     }
@@ -457,14 +460,17 @@ export class NpcObject extends SceneObject implements Interactable {
     }
 
     // default
-    this.say(
-      this.dialogue.default,
-      () => { this.onDefault() },
-    );
+    if(this.default) {
+      this.say(
+        this.default.text,
+        () => { 
+          if(this.default.callback){
+            this.default.callback();
+          } 
+        },
+      );
+    }
   };
-
-  onIntro(): void { }
-  onDefault(): void { }
 
   say(text: string, onComplete?: () => void): void {
     this.scene.globals.player.enabled = false;
@@ -473,8 +479,8 @@ export class NpcObject extends SceneObject implements Interactable {
       new TextboxObject(
         this.scene,
         {
-          name: this.details.name,
-          portrait: this.details.portrait,
+          name: this.name,
+          portrait: this.portrait,
           text: text,
           onComplete: () => {
             if (onComplete) {

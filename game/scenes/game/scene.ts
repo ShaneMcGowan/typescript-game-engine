@@ -36,6 +36,7 @@ export enum SceneFlag {
   path_to_farm_cleared = 'path_to_farm_cleared',
   farm_visited = 'farm_visited',
   house_visited = 'house_visited',
+  slept_in_farm_house_bed = 'slept_in_farm_house_bed',
 }
 
 export enum StoryFlag {
@@ -106,6 +107,7 @@ export class SCENE_GAME extends Scene {
       [SceneFlag.path_to_farm_cleared]: false,
       [SceneFlag.farm_visited]: false,
       [SceneFlag.house_visited]: false,
+      [SceneFlag.slept_in_farm_house_bed]: false,
     },
     quests: {
       [QuestName.default]: {
@@ -137,6 +139,10 @@ export class SCENE_GAME extends Scene {
         complete: false,
       },
       [QuestName.clear_path_to_farm]: {
+        intro: false,
+        complete: false,
+      },
+      [QuestName.get_some_sleep]: {
         intro: false,
         complete: false,
       },

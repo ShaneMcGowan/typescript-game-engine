@@ -1,18 +1,9 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
+import { InteractionStage, InteractionStageIntro, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
 import { Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SCENE_GAME_MAP_UNDERGROUND_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
-import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 
 type Stage = 'idle' | 'hi' | 'pause' | 'bye';
-
-const PORTRAIT: Portrait = {
-  tileset: 'tileset_chicken',
-  x: 0,
-  y: 0,
-  width: 1,
-  height: 1,
-}
 
 export interface Config extends NpcObjectConfig {
 }
@@ -52,33 +43,32 @@ export class GregNpcObject extends NpcObject {
     }
   }
 
-  get details(): NpcDetails {
-    // TODO: move to constants
-    return {
-      name: 'Greg',
-      portrait: PORTRAIT,
-    }
+  get name (): string {
+    return 'Greg'
   }
 
-  get dialogue(): NpcDialogue {
-    // TODO: move to constants
+  get portrait(): Portrait {
     return {
-      intro: '',
-      default: '',
-    }
+      tileset: 'tileset_chicken',
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1,
+    };
   }
 
-  interact(): void {
-    if (this.stage !== 'idle') {
-      return;
+  get default(): InteractionStage {
+    return {
+      text: 'TODO:',
+      callback: () => {
+        this.startStageHi();
+      }
     }
-
-    this.scene.globals.player.enabled = false;
-
-    this.startStageHi();
-  };
+  }
 
   private startStageHi(): void {
+    this.scene.globals.player.enabled = false;
+
     this.stage = 'hi';
 
     this.scene.addObject(
@@ -86,8 +76,8 @@ export class GregNpcObject extends NpcObject {
         this.scene,
         {
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_1,
-          portrait: PORTRAIT,
-          name: this.details.name,
+          portrait: this.portrait,
+          name: this.name,
           onComplete: () => {
             this.startStagePause();
           },
@@ -105,8 +95,8 @@ export class GregNpcObject extends NpcObject {
         {
           showOverlay: false,
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_2,
-          portrait: PORTRAIT,
-          name: this.details.name,
+          portrait: this.portrait,
+          name: this.name,
           onComplete: () => {
             this.startStageBye();
           },
@@ -117,11 +107,11 @@ export class GregNpcObject extends NpcObject {
   }
 
   private updateStagePause(delta: number): void {
-    // this.stagePauseTimer += delta;
+    this.stagePauseTimer += delta;
 
-    // if (this.stagePauseTimer >= this.stagePauseDuration) {
-    //   this.startStageBye();
-    // }
+    if (this.stagePauseTimer >= this.stagePauseDuration) {
+      this.startStageBye();
+    }
   }
 
   private startStageBye(): void {
@@ -133,8 +123,8 @@ export class GregNpcObject extends NpcObject {
         {
           showOverlay: false,
           text: SCENE_GAME_MAP_UNDERGROUND_TEXT.quest_1.intro.greg.line_3,
-          portrait: PORTRAIT,
-          name: this.details.name,
+          portrait: this.portrait,
+          name: this.name,
           completionDuration: this.stageByeDuration,
         }
       )

@@ -1,5 +1,5 @@
 import { SCENE_GAME, SceneFlag, StoryFlag } from "@game/scenes/game/scene";
-import { MovementType, NpcDetails, NpcDialogue, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
+import { InteractionStage, MovementType, NpcObject, NpcObjectConfig, NpcState } from "../../npc.object";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { SpriteAnimation } from "@core/model/sprite-animation";
 import { ObjectTrackingCameraRenderer } from "@core/objects/renderer/object-tracking-camera.renderer";
@@ -7,6 +7,7 @@ import { TransitionObject } from "@core/objects/transition.object";
 import { MessageUtils } from "@game/utils/message.utils";
 import { CustomRendererSignature } from "@core/model/scene";
 import { Sequence, Step, Next, Run } from "@core/model/sequence";
+import { Portrait } from "@game/objects/textbox.object";
 
 const ANIMATIONS: Record<NpcState, SpriteAnimation> = {
   idle: new SpriteAnimation('tileset_player', [
@@ -36,20 +37,35 @@ export class FarmersSonObject extends NpcObject {
     this.movementType = MovementType.Goal;
   }
 
-  get details(): NpcDetails {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details;
+  get name(): string {
+    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.name;
   }
 
-  get dialogue(): NpcDialogue {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.text.dialogue;
+  get portrait(): Portrait {
+    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmers_son.details.portrait;
+  }
+
+  get default(): InteractionStage {
+    return {
+      text: `Hi, you must be new around here. I'm the farmer's son. If you're looking for something to do, you should go speak with my father. He should be back at our house.`,
+      callback: () => {
+        const steps: Sequence = [
+          this.stepStart,
+          this.stepWalkToDoor,
+          this.stepOpenDoor,
+          this.stepEnterDoor,
+          this.stepFadeOut,
+          this.stepFadeIn,
+          this.stepEnd,
+        ];
+    
+        Run(steps);
+      }
+    }
   }
 
   get animations(): Record<NpcState, SpriteAnimation> {
     return ANIMATIONS;
-  }
-
-  get introFlag(): SceneFlag {
-    return SceneFlag.intro_farmers_son;
   }
 
   get pathRadius(): number {
@@ -58,20 +74,6 @@ export class FarmersSonObject extends NpcObject {
 
   get movementSpeed(): number {
     return 4;
-  }
-
-  onIntro(): void {    
-    const steps: Sequence = [
-      this.stepStart,
-      this.stepWalkToDoor,
-      this.stepOpenDoor,
-      this.stepEnterDoor,
-      this.stepFadeOut,
-      this.stepFadeIn,
-      this.stepEnd,
-    ];
-
-    Run(steps);
   }
 
   private stepStart: Step = (next: Next): void => {
@@ -142,8 +144,6 @@ export class FarmersSonObject extends NpcObject {
   }
 
   private stepEnd: Step = (): void => {
-    console.log('stepEnd');
-
     MessageUtils.showMessage(
       this.scene, 
       `I should go see the farmer.`,

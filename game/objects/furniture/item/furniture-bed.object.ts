@@ -13,6 +13,7 @@ const DEFAULT_CAN_SAVE: boolean = false;
 
 interface Config extends FurnitureConfig {
   canSave?: boolean,
+  onSave?: () => void,
 }
 
 export class FurnitureBedObject extends FurnitureItemObject implements Interactable {
@@ -21,6 +22,7 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
   height = 1;
 
   canSave: boolean = false;
+  onSave: () => void = () => {};
 
   constructor(
     protected scene: SCENE_GAME,
@@ -28,6 +30,7 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
   ) {
     super(scene, config);
     this.canSave = config.canSave ?? DEFAULT_CAN_SAVE;
+    this.onSave = config.onSave ?? this.onSave;
   }
   
   get type(): ItemTypeFurniture {
@@ -79,6 +82,8 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
       Store.set<Record<SceneFlag, boolean>>(SaveFileKeys.Flags, this.scene.globals.flags);
       Store.set<Record<StoryFlag, boolean>>(SaveFileKeys.StoryFlags, this.scene.globals.story_flags);
       Store.set<ItemList>(SaveFileKeys.Inventory, this.scene.globals.inventory.items);
+
+      this.onSave();
 
       this.scene.addObject(new TransitionObject(
         this.scene,
