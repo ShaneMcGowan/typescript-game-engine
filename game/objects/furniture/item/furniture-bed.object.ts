@@ -8,6 +8,7 @@ import { CanvasConstants } from "@core/constants/canvas.constants";
 import { QuestName } from "@game/models/quest.model";
 import { Store, SaveFileKeys } from "@game/utils/store.utils";
 import { TransitionObject } from "@core/objects/transition.object";
+import { PromptObject } from "@game/objects/prompt/prompt.object";
 
 const DEFAULT_CAN_SAVE: boolean = false;
 
@@ -55,12 +56,16 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
 
   private onCanSave(): void {
     const callback = () => {
-      const result = confirm('Would you like to save your game?');
-      if(result){
-        this.onSleep();
-      } else {
-        this.onNoSleep();
-      }
+
+      this.scene.addObject(new PromptObject(this.scene, 
+        { 
+          message: 'Would you like to save your game?', 
+          labelCancel: 'No',
+          onCancel: () => { this.onNoSleep(); },
+          labelConfim: 'Yes',
+          onConfirm: () => { this.onSleep(); }
+        }
+      ));
     };
 
     MessageUtils.showMessage(

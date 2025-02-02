@@ -40,6 +40,7 @@ interface Config extends SceneObjectBaseConfig {
   completionDuration?: number;
   scrollText?: boolean;
   scrollSpeed?: number;
+  canBeClosed?: boolean;
 }
 
 export class TextboxObject extends SceneObject {
@@ -52,6 +53,7 @@ export class TextboxObject extends SceneObject {
   private textSegments: string[] = [];
   private textIndex: number = 0; // index of textSegments
   private characterIndex: number = 0; // index of character of current text
+  private canBeClosed: boolean = true;
 
   // text scroll
   private readonly scrollText: boolean;
@@ -109,6 +111,7 @@ export class TextboxObject extends SceneObject {
     this.completionDuration = config.completionDuration;
     this.scrollText = config.scrollText ?? DEFAULT_SCROLL_TEXT;
     this.scrollSpeed = config.scrollSpeed ?? DEFAULT_SCROLL_SPEED;
+    this.canBeClosed = config.canBeClosed ?? this.canBeClosed;
 
     this.initText();
   }
@@ -153,7 +156,7 @@ export class TextboxObject extends SceneObject {
   onUpdate(delta: number): void {
     if (this.completionDuration !== undefined) {
       this.updateTimer(delta);
-    } else {
+    } else if(this.canBeClosed) {
       this.updateConfirm();
     }
 
