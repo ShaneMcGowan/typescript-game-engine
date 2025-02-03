@@ -26,9 +26,14 @@ export function usePickaxe(scene: SCENE_GAME, player: PlayerObject, target?: Sce
     case target instanceof DirtObject:
       usePickaxeOnDirt(scene, player, target);
       return;
+    case target !== undefined:
+      player.startAnimation(
+        AnimationsPlayer.UsePickaxe[player.direction],
+      );
+      return;
   }
 
   player.startAnimation(
     AnimationsPlayer.UsePickaxe[player.direction],
-  )
+  );
 }

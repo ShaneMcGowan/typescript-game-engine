@@ -19,6 +19,8 @@ export function useHoe(scene: SCENE_GAME, player: PlayerObject, target?: SceneOb
     case target instanceof ChestObject:
       useToolOnChest(scene, player, target, ItemType.Hoe);
       return;
+    case target !== undefined:
+      return;
   }
 
   const x = Math.floor(Input.mouse.position.x + scene.globals.camera.startX);

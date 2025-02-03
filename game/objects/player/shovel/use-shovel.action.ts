@@ -17,6 +17,8 @@ export function useShovel(scene: SCENE_GAME, player: PlayerObject, target?: Scen
     case target instanceof HoleObject:
       useShovelOnHole(scene, player, target);
       return;
+    case target !== undefined:
+      return;
   }
 
   const x = Math.floor(Input.mouse.position.x + scene.globals.camera.startX);

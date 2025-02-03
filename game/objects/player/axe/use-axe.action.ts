@@ -25,5 +25,7 @@ export function useAxe(scene: SCENE_GAME, player: PlayerObject, target?: SceneOb
     case target instanceof ChestObject:
       useToolOnChest(scene, player, target, ItemType.Axe);
       return;
+    case target !== undefined:
+      return;
   }
 }

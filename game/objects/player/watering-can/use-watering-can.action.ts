@@ -14,7 +14,12 @@ export function useWateringCan(scene: SCENE_GAME, player: PlayerObject, target?:
       return;
     case target instanceof ChickenObject:
       useWateringCanOnChicken(scene, player, target);
-      return;        
+      return;       
+    case target !== undefined:
+      player.startAnimation(
+        AnimationsPlayer.UseWateringCan[player.direction],
+      );
+      return; 
   }
 
   player.startAnimation(
