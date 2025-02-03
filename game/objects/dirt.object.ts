@@ -27,10 +27,8 @@ export function isPlantableType(type: ItemType): type is PlantableType {
 
 export enum CropStage {
   Empty,
-  Watered,
   Growing,
   FullyGrown,
-  Spoiled,
 }
 
 const CROP_TO_GROWTH_DURATION: Record<PlantableType, number> = {
@@ -43,17 +41,14 @@ type CropStageSprite = { tileset: string, spriteX: number, spriteY: number, };
 const TYPE_TO_SPRITE_MAP: Record<PlantableType, {
   [CropStage.Growing]: CropStageSprite | undefined,
   [CropStage.FullyGrown]: CropStageSprite | undefined,
-  [CropStage.Spoiled]: CropStageSprite | undefined,
 }> = {
   [ItemType.WheatSeeds]: {
     [CropStage.Growing]: { tileset: 'tileset_plants', spriteX: 1, spriteY: 0, },
     [CropStage.FullyGrown]: { tileset: 'tileset_plants', spriteX: 4, spriteY: 0, },
-    [CropStage.Spoiled]: undefined
   },
   [ItemType.TomatoSeeds]: {
     [CropStage.Growing]: { tileset: 'tileset_plants', spriteX: 1, spriteY: 1, },
     [CropStage.FullyGrown]: { tileset: 'tileset_plants', spriteX: 4, spriteY: 1, },
-    [CropStage.Spoiled]: undefined
   }
 };
 
@@ -70,8 +65,6 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
 
   crop: PlantableType | undefined = undefined;
 
-  cropStage: CropStage;
-
   isWatered: boolean = false;
   watered: number = 0;
 
@@ -81,17 +74,16 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
 
-    this.cropStage = CropStage.Empty;
-
     if (config.growing) {
       // preconfigure growing
       this.collision.enabled = true;
-      this.cropStage = config.growing.stage;
       this.crop = config.growing.itemType;
     }
   }
   
   onNewDay(): void {
+    console.log('onNewDay');
+
     if(!this.isWatered){
       return;
     }
@@ -104,11 +96,10 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
 
     this.watered++;
 
-    if(this.watered < CROP_TO_GROWTH_DURATION[this.crop]){
+    if(!this.isGrown){
       return;
     }
 
-    // TODO: grown
     MessageUtils.showMessage(this.scene, 'Grown');
   };
 
@@ -152,12 +143,9 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
   }
 
   interact(): void {
-    switch (this.cropStage) {
+    switch (this.stage) {
       case CropStage.Empty:
         this.interactStageEmpty();
-        return;
-      case CropStage.Watered:
-        this.interactStageWatered();
         return;
       case CropStage.Growing:
         this.interactStageGrowing();
@@ -168,17 +156,26 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
     }
   }
 
+  get stage(): CropStage {
+    if(this.isEmpty){
+      return CropStage.Empty;
+    }
+
+    if(!this.isGrown){
+      return CropStage.Growing;
+    }
+
+    return CropStage.FullyGrown;
+  }
+
+  get isGrown(): boolean {
+    return this.watered >= CROP_TO_GROWTH_DURATION[this.crop]
+  }
+
   private interactStageEmpty(): void {
     MessageUtils.showMessage(
       this.scene,
       `It's a beautiful patch of dirt, brimming with potential. I can plant crops here.`
-    );
-  }
-
-  private interactStageWatered(): void {
-    MessageUtils.showMessage(
-      this.scene,
-      `The patch of dirt is watered, better plant something before it dries up.`
     );
   }
 
@@ -204,7 +201,8 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
 
     this.inventory.addToInventory(this.produces);
 
-    this.destroy();
+    this.crop = undefined;
+    this.watered = 0;
   }
 
   get isEmpty(): boolean {
@@ -212,24 +210,7 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
   }
 
   onUpdate(delta: number): void {
-    // if (this.cropStage === CropStage.Empty || this.cropStage === CropStage.Watered) {
-    //   this.counterDry += delta;
-    // } else if (this.cropStage === CropStage.Growing) {
-    //   this.counterGrow += delta;
-    // } else if (this.cropStage === CropStage.FullyGrown) {
-    //   this.counterSpoil += delta;
-    // }
-    // if (this.isEmpty && this.counterDry > DRY_COUNTER_MAX) {
-    //   // dirt dried out
-    //   this.destroy();
-    //   return;
-    // } else if (this.cropStage === CropStage.Growing && this.counterGrow > GROW_COUNTER_MAX) {
-    //   // plant fully grown
-    //   this.cropStage = CropStage.FullyGrown;
-    // } else if (this.cropStage === CropStage.FullyGrown && this.counterSpoil > SPOIL_COUNTER_MAX) {
-    //   // plant spoiled
-    //   this.cropStage = CropStage.Spoiled;
-    // }
+
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -270,7 +251,7 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
   }
 
   private renderCrop(context: CanvasRenderingContext2D): void {
-    if(this.crop === undefined){
+    if(this.stage === CropStage.Empty){
       return;
     }
 
@@ -279,7 +260,7 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
       return;
     }
 
-    const sprite = TYPE_TO_SPRITE_MAP[this.crop][CropStage.Growing];
+    const sprite = TYPE_TO_SPRITE_MAP[this.crop][this.stage];
     if (sprite === undefined) {
       return;
     }
@@ -302,7 +283,6 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
     }
 
     this.isWatered = true;
-    this.watered += 1;
   }
 
   actionPlantHeldItem(): void {
