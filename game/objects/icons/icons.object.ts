@@ -4,6 +4,8 @@ import { SCENE_GAME } from "@game/scenes/game/scene";
 import { DeviceType } from "@core/model/device-type";
 import { IconMenuObject } from "./icon-menu.object";
 import { IconInventoryObject } from "./icon-inventory.object";
+import { IconDebugNewDayObject } from "./icon-debug-new-day.object";
+import { IconDebugNewSeasonObject } from "./icon-debug-new-season.object";
 
 interface Config extends SceneObjectBaseConfig {}
 
@@ -25,6 +27,8 @@ export class IconsObject extends SceneObject {
     const icons = [
       new IconMenuObject(this.scene, { x: x, }),
       new IconInventoryObject(this.scene, { x: x }),
+      ...(CanvasConstants.DEBUG_MODE ? [new IconDebugNewDayObject(this.scene, { x: x })] : []),
+      ...(CanvasConstants.DEBUG_MODE ? [new IconDebugNewSeasonObject(this.scene, { x: x })] : []),
     ];
 
     icons.forEach((icon, index) => {

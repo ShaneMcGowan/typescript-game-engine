@@ -16,6 +16,28 @@ import { WorldTimeObject } from '@game/objects/world-time.object';
 import { SCENE_GAME_MAP_TEST_PATHING_1 } from './maps/test/pathing/map.1';
 import { SCENE_GAME_MAP_TEST_PATHING_2 } from './maps/test/pathing/map.2';
 import { SCENE_GAME_MAP_TEST_PATHING_3 } from './maps/test/pathing/map.3';
+import { hasOnNewDay } from '@game/models/components/new-day.model';
+
+export const DAYS_PER_WEEK: number = 7;
+export const DAYS_PER_SEASON: number = 28;
+export const SEASONS_PER_YEAR: number = 4;
+
+export enum Day {
+  Monday = 'Monday',
+  Tuesday = 'Tuesday',
+  Wednesday = 'Wednesday',
+  Thursday = 'Thursday',
+  Friday = 'Friday',
+  Saturday = 'Saturday',
+  Sunday = 'Sunday',
+}
+
+export enum Season {
+  Spring = 'Spring',
+  Summer = 'Summer',
+  Autumn = 'Autumn',
+  Winter = 'Winter',
+}
 
 export interface QuestStatus {
   intro: boolean;
@@ -78,6 +100,7 @@ interface Globals extends SceneGlobalsBaseConfig {
   },
   story_flags: Record<StoryFlag, boolean>;
   time: number;
+  day: number;
 }
 
 export class SCENE_GAME extends Scene {
@@ -171,6 +194,7 @@ export class SCENE_GAME extends Scene {
       [StoryFlag.farm_house_bedroom_door_locked_completed]: false
     },
     time: 0,
+    day: 0,
   };
 
   constructor(client: Client) {
@@ -251,6 +275,57 @@ export class SCENE_GAME extends Scene {
 
   getStoryFlag(flag: StoryFlag): boolean {
     return this.storyFlags[flag];
+  }
+
+  newDay(): void {
+    this.globals.time = 0;
+    this.globals.day++;
+
+    // run callback for current map
+    // this will need to be called for other maps on entry
+    this.objects.forEach(object => {
+      if(hasOnNewDay(object)){
+        object.onNewDay();
+      }
+    });
+  }
+
+  get day(): Day {
+    const index = this.globals.day % DAYS_PER_WEEK;
+    switch(index){
+      case 0:
+        return Day.Monday;
+      case 1:
+        return Day.Tuesday;
+      case 2:
+        return Day.Wednesday;
+      case 3:
+        return Day.Thursday;
+      case 4:
+        return Day.Friday;
+      case 5:
+        return Day.Saturday;
+      case 6:
+        return Day.Sunday;
+    }
+  }
+
+  get season(): Season {
+    const index = Math.floor(this.globals.day / DAYS_PER_SEASON) % SEASONS_PER_YEAR;
+    switch(index){
+      case 0:
+        return Season.Spring;
+      case 1:
+        return Season.Summer;
+      case 2:
+        return Season.Autumn;
+      case 3:
+        return Season.Winter;
+    }
+  }
+
+  get year(): number {
+    return Math.floor(this.globals.day / (DAYS_PER_SEASON * SEASONS_PER_YEAR)) + 1;
   }
 
 }

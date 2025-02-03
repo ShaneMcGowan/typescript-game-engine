@@ -14,9 +14,10 @@ import { MessageUtils } from '@game/utils/message.utils';
 import { TimerObject } from '@core/objects/timer.object';
 import { ItemSpawnAreaObject } from '@game/objects/areas/item-spawn-area.object';
 import { ItemType } from '@game/models/inventory.model';
-import { HouseObject } from '@game/objects/house.object';
 import { Warps } from '@game/constants/warp.constants';
 import { WaterAreaObject } from '@game/objects/areas/water-area.object';
+import { SCENE_GAME_MAP_HOUSE } from '../house/map';
+import { hasOnNewDay } from '@game/models/components/new-day.model';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -24,14 +25,14 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
 
   player: PlayerObject;
 
+  day: number = 0;
+
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 83, y: 4, });
 
     this.scene.addObject(this.player);
-
-    this.scene.addObject(new HouseObject(scene, { x: 81, y: 2, width: 5, height: 2, player: this.player }));
 
     // areas
     // areas - farmable
@@ -45,14 +46,6 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 85, y: 4, width: 5, height: 10 }));
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 90, y: 3, width: 3, height: 11 }));
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 93, y: 1, width: 1, height: 13 }));
-
-
-
-
-
-
-
-
 
     // this.scene.addObject(new FarmableAreaObject(this.scene, { x: 65, y: 3, width: 2, height: 15 }));
     // this.scene.addObject(new FarmableAreaObject(this.scene, { x: 68, y: 1, width: 27, height: 13 }));
@@ -70,11 +63,14 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     // collision
     // horizontal
     this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 1, width: 3 }));
-    this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 14, width: 15, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 14, width: 16, height: 2 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 70, y: 5, width: 6 }))
     this.scene.addObject(new CollisionObject(this.scene, { x: 76, y: 3, width: 5 }));
-    this.scene.addObject(new CollisionObject(this.scene, { x: 81, y: 1, width: 5 }));
-    this.scene.addObject(new CollisionObject(this.scene, { x: 85, y: 14, width: 15, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 81, y: 0, width: 5, height: 3, }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 81, y: 3, width: 2, }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 84, y: 3, width: 2, }));
+
+    this.scene.addObject(new CollisionObject(this.scene, { x: 84, y: 14, width: 16, height: 2 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 3, width: 4 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 90, y: 2, width: 3 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 93, y: 0, width: 2 }));
@@ -90,8 +86,8 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.scene.addObject(new CollisionObject(this.scene, { x: 62, y: 0, height: 23 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 66, y: 0, height: 3 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 92, y: 0, height: 2 }));
-    this.scene.addObject(new CollisionObject(this.scene, { x: 80, y: 1, height: 2 }));
-    this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 1, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 80, y: 0, height: 3 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 0, height: 3 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 95, y: 1, height: 2 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 2, height: 12 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 70, y: 2, height: 3 }));
@@ -108,6 +104,21 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.scene.addObject(new RockObject(this.scene, { x: 63, y: 2, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { x: 64, y: 3, canBeBroken: false }));
     this.scene.addObject(new RockObject(this.scene, { x: 65, y: 2, canBeBroken: false }));
+
+    // warps - house
+    this.scene.addObject(new WarpObject(scene, {
+      x: 83,
+      y: 3,
+      width: 1,
+      height: 1,
+      player: this.player,
+      map: SCENE_GAME_MAP_HOUSE,
+      position: {
+        x: Warps.Farm.Hill.Town.Hill.position.x,
+        y: Warps.Farm.Hill.Town.Hill.position.y,
+      },
+      isColliding: true,
+    }));
 
     // warps - hill - world
     this.scene.addObject(new WarpObject(scene, {
@@ -145,6 +156,17 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
     Warps.onMapEnter(this.scene, this.player);
+
+    // run onNewDay for each day since
+    while(this.day < this.scene.globals.day){
+      this.day++;
+      
+      this.scene.objects.forEach(object => {
+        if(hasOnNewDay(object)){
+          object.onNewDay();
+        }
+      });
+    }
     
     // first visit
     // TODO: only show if entering from a certain direction

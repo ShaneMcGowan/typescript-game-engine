@@ -97,6 +97,19 @@ export abstract class Warps {
     }
   }
 
+  static House = {
+    Door: {
+      Farm: {
+        House: {
+          position: {
+            x: 83,
+            y: 4,
+          }
+        }
+      }
+    }
+  }
+
   static onMapEnter(scene: SCENE_GAME, player: PlayerObject): void {
     if(scene.globals.warp.position){
       player.transform.position.local.x = scene.globals.warp.position.x;

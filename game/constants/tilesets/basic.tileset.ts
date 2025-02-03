@@ -7,10 +7,10 @@ export class TilesetBasic {
   static readonly ArrowRight: Tile<'White', 'Default' | 'Pressed'> = {
     White: {
       Default: {
-        x: 15, y: 0,
+        x: 15, y: 0, width: 1, height: 1,
       },
       Pressed: {
-        x: 16, y: 0,
+        x: 16, y: 0,  width: 1, height: 1,
       }
     }
   };
@@ -18,10 +18,10 @@ export class TilesetBasic {
   static readonly ArrowLeft = {
     White: {
       Default: {
-        x: 15, y: 1,
+        x: 15, y: 1, width: 1, height: 1,
       },
       Pressed: {
-        x: 16, y: 1,
+        x: 16, y: 1, width: 1, height: 1,
       }
     }
   };
@@ -29,10 +29,10 @@ export class TilesetBasic {
   static readonly ArrowUp = {
     White: {
       Default: {
-        x: 15, y: 2,
+        x: 15, y: 2, width: 1, height: 1,
       },
       Pressed: {
-        x: 16, y: 2,
+        x: 16, y: 2, width: 1, height: 1,
       }
     }
   };
@@ -229,6 +229,6 @@ export class TilesetBasic {
         height: 1,
       }
     }
-
   }
+
 }

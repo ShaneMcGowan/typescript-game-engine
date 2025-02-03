@@ -15,6 +15,7 @@ import { MessageUtils } from '@game/utils/message.utils';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { TransitionObject } from '@core/objects/transition.object';
 import { SCENE_GAME_MAP_FARM } from '@game/scenes/game/maps/farm/map';
+import { Warps } from '@game/constants/warp.constants';
 
 export class SCENE_GAME_MAP_HOUSE extends SceneMap {
 
@@ -50,22 +51,19 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     // lighting
     this.scene.addObject(new LightingObject(scene, { x: 0, y: 0, }));
 
-    // exit door
-    const warpConfig = {
+    // warp - door
+    this.scene.addObject(new WarpObject(scene, {
+      x: 15,
       y: 12,
+      width: 2,
+      height: 1,
       player: this.player,
       map: SCENE_GAME_MAP_FARM,
-      width: 1,
+      position: {
+        x: Warps.House.Door.Farm.House.position.x,
+        y: Warps.House.Door.Farm.House.position.y,
+      },
       isColliding: true,
-    };
-
-    this.scene.addObject(new WarpObject(scene, {
-      ...warpConfig,
-      x: 15
-    }));
-    this.scene.addObject(new WarpObject(scene, {
-      ...warpConfig,
-      x: 16
     }));
   }
 

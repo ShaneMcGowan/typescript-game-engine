@@ -62,7 +62,7 @@ export abstract class Scene {
   // maps
   private flaggedForMapChange: SceneMapConstructorSignature | undefined = undefined; // if this is set, the scene will change to the map of the provided class on the next frame
   private activeMap: SceneMapConstructorSignature;
-  private readonly maps: Map<SceneMapConstructorSignature, SceneMap> = new Map<SceneMapConstructorSignature, SceneMap>(); // Yo dawg, I heard you like maps, so we put your maps in a map so you can map while you map
+  protected readonly maps: Map<SceneMapConstructorSignature, SceneMap> = new Map<SceneMapConstructorSignature, SceneMap>(); // Yo dawg, I heard you like maps, so we put your maps in a map so you can map while you map
 
   // store an in memory canvas for each background layer and each rendering layer (based on CanvasConstants.TOTAL_RENDER_LAYERS)
   renderingContext: SceneRenderingContext = {

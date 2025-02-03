@@ -3,8 +3,9 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type Interactable } from '@game/models/components/interactable.model';
 import { Assets } from '@core/utils/assets.utils';
-import { Inventory, ItemType } from '@game/models/inventory.model';
+import { Inventory, Item, ItemType } from '@game/models/inventory.model';
 import { MessageUtils } from '@game/utils/message.utils';
+import { OnNewDay } from '@game/models/components/new-day.model';
 
 const DIRT = { x: 1, y: 1, };
 const DIRT_LEFT = { x: 0.5, y: 3, };
@@ -20,6 +21,9 @@ const GROW_COUNTER_MAX = 5; // seconds until plant grows
 const SPOIL_COUNTER_MAX = 60 * 60 * 24; // seconds until plant spoils
 const PLANTABLE = [ItemType.TomatoSeeds, ItemType.WheatSeeds];
 type PlantableType = ItemType.TomatoSeeds | ItemType.WheatSeeds
+export function isPlantableType(type: ItemType): type is PlantableType {
+  return PLANTABLE.includes(type);
+}
 
 export enum CropStage {
   Empty,
@@ -27,6 +31,11 @@ export enum CropStage {
   Growing,
   FullyGrown,
   Spoiled,
+}
+
+const CROP_TO_GROWTH_DURATION: Record<PlantableType, number> = {
+  [ItemType.WheatSeeds]: 3,
+  [ItemType.TomatoSeeds]: 3
 }
 
 type CropStageSprite = { tileset: string, spriteX: number, spriteY: number, };
@@ -51,15 +60,15 @@ const TYPE_TO_SPRITE_MAP: Record<PlantableType, {
 interface Config extends SceneObjectBaseConfig {
   growing?: {
     stage: CropStage,
-    itemType: ItemType
+    itemType: PlantableType
   }
 }
 
-export class DirtObject extends SceneObject implements Interactable {
+export class DirtObject extends SceneObject implements Interactable, OnNewDay {
   private spriteX: number = DIRT.x;
   private spriteY: number = DIRT.y;
 
-  crop: ItemType | undefined = undefined;
+  crop: PlantableType | undefined = undefined;
 
   cropStage: CropStage;
 
@@ -81,6 +90,27 @@ export class DirtObject extends SceneObject implements Interactable {
       this.crop = config.growing.itemType;
     }
   }
+  
+  onNewDay(): void {
+    if(!this.isWatered){
+      return;
+    }
+    
+    this.isWatered = false;
+
+    if(this.isEmpty){
+      return;
+    }
+
+    this.watered++;
+
+    if(this.watered < CROP_TO_GROWTH_DURATION[this.crop]){
+      return;
+    }
+
+    // TODO: grown
+    MessageUtils.showMessage(this.scene, 'Grown');
+  };
 
   get inventory(): Inventory {
     return this.scene.globals.inventory;
@@ -283,7 +313,7 @@ export class DirtObject extends SceneObject implements Interactable {
     }
 
     // item cannot be planted
-    if (!PLANTABLE.includes(item.type)) {
+    if(!isPlantableType(item.type)){
       return;
     }
 
