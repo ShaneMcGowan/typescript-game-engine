@@ -29,7 +29,7 @@ export function useFurnitureItem(scene: SCENE_GAME, type: ItemTypeFurnitureItem)
   let object;
   switch(type){
     case ItemType.FurnitureBed:
-      object = new FurnitureBedObject(scene, {});
+      object = new FurnitureBedObject(scene, { canSave: true, });
       break;
     case ItemType.FurnitureTable:
       object = new FurnitureTableObject(scene, {});

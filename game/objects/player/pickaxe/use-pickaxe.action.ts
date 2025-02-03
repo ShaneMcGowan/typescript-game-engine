@@ -9,6 +9,8 @@ import { useToolOnChest } from "../tool/use-tool-on-chest.action";
 import { usePickaxeOnChicken } from "./use-pickaxe-on-chicken.action";
 import { usePickaxeOnRock } from "./use-pickaxe-on-rock.action";
 import { ItemType } from "@game/models/inventory.model";
+import { DirtObject } from "@game/objects/dirt.object";
+import { usePickaxeOnDirt } from "./use-pickaxe-on-dirt.action";
 
 export function usePickaxe(scene: SCENE_GAME, player: PlayerObject, target?: SceneObject): void {
   switch(true){
@@ -20,6 +22,9 @@ export function usePickaxe(scene: SCENE_GAME, player: PlayerObject, target?: Sce
       return;
     case target instanceof ChestObject:
       useToolOnChest(scene, player, target, ItemType.Pickaxe);
+      return;
+    case target instanceof DirtObject:
+      usePickaxeOnDirt(scene, player, target);
       return;
   }
 

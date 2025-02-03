@@ -16,6 +16,7 @@ import { ItemSpawnAreaObject } from '@game/objects/areas/item-spawn-area.object'
 import { ItemType } from '@game/models/inventory.model';
 import { HouseObject } from '@game/objects/house.object';
 import { Warps } from '@game/constants/warp.constants';
+import { WaterAreaObject } from '@game/objects/areas/water-area.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -26,7 +27,7 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
   constructor(protected scene: SCENE_GAME) {
     super(scene);
 
-    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 77, y: 19, });
+    this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 83, y: 4, });
 
     this.scene.addObject(this.player);
 
@@ -34,25 +35,46 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
 
     // areas
     // areas - farmable
-    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 65, y: 3, width: 2, height: 15 }));
-    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 68, y: 1, width: 27, height: 13 }));
-    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 67, y: 16, width: 17, height: 1 }));
-    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 87, y: 16, width: 4, height: 1 }));
-    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 67, y: 17, width: 23, height: 1 }));
-    // areas - 
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 68, y: 2, width: 2, height: 12 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 70, y: 6, width: 3, height: 3 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 70, y: 12, width: 3, height: 2 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 73, y: 6, width: 3, height: 8 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 76, y: 4, width: 5, height: 10 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 81, y: 4, width: 1, height: 10 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 82, y: 5, width: 3, height: 8 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 85, y: 4, width: 5, height: 10 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 90, y: 3, width: 3, height: 11 }));
+    this.scene.addObject(new FarmableAreaObject(this.scene, { x: 93, y: 1, width: 1, height: 13 }));
+
+
+
+
+
+
+
+
+
+    // this.scene.addObject(new FarmableAreaObject(this.scene, { x: 65, y: 3, width: 2, height: 15 }));
+    // this.scene.addObject(new FarmableAreaObject(this.scene, { x: 68, y: 1, width: 27, height: 13 }));
+    // this.scene.addObject(new FarmableAreaObject(this.scene, { x: 67, y: 16, width: 17, height: 1 }));
+    // this.scene.addObject(new FarmableAreaObject(this.scene, { x: 87, y: 16, width: 4, height: 1 }));
+    // this.scene.addObject(new FarmableAreaObject(this.scene, { x: 67, y: 17, width: 23, height: 1 }));
+    // areas - water
     this.scene.addObject(new ItemSpawnAreaObject(this.scene, { x: 63, y: 19, width: 27, height: 1, spawnableObjects: [ItemType.Log] }));
     this.scene.addObject(new ItemSpawnAreaObject(this.scene, { x: 63, y: 20, width: 26, height: 1, spawnableObjects: [ItemType.Log] }));
     this.scene.addObject(new ItemSpawnAreaObject(this.scene, { x: 63, y: 21, width: 22, height: 1, spawnableObjects: [ItemType.Log] }));
     this.scene.addObject(new ItemSpawnAreaObject(this.scene, { x: 63, y: 22, width: 19, height: 1, spawnableObjects: [ItemType.Log] }));
+    // areas - water
+    this.scene.addObject(new WaterAreaObject(this.scene, { x: 70, y: 9, width: 3, height: 3, }));
 
     // collision
     // horizontal
     this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 1, width: 3 }));
-    this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 14, width: 18, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 14, width: 15, height: 2 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 70, y: 5, width: 6 }))
     this.scene.addObject(new CollisionObject(this.scene, { x: 76, y: 3, width: 5 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 81, y: 1, width: 5 }));
-    this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 14, width: 15, height: 2 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 85, y: 14, width: 15, height: 2 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 86, y: 3, width: 4 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 90, y: 2, width: 3 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 93, y: 0, width: 2 }));
@@ -73,6 +95,7 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.scene.addObject(new CollisionObject(this.scene, { x: 95, y: 1, height: 2 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 67, y: 2, height: 12 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 70, y: 2, height: 3 }));
+    this.scene.addObject(new CollisionObject(this.scene, { x: 70, y: 9, height: 3, width: 3, }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 75, y: 3, height: 3 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 90, y: 17, height: 3 }));
     this.scene.addObject(new CollisionObject(this.scene, { x: 94, y: 3, height: 8 }));

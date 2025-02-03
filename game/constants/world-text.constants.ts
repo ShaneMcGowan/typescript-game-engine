@@ -1,7 +1,6 @@
-import { Inventory, ItemType, ItemTypeKey } from "@game/models/inventory.model";
+import { Inventory, ItemType } from "@game/models/inventory.model";
 import { QuestName, QuestText } from "@game/models/quest.model";
 import { NpcDetails } from "@game/objects/npc.object";
-import { Portrait } from "@game/objects/textbox.object";
 
 interface Npc {
   details: NpcDetails,

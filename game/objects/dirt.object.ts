@@ -2,7 +2,6 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { type Interactable } from '@game/models/components/interactable.model';
-import { TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
 import { Inventory, ItemType } from '@game/models/inventory.model';
 import { MessageUtils } from '@game/utils/message.utils';
@@ -60,13 +59,12 @@ export class DirtObject extends SceneObject implements Interactable {
   private spriteX: number = DIRT.x;
   private spriteY: number = DIRT.y;
 
-  counterDry: number = 0;
-  counterGrow: number = 0;
-  counterSpoil: number = 0;
-
-  currentlyGrowing: ItemType | undefined = undefined;
+  crop: ItemType | undefined = undefined;
 
   cropStage: CropStage;
+
+  isWatered: boolean = false;
+  watered: number = 0;
 
 
   constructor(protected scene: SCENE_GAME, config: Config) {
@@ -80,7 +78,7 @@ export class DirtObject extends SceneObject implements Interactable {
       // preconfigure growing
       this.collision.enabled = true;
       this.cropStage = config.growing.stage;
-      this.currentlyGrowing = config.growing.itemType;
+      this.crop = config.growing.itemType;
     }
   }
 
@@ -89,7 +87,7 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   get produces(): ItemType | undefined {
-    switch (this.currentlyGrowing) {
+    switch (this.crop) {
       case ItemType.TomatoSeeds:
         return ItemType.Tomato;
       case ItemType.WheatSeeds:
@@ -179,30 +177,29 @@ export class DirtObject extends SceneObject implements Interactable {
     this.destroy();
   }
 
-  private get isEmpty(): boolean {
-    return this.currentlyGrowing === undefined;
+  get isEmpty(): boolean {
+    return this.crop === undefined;
   }
 
   onUpdate(delta: number): void {
-    if (this.cropStage === CropStage.Empty || this.cropStage === CropStage.Watered) {
-      this.counterDry += delta;
-    } else if (this.cropStage === CropStage.Growing) {
-      this.counterGrow += delta;
-    } else if (this.cropStage === CropStage.FullyGrown) {
-      this.counterSpoil += delta;
-    }
-
-    if (this.isEmpty && this.counterDry > DRY_COUNTER_MAX) {
-      // dirt dried out
-      this.destroy();
-      return;
-    } else if (this.cropStage === CropStage.Growing && this.counterGrow > GROW_COUNTER_MAX) {
-      // plant fully grown
-      this.cropStage = CropStage.FullyGrown;
-    } else if (this.cropStage === CropStage.FullyGrown && this.counterSpoil > SPOIL_COUNTER_MAX) {
-      // plant spoiled
-      this.cropStage = CropStage.Spoiled;
-    }
+    // if (this.cropStage === CropStage.Empty || this.cropStage === CropStage.Watered) {
+    //   this.counterDry += delta;
+    // } else if (this.cropStage === CropStage.Growing) {
+    //   this.counterGrow += delta;
+    // } else if (this.cropStage === CropStage.FullyGrown) {
+    //   this.counterSpoil += delta;
+    // }
+    // if (this.isEmpty && this.counterDry > DRY_COUNTER_MAX) {
+    //   // dirt dried out
+    //   this.destroy();
+    //   return;
+    // } else if (this.cropStage === CropStage.Growing && this.counterGrow > GROW_COUNTER_MAX) {
+    //   // plant fully grown
+    //   this.cropStage = CropStage.FullyGrown;
+    // } else if (this.cropStage === CropStage.FullyGrown && this.counterSpoil > SPOIL_COUNTER_MAX) {
+    //   // plant spoiled
+    //   this.cropStage = CropStage.Spoiled;
+    // }
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -211,7 +208,8 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   private renderDirt(context: CanvasRenderingContext2D): void {
-    let tileset = this.cropStage === CropStage.Empty ? TILESET_SOIL : TILESET_SOIL_DARKER;
+    const tileset = this.isWatered ? TILESET_SOIL_DARKER : TILESET_SOIL;
+
     RenderUtils.renderSprite(
       context,
       Assets.images[tileset],
@@ -221,12 +219,9 @@ export class DirtObject extends SceneObject implements Interactable {
       this.transform.position.world.y,
       1,
       1,
-      {
-        centered: true,
-      }
     );
 
-    if (this.cropStage === CropStage.Empty) {
+    if (!this.isWatered) {
       return;
     }
 
@@ -245,16 +240,16 @@ export class DirtObject extends SceneObject implements Interactable {
   }
 
   private renderCrop(context: CanvasRenderingContext2D): void {
-    if (this.cropStage === CropStage.Empty || this.cropStage === CropStage.Watered) {
+    if(this.crop === undefined){
       return;
     }
 
     // TODO: this is a messy check, whole system could be greatly improved
-    if (this.currentlyGrowing !== ItemType.TomatoSeeds && this.currentlyGrowing !== ItemType.WheatSeeds) {
+    if (this.crop !== ItemType.TomatoSeeds && this.crop !== ItemType.WheatSeeds) {
       return;
     }
 
-    let sprite = TYPE_TO_SPRITE_MAP[this.currentlyGrowing][this.cropStage];
+    const sprite = TYPE_TO_SPRITE_MAP[this.crop][CropStage.Growing];
     if (sprite === undefined) {
       return;
     }
@@ -268,22 +263,19 @@ export class DirtObject extends SceneObject implements Interactable {
       this.transform.position.world.y,
       1,
       1,
-      {
-        centered: true,
-      }
     );
   }
 
   actionWater(): void {
-    if (this.cropStage !== CropStage.Empty) {
+    if(this.isWatered){
       return;
     }
 
-    this.counterDry = 0;
-    this.cropStage = CropStage.Watered;
+    this.isWatered = true;
+    this.watered += 1;
   }
 
-  actionPlant(): void {
+  actionPlantHeldItem(): void {
     let item = this.scene.selectedInventoryItem;
     // no item selected
     if (item === undefined) {
@@ -295,14 +287,7 @@ export class DirtObject extends SceneObject implements Interactable {
       return;
     }
 
-    // only plant on watered soil
-    if (this.cropStage !== CropStage.Watered) {
-      return;
-    }
-
-    this.collision.enabled = true;
-    this.currentlyGrowing = item.type;
-    this.cropStage = CropStage.Growing;
+    this.crop = item.type;
 
     this.inventory.removeFromInventoryByIndex(this.scene.globals.hotbar_selected_index, 1);
   }
