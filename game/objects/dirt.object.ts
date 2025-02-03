@@ -100,7 +100,7 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
       return;
     }
 
-    MessageUtils.showMessage(this.scene, 'Grown');
+    // TODO: new season check
   };
 
   get inventory(): Inventory {
@@ -201,8 +201,7 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
 
     this.inventory.addToInventory(this.produces);
 
-    this.crop = undefined;
-    this.watered = 0;
+    this.clearCrop();
   }
 
   get isEmpty(): boolean {
@@ -300,6 +299,11 @@ export class DirtObject extends SceneObject implements Interactable, OnNewDay {
     this.crop = item.type;
 
     this.inventory.removeFromInventoryByIndex(this.scene.globals.hotbar_selected_index, 1);
+  }
+
+  private clearCrop(): void {
+    this.crop = undefined;
+    this.watered = 0;
   }
 
 }
