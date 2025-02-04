@@ -18,6 +18,9 @@ import { SCENE_GAME_MAP_TEST_PATHING_2 } from './maps/test/pathing/map.2';
 import { SCENE_GAME_MAP_TEST_PATHING_3 } from './maps/test/pathing/map.3';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
 
+export const MINUTES_PER_DAY: number = 15;
+export const DAY_LENGTH_IN_SECONDS: number = 60 * MINUTES_PER_DAY;
+export const DAY_LENGTH_IN_MILLISECONDS: number = 1000 * DAY_LENGTH_IN_SECONDS;
 export const DAYS_PER_WEEK: number = 7;
 export const DAYS_PER_SEASON: number = 28;
 export const SEASONS_PER_YEAR: number = 4;

@@ -12,6 +12,7 @@ import { FurnitureSalesmanObject } from '@game/objects/npcs/town/furniture-sales
 import { FarmingSalesmanObject } from '@game/objects/npcs/town/farming-salesman.npc';
 import { ToolSalesmanObject } from '@game/objects/npcs/town/tool-salesman.npc';
 import { StoryTownRockslideObject } from '@game/objects/story/town/rockslide/story';
+import { LightingObject } from '@game/objects/lights/lighting.object';
 
 export class SCENE_GAME_MAP_TOWN extends SceneMap {
 
@@ -25,6 +26,8 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
     this.player = new PlayerObject(scene, { playerIndex: 0, x: 6, y: 20, });
     
     this.scene.addObject(this.player);
+
+    this.scene.addObject(new LightingObject(scene, { enabled: true, timeBased: true }));
 
     // npcs
     this.scene.addObject(new FurnitureSalesmanObject(scene, { x: 8, y: 22 }));

@@ -49,7 +49,7 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     this.scene.addObject(new FurnitureFloorAreaObject(scene, { x: 12, y: 7, width: 8, height: 5 }));
 
     // lighting
-    this.scene.addObject(new LightingObject(scene, { x: 0, y: 0, }));
+    this.scene.addObject(new LightingObject(scene, { enabled: true, timeBased: false }));
 
     // warp - door
     this.scene.addObject(new WarpObject(scene, {

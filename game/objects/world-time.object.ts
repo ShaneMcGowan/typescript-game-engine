@@ -2,10 +2,9 @@ import { CanvasConstants } from "@core/constants/canvas.constants";
 import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
 import { RenderUtils } from "@core/utils/render.utils";
 import { SCENE_GAME_MAP_HOUSE } from "@game/scenes/game/maps/house/map";
-import { SCENE_GAME } from "@game/scenes/game/scene";
+import { DAY_LENGTH_IN_SECONDS, SCENE_GAME } from "@game/scenes/game/scene";
 import { MessageUtils } from "@game/utils/message.utils";
 
-const DAY_LENGTH: number = 60 * 20; // 20 minutes
 interface Config extends SceneObjectBaseConfig {}
 
 export class WorldTimeObject extends SceneObject  {
@@ -24,7 +23,7 @@ export class WorldTimeObject extends SceneObject  {
   onUpdate(delta: number): void {
     this.scene.globals.time += delta;
 
-    if(this.scene.globals.time <= DAY_LENGTH){
+    if(this.scene.globals.time <= DAY_LENGTH_IN_SECONDS){
       this.changing = false;
       return;
     }
@@ -44,7 +43,6 @@ export class WorldTimeObject extends SceneObject  {
         this.scene.newDay();
       }
     );
-
   }
 
   onRender(context: CanvasRenderingContext2D): void {

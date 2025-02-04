@@ -28,6 +28,7 @@ import { StoryWorldHillGateObject } from '@game/objects/story/world/hill-gate/st
 import { StoryWorldHillPathToTownBlockadeObject } from '@game/objects/story/world/hill-path-to-town-blockade/story';
 import { StoryWorldHillPathToFarmBlockadeObject } from '@game/objects/story/world/hill-path-to-farm-blockade/story';
 import { StoryWorldFarmersHouseLockedObject } from '@game/objects/story/world/farmers-house/story';
+import { LightingObject } from '@game/objects/lights/lighting.object';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -43,6 +44,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // instanciate objects
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 17, y: 13, });
     this.scene.addObject(this.player);
+
+    this.scene.addObject(new LightingObject(scene, { enabled: true, timeBased: true }));
 
     // npcs
 

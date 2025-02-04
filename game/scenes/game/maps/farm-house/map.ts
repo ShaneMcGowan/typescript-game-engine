@@ -14,7 +14,6 @@ import { StoryFarmHouseBedroomDoorLockedObject } from '@game/objects/story/farm-
 import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { ItemType } from '@game/models/inventory.model';
 import { FarmersSonObject } from '@game/objects/npcs/farm-house/farmers-son.npc';
-import { PromptObject } from '@game/objects/prompt/prompt.object';
 
 export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 

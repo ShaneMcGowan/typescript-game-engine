@@ -18,6 +18,7 @@ import { Warps } from '@game/constants/warp.constants';
 import { WaterAreaObject } from '@game/objects/areas/water-area.object';
 import { SCENE_GAME_MAP_HOUSE } from '../house/map';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
+import { LightingObject } from '@game/objects/lights/lighting.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -33,6 +34,9 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     this.player = new PlayerObject(this.scene, { playerIndex: 0, x: 83, y: 4, });
 
     this.scene.addObject(this.player);
+
+    // lighting
+    this.scene.addObject(new LightingObject(scene, { enabled: true, timeBased: true }));
 
     // areas
     // areas - farmable

@@ -23,7 +23,13 @@ export abstract class MathUtils {
     return values[index];
   }
 
+  /**
+   * any value greater than 256 will be wrapped around to 0
+   * @param value
+   * @returns
+   */
   static numberToHexString(value: number): string {
+    value = value % 256;
     return value.toString(16);
   }
 
