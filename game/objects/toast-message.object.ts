@@ -15,7 +15,7 @@ interface Config extends SceneObjectBaseConfig {
 export class ToastMessageObject extends SceneObject {
   
   width: number = CanvasConstants.CANVAS_TILE_WIDTH / 3;
-  height: number = 3;
+  height: number = 2;
 
   moveInComplete: boolean = false;
   moveOutComplete: boolean = false;

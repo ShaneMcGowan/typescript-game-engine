@@ -160,7 +160,7 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
-    MessageUtils.showToast(this.scene, `Farm`);
+    MessageUtils.showToast(this.scene, `The Farm`);
 
     Warps.onMapEnter(this.scene, this.player);
 
