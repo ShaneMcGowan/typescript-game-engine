@@ -30,7 +30,7 @@ export class MenuButtonSaveGameObject extends ButtonObject {
 
     Store.set<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests, this.scene.globals.quests);
     Store.set<Record<SceneFlag, boolean>>(SaveFileKeys.Flags, this.scene.globals.flags);
-    Store.set<Record<StoryFlag, boolean>>(SaveFileKeys.StoryFlags, this.scene.globals.story_flags);
+    Store.set<Record<StoryFlag, boolean | number>>(SaveFileKeys.StoryFlags, this.scene.globals.story_flags);
     Store.set<ItemList>(SaveFileKeys.Inventory, this.scene.globals.inventory.items);
 
 

@@ -79,6 +79,12 @@ export enum StoryFlag {
   world_hill_path_to_farm_blockade_completed = 'world_hill_path_to_farm_blockade_completed',
   world_farmers_house_locked_started = 'world_farmers_house_locked_started',
   world_farmers_house_locked_completed = 'world_farmers_house_locked_completed',
+  world_collect_logs_started = 'world_collect_logs_started',
+  world_collect_logs_completed = 'world_collect_logs_completed',
+  world_collect_logs_counter = 'world_collect_logs_counter',
+  world_collect_rocks_started = 'world_collect_rocks_started',
+  world_collect_rocks_completed = 'world_collect_rocks_completed',
+  world_collect_rocks_counter = 'world_collect_rocks_counter',
   // farm house
   farm_house_bedroom_door_locked_started = 'farm_house_bedroom_door_locked_started',
   farm_house_bedroom_door_locked_completed = 'farm_house_bedroom_door_locked_completed',
@@ -101,7 +107,7 @@ interface Globals extends SceneGlobalsBaseConfig {
     position: Coordinate | null,
     target: Coordinate | null,
   },
-  story_flags: Record<StoryFlag, boolean>;
+  story_flags: Record<StoryFlag, boolean | number>;
   time: number;
   day: number;
 }
@@ -192,9 +198,15 @@ export class SCENE_GAME extends Scene {
       [StoryFlag.world_hill_path_to_farm_blockade_completed]: false,
       [StoryFlag.world_farmers_house_locked_started]: true,
       [StoryFlag.world_farmers_house_locked_completed]: false,
+      [StoryFlag.world_collect_logs_started]: false,
+      [StoryFlag.world_collect_logs_completed]: false,
+      [StoryFlag.world_collect_logs_counter]: 0,
+      [StoryFlag.world_collect_rocks_started]: false,
+      [StoryFlag.world_collect_rocks_completed]: false,
+      [StoryFlag.world_collect_rocks_counter]: 0,
       // farm house
       [StoryFlag.farm_house_bedroom_door_locked_started]: true,
-      [StoryFlag.farm_house_bedroom_door_locked_completed]: false
+      [StoryFlag.farm_house_bedroom_door_locked_completed]: false,
     },
     time: 0,
     day: 0,
@@ -268,15 +280,15 @@ export class SCENE_GAME extends Scene {
     return this.flags[flag];
   }
 
-  get storyFlags(): Record<StoryFlag, boolean> {
+  get storyFlags(): Record<StoryFlag, boolean | number> {
     return this.globals.story_flags;
   }
 
-  setStoryFlag(flag: StoryFlag, value: boolean): void {
+  setStoryFlag(flag: StoryFlag, value: boolean | number): void {
     this.storyFlags[flag] = value;
   }
 
-  getStoryFlag(flag: StoryFlag): boolean {
+  getStoryFlag(flag: StoryFlag): boolean | number {
     return this.storyFlags[flag];
   }
 

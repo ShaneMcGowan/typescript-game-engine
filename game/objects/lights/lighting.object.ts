@@ -201,6 +201,10 @@ export class LightingObject extends SceneObject {
     })
   }
 
+  debuggerRenderBackground(context: CanvasRenderingContext2D): void {
+    // this covers the whole screen so we want to overwrite this with a no op
+  }
+
 }
 
 // from https://stackoverflow.com/a/10401701

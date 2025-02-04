@@ -1,10 +1,9 @@
-import { QuestStatus, SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
+import { SCENE_GAME, } from "@game/scenes/game/scene";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { ItemType } from "@game/models/inventory.model";
 import { NpcObject } from "@game/objects/npc.object";
 import { Quest, QuestName, QuestText } from "@game/models/quest.model";
 import { ItemObject } from "@game/objects/item.object";
-import { LockObject } from "../../../lock.object";
 
 const QUEST_NAME: QuestName = QuestName.collect_berries;
 

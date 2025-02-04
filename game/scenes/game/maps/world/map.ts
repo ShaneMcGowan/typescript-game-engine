@@ -1,5 +1,4 @@
 import { SceneMap } from '@core/model/scene-map';
-import { SpriteObject } from '@core/objects/sprite.object';
 import { ChickenObject } from '@game/objects/chicken.object';
 import { PlayerObject } from '@game/objects/player.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
@@ -9,15 +8,11 @@ import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
 import { ObjectTrackingCameraObject } from '@core/objects/renderer/object-tracking-camera.object';
 import { WarpObject } from '@game/objects/warp.object';
-import { TilesetHouse } from '@game/constants/tilesets/house.tileset';
 import { SCENE_GAME_MAP_FARM_HOUSE } from '../farm-house/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
-import { FarmersSonObject } from '@game/objects/npcs/world/farmers-son.npc';
 import { RockObject } from '@game/objects/rock.object';
 import { TreeObject } from '@game/objects/tree.object';
-import { QuestCollectLogs } from '@game/objects/npcs/farm-house/farmer/collect-logs.quest';
-import { QuestCollectRocks } from '@game/objects/npcs/farm-house/farmer/collect-rocks.quest';
 import { QuestBreakRocks } from '@game/objects/npcs/farm-house/farmer/break-rocks.quest';
 import { QuestCollectBerries } from '@game/objects/npcs/farm-house/farmer/collect-berries.quest';
 import { Scene } from '@core/model/scene';
@@ -29,6 +24,8 @@ import { StoryWorldHillPathToTownBlockadeObject } from '@game/objects/story/worl
 import { StoryWorldHillPathToFarmBlockadeObject } from '@game/objects/story/world/hill-path-to-farm-blockade/story';
 import { StoryWorldFarmersHouseLockedObject } from '@game/objects/story/world/farmers-house/story';
 import { LightingObject } from '@game/objects/lights/lighting.object';
+import { StoryWorldCollectLogsObject } from '@game/objects/story/world/collect-logs/story';
+import { StoryWorldCollectRocksObject } from '@game/objects/story/world/collect-rocks/story';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -54,6 +51,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new StoryWorldHillPathToTownBlockadeObject(scene, {x: 0, y: 0}));
     this.scene.addObject(new StoryWorldHillPathToFarmBlockadeObject(scene, {x: 0, y: 0}));
     this.scene.addObject(new StoryWorldFarmersHouseLockedObject(scene, {x: 0, y: 0}));
+    this.scene.addObject(new StoryWorldCollectLogsObject(scene, { x: 0, y: 0 }));
+    this.scene.addObject(new StoryWorldCollectRocksObject(scene, { x: 0, y: 0 }));
 
     // chickens
     this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));
@@ -140,8 +139,6 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new TreeObject(this.scene, { x: 7, y: 13, type: 'small' }));
 
     // quests
-    QuestCollectLogs.setup(this.scene);
-    QuestCollectRocks.setup(this.scene);
     QuestBreakRocks.setup(this.scene);
     QuestCollectBerries.setup(this.scene);
 

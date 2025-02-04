@@ -1,4 +1,4 @@
-import { SCENE_GAME } from "@game/scenes/game/scene";
+import { SCENE_GAME, StoryFlag } from "@game/scenes/game/scene";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { ItemType } from "@game/models/inventory.model";
 import { NpcObject } from "@game/objects/npc.object";
@@ -20,15 +20,16 @@ export class QuestCollectLogs extends Quest {
     return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_logs;
   }
 
-  check(): boolean {
-    return this.checkItem(ItemType.Log, 4);
+  onIntro(): void {
+    this.scene.setStoryFlag(StoryFlag.world_collect_logs_started, true);
   }
 
-  static setup(scene: SCENE_GAME): void {
-    scene.addObject(new ItemObject(scene, { x: 7, y: 19, type: ItemType.Log }));
-    scene.addObject(new ItemObject(scene, { x: 10, y: 21, type: ItemType.Log }));
-    scene.addObject(new ItemObject(scene, { x: 14, y: 20, type: ItemType.Log }));
-    scene.addObject(new ItemObject(scene, { x: 18, y: 22, type: ItemType.Log }));
+  onSuccess(): void {
+    this.scene.setStoryFlag(StoryFlag.world_collect_logs_completed, true);
+  }
+
+  check(): boolean {
+    return this.checkItem(ItemType.Log, 4);
   }
 
 }

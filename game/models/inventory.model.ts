@@ -35,6 +35,7 @@ export enum ItemType {
   Rock = 'Rock',
   Log = 'Log',
   Berry = 'Berry',
+  Sprinkler = 'Sprinkler',
 
 }
 
@@ -92,7 +93,8 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.FurnitureRugLarge]: ItemRadius.Anywhere,
   [ItemType.FurnitureTable]: ItemRadius.Anywhere,
   [ItemType.FurnitureLamp]: ItemRadius.Anywhere,
-  [ItemType.RoomKeyFarmersSonBedroom]: ItemRadius.None
+  [ItemType.RoomKeyFarmersSonBedroom]: ItemRadius.None,
+  [ItemType.Sprinkler]: ItemRadius.Player
 }
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
@@ -119,6 +121,7 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.FurnitureLamp]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Lamp.Blue.Default.x, y: TilesetFurniture.Lamp.Blue.Default.y },
   [ItemType.HouseKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
   [ItemType.RoomKeyFarmersSonBedroom]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
+  [ItemType.Sprinkler]: { tileset: 'tileset_chicken', x: 0, y: 0, },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
@@ -144,7 +147,8 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.FurnitureRugLarge]: 1,
   [ItemType.FurnitureTable]: 1,
   [ItemType.FurnitureLamp]: 1,
-  [ItemType.RoomKeyFarmersSonBedroom]: 1
+  [ItemType.RoomKeyFarmersSonBedroom]: 1,
+  [ItemType.Sprinkler]: 1
 };
 
 export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
@@ -176,6 +180,7 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
+  [ItemType.Sprinkler]: 1,
 }
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
@@ -206,6 +211,7 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
+  [ItemType.Sprinkler]: 1,
 }
 
 export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
@@ -234,6 +240,7 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.FurnitureRugLarge]: "Large Rug",
   [ItemType.FurnitureTable]: "Table",
   [ItemType.FurnitureLamp]: "Lamp",
+  [ItemType.Sprinkler]: "Sprinkler",
 }
 
 export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
@@ -262,6 +269,7 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.FurnitureRugLarge]: "Large Rugs",
   [ItemType.FurnitureTable]: "Tables",
   [ItemType.FurnitureLamp]: "Lamps",
+  [ItemType.Sprinkler]: "Sprinkler",
 }
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
@@ -288,8 +296,9 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.FurnitureBed]: "Somewhere for me to sleep.",
   [ItemType.FurniturePainting]: "A lovely painting to hang on the wall.",
   [ItemType.FurnitureRugLarge]: "A lovely rug to place on the floor.",
-  [ItemType.FurnitureTable]: "La mesa",
-  [ItemType.FurnitureLamp]: "Lamps",
+  [ItemType.FurnitureTable]: "La mesa.",
+  [ItemType.FurnitureLamp]: "Lamps.",
+  [ItemType.Sprinkler]: "Automagically waters surrounding crops.",
 }
 
 export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
@@ -318,6 +327,7 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: true,
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
+  [ItemType.Sprinkler]: true,
 }
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
@@ -346,6 +356,7 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: true,
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
+  [ItemType.Sprinkler]: true,
 }
 
 export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
@@ -374,6 +385,7 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: true,
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
+  [ItemType.Sprinkler]: true,
 }
 
 export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
@@ -402,6 +414,7 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: false,
   [ItemType.FurnitureTable]: false,
   [ItemType.FurnitureLamp]: true,
+  [ItemType.Sprinkler]: false,
 }
 
 export interface ItemSprite {

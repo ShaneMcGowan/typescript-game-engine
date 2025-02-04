@@ -37,6 +37,7 @@ import { use } from '@game/objects/player/use.action';
 import { IconsObject } from './icons/icons.object';
 import { Direction } from '@game/models/direction.model';
 import { WarpObject } from './warp.object';
+import { useSprinkler } from './player/use-sprinkler.action';
 
 const TILE_SET = 'tileset_player';
 
@@ -559,6 +560,9 @@ export class PlayerObject extends SceneObject {
         return;
       case ItemType.Berry:
         useBerry(this.scene, this, object);
+        return;
+      case ItemType.Sprinkler:
+        useSprinkler(this.scene, this, object);
         return;
       case ItemType.GateKey:
       case ItemType.HouseKey:
