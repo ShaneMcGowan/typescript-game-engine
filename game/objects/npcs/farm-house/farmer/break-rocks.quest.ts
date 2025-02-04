@@ -25,7 +25,7 @@ export class QuestBreakRocks extends Quest {
   }
 
   check(): boolean {
-    return this.checkItem(ItemType.Rock, 8);
+    return this.checkAndRemoveItem(ItemType.Rock, 8);
   }
 
   static setup(scene: SCENE_GAME): void {

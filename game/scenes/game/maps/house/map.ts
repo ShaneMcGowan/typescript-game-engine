@@ -71,6 +71,8 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
+    MessageUtils.showToast(this.scene, `My Home`);
+
     // fade in
     const transitionLength = 2;
     this.scene.addObject(new TransitionObject(this.scene, {

@@ -28,7 +28,7 @@ export class QuestCollectRocks extends Quest {
   }
 
   check(): boolean {
-    return this.checkItem(ItemType.Rock, 4);
+    return this.checkAndRemoveItem(ItemType.Rock, 4);
   }
   
 }

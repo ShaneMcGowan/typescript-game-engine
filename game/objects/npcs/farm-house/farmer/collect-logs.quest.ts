@@ -29,7 +29,7 @@ export class QuestCollectLogs extends Quest {
   }
 
   check(): boolean {
-    return this.checkItem(ItemType.Log, 4);
+    return this.checkAndRemoveItem(ItemType.Log, 4);
   }
 
 }

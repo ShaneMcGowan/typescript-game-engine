@@ -1,4 +1,4 @@
-import { SCENE_GAME, } from "@game/scenes/game/scene";
+import { SCENE_GAME, StoryFlag, } from "@game/scenes/game/scene";
 import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
 import { ItemType } from "@game/models/inventory.model";
 import { NpcObject } from "@game/objects/npc.object";
@@ -24,33 +24,29 @@ export class QuestCollectBerries extends Quest {
 
   onIntro(): void {
     this.scene.globals.inventory.addToInventory(ItemType.GateKey);
+    this.scene.setStoryFlag(StoryFlag.world_collect_berries_started, true);
   }
 
   onSuccess(): void {
     this.scene.globals.inventory.addToInventory(ItemType.Shovel);
     this.scene.globals.inventory.addToInventory(ItemType.Berry);
+    this.scene.setStoryFlag(StoryFlag.world_collect_berries_completed, true);
   }
 
   check(): boolean {
-    return this.checkItem(ItemType.Berry, 4);
-  }
-
-  static setup(scene: SCENE_GAME): void {
-    // TODO: it would be great to not have to declare this on a per quest basis
-    // TODO: different items need to be placed based on the quest state. e.g. the watering can should only be able to be picked up once.
-    // but what happens if the player drops it, we could make it a key item then swap it out for a regular one later?
-    // but we need to prevent player picking it up, saving the game and then picking it up again.
-    // some sort of QuestStep system to track progress of quests
-
-    if (scene.globals.quests[QUEST_NAME].complete) {
-      return;
+    // watering can
+    if(!this.checkItem(ItemType.WateringCan, 1)){
+      return false;
     }
 
-    scene.addObject(new ItemObject(scene, { x: 1, y: 7, type: ItemType.Berry }));
-    scene.addObject(new ItemObject(scene, { x: 2, y: 8, type: ItemType.Berry }));
-    scene.addObject(new ItemObject(scene, { x: 17, y: 4, type: ItemType.Berry }));
-    scene.addObject(new ItemObject(scene, { x: 16, y: 5, type: ItemType.Berry }));
-    scene.addObject(new ItemObject(scene, { x: 12, y: 4, type: ItemType.WateringCan, pickupMessage: `This must be the watering can the Farmer was talking about. It looks pretty beat up but it's better than nothing.` }))
+    // berry 
+    if(!this.checkItem(ItemType.Berry, 4)){
+      return false;
+    }
+
+    this.removeItem(ItemType.Berry, 4);
+    
+    return true; 
   }
 
 }

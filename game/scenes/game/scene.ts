@@ -85,6 +85,10 @@ export enum StoryFlag {
   world_collect_rocks_started = 'world_collect_rocks_started',
   world_collect_rocks_completed = 'world_collect_rocks_completed',
   world_collect_rocks_counter = 'world_collect_rocks_counter',
+  world_collect_berries_started = 'world_collect_berries_started',
+  world_collect_berries_completed = 'world_collect_berries_completed',
+  world_collect_berries_berry_counter = 'world_collect_berries_berry_counter',
+  world_collect_berries_watering_can = 'world_collect_berries_watering_can',
   // farm house
   farm_house_bedroom_door_locked_started = 'farm_house_bedroom_door_locked_started',
   farm_house_bedroom_door_locked_completed = 'farm_house_bedroom_door_locked_completed',
@@ -204,6 +208,10 @@ export class SCENE_GAME extends Scene {
       [StoryFlag.world_collect_rocks_started]: false,
       [StoryFlag.world_collect_rocks_completed]: false,
       [StoryFlag.world_collect_rocks_counter]: 0,
+      [StoryFlag.world_collect_berries_started]: false,
+      [StoryFlag.world_collect_berries_completed]: false,
+      [StoryFlag.world_collect_berries_berry_counter]: 0,
+      [StoryFlag.world_collect_berries_watering_can]: false,
       // farm house
       [StoryFlag.farm_house_bedroom_door_locked_started]: true,
       [StoryFlag.farm_house_bedroom_door_locked_completed]: false,
@@ -224,9 +232,21 @@ export class SCENE_GAME extends Scene {
     });
 
     if (CanvasConstants.SAVE_FILE_ID) {
-      this.globals.quests = Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests);
-      this.globals.flags = Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags);
-      this.globals.story_flags = Store.get<Record<StoryFlag, boolean>>(SaveFileKeys.StoryFlags);
+      this.globals.quests = {
+        ...this.globals.quests,
+        ...Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests)
+      };
+
+      this.globals.flags = {
+        ...this.globals.flags,
+        ...Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags)
+      };
+
+      this.globals.story_flags = {
+        ...this.globals.story_flags,
+        ...Store.get<Record<StoryFlag, boolean>>(SaveFileKeys.StoryFlags)
+      };
+      
       this.globals.inventory.items = Store.get<ItemList>(SaveFileKeys.Inventory).map(item => {
         // JSON Store doesn't have undefined, only null so it needs to be mapped
         if (item === null) {

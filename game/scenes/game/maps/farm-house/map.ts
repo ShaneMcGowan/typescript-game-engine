@@ -14,6 +14,7 @@ import { StoryFarmHouseBedroomDoorLockedObject } from '@game/objects/story/farm-
 import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { ItemType } from '@game/models/inventory.model';
 import { FarmersSonObject } from '@game/objects/npcs/farm-house/farmers-son.npc';
+import { MessageUtils } from '@game/utils/message.utils';
 
 export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
@@ -82,6 +83,8 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
   }
 
   onEnter(): void {
+    MessageUtils.showToast(this.scene, `The Farmer's House`);
+    
     // this.scene.globals.player.actionsEnabled = false;
   }
 

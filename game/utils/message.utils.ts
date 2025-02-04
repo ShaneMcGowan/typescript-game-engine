@@ -1,4 +1,6 @@
+import { Scene } from "@core/model/scene";
 import { TextboxObject } from "@game/objects/textbox.object";
+import { ToastMessageObject } from "@game/objects/toast-message.object";
 import { SCENE_GAME } from "@game/scenes/game/scene";
 
 export class MessageUtils {
@@ -25,5 +27,9 @@ export class MessageUtils {
     );
     
     scene.addObject(textbox);
+  }
+
+  static showToast(scene: Scene, text: string): void {
+    scene.addObject(new ToastMessageObject(scene, { text: text }));
   }
 }

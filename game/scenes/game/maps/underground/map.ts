@@ -8,6 +8,8 @@ import { SCENE_GAME_MAP_WORLD } from '../world/map';
 import { JsonBackgroundMap } from '@core/model/background';
 import background from './background.json';
 import { UndergroundIntroStoryControllerObject } from '@game/objects/underground/underground-intro.story';
+import { MessageUtils } from '@game/utils/message.utils';
+import { Scene } from '@core/model/scene';
 
 export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
 
@@ -44,5 +46,9 @@ export class SCENE_GAME_MAP_UNDERGROUND extends SceneMap {
 
     // exit
     this.scene.addObject(new WarpObject(scene, { player, map: SCENE_GAME_MAP_WORLD, x: 18, y: 0, }));
+  }
+
+  onEnter(scene: Scene): void {
+    MessageUtils.showToast(this.scene, `Somewhere underground...`);
   }
 }

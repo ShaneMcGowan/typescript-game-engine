@@ -26,6 +26,8 @@ import { StoryWorldFarmersHouseLockedObject } from '@game/objects/story/world/fa
 import { LightingObject } from '@game/objects/lights/lighting.object';
 import { StoryWorldCollectLogsObject } from '@game/objects/story/world/collect-logs/story';
 import { StoryWorldCollectRocksObject } from '@game/objects/story/world/collect-rocks/story';
+import { StoryWorldCollectBerriesObject } from '@game/objects/story/world/collect-berries/story';
+import { MessageUtils } from '@game/utils/message.utils';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
@@ -53,6 +55,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new StoryWorldFarmersHouseLockedObject(scene, {x: 0, y: 0}));
     this.scene.addObject(new StoryWorldCollectLogsObject(scene, { x: 0, y: 0 }));
     this.scene.addObject(new StoryWorldCollectRocksObject(scene, { x: 0, y: 0 }));
+    this.scene.addObject(new StoryWorldCollectBerriesObject(scene, { x: 0, y: 0 }));
 
     // chickens
     this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));
@@ -207,6 +210,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
+    MessageUtils.showToast(this.scene, `Town outskirts`);
+    
     Warps.onMapEnter(this.scene, this.player);
   }
 

@@ -13,6 +13,7 @@ import { FarmingSalesmanObject } from '@game/objects/npcs/town/farming-salesman.
 import { ToolSalesmanObject } from '@game/objects/npcs/town/tool-salesman.npc';
 import { StoryTownRockslideObject } from '@game/objects/story/town/rockslide/story';
 import { LightingObject } from '@game/objects/lights/lighting.object';
+import { MessageUtils } from '@game/utils/message.utils';
 
 export class SCENE_GAME_MAP_TOWN extends SceneMap {
 
@@ -28,7 +29,7 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
     this.scene.addObject(this.player);
 
     this.scene.addObject(new LightingObject(scene, { enabled: true, timeBased: true }));
-
+    
     // npcs
     this.scene.addObject(new FurnitureSalesmanObject(scene, { x: 8, y: 22 }));
     this.scene.addObject(new FarmingSalesmanObject(scene, { x: 4, y: 24 }));
@@ -109,6 +110,8 @@ export class SCENE_GAME_MAP_TOWN extends SceneMap {
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
 
     Warps.onMapEnter(scene, this.player);
+
+    MessageUtils.showToast(this.scene, `Town`);
   }
 
   onLeave(): void {

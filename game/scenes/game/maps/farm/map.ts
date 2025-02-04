@@ -19,6 +19,7 @@ import { WaterAreaObject } from '@game/objects/areas/water-area.object';
 import { SCENE_GAME_MAP_HOUSE } from '../house/map';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
 import { LightingObject } from '@game/objects/lights/lighting.object';
+import { ToastMessageObject } from '@game/objects/toast-message.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
 
@@ -158,6 +159,8 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
   onEnter(scene: Scene): void {
     // set renderer
     this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
+
+    MessageUtils.showToast(this.scene, `Farm`);
 
     Warps.onMapEnter(this.scene, this.player);
 

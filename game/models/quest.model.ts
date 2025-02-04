@@ -107,6 +107,18 @@ export abstract class Quest {
       return false;
     }
 
+    return true;
+  }
+
+  protected removeItem(item: ItemType, quantity: number): void {
+    this.scene.globals.inventory.removeItems(item, quantity);
+  }
+
+  protected checkAndRemoveItem(item: ItemType, quantity: number): boolean {
+    if (!this.scene.globals.inventory.hasItem(item, quantity)) {
+      return false;
+    }
+
     this.scene.globals.inventory.removeItems(item, quantity);
     return true;
   }

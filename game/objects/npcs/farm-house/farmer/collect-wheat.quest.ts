@@ -25,7 +25,7 @@ export class QuestCollectWheat extends Quest {
   }
 
   check(): boolean {
-    return this.checkItem(ItemType.Wheat, 9);
+    return this.checkAndRemoveItem(ItemType.Wheat, 9);
   }
   
 }

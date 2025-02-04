@@ -20,7 +20,7 @@ export class QuestPlantTree extends Quest {
   }
 
   check(): boolean {
-    return this.checkItem(ItemType.Berry, 9);
+    return this.checkAndRemoveItem(ItemType.Berry, 9);
   }
   
 }
