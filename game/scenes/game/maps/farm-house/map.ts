@@ -10,11 +10,12 @@ import { FarmerObject } from '@game/objects/npcs/farm-house/farmer.npc';
 import { FurnitureBedObject } from '@game/objects/furniture/item/furniture-bed.object';
 import { FurnitureLampObject } from '@game/objects/furniture/item/furniture-lamp.object';
 import { Warps } from '@game/constants/warp.constants';
-import { StoryFarmHouseBedroomDoorLockedObject } from '@game/objects/story/farm-house/bedroom-door-locked/story';
+import { StoryFarmHouseSonBedroomDoorLocked } from '@game/objects/story/farm-house/son-bedroom-door-locked/story';
 import { ChestObject } from '@game/objects/world-objects/chest.object';
 import { ItemType } from '@game/models/inventory.model';
 import { FarmersSonObject } from '@game/objects/npcs/farm-house/farmers-son.npc';
 import { MessageUtils } from '@game/utils/message.utils';
+import { StoryFarmHouseFarmerBedroomDoorLocked } from '@game/objects/story/farm-house/farmer-bedroom-door-locked/story';
 
 export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
   background: JsonBackgroundMap = background;
@@ -33,7 +34,8 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
     this.scene.addObject(new FarmersSonObject(this.scene, { x: 17, y: 9, }));
 
     // stories
-    this.scene.addObject(new StoryFarmHouseBedroomDoorLockedObject(scene, { }));
+    this.scene.addObject(new StoryFarmHouseSonBedroomDoorLocked(scene, { }));
+    this.scene.addObject(new StoryFarmHouseFarmerBedroomDoorLocked(scene, { }));
 
     // collision - vertical - sort by y
     this.scene.addObject(new CollisionObject(scene, { x: 8, y: 3, width: 16, }));

@@ -565,7 +565,8 @@ export class PlayerObject extends SceneObject {
         return;
       case ItemType.GateKey:
       case ItemType.HouseKey:
-      case ItemType.RoomKeyFarmersSonBedroom:
+      case ItemType.FarmersSonBedroomKey:
+      case ItemType.FarmersBedroomKey:
       case ItemType.Rock:
       case ItemType.Log:
         return;

@@ -6,11 +6,7 @@ interface Config extends LockConfig {
 
 }
 
-export class FarmHouseBedroomDoorObject extends LockObject {
-  // config
-
-  // state
-
+export class BedroomDoorObject extends LockObject {
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
     this.collision.enabled = true;
@@ -22,11 +18,11 @@ export class FarmHouseBedroomDoorObject extends LockObject {
   }
 
   get key(): ItemType {
-    return ItemType.RoomKeyFarmersSonBedroom;
+    return ItemType.FarmersSonBedroomKey;
   }
 
   get flag(): StoryFlag {
-    return StoryFlag.farm_house_bedroom_door_locked_completed;
+    return StoryFlag.farm_house_son_bedroom_door_locked_completed;
   }
 
   get messageIntro(): string {

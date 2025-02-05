@@ -22,7 +22,7 @@ export class QuestGetSomeSleep extends Quest {
   }
 
   onIntro(): void {
-    this.scene.globals.inventory.addToInventory(ItemType.RoomKeyFarmersSonBedroom);
+    this.scene.globals.inventory.addToInventory(ItemType.FarmersSonBedroomKey);
   }
 
   check(): boolean {

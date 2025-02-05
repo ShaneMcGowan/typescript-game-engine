@@ -1,5 +1,5 @@
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { SceneFlag, StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
+import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 
 export interface Config extends SceneObjectBaseConfig {
 }

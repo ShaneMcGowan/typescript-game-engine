@@ -90,8 +90,10 @@ export enum StoryFlag {
   world_collect_berries_berry_counter = 'world_collect_berries_berry_counter',
   world_collect_berries_watering_can = 'world_collect_berries_watering_can',
   // farm house
-  farm_house_bedroom_door_locked_started = 'farm_house_bedroom_door_locked_started',
-  farm_house_bedroom_door_locked_completed = 'farm_house_bedroom_door_locked_completed'
+  farm_house_son_bedroom_door_locked_started = 'farm_house_son_bedroom_door_locked_started',
+  farm_house_son_bedroom_door_locked_completed = 'farm_house_son_bedroom_door_locked_completed',
+  farm_house_farmer_bedroom_door_locked_started = 'farm_house_farmer_bedroom_door_locked_started',
+  farm_house_farmer_bedroom_door_locked_completed = 'farm_house_farmer_bedroom_door_locked_completed'
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -213,8 +215,10 @@ export class SCENE_GAME extends Scene {
       [StoryFlag.world_collect_berries_berry_counter]: 0,
       [StoryFlag.world_collect_berries_watering_can]: false,
       // farm house
-      [StoryFlag.farm_house_bedroom_door_locked_started]: true,
-      [StoryFlag.farm_house_bedroom_door_locked_completed]: false,
+      [StoryFlag.farm_house_son_bedroom_door_locked_started]: true,
+      [StoryFlag.farm_house_son_bedroom_door_locked_completed]: false,
+      [StoryFlag.farm_house_farmer_bedroom_door_locked_started]: true,
+      [StoryFlag.farm_house_farmer_bedroom_door_locked_completed]: false,
     },
     time: 0,
     day: 0,
