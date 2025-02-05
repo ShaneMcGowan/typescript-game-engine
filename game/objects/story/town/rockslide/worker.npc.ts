@@ -1,8 +1,8 @@
-import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
-import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
-import { SpriteAnimation } from "@core/model/sprite-animation";
-import { NpcState, NpcObjectConfig, NpcObject, NpcDetails, NpcDialogue } from "@game/objects/npc.object";
-import { Direction } from "@game/models/direction.model";
+import { type SCENE_GAME, SceneFlag } from '@game/scenes/game/scene';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { SpriteAnimation } from '@core/model/sprite-animation';
+import { type NpcState, type NpcObjectConfig, NpcObject, type NpcDetails, type NpcDialogue } from '@game/objects/npc.object';
+import { Direction } from '@game/models/direction.model';
 
 const ANIMATION_DEFAULT: SpriteAnimation = new SpriteAnimation('tileset_player', []);
 
@@ -23,12 +23,11 @@ const ANIMATION_MINE: Record<Direction, SpriteAnimation> = {
     { spriteX: 0, spriteY: 9, spriteWidth: 3, spriteHeight: 3, duration: 0.4, },
     { spriteX: 3, spriteY: 9, spriteWidth: 3, spriteHeight: 3, duration: 0.4, }
   ]),
-}
+};
 export interface Config extends NpcObjectConfig {
 }
 
 export class WorkerObject extends NpcObject {
-
   constructor(
     protected scene: SCENE_GAME,
     protected config: Config
@@ -48,12 +47,10 @@ export class WorkerObject extends NpcObject {
     return {
       idle: ANIMATION_MINE[this.direction],
       moving: ANIMATION_DEFAULT,
-    }
+    };
   }
 
   get introFlag(): SceneFlag {
     return SceneFlag.intro_tool_salesman;
   }
-
 }
-

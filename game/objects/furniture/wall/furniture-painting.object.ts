@@ -1,16 +1,15 @@
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { FurnitureConfig } from "../furniture.object";
-import { FurnitureWallObject } from "../furniture-wall.object";
-import { MessageUtils } from "@game/utils/message.utils";
-import { Interactable } from "@game/models/components/interactable.model";
-import { ItemType, ItemTypeFurniture } from "@game/models/inventory.model";
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { type FurnitureConfig } from '../furniture.object';
+import { FurnitureWallObject } from '../furniture-wall.object';
+import { MessageUtils } from '@game/utils/message.utils';
+import { type Interactable } from '@game/models/components/interactable.model';
+import { ItemType, type ItemTypeFurniture } from '@game/models/inventory.model';
 
 interface Config extends FurnitureConfig {
 
 }
 
 export class FurniturePaintingObject extends FurnitureWallObject implements Interactable {
-  
   width = 1;
   height = 1;
 
@@ -28,8 +27,7 @@ export class FurniturePaintingObject extends FurnitureWallObject implements Inte
   interact(): void {
     MessageUtils.showMessage(
       this.scene,
-      `It's a painting of some lovely flowers.`
-    )
+      'It\'s a painting of some lovely flowers.'
+    );
   }
-
 }

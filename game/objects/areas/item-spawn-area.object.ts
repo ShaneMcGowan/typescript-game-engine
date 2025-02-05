@@ -1,8 +1,7 @@
-
 import { type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { SCENE_GAME } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { AreaObject } from './area.object';
-import { ItemType } from '@game/models/inventory.model';
+import { type ItemType } from '@game/models/inventory.model';
 import { ItemObject } from '../item.object';
 import { MathUtils } from '@core/utils/math.utils';
 
@@ -11,7 +10,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ItemSpawnAreaObject extends AreaObject {
-
   spawnTimer: number = 0;
   spawnTimerMax: number = 600; // timer per position
 
@@ -37,7 +35,7 @@ export class ItemSpawnAreaObject extends AreaObject {
   onUpdate(delta: number): void {
     this.spawnTimer += delta;
 
-    if(this.spawnTimer < this.relativeSpawnTimerMax){
+    if (this.spawnTimer < this.relativeSpawnTimerMax) {
       return;
     }
 
@@ -53,9 +51,8 @@ export class ItemSpawnAreaObject extends AreaObject {
       {
         x,
         y,
-        type: type
+        type,
       }
-    ))
+    ));
   }
-  
 }

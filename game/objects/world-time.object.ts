@@ -1,20 +1,19 @@
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
-import { SCENE_GAME_MAP_HOUSE } from "@game/scenes/game/maps/house/map";
-import { DAY_LENGTH_IN_SECONDS, SCENE_GAME } from "@game/scenes/game/scene";
-import { MessageUtils } from "@game/utils/message.utils";
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
+import { SCENE_GAME_MAP_HOUSE } from '@game/scenes/game/maps/house/map';
+import { DAY_LENGTH_IN_SECONDS, type SCENE_GAME } from '@game/scenes/game/scene';
+import { MessageUtils } from '@game/utils/message.utils';
 
 interface Config extends SceneObjectBaseConfig {}
 
-export class WorldTimeObject extends SceneObject  {
-  
+export class WorldTimeObject extends SceneObject {
   changing: boolean = false;
 
   constructor(
-    protected scene: SCENE_GAME, 
+    protected scene: SCENE_GAME,
     config: Config
-  ){
+  ) {
     super(scene, config);
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
@@ -23,12 +22,12 @@ export class WorldTimeObject extends SceneObject  {
   onUpdate(delta: number): void {
     this.scene.globals.time += delta;
 
-    if(this.scene.globals.time <= DAY_LENGTH_IN_SECONDS){
+    if (this.scene.globals.time <= DAY_LENGTH_IN_SECONDS) {
       this.changing = false;
       return;
     }
 
-    if(this.changing){
+    if (this.changing) {
       return;
     }
 
@@ -37,7 +36,7 @@ export class WorldTimeObject extends SceneObject  {
     // day over, pass out
     MessageUtils.showMessage(
       this.scene,
-      `I'm feeling very sleepy...`,
+      'I\'m feeling very sleepy...',
       () => {
         this.scene.changeMap(SCENE_GAME_MAP_HOUSE);
         this.scene.newDay();
@@ -46,7 +45,7 @@ export class WorldTimeObject extends SceneObject  {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    if(!CanvasConstants.DEBUG_MODE){
+    if (!CanvasConstants.DEBUG_MODE) {
       return;
     }
 
@@ -60,7 +59,7 @@ export class WorldTimeObject extends SceneObject  {
         baseline: 'top',
       }
     );
-    
+
     RenderUtils.renderText(
       context,
       `Time: ${this.scene.globals.time}`,
@@ -104,6 +103,5 @@ export class WorldTimeObject extends SceneObject  {
         baseline: 'top',
       }
     );
-
   }
 }

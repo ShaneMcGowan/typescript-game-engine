@@ -1,4 +1,4 @@
-import { JsonBackgroundMap } from '@core/model/background';
+import { type JsonBackgroundMap } from '@core/model/background';
 import { type Scene } from '@core/model/scene';
 import { SceneMap } from '@core/model/scene-map';
 import { MouseUtils } from '@core/utils/mouse.utils';
@@ -6,7 +6,6 @@ import { MainMenuControllerObject } from '@game/objects/main-menu/main-menu-cont
 import background from './background.json';
 
 export class SCENE_MAIN_MENU_MAP_MAIN_MENU extends SceneMap {
-
   background: JsonBackgroundMap = background;
 
   constructor(protected scene: Scene) {

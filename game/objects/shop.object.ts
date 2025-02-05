@@ -6,43 +6,41 @@ import { Input, MouseKey } from '@core/utils/input.utils';
 import { ShopItemBuyObject } from './shop/shop-item-buy.object';
 import { ShopItemSellObject } from './shop/shop-item-sell.object';
 import { MouseUtils } from '@core/utils/mouse.utils';
-import { Inventory, ItemType } from '@game/models/inventory.model';
+import { type Inventory, ItemType } from '@game/models/inventory.model';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 
 enum Controls {
-  Close = 'tab',
+  Close = 'tab'
 }
 
 interface Config extends SceneObjectBaseConfig {
   onLeave?: () => void;
 }
 
-const ITEMS_FOR_SALE: Array<{ type: ItemType, price: number }> = [
+const ITEMS_FOR_SALE: Array<{ type: ItemType; price: number; }> = [
   {
     type: ItemType.TomatoSeeds,
-    price: 5
+    price: 5,
   },
   {
     type: ItemType.WheatSeeds,
-    price: 5
+    price: 5,
   },
   {
     type: ItemType.Hoe,
-    price: 50
+    price: 50,
   },
   {
     type: ItemType.WateringCan,
-    price: 50
+    price: 50,
   },
   {
     type: ItemType.Chest,
-    price: 500
-  },
+    price: 500,
+  }
 ];
 
-
 export class ShopObject extends SceneObject {
-
   onLeave?: () => void;
 
   constructor(
@@ -131,9 +129,9 @@ export class ShopObject extends SceneObject {
       18,
       {
         colour: '#00000055',
-        type: 'tile'
+        type: 'tile',
       }
-    )
+    );
   }
 
   private renderShopBackground(context: CanvasRenderingContext2D) {
@@ -145,9 +143,9 @@ export class ShopObject extends SceneObject {
       10,
       {
         colour: 'brown',
-        type: 'tile'
+        type: 'tile',
       }
-    )
+    );
   }
 
   private renderShopTitle(context: CanvasRenderingContext2D) {
@@ -159,15 +157,15 @@ export class ShopObject extends SceneObject {
       1.5,
       {
         colour: 'goldenrod',
-        type: 'tile'
+        type: 'tile',
       }
     );
 
     RenderUtils.renderText(
       context,
-      `Shop (buy)`,
+      'Shop (buy)',
       6,
-      1.25,
+      1.25
     );
   }
 
@@ -180,9 +178,9 @@ export class ShopObject extends SceneObject {
       11.75,
       {
         colour: 'brown',
-        type: 'tile'
+        type: 'tile',
       }
-    )
+    );
   }
 
   private renderInventoryTitle(context: CanvasRenderingContext2D) {
@@ -194,15 +192,15 @@ export class ShopObject extends SceneObject {
       1.5,
       {
         colour: 'goldenrod',
-        type: 'tile'
+        type: 'tile',
       }
     );
 
     RenderUtils.renderText(
       context,
-      `Inventory (sell)`,
+      'Inventory (sell)',
       21,
-      1.25,
+      1.25
     );
   }
 
@@ -215,7 +213,7 @@ export class ShopObject extends SceneObject {
       1.5,
       {
         colour: 'goldenrod',
-        type: 'tile'
+        type: 'tile',
       }
     );
 
@@ -223,7 +221,7 @@ export class ShopObject extends SceneObject {
       context,
       `Gold: ${this.scene.globals.gold}`,
       27,
-      13,
+      13
     );
   }
 
@@ -236,15 +234,15 @@ export class ShopObject extends SceneObject {
       1.5,
       {
         colour: 'grey',
-        type: 'tile'
+        type: 'tile',
       }
     );
 
     RenderUtils.renderText(
       context,
-      `Leave`,
+      'Leave',
       22.5,
-      13,
+      13
     );
   }
 
@@ -272,7 +270,6 @@ export class ShopObject extends SceneObject {
     const totalRows = 4;
     for (let col = 0; col < columnsPerRow; col++) {
       for (let row = 0; row < totalRows; row++) {
-
         const index = col + (row * columnsPerRow) + hotbarOffset;
 
         const item = this.inventory.items[index];
@@ -285,11 +282,10 @@ export class ShopObject extends SceneObject {
           y: this.transform.position.world.y + 3 + (row * 2.5),
           type: item.type,
           count: item.currentStackSize,
-          index: index,
+          index,
         });
         this.addChild(object);
       }
     }
   }
-
 }

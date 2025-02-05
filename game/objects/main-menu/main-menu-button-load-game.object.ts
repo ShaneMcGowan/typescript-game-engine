@@ -9,7 +9,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class MainMenuButtonLoadGameObject extends ButtonObject {
-
   width = 8;
   height = 2;
 
@@ -21,20 +20,19 @@ export class MainMenuButtonLoadGameObject extends ButtonObject {
   }
 
   get label(): string {
-    return `Load Game`
+    return 'Load Game';
   }
 
   onClick(): void {
     const id = Store.get<string>(SaveFileKeys.Id);
-    if(id === null){
+    if (id === null) {
       alert('No save file');
       CanvasConstants.SAVE_FILE_ID = null;
       return;
     }
-    
+
     CanvasConstants.SAVE_FILE_ID = id;
     alert(`Loading save file: ${id}`);
     this.scene.changeScene(SCENE_GAME);
   }
-
 }

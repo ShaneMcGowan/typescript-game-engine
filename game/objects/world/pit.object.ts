@@ -5,7 +5,7 @@ import { TransitionObject } from '@core/objects/transition.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { TimerObject } from '@core/objects/timer.object';
 import { SCENE_GAME_MAP_UNDERGROUND } from '@game/scenes/game/maps/underground/map';
-import { ObjectFilter } from '@core/model/scene';
+import { type ObjectFilter } from '@core/model/scene';
 import { ChickenObject } from '../chicken.object';
 import { EggObject } from '../egg.object';
 
@@ -33,8 +33,8 @@ export class PitObject extends SceneObject {
       typeMatch: [
         PlayerObject,
         ChickenObject,
-        EggObject,
-      ]
+        EggObject
+      ],
     };
     const object = this.scene.getObject(filter);
 
@@ -64,7 +64,6 @@ export class PitObject extends SceneObject {
       }));
 
       this.playerConsumed = true;
-      return;
     }
   }
 

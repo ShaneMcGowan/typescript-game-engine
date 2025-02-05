@@ -13,14 +13,14 @@ import { InventoryObject } from '@game/objects/inventory/inventory.object';
 import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar/hotbar.object';
-import { ObjectFilter } from '@core/model/scene';
+import { type ObjectFilter } from '@core/model/scene';
 import { Inventory, ItemRadius, ItemType, ItemTypeFurnitureItem } from '@game/models/inventory.model';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 import { useShovel } from './player/shovel/use-shovel.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { UiObject } from '@core/objects/ui.object';
-import { Coordinate } from '@core/model/coordinate';
-import { ObjectAnimation, PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
+import { type Coordinate } from '@core/model/coordinate';
+import { type ObjectAnimation, type PlayerActionAnimationCallback } from '@game/constants/animations/player.animations';
 import { usePickaxe } from './player/pickaxe/use-pickaxe.action';
 import { AreaObject } from './areas/area.object';
 import { useFurnitureItem } from './player/furniture/use-furniture-item.action';
@@ -46,7 +46,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class PlayerObject extends SceneObject {
-
   static RENDERER_LAYER: number = 10;
 
   playerIndex: number; // player index to be used mainly for controller access for now
@@ -102,7 +101,7 @@ export class PlayerObject extends SceneObject {
 
   onAwake(): void {
     this.addHotbar();
-    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0 }));
+    this.scene.addObject(new IconsObject(this.scene, { x: 0, y: 0, }));
   }
 
   onUpdate(delta: number): void {
@@ -146,9 +145,9 @@ export class PlayerObject extends SceneObject {
     // }
 
     if (
-      this.scene.globals.player.enabled
-      && this.scene.globals.player.movementEnabled
-      && !this.isAnimating
+      this.scene.globals.player.enabled &&
+      this.scene.globals.player.movementEnabled &&
+      !this.isAnimating
     ) {
       this.determineNextMovement(delta);
     }
@@ -214,9 +213,9 @@ export class PlayerObject extends SceneObject {
         [this, true]
       ]),
       collision: {
-        enabled: true
-      }
-    }
+        enabled: true,
+      },
+    };
     if (this.scene.getObject(filter)) {
       return;
     }
@@ -335,23 +334,23 @@ export class PlayerObject extends SceneObject {
       return;
     }
 
-    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Interact)
+    Input.clearPressed<Control>(CONTROL_SCHEME, Control.Interact);
 
     let x = this.transform.position.world.x;
     let y = this.transform.position.world.y;
 
     switch (this.direction) {
       case Direction.Up:
-        y -= 1
+        y -= 1;
         break;
       case Direction.Right:
-        x += 1
+        x += 1;
         break;
       case Direction.Down:
-        y += 1
+        y += 1;
         break;
       case Direction.Left:
-        x -= 1
+        x -= 1;
         break;
     }
 
@@ -361,7 +360,7 @@ export class PlayerObject extends SceneObject {
       objectIgnore: new Map([
         [this, true]
       ]),
-    }
+    };
 
     console.log(x, y);
 
@@ -429,7 +428,7 @@ export class PlayerObject extends SceneObject {
 
   /**
    * LEFT CLICK
-   * 
+   *
    * if object at position
    *   use item on object
    * else
@@ -467,9 +466,9 @@ export class PlayerObject extends SceneObject {
         Input.mouse.position.x,
         Input.mouse.position.y,
         CanvasConstants.TILE_PIXEL_SIZE,
-        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE
       ),
-      typeMatch: [UiObject]
+      typeMatch: [UiObject],
     };
 
     const uiObject = this.scene.getObject(uiFilter, false);
@@ -481,16 +480,16 @@ export class PlayerObject extends SceneObject {
 
     Input.clearPressed<Control>(CONTROL_SCHEME, Control.Action);
 
-    const { x, y } = this.mouseTilePosition;
+    const { x, y, } = this.mouseTilePosition;
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(
         x,
         y,
         CanvasConstants.TILE_PIXEL_SIZE,
-        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE
       ),
-      typeIgnore: [UiObject, AreaObject, CollisionObject]
-    }
+      typeIgnore: [UiObject, AreaObject, CollisionObject],
+    };
     const object = this.scene.getObject(filter);
 
     const item = this.scene.selectedInventoryItem;
@@ -508,8 +507,8 @@ export class PlayerObject extends SceneObject {
     const neighbours = [...this.neighbourTiles];
 
     if (
-      Inventory.getItemRadius(item.type) === ItemRadius.Player
-      && !neighbours.some(n => n.x === x && n.y === y)
+      Inventory.getItemRadius(item.type) === ItemRadius.Player &&
+      !neighbours.some(n => n.x === x && n.y === y)
     ) {
       return;
     }
@@ -538,7 +537,7 @@ export class PlayerObject extends SceneObject {
         useShovel(this.scene, this, object);
         return;
       case ItemType.Pickaxe:
-        usePickaxe(this.scene, this, object)
+        usePickaxe(this.scene, this, object);
         return;
       case ItemType.FurnitureBed:
       case ItemType.FurnitureTable:
@@ -583,7 +582,7 @@ export class PlayerObject extends SceneObject {
       animations[this.direction][this.animationIndex].x, // sprite x
       animations[this.direction][this.animationIndex].y, // sprite y
       this.transform.position.world.x,
-      this.transform.position.world.y,
+      this.transform.position.world.y
     );
   }
 
@@ -638,7 +637,7 @@ export class PlayerObject extends SceneObject {
       height,
       {
         colour,
-        type: 'tile'
+        type: 'tile',
       }
     );
   }
@@ -662,7 +661,7 @@ export class PlayerObject extends SceneObject {
       this.transform.position.world.x - 1,
       this.transform.position.world.y - 1,
       this.animation.width,
-      this.animation.height,
+      this.animation.height
     );
   }
 
@@ -678,7 +677,7 @@ export class PlayerObject extends SceneObject {
         context,
         `${index} - ${button.value} ${button.pressed} ${button.touched}`,
         this.transform.position.world.x,
-        this.transform.position.world.y + index,
+        this.transform.position.world.y + index
       );
     });
 
@@ -687,7 +686,7 @@ export class PlayerObject extends SceneObject {
         context,
         `${index} - ${axes}`,
         this.transform.position.world.x + 6,
-        this.transform.position.world.y + index,
+        this.transform.position.world.y + index
       );
     });
 
@@ -695,7 +694,7 @@ export class PlayerObject extends SceneObject {
       context,
       `${gamepad.vibrationActuator}`,
       this.transform.position.world.x + 18,
-      this.transform.position.world.y,
+      this.transform.position.world.y
     );
   }
 
@@ -710,8 +709,8 @@ export class PlayerObject extends SceneObject {
     this.hotbarObject = new HotbarObject(
       this.scene,
       {
-        x: x,
-        y: y,
+        x,
+        y,
       }
     );
 
@@ -722,14 +721,14 @@ export class PlayerObject extends SceneObject {
     return {
       x: Math.floor(Input.mouse.position.x + this.scene.globals.camera.startX),
       y: Math.floor(Input.mouse.position.y + this.scene.globals.camera.startY),
-    }
+    };
   }
 
   get playerTilePosition(): Coordinate {
     return {
       x: Math.floor(this.transform.position.world.x),
       y: Math.floor(this.transform.position.world.y),
-    }
+    };
   }
 
   get neighbourTiles(): Coordinate[] {
@@ -769,13 +768,13 @@ export class PlayerObject extends SceneObject {
       {
         x: this.transform.position.world.x + 1,
         y: this.transform.position.world.y + 1,
-      },
-    ]
+      }
+    ];
   }
 
   get actionDirection(): Direction {
-    const { x: mouseX, y: mouseY } = this.mouseTilePosition;
-    const { x: playerX, y: playerY } = this.playerTilePosition;
+    const { x: mouseX, y: mouseY, } = this.mouseTilePosition;
+    const { x: playerX, y: playerY, } = this.playerTilePosition;
 
     const x = mouseX - playerX;
     const y = mouseY - playerY;
@@ -799,5 +798,4 @@ export class PlayerObject extends SceneObject {
     // default
     return Direction.Down;
   }
-
 }

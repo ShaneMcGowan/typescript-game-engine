@@ -2,15 +2,15 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { Assets } from '@core/utils/assets.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { TilesetFurniture } from '@game/constants/tilesets/furniture.tileset';
-import { ItemType, ItemTypeFurniture } from '@game/models/inventory.model';
-import { TileConfig } from '@game/models/tile.model';
+import { ItemType, type ItemTypeFurniture } from '@game/models/inventory.model';
+import { type TileConfig } from '@game/models/tile.model';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 
 const RENDERER_LAYER: number = 8;
 
 const SPRITES: Record<ItemTypeFurniture, {
-  id: string,
-  config: TileConfig
+  id: string;
+  config: TileConfig;
 }> = {
   [ItemType.FurnitureBed]: {
     id: TilesetFurniture.id,
@@ -31,15 +31,14 @@ const SPRITES: Record<ItemTypeFurniture, {
   [ItemType.FurnitureLamp]: {
     id: TilesetFurniture.id,
     config: TilesetFurniture.Lamp.Blue.Default,
-  }
-}
+  },
+};
 
 export interface FurnitureConfig extends SceneObjectBaseConfig {
 
 }
 
 export abstract class FurnitureObject extends SceneObject {
-
   constructor(
     protected scene: SCENE_GAME,
     config: FurnitureConfig
@@ -49,15 +48,15 @@ export abstract class FurnitureObject extends SceneObject {
     this.renderer.enabled = true;
     this.renderer.layer = RENDERER_LAYER;
   }
-  
+
   get type(): ItemTypeFurniture {
     return ItemType.FurnitureBed; // default type
   }
 
   get sprite(): {
-    id: string,
-    config: TileConfig
-  } { 
+    id: string;
+    config: TileConfig;
+  } {
     return SPRITES[this.type];
   }
 
@@ -86,9 +85,8 @@ export abstract class FurnitureObject extends SceneObject {
       this.sprite.config.width,
       this.sprite.config.height,
       {
-        type: 'tile'
+        type: 'tile',
       }
-    )
+    );
   }
-
 }

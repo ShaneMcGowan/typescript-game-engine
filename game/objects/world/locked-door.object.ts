@@ -45,7 +45,7 @@ export class LockedDoorObject extends SceneObject implements Interactable {
         text: SCENE_GAME_MAP_WORLD_TEXT.objects.shack.door.intro,
         onComplete: () => {
           this.interactIsLocked();
-        }
+        },
       }
     ));
   }
@@ -74,9 +74,8 @@ export class LockedDoorObject extends SceneObject implements Interactable {
         text: SCENE_GAME_MAP_WORLD_TEXT.objects.shack.door.locked,
         onComplete: () => {
           this.scene.globals.player.enabled = true;
-        }
+        },
       }
     ));
   }
-
 }

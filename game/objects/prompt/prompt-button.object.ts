@@ -1,15 +1,14 @@
-import { SceneObjectBaseConfig } from "@core/model/scene-object";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { ButtonObject } from "../button.object";
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { ButtonObject } from '../button.object';
 
 interface Config extends SceneObjectBaseConfig {
   label: string;
-  onClick: () => void
+  onClick: () => void;
 }
 
 export class PromptButtonObject extends ButtonObject {
-
-  constructor(protected scene: SCENE_GAME, protected config: Config){
+  constructor(protected scene: SCENE_GAME, protected config: Config) {
     super(scene, config);
   }
 
@@ -20,5 +19,4 @@ export class PromptButtonObject extends ButtonObject {
   onClick(): void {
     this.config.onClick();
   }
-
 }

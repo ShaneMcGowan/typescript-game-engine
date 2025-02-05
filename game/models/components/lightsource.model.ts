@@ -4,7 +4,7 @@ export interface LightSourceConfig {
 }
 
 export interface LightSource {
-  lightSource: LightSourceConfig
+  lightSource: LightSourceConfig;
 }
 
 export function isLightSource(object: any): object is LightSource {

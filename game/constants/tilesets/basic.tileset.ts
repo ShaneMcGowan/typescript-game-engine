@@ -1,7 +1,6 @@
-import { Tile } from "@game/models/tile.model";
+import { type Tile } from '@game/models/tile.model';
 
 export class TilesetBasic {
-
   static readonly id: string = 'tileset_basic';
 
   static readonly ArrowRight: Tile<'White', 'Default' | 'Pressed'> = {
@@ -10,9 +9,9 @@ export class TilesetBasic {
         x: 15, y: 0, width: 1, height: 1,
       },
       Pressed: {
-        x: 16, y: 0,  width: 1, height: 1,
-      }
-    }
+        x: 16, y: 0, width: 1, height: 1,
+      },
+    },
   };
 
   static readonly ArrowLeft = {
@@ -22,8 +21,8 @@ export class TilesetBasic {
       },
       Pressed: {
         x: 16, y: 1, width: 1, height: 1,
-      }
-    }
+      },
+    },
   };
 
   static readonly ArrowUp = {
@@ -33,8 +32,8 @@ export class TilesetBasic {
       },
       Pressed: {
         x: 16, y: 2, width: 1, height: 1,
-      }
-    }
+      },
+    },
   };
 
   static readonly ArrowDown = {
@@ -44,8 +43,8 @@ export class TilesetBasic {
       },
       Pressed: {
         x: 16, y: 3, width: 1, height: 1,
-      }
-    }
+      },
+    },
   };
 
   static readonly CheckMark = {
@@ -55,8 +54,8 @@ export class TilesetBasic {
       },
       Pressed: {
         x: 16, y: 4,
-      }
-    }
+      },
+    },
   };
 
   static readonly Cross = {
@@ -72,8 +71,8 @@ export class TilesetBasic {
         y: 5,
         width: 1,
         height: 1,
-      }
-    }
+      },
+    },
   };
 
   static readonly Button: Tile<'White', 'Default' | 'Pressed'> = {
@@ -89,8 +88,8 @@ export class TilesetBasic {
         y: 0.5,
         width: 2,
         height: 2,
-      }
-    }
+      },
+    },
   };
 
   static readonly Skull: Tile<'Dark', 'Default'> = {
@@ -100,9 +99,9 @@ export class TilesetBasic {
         y: 12,
         width: 1,
         height: 1,
-      }
-    }
-  }
+      },
+    },
+  };
 
   static readonly Blocked: Tile<'Dark' | 'White', 'Default'> = {
     Dark: {
@@ -111,7 +110,7 @@ export class TilesetBasic {
         y: 14,
         width: 1,
         height: 1,
-      }
+      },
     },
     White: {
       Default: {
@@ -119,9 +118,9 @@ export class TilesetBasic {
         y: 14,
         width: 1,
         height: 1,
-      }
-    }
-  }
+      },
+    },
+  };
 
   static readonly Cog: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
     White: {
@@ -130,7 +129,7 @@ export class TilesetBasic {
         y: 12,
         width: 1,
         height: 1,
-      }
+      },
     },
     Dark: {
       Default: {
@@ -138,7 +137,7 @@ export class TilesetBasic {
         y: 12,
         width: 1,
         height: 1,
-      }
+      },
     },
     Darker: {
       Default: {
@@ -146,9 +145,9 @@ export class TilesetBasic {
         y: 12,
         width: 1,
         height: 1,
-      }
-    }
-  }
+      },
+    },
+  };
 
   static readonly House: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
     White: {
@@ -157,7 +156,7 @@ export class TilesetBasic {
         y: 14,
         width: 1,
         height: 1,
-      }
+      },
     },
     Dark: {
       Default: {
@@ -165,7 +164,7 @@ export class TilesetBasic {
         y: 14,
         width: 1,
         height: 1,
-      }
+      },
     },
     Darker: {
       Default: {
@@ -173,9 +172,9 @@ export class TilesetBasic {
         y: 14,
         width: 1,
         height: 1,
-      }
-    }
-  }
+      },
+    },
+  };
 
   static readonly ExclamationMark: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
     White: {
@@ -184,7 +183,7 @@ export class TilesetBasic {
         y: 13,
         width: 1,
         height: 1,
-      }
+      },
     },
     Dark: {
       Default: {
@@ -192,7 +191,7 @@ export class TilesetBasic {
         y: 13,
         width: 1,
         height: 1,
-      }
+      },
     },
     Darker: {
       Default: {
@@ -200,9 +199,9 @@ export class TilesetBasic {
         y: 13,
         width: 1,
         height: 1,
-      }
-    }
-  }
+      },
+    },
+  };
 
   static readonly QuestionMark: Tile<'White' | 'Dark' | 'Darker', 'Default'> = {
     White: {
@@ -211,7 +210,7 @@ export class TilesetBasic {
         y: 12,
         width: 1,
         height: 1,
-      }
+      },
     },
     Dark: {
       Default: {
@@ -219,7 +218,7 @@ export class TilesetBasic {
         y: 12,
         width: 1,
         height: 1,
-      }
+      },
     },
     Darker: {
       Default: {
@@ -227,8 +226,7 @@ export class TilesetBasic {
         y: 12,
         width: 1,
         height: 1,
-      }
-    }
-  }
-
+      },
+    },
+  };
 }

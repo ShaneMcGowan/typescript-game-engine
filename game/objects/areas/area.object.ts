@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { SCENE_GAME } from '@game/scenes/game/scene';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -10,7 +10,6 @@ interface Config extends SceneObjectBaseConfig {
  * Used to define areas of interaction etc
  */
 export abstract class AreaObject extends SceneObject {
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -20,11 +19,11 @@ export abstract class AreaObject extends SceneObject {
   }
 
   get colour(): string {
-    return `#FFFFFF`;
+    return '#FFFFFF';
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    if(!CanvasConstants.DEBUG_MODE){
+    if (!CanvasConstants.DEBUG_MODE) {
       return;
     }
 
@@ -38,7 +37,6 @@ export abstract class AreaObject extends SceneObject {
         colour: this.colour,
         type: 'tile',
       }
-    )
+    );
   }
-  
 }

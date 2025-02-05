@@ -3,15 +3,15 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/components/interactable.model';
 import { Assets } from '@core/utils/assets.utils';
-import { Inventory, Item, ItemType, ItemTypeKeys } from '@game/models/inventory.model';
-import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"
+import { Inventory, type Item, ItemType, ItemTypeKeys } from '@game/models/inventory.model';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
 import { MessageUtils } from '@game/utils/message.utils';
 import { TilesetHouse } from '@game/constants/tilesets/house.tileset';
 
 export enum LockType {
   Gate,
-  Door,
+  Door
 }
 
 const DEFAULT_TYPE: LockType = LockType.Door;
@@ -24,12 +24,11 @@ export interface LockConfig extends SceneObjectBaseConfig {
  * A barrier that can be used to block the player, for use with a Story
  */
 export class LockObject extends SceneObject implements Interactable {
-
   // config
   width = 1;
-  
+
   height = 1;
-  
+
   // state
 
   constructor(protected scene: SCENE_GAME, config: LockConfig) {
@@ -39,26 +38,25 @@ export class LockObject extends SceneObject implements Interactable {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    switch(this.type) {
+    switch (this.type) {
       case LockType.Gate: {
         this.renderGate(context);
         return;
       }
       case LockType.Door: {
         this.renderDoor(context);
-        return;
       }
     }
   }
 
   interact(): void {
     this.scene.globals.player.enabled = false;
-    if(this.item === undefined || !ItemTypeKeys.some(type => type === this.item.type)){
+    if (this.item === undefined || !ItemTypeKeys.some(type => type === this.item.type)) {
       MessageUtils.showMessage(
         this.scene,
         this.messageIntro,
-        () => this.interactNoKey(),
-        false,
+        () => { this.interactNoKey(); },
+        false
       );
     } else if (this.item.type !== this.key) {
       this.interactWrongKey();
@@ -70,7 +68,7 @@ export class LockObject extends SceneObject implements Interactable {
   get type(): LockType {
     return DEFAULT_TYPE;
   }
-  
+
   get key(): ItemType {
     return DEFAULT_KEY;
   }
@@ -100,8 +98,8 @@ export class LockObject extends SceneObject implements Interactable {
   }
 
   private renderGate(context: CanvasRenderingContext2D): void {
-    const LeftHorizontal = { x: 1, y: 3, width: 1, height: 1 };
-    const RightHorizontal = { x: 3, y: 3, width: 1, height: 1 };
+    const LeftHorizontal = { x: 1, y: 3, width: 1, height: 1, };
+    const RightHorizontal = { x: 3, y: 3, width: 1, height: 1, };
 
     RenderUtils.renderSprite(
       context,
@@ -111,7 +109,7 @@ export class LockObject extends SceneObject implements Interactable {
       this.transform.position.world.x - 1,
       this.transform.position.world.y,
       LeftHorizontal.width,
-      LeftHorizontal.height,
+      LeftHorizontal.height
     );
 
     RenderUtils.renderSprite(
@@ -122,7 +120,7 @@ export class LockObject extends SceneObject implements Interactable {
       this.transform.position.world.x + 1,
       this.transform.position.world.y,
       RightHorizontal.width,
-      RightHorizontal.height,
+      RightHorizontal.height
     );
 
     // icon
@@ -134,7 +132,7 @@ export class LockObject extends SceneObject implements Interactable {
       this.transform.position.world.x - (1 / 16),
       this.transform.position.world.y - (1 / 16),
       TilesetBasic.Blocked.White.Default.width,
-      TilesetBasic.Blocked.White.Default.height,
+      TilesetBasic.Blocked.White.Default.height
     );
 
     RenderUtils.renderSprite(
@@ -145,7 +143,7 @@ export class LockObject extends SceneObject implements Interactable {
       this.transform.position.world.x,
       this.transform.position.world.y,
       TilesetBasic.Blocked.Dark.Default.width,
-      TilesetBasic.Blocked.Dark.Default.height,
+      TilesetBasic.Blocked.Dark.Default.height
     );
   }
 
@@ -160,12 +158,12 @@ export class LockObject extends SceneObject implements Interactable {
       this.transform.position.world.x,
       this.transform.position.world.y,
       tile.width,
-      tile.height,
+      tile.height
     );
   }
 
   private interactNoKey(): void {
-    if(this.messageNoKey === undefined){
+    if (this.messageNoKey === undefined) {
       this.scene.globals.player.enabled = true;
       return;
     }
@@ -173,12 +171,12 @@ export class LockObject extends SceneObject implements Interactable {
     // message saying gate is locked
     MessageUtils.showMessage(
       this.scene,
-      this.messageNoKey,
+      this.messageNoKey
     );
   }
 
   private interactWrongKey(): void {
-    if(this.messageWrongKey === undefined){
+    if (this.messageWrongKey === undefined) {
       this.scene.globals.player.enabled = true;
       return;
     }
@@ -186,16 +184,15 @@ export class LockObject extends SceneObject implements Interactable {
     // message saying a different key is needed
     MessageUtils.showMessage(
       this.scene,
-      this.messageWrongKey,
+      this.messageWrongKey
     );
   }
 
   private interactWithKey(): void {
-
     const callback = () => {
       // remove key from inventory
       this.scene.globals.inventory.removeFromInventoryByIndex(this.scene.globals.hotbar_selected_index, 1);
-      
+
       // set scene flag
       this.scene.setStoryFlag(this.flag, true);
     };
@@ -203,8 +200,7 @@ export class LockObject extends SceneObject implements Interactable {
     MessageUtils.showMessage(
       this.scene,
       SCENE_GAME_MAP_WORLD_TEXT.objects.gate.interact.key(this.item.type),
-      callback,
+      callback
     );
   }
-
 }

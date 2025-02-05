@@ -1,4 +1,4 @@
-import { SceneObjectBaseConfig } from '@core/model/scene-object';
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { StoryObject } from '../../story.object';
 import { LockObject } from '@game/objects/lock.object';
@@ -8,9 +8,7 @@ import { TreeObject } from '@game/objects/tree.object';
 export interface Config extends SceneObjectBaseConfig {
 }
 
-
 export class StoryWorldHillPathToTownBlockadeObject extends StoryObject {
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -29,13 +27,12 @@ export class StoryWorldHillPathToTownBlockadeObject extends StoryObject {
   onStart(): void {
     const onDestroy = () => {
       this.scene.setStoryFlag(this.flagComplete, true);
-    }
+    };
 
-    this.addChild(new TreeObject(this.scene, { x: 10, y: 2, type: 'small', logOnDestroy: false, stumpOnDestroy: false, onDestroy }));
+    this.addChild(new TreeObject(this.scene, { x: 10, y: 2, type: 'small', logOnDestroy: false, stumpOnDestroy: false, onDestroy, }));
   }
 
   onComplete(): void {
     this.destroy();
   }
-
 }

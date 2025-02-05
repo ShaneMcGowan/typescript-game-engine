@@ -10,7 +10,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class MenuButtonQuitObject extends ButtonObject {
-
   quitting: boolean = false;
 
   constructor(
@@ -26,7 +25,7 @@ export class MenuButtonQuitObject extends ButtonObject {
 
   onClick(): void {
     this.quitting = true;
-    
+
     const time = 1.5;
 
     this.scene.addObject(
@@ -49,10 +48,9 @@ export class MenuButtonQuitObject extends ButtonObject {
           duration: time,
           onComplete: () => {
             this.scene.changeScene(SCENE_MAIN_MENU);
-          }
+          },
         }
       )
     );
   }
-
 }

@@ -1,34 +1,33 @@
-import { SceneObjectBaseConfig } from "@core/model/scene-object";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { MenuObject } from "../menu/menu.object";
-import { IconObject } from "./icon.object";
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { Assets } from "@core/utils/assets.utils";
-import { RenderUtils } from "@core/utils/render.utils";
-import { TilesetBasic } from "@game/constants/tilesets/basic.tileset";
-import { PlayerObject } from "../player.object";
-import { InventoryObject } from "../inventory/inventory.object";
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { MenuObject } from '../menu/menu.object';
+import { IconObject } from './icon.object';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { Assets } from '@core/utils/assets.utils';
+import { RenderUtils } from '@core/utils/render.utils';
+import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
+import { PlayerObject } from '../player.object';
+import { InventoryObject } from '../inventory/inventory.object';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
 export class IconInventoryObject extends IconObject {
-
   player: PlayerObject;
 
-  constructor(protected scene: SCENE_GAME, config: Config){
+  constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
   }
 
   onAwake(): void {
-    this.player = this.scene.getObject({ typeMatch: [PlayerObject]}) as PlayerObject;
+    this.player = this.scene.getObject({ typeMatch: [PlayerObject], }) as PlayerObject;
   }
-  
+
   onRender(context: CanvasRenderingContext2D): void {
-    if(!this.enabled){
+    if (!this.enabled) {
       return;
     }
-    
+
     RenderUtils.renderSprite(
       context,
       Assets.images[TilesetBasic.id],
@@ -51,9 +50,9 @@ export class IconInventoryObject extends IconObject {
       TilesetBasic.House.Dark.Default.height
     );
   }
-  
+
   onClick(): void {
-    if(this.player === undefined){
+    if (this.player === undefined) {
       return;
     }
 
@@ -68,5 +67,4 @@ export class IconInventoryObject extends IconObject {
       )
     );
   }
-
 }

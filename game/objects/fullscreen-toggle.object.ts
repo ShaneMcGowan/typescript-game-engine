@@ -1,6 +1,6 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type Scene } from '@core/model/scene';
-import { SceneObject, SceneObjectBaseConfig } from '@core/model/scene-object';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { Assets } from '@core/utils/assets.utils';
 import { Input, MouseKey } from '@core/utils/input.utils';
 import { MouseUtils } from '@core/utils/mouse.utils';
@@ -10,7 +10,6 @@ export interface FullscreenToggleObjectConfig extends SceneObjectBaseConfig {
 }
 
 export class FullscreenToggleObject extends SceneObject {
-
   constructor(
     protected scene: Scene,
     config: SceneObjectBaseConfig
@@ -20,7 +19,7 @@ export class FullscreenToggleObject extends SceneObject {
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
   }
 
-  onUpdate(delta: number): void { 
+  onUpdate(delta: number): void {
     if (!MouseUtils.wasObjectClicked(this)) {
       return;
     }
@@ -28,16 +27,15 @@ export class FullscreenToggleObject extends SceneObject {
     Input.clearMousePressed(MouseKey.Left);
 
     // fullscreen enabled
-    if (document.fullscreenElement || document.webkitIsFullScreen) { 
+    if (document.fullscreenElement || document.webkitIsFullScreen) {
       document.exitFullscreen();
-    }
-    else { 
+    } else {
       this.scene.displayContext.canvas.requestFullscreen()
-      .then(() => {
-      })
-      .catch((error) => {
-        throw new Error(error);
-      })
+        .then(() => {
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
     }
   }
 
@@ -48,16 +46,15 @@ export class FullscreenToggleObject extends SceneObject {
       this.isFullscreen ? 1 : 0,
       0,
       this.boundingBox.world.left,
-      this.boundingBox.world.top,
-    )
+      this.boundingBox.world.top
+    );
   }
 
   private get isFullscreen(): boolean {
-    if(document.fullscreenElement || document.webkitIsFullScreen){
+    if (document.fullscreenElement || document.webkitIsFullScreen) {
       return true;
     }
 
     return false;
-  } 
-
+  }
 }

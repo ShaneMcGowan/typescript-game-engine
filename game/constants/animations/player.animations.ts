@@ -1,27 +1,25 @@
-import { Direction } from "@game/models/direction.model";
+import { Direction } from '@game/models/direction.model';
 
 export interface ObjectAnimation {
   tileset: string;
   length: number;
-  frames: ObjectAnimationFrame[],
-  width: number,
-  height: number,
+  frames: ObjectAnimationFrame[];
+  width: number;
+  height: number;
 }
 
 export interface ObjectAnimationFrame {
-  x: number,
-  y: number,
+  x: number;
+  y: number;
 }
 
 const UseHoeLength: number = 0.5;
 const UseAxeLength: number = 0.5;
 
-
 export type PlayerActionAnimation = Record<Direction, ObjectAnimation>;
 export type PlayerActionAnimationCallback = () => void;
 
 export class AnimationsPlayer {
-
   static readonly UseHoe: PlayerActionAnimation = {
     [Direction.Up]: {
       tileset: 'tileset_actions',
@@ -37,7 +35,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 3,
         }
-      ]
+      ],
     },
     [Direction.Down]: {
       tileset: 'tileset_actions',
@@ -53,7 +51,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 0,
         }
-      ]
+      ],
     },
     [Direction.Left]: {
       tileset: 'tileset_actions',
@@ -69,7 +67,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 6,
         }
-      ]
+      ],
     },
     [Direction.Right]: {
       tileset: 'tileset_actions',
@@ -85,9 +83,9 @@ export class AnimationsPlayer {
           x: 3,
           y: 9,
         }
-      ]
-    }
-  }
+      ],
+    },
+  };
 
   static readonly UseAxe: PlayerActionAnimation = {
     [Direction.Down]: {
@@ -104,7 +102,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 12,
         }
-      ]
+      ],
     },
     [Direction.Up]: {
       tileset: 'tileset_actions',
@@ -120,7 +118,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 15,
         }
-      ]
+      ],
     },
     [Direction.Left]: {
       tileset: 'tileset_actions',
@@ -136,7 +134,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 18,
         }
-      ]
+      ],
     },
     [Direction.Right]: {
       tileset: 'tileset_actions',
@@ -152,9 +150,9 @@ export class AnimationsPlayer {
           x: 3,
           y: 21,
         }
-      ]
-    }
-  }
+      ],
+    },
+  };
 
   static readonly UseWateringCan: PlayerActionAnimation = {
     [Direction.Down]: {
@@ -171,7 +169,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 24,
         }
-      ]
+      ],
     },
     [Direction.Up]: {
       tileset: 'tileset_actions',
@@ -187,7 +185,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 27,
         }
-      ]
+      ],
     },
     [Direction.Left]: {
       tileset: 'tileset_actions',
@@ -203,7 +201,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 30,
         }
-      ]
+      ],
     },
     [Direction.Right]: {
       tileset: 'tileset_actions',
@@ -219,9 +217,9 @@ export class AnimationsPlayer {
           x: 3,
           y: 33,
         }
-      ]
-    }
-  }
+      ],
+    },
+  };
 
   static readonly UseShovel: PlayerActionAnimation = {
     [Direction.Up]: {
@@ -238,7 +236,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 3,
         }
-      ]
+      ],
     },
     [Direction.Down]: {
       tileset: 'tileset_actions',
@@ -254,7 +252,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 0,
         }
-      ]
+      ],
     },
     [Direction.Left]: {
       tileset: 'tileset_actions',
@@ -270,7 +268,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 6,
         }
-      ]
+      ],
     },
     [Direction.Right]: {
       tileset: 'tileset_actions',
@@ -286,9 +284,9 @@ export class AnimationsPlayer {
           x: 3,
           y: 9,
         }
-      ]
-    }
-  }
+      ],
+    },
+  };
 
   static readonly UsePickaxe: PlayerActionAnimation = {
     [Direction.Up]: {
@@ -305,7 +303,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 3,
         }
-      ]
+      ],
     },
     [Direction.Down]: {
       tileset: 'tileset_actions',
@@ -321,7 +319,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 0,
         }
-      ]
+      ],
     },
     [Direction.Left]: {
       tileset: 'tileset_actions',
@@ -337,7 +335,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 6,
         }
-      ]
+      ],
     },
     [Direction.Right]: {
       tileset: 'tileset_actions',
@@ -353,7 +351,7 @@ export class AnimationsPlayer {
           x: 3,
           y: 9,
         }
-      ]
-    }
-  }
+      ],
+    },
+  };
 };

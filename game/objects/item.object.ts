@@ -1,11 +1,11 @@
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { Assets } from "@core/utils/assets.utils";
-import { RenderUtils } from "@core/utils/render.utils";
-import { Interactable } from "@game/models/components/interactable.model";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { Inventory, ItemSprite, ItemType, TYPE_TO_NAME_SINGULAR_MAP, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
-import { PlayerObject } from "./player.object";
-import { MessageUtils } from "@game/utils/message.utils";
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { Assets } from '@core/utils/assets.utils';
+import { RenderUtils } from '@core/utils/render.utils';
+import { type Interactable } from '@game/models/components/interactable.model';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { Inventory, type ItemSprite, type ItemType, TYPE_TO_NAME_SINGULAR_MAP, TYPE_TO_SPRITE_MAP } from '@game/models/inventory.model';
+import { PlayerObject } from './player.object';
+import { MessageUtils } from '@game/utils/message.utils';
 
 interface Config extends SceneObjectBaseConfig {
   type: ItemType;
@@ -14,14 +14,13 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ItemObject extends SceneObject implements Interactable {
-
   // config
   player: PlayerObject;
-  
+
   // state
   dropped: boolean;
 
-  constructor(protected scene: SCENE_GAME, protected config: Config){
+  constructor(protected scene: SCENE_GAME, protected config: Config) {
     super(scene, config);
 
     this.collision.enabled = Inventory.canItemBeInteractedWith(this.type);
@@ -34,8 +33,8 @@ export class ItemObject extends SceneObject implements Interactable {
     // - left as is
     // - passed in as a config param
     // - retrieved from some sort of Scene store
-    for(const [_, object] of this.scene.objects){
-      if(!(object instanceof PlayerObject)){
+    for (const [_, object] of this.scene.objects) {
+      if (!(object instanceof PlayerObject)) {
         continue;
       }
 
@@ -58,7 +57,7 @@ export class ItemObject extends SceneObject implements Interactable {
       this.transform.position.world.x,
       this.transform.position.world.y,
       1,
-      1,
+      1
     );
   }
 
@@ -88,68 +87,66 @@ export class ItemObject extends SceneObject implements Interactable {
 
   private updatePickUpItem(): void {
     // don't automatically pick up interactable items
-    if(Inventory.canItemBeInteractedWith(this.type)){
+    if (Inventory.canItemBeInteractedWith(this.type)) {
       return;
     }
 
     // don't pick up if just dropped
-    if(this.dropped){
-      return;
-    }
-    
-    if(this.player.transform.position.world.x !== this.transform.position.world.x){
+    if (this.dropped) {
       return;
     }
 
-    if(this.player.transform.position.world.y !== this.transform.position.world.y){
+    if (this.player.transform.position.world.x !== this.transform.position.world.x) {
       return;
     }
 
-    if(!this.canPickUp){
+    if (this.player.transform.position.world.y !== this.transform.position.world.y) {
+      return;
+    }
+
+    if (!this.canPickUp) {
       return;
     }
 
     this.inventory.addToInventory(this.type);
-    
+
     this.destroy();
   }
 
   private updateDropped(): void {
-    if(!this.dropped){
+    if (!this.dropped) {
       return;
     }
 
-    if(
-      this.player.transform.position.world.x === this.transform.position.world.x
-      && this.player.transform.position.world.y === this.transform.position.world.y
-    ){
+    if (
+      this.player.transform.position.world.x === this.transform.position.world.x &&
+      this.player.transform.position.world.y === this.transform.position.world.y
+    ) {
       return;
     }
-
 
     this.dropped = false;
   }
 
   interact(): void {
-    if(!Inventory.canItemBeInteractedWith(this.type)){
+    if (!Inventory.canItemBeInteractedWith(this.type)) {
       return;
     }
 
-    if(!this.canPickUp){
+    if (!this.canPickUp) {
       MessageUtils.showMessage(
         this.scene,
-        `I don't have enough room.`,
+        'I don\'t have enough room.'
       );
       return;
     }
 
     MessageUtils.showMessage(
       this.scene,
-      this.pickupMessage,
+      this.pickupMessage
     );
 
     this.inventory.addToInventory(this.type);
     this.destroy();
   }
-
 }

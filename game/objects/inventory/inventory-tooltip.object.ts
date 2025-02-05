@@ -2,20 +2,19 @@ import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
-import { Inventory, Item } from '@game/models/inventory.model';
+import { Inventory, type Item } from '@game/models/inventory.model';
 import { UiObject } from '@core/objects/ui.object';
 
 interface Config extends SceneObjectBaseConfig {
-  item: Item,
-  index: number,
+  item: Item;
+  index: number;
 }
 
 export class InventoryTooltipObject extends SceneObject {
-  
-  private item: Item;
+  private readonly item: Item;
   index: number;
 
-  private rows: string[];
+  private readonly rows: string[];
 
   constructor(
     protected scene: SCENE_GAME,
@@ -42,11 +41,11 @@ export class InventoryTooltipObject extends SceneObject {
   }
 
   get title(): string {
-    return Inventory.getItemName(this.item.type)
+    return Inventory.getItemName(this.item.type);
   }
 
   get description(): string {
-    return Inventory.getItemDescription(this.item.type)
+    return Inventory.getItemDescription(this.item.type);
   }
 
   private renderTooltipBackground(context: CanvasRenderingContext2D, x: number, y: number): void {
@@ -61,7 +60,7 @@ export class InventoryTooltipObject extends SceneObject {
       this.height,
       {
         type: 'tile',
-        colour: '#ffffffcc'
+        colour: '#ffffffcc',
       }
     );
   }
@@ -107,6 +106,4 @@ export class InventoryTooltipObject extends SceneObject {
   private isVerticallyOutOfBounds(x: number, y: number): boolean {
     return y + this.height > CanvasConstants.CANVAS_TILE_HEIGHT;
   }
-
 }
-

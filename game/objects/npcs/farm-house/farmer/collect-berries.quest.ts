@@ -1,14 +1,13 @@
-import { SCENE_GAME, StoryFlag, } from "@game/scenes/game/scene";
-import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
-import { ItemType } from "@game/models/inventory.model";
-import { NpcObject } from "@game/objects/npc.object";
-import { Quest, QuestName, QuestText } from "@game/models/quest.model";
-import { ItemObject } from "@game/objects/item.object";
+import { type SCENE_GAME, StoryFlag } from '@game/scenes/game/scene';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { ItemType } from '@game/models/inventory.model';
+import { type NpcObject } from '@game/objects/npc.object';
+import { Quest, QuestName, type QuestText } from '@game/models/quest.model';
+import { ItemObject } from '@game/objects/item.object';
 
 const QUEST_NAME: QuestName = QuestName.collect_berries;
 
 export class QuestCollectBerries extends Quest {
-
   id: QuestName = QUEST_NAME;
 
   constructor(
@@ -35,18 +34,17 @@ export class QuestCollectBerries extends Quest {
 
   check(): boolean {
     // watering can
-    if(!this.checkItem(ItemType.WateringCan, 1)){
+    if (!this.checkItem(ItemType.WateringCan, 1)) {
       return false;
     }
 
-    // berry 
-    if(!this.checkItem(ItemType.Berry, 4)){
+    // berry
+    if (!this.checkItem(ItemType.Berry, 4)) {
       return false;
     }
 
     this.removeItem(ItemType.Berry, 4);
-    
-    return true; 
-  }
 
+    return true;
+  }
 }

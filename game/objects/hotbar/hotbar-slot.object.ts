@@ -1,13 +1,13 @@
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { Assets } from "@core/utils/assets.utils";
-import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
-import { TilesetUI } from "@game/constants/tilesets/ui.tileset";
-import { Input, MouseKey } from "@core/utils/input.utils";
-import { MouseUtils } from "@core/utils/mouse.utils";
-import { UiObject } from "@core/objects/ui.object";
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { Assets } from '@core/utils/assets.utils';
+import { type ItemSprite, type Item, TYPE_TO_SPRITE_MAP, Inventory } from '@game/models/inventory.model';
+import { TilesetUI } from '@game/constants/tilesets/ui.tileset';
+import { Input, MouseKey } from '@core/utils/input.utils';
+import { MouseUtils } from '@core/utils/mouse.utils';
+import { UiObject } from '@core/objects/ui.object';
 
 interface Config extends SceneObjectBaseConfig {
   index: number;
@@ -94,7 +94,7 @@ export class HotbarSlotObject extends UiObject {
       this.transform.position.world.y + 0.5,
       1,
       1,
-      { centered: true }
+      { centered: true, }
     );
   }
 
@@ -111,7 +111,7 @@ export class HotbarSlotObject extends UiObject {
       context,
       `${this.item.currentStackSize}`,
       this.transform.position.world.x + 1.25,
-      this.transform.position.world.y + 1.75,
+      this.transform.position.world.y + 1.75
     );
   }
 
@@ -128,7 +128,7 @@ export class HotbarSlotObject extends UiObject {
       this.transform.position.world.x - 0.25,
       this.transform.position.world.y - 0.25,
       TilesetUI.Selector.White.TopLeft.width,
-      TilesetUI.Selector.White.TopLeft.height,
+      TilesetUI.Selector.White.TopLeft.height
     );
 
     RenderUtils.renderSprite(
@@ -139,7 +139,7 @@ export class HotbarSlotObject extends UiObject {
       this.transform.position.world.x + 1 + 0.25,
       this.transform.position.world.y - 0.25,
       TilesetUI.Selector.White.TopRight.width,
-      TilesetUI.Selector.White.TopRight.height,
+      TilesetUI.Selector.White.TopRight.height
     );
 
     RenderUtils.renderSprite(
@@ -150,7 +150,7 @@ export class HotbarSlotObject extends UiObject {
       this.transform.position.world.x - 0.25,
       this.transform.position.world.y + 1 + 0.25,
       TilesetUI.Selector.White.BottomLeft.width,
-      TilesetUI.Selector.White.BottomLeft.height,
+      TilesetUI.Selector.White.BottomLeft.height
     );
 
     RenderUtils.renderSprite(
@@ -161,10 +161,8 @@ export class HotbarSlotObject extends UiObject {
       this.transform.position.world.x + 1 + 0.25,
       this.transform.position.world.y + 1 + 0.25,
       TilesetUI.Selector.White.BottomRight.width,
-      TilesetUI.Selector.White.BottomRight.height,
+      TilesetUI.Selector.White.BottomRight.height
     );
-
-
   }
 
   get item(): Item | undefined {

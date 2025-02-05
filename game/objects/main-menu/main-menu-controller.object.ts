@@ -26,7 +26,7 @@ export class MainMenuControllerObject extends SceneObject {
   onAwake(): void {
     const buttons = [
       new MainMenuButtonNewGameObject(this.scene, {}),
-      new MainMenuButtonLoadGameObject(this.scene, {}),
+      new MainMenuButtonLoadGameObject(this.scene, {})
     ];
 
     buttons.forEach((button, index) => {

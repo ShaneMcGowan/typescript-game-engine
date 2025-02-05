@@ -1,7 +1,6 @@
-import { Tile } from "@game/models/tile.model";
+import { type Tile } from '@game/models/tile.model';
 
 export class TilesetWoodenBridge {
-
   static readonly id: string = 'tileset_wood_bridge';
 
   static readonly Vertical: Tile<'Default', 'Top' | 'Middle' | 'Bottom'> = {
@@ -24,7 +23,7 @@ export class TilesetWoodenBridge {
         height: 1,
         width: 1,
       },
-    }
+    },
   };
 
   static readonly Horizontal: Tile<'Default', 'Left' | 'Middle' | 'Right'> = {
@@ -47,7 +46,6 @@ export class TilesetWoodenBridge {
         height: 1,
         width: 1,
       },
-    }
+    },
   };
-
 }

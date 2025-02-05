@@ -1,4 +1,4 @@
-import { SceneObjectBaseConfig } from '@core/model/scene-object';
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { WorkmanObject } from '@game/objects/npcs/town/workman.npc';
 import { RockObject } from '@game/objects/rock.object';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
@@ -11,9 +11,7 @@ import { StoryObject } from '../../story.object';
 export interface Config extends SceneObjectBaseConfig {
 }
 
-
 export class StoryTownRockslideObject extends StoryObject {
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -31,22 +29,22 @@ export class StoryTownRockslideObject extends StoryObject {
 
   onStart(): void {
     // rocks
-    this.addChild(new RockObject(this.scene, { x: 5, y: 17, canBeBroken: false }));
-    this.addChild(new RockObject(this.scene, { x: 7, y: 18, canBeBroken: false }));
-    this.addChild(new RockObject(this.scene, { x: 8, y: 17, canBeBroken: false }));
-    this.addChild(new RockObject(this.scene, { x: 8, y: 16, canBeBroken: false }));
-    this.addChild(new RockObject(this.scene, { x: 6, y: 14, canBeBroken: false }));
-    this.addChild(new RockObject(this.scene, { x: 6, y: 15, canBeBroken: false }));
-    this.addChild(new RockObject(this.scene, { x: 6, y: 16, canBeBroken: false }));
+    this.addChild(new RockObject(this.scene, { x: 5, y: 17, canBeBroken: false, }));
+    this.addChild(new RockObject(this.scene, { x: 7, y: 18, canBeBroken: false, }));
+    this.addChild(new RockObject(this.scene, { x: 8, y: 17, canBeBroken: false, }));
+    this.addChild(new RockObject(this.scene, { x: 8, y: 16, canBeBroken: false, }));
+    this.addChild(new RockObject(this.scene, { x: 6, y: 14, canBeBroken: false, }));
+    this.addChild(new RockObject(this.scene, { x: 6, y: 15, canBeBroken: false, }));
+    this.addChild(new RockObject(this.scene, { x: 6, y: 16, canBeBroken: false, }));
 
     // workman
-    this.addChild(new WorkmanObject(this.scene, { x: 6, y: 18 }));
-    
+    this.addChild(new WorkmanObject(this.scene, { x: 6, y: 18, }));
+
     // workers
-    this.addChild(new WorkerObject(this.scene, { x: 4, y: 17, direction: Direction.Right}));
-    this.addChild(new WorkerObject(this.scene, { x: 6, y: 13, direction: Direction.Down}));
-    this.addChild(new WorkerObject(this.scene, { x: 6, y: 17, direction: Direction.Up}));
-    this.addChild(new WorkerObject(this.scene, { x: 9, y: 16, direction: Direction.Left}));
+    this.addChild(new WorkerObject(this.scene, { x: 4, y: 17, direction: Direction.Right, }));
+    this.addChild(new WorkerObject(this.scene, { x: 6, y: 13, direction: Direction.Down, }));
+    this.addChild(new WorkerObject(this.scene, { x: 6, y: 17, direction: Direction.Up, }));
+    this.addChild(new WorkerObject(this.scene, { x: 9, y: 16, direction: Direction.Left, }));
   }
 
   onComplete(): void {
@@ -70,7 +68,7 @@ export class StoryTownRockslideObject extends StoryObject {
     this.scene.addObject(new TimerObject(
       this.scene,
       {
-        duration: duration,
+        duration,
         onComplete: () => {
           // clear story
           this.destroy();
@@ -91,15 +89,14 @@ export class StoryTownRockslideObject extends StoryObject {
           this.scene.addObject(new TimerObject(
             this.scene,
             {
-              duration: duration,
+              duration,
               onComplete: () => {
                 this.scene.globals.player.enabled = true;
-              }
+              },
             }
           ));
-        }
+        },
       }
     ));
   }
-
 }

@@ -21,7 +21,7 @@ export interface Portrait {
 
 enum Controls {
   Confirm = 'e',
-  ConfirmAlt = ' ',
+  ConfirmAlt = ' '
 }
 
 const TILE_SET: string = 'tileset_dialogue_box';
@@ -53,7 +53,7 @@ export class TextboxObject extends SceneObject {
   private textSegments: string[] = [];
   private textIndex: number = 0; // index of textSegments
   private characterIndex: number = 0; // index of character of current text
-  private canBeClosed: boolean = true;
+  private readonly canBeClosed: boolean = true;
 
   // text scroll
   private readonly scrollText: boolean;
@@ -79,7 +79,7 @@ export class TextboxObject extends SceneObject {
   private completionTimer: number = 0;
   private readonly completionDuration: number | undefined;
 
-  // 
+  //
   namePlateObject: TextboxNamePlateObject;
   portraitObject: PortraitObject;
 
@@ -92,7 +92,7 @@ export class TextboxObject extends SceneObject {
     this.renderer.layer = CanvasConstants.FIRST_UI_RENDER_LAYER;
 
     // adjust for mobile
-    if(CanvasConstants.DEVICE_TYPE === DeviceType.Mobile){
+    if (CanvasConstants.DEVICE_TYPE === DeviceType.Mobile) {
       this.height -= 0.5;
     }
 
@@ -123,13 +123,13 @@ export class TextboxObject extends SceneObject {
   }
 
   onAwake(): void {
-    if(this.portrait === undefined){
+    if (this.portrait === undefined) {
       return;
     }
 
     this.portraitObject = new PortraitObject(
-      this.scene, 
-      { 
+      this.scene,
+      {
         portrait: this.portrait,
         x: (CanvasConstants.CANVAS_TILE_WIDTH / 2) - 2,
         y: (CanvasConstants.CANVAS_TILE_HEIGHT / 2) - 4,
@@ -137,7 +137,7 @@ export class TextboxObject extends SceneObject {
     );
     this.scene.addObject(this.portraitObject);
 
-    if(this.hasNamePlate){
+    if (this.hasNamePlate) {
       this.namePlateObject = new TextboxNamePlateObject(
         this.scene,
         {
@@ -150,13 +150,12 @@ export class TextboxObject extends SceneObject {
       );
       this.scene.addObject(this.namePlateObject);
     }
-    
   }
 
   onUpdate(delta: number): void {
     if (this.completionDuration !== undefined) {
       this.updateTimer(delta);
-    } else if(this.canBeClosed) {
+    } else if (this.canBeClosed) {
       this.updateConfirm();
     }
 
@@ -211,7 +210,7 @@ export class TextboxObject extends SceneObject {
     if (this.scrollText) {
       if (this.currentText.length > this.characterIndex) {
         this.characterIndex = this.currentText.length;
-        Input.clearKeyPressed([Controls.Confirm, Controls.ConfirmAlt])
+        Input.clearKeyPressed([Controls.Confirm, Controls.ConfirmAlt]);
         Input.clearMousePressed(MouseKey.Left);
         return;
       }
@@ -243,11 +242,11 @@ export class TextboxObject extends SceneObject {
 
   private generateTextbox(context: CanvasRenderingContext2D): void {
     const width = this.textboxWidth;
-    
+
     // calculate offset
     let xOffset = 0;
     let yOffset = 0;
-    if(CanvasConstants.DEVICE_TYPE === DeviceType.Desktop){
+    if (CanvasConstants.DEVICE_TYPE === DeviceType.Desktop) {
       xOffset = (CanvasConstants.CANVAS_TILE_WIDTH - width) / 2;
     } else {
       xOffset = 0;
@@ -263,7 +262,7 @@ export class TextboxObject extends SceneObject {
       this.transform.position.world.x + xOffset + 0.5,
       this.transform.position.world.y + yOffset + 1,
       TilesetDialogueBox.TopLeft.Default.Default.width,
-      TilesetDialogueBox.TopLeft.Default.Default.height,
+      TilesetDialogueBox.TopLeft.Default.Default.height
     );
 
     RenderUtils.renderSprite(
@@ -274,7 +273,7 @@ export class TextboxObject extends SceneObject {
       this.transform.position.world.x + xOffset + 0.5,
       this.transform.position.world.y + yOffset + 2,
       TilesetDialogueBox.Left.Default.Default.width,
-      TilesetDialogueBox.Left.Default.Default.height,
+      TilesetDialogueBox.Left.Default.Default.height
     );
 
     RenderUtils.renderSprite(
@@ -285,7 +284,7 @@ export class TextboxObject extends SceneObject {
       this.transform.position.world.x + xOffset + 0.5,
       this.transform.position.world.y + yOffset + 3,
       TilesetDialogueBox.BottomLeft.Default.Default.width,
-      TilesetDialogueBox.BottomLeft.Default.Default.height,
+      TilesetDialogueBox.BottomLeft.Default.Default.height
     );
 
     // right
@@ -297,7 +296,7 @@ export class TextboxObject extends SceneObject {
       this.transform.position.world.x + xOffset + width - 1.5,
       this.transform.position.world.y + yOffset + 1,
       TilesetDialogueBox.TopRight.Default.Default.width,
-      TilesetDialogueBox.TopRight.Default.Default.height,
+      TilesetDialogueBox.TopRight.Default.Default.height
     );
 
     RenderUtils.renderSprite(
@@ -308,7 +307,7 @@ export class TextboxObject extends SceneObject {
       this.transform.position.world.x + xOffset + width - 1.5,
       this.transform.position.world.y + yOffset + 2,
       TilesetDialogueBox.Right.Default.Default.width,
-      TilesetDialogueBox.Right.Default.Default.height,
+      TilesetDialogueBox.Right.Default.Default.height
     );
 
     RenderUtils.renderSprite(
@@ -319,7 +318,7 @@ export class TextboxObject extends SceneObject {
       this.transform.position.world.x + xOffset + width - 1.5,
       this.transform.position.world.y + yOffset + 3,
       TilesetDialogueBox.BottomRight.Default.Default.width,
-      TilesetDialogueBox.BottomRight.Default.Default.height,
+      TilesetDialogueBox.BottomRight.Default.Default.height
     );
 
     // columns
@@ -332,8 +331,8 @@ export class TextboxObject extends SceneObject {
         xOffset + i,
         this.transform.position.world.y + yOffset + 1,
         TilesetDialogueBox.Top.Default.Default.width,
-        TilesetDialogueBox.Top.Default.Default.height,
-      )
+        TilesetDialogueBox.Top.Default.Default.height
+      );
 
       RenderUtils.renderSprite(
         context,
@@ -343,7 +342,7 @@ export class TextboxObject extends SceneObject {
         xOffset + i,
         this.transform.position.world.y + yOffset + 2,
         TilesetDialogueBox.Centre.Default.Default.width,
-        TilesetDialogueBox.Centre.Default.Default.height,
+        TilesetDialogueBox.Centre.Default.Default.height
       );
 
       RenderUtils.renderSprite(
@@ -354,13 +353,12 @@ export class TextboxObject extends SceneObject {
         xOffset + i,
         this.transform.position.world.y + yOffset + 3,
         TilesetDialogueBox.Bottom.Default.Default.width,
-        TilesetDialogueBox.Bottom.Default.Default.height,
+        TilesetDialogueBox.Bottom.Default.Default.height
       );
     }
   }
 
   private renderText(context: CanvasRenderingContext2D): void {
-    
     if (this.textLine1) {
       let text = this.scrollText ? this.textLine1.substring(0, this.characterIndex) : this.textLine1;
 
@@ -368,7 +366,7 @@ export class TextboxObject extends SceneObject {
         context,
         text,
         ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
-        this.textLine2 ? this.transform.position.world.y + 2.25 : this.transform.position.world.y + 2.75,
+        this.textLine2 ? this.transform.position.world.y + 2.25 : this.transform.position.world.y + 2.75
       );
     }
 
@@ -379,7 +377,7 @@ export class TextboxObject extends SceneObject {
         context,
         text,
         ((CanvasConstants.CANVAS_TILE_WIDTH - this.textboxWidth) / 2) + 1.25,
-        this.transform.position.world.y + 3.25,
+        this.transform.position.world.y + 3.25
       );
     }
   }

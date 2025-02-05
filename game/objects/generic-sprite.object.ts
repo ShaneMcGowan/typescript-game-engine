@@ -25,7 +25,6 @@ interface Config extends SceneObjectBaseConfig {
  * A generic sprite object that can be used to render a sprite from a tileset.
  */
 export class GenericSpriteObject extends SceneObject {
-
   targetX: number = -1;
   targetY: number = -1;
 
@@ -63,10 +62,10 @@ export class GenericSpriteObject extends SceneObject {
   }
 
   private updatePosition(delta: number): void {
-    if(!this.canMove){
+    if (!this.canMove) {
       return;
     }
-    
+
     if (this.transform.position.local.x === this.targetX && this.transform.position.local.y === this.targetY) {
       if (this.destroyAtTarget) {
         this.destroy();
@@ -78,12 +77,12 @@ export class GenericSpriteObject extends SceneObject {
     const coordinates = MovementUtils.MoveTowardsPosition(
       {
         x: this.transform.position.local.x,
-        y: this.transform.position.local.y
+        y: this.transform.position.local.y,
       },
       {
         x: this.targetX,
         y: this.targetY,
-      }, 
+      },
       velocity
     );
 

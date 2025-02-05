@@ -1,18 +1,17 @@
-import { ObjectFilter } from "@core/model/scene";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { DirtObject } from "./dirt.object";
+import { type ObjectFilter } from '@core/model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { DirtObject } from './dirt.object';
 
 interface Config extends SceneObjectBaseConfig {}
 
 const CACHE_MAX: number = 5;
 
 export class SprinklerObject extends SceneObject {
-
   cache: number = 0;
-  
-  constructor(protected scene: SCENE_GAME, config: Config){
+
+  constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
 
     this.renderer.enabled = true;
@@ -21,7 +20,7 @@ export class SprinklerObject extends SceneObject {
   onUpdate(delta: number): void {
     this.cache += delta;
 
-    if(this.cache < CACHE_MAX){
+    if (this.cache < CACHE_MAX) {
       return;
     }
 
@@ -52,26 +51,25 @@ export class SprinklerObject extends SceneObject {
         align: 'center',
         baseline: 'middle',
       }
-    )
+    );
   }
-  
+
   private waterSurroundings(): void {
     const filter: ObjectFilter = {
       boundingBox: SceneObject.calculateBoundingBox(
         this.transform.position.world.x - this.width,
         this.transform.position.world.y - this.height,
         this.width * 3,
-        this.height * 3,
+        this.height * 3
       ),
-      typeMatch: [DirtObject]
-    }
+      typeMatch: [DirtObject],
+    };
     const objects = this.scene.getObjects(filter);
 
-    for(const object of objects){
-      if(object instanceof DirtObject){
+    for (const object of objects) {
+      if (object instanceof DirtObject) {
         object.isWatered = true;
       }
     }
   }
-
 }

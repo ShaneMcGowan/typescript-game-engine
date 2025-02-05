@@ -1,4 +1,4 @@
-import { TilesetFurniture } from "@game/constants/tilesets/furniture.tileset";
+import { TilesetFurniture } from '@game/constants/tilesets/furniture.tileset';
 
 export enum ItemType {
   // tools
@@ -22,7 +22,7 @@ export enum ItemType {
   // keys
   HouseKey = 'HouseKey',
   GateKey = 'GateKey',
-  RoomKeyFarmersSonBedroom = 'RoomKeyFarmersSonBedroom', 
+  RoomKeyFarmersSonBedroom = 'RoomKeyFarmersSonBedroom',
 
   // other
   Chicken = 'Chicken',
@@ -35,10 +35,9 @@ export enum ItemType {
   Rock = 'Rock',
   Log = 'Log',
   Berry = 'Berry',
-  Sprinkler = 'Sprinkler',
+  Sprinkler = 'Sprinkler'
 
 }
-
 
 // items
 export const ItemTypeFurnitureItems: ItemType[] = [ItemType.FurnitureBed, ItemType.FurnitureTable, ItemType.FurnitureLamp];
@@ -94,8 +93,8 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.FurnitureTable]: ItemRadius.Anywhere,
   [ItemType.FurnitureLamp]: ItemRadius.Anywhere,
   [ItemType.RoomKeyFarmersSonBedroom]: ItemRadius.None,
-  [ItemType.Sprinkler]: ItemRadius.Player
-}
+  [ItemType.Sprinkler]: ItemRadius.Player,
+};
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.Chicken]: { tileset: 'tileset_chicken', x: 0, y: 0, },
@@ -114,11 +113,11 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.Log]: { tileset: 'tileset_grass_biome', x: 5, y: 2, },
   [ItemType.Berry]: { tileset: 'tileset_grass_biome', x: 1, y: 2, },
   [ItemType.Shovel]: { tileset: 'tileset_tool_shovel', x: 0, y: 0, },
-  [ItemType.FurnitureBed]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Bed.Blue.Default.x, y: TilesetFurniture.Bed.Blue.Default.y },
-  [ItemType.FurniturePainting]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Painting.Flowers.Default.x, y: TilesetFurniture.Painting.Flowers.Default.y },
-  [ItemType.FurnitureRugLarge]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Rug.Blue.Large.x, y: TilesetFurniture.Rug.Blue.Large.y },
-  [ItemType.FurnitureTable]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Table.Default.Default.x, y: TilesetFurniture.Table.Default.Default.y },
-  [ItemType.FurnitureLamp]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Lamp.Blue.Default.x, y: TilesetFurniture.Lamp.Blue.Default.y },
+  [ItemType.FurnitureBed]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Bed.Blue.Default.x, y: TilesetFurniture.Bed.Blue.Default.y, },
+  [ItemType.FurniturePainting]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Painting.Flowers.Default.x, y: TilesetFurniture.Painting.Flowers.Default.y, },
+  [ItemType.FurnitureRugLarge]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Rug.Blue.Large.x, y: TilesetFurniture.Rug.Blue.Large.y, },
+  [ItemType.FurnitureTable]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Table.Default.Default.x, y: TilesetFurniture.Table.Default.Default.y, },
+  [ItemType.FurnitureLamp]: { tileset: TilesetFurniture.id, x: TilesetFurniture.Lamp.Blue.Default.x, y: TilesetFurniture.Lamp.Blue.Default.y, },
   [ItemType.HouseKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
   [ItemType.RoomKeyFarmersSonBedroom]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
   [ItemType.Sprinkler]: { tileset: 'tileset_chicken', x: 0, y: 0, },
@@ -148,7 +147,7 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.FurnitureTable]: 1,
   [ItemType.FurnitureLamp]: 1,
   [ItemType.RoomKeyFarmersSonBedroom]: 1,
-  [ItemType.Sprinkler]: 1
+  [ItemType.Sprinkler]: 1,
 };
 
 export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
@@ -181,7 +180,7 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
   [ItemType.Sprinkler]: 1,
-}
+};
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   // tools
@@ -212,13 +211,13 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
   [ItemType.Sprinkler]: 1,
-}
+};
 
 export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   // keys
   [ItemType.GateKey]: 'Gate Key',
   [ItemType.HouseKey]: 'House Key',
-  [ItemType.RoomKeyFarmersSonBedroom]: `Farmer's Son's Bedroom Key`,
+  [ItemType.RoomKeyFarmersSonBedroom]: 'Farmer\'s Son\'s Bedroom Key',
   //
   [ItemType.Chicken]: 'Chicken',
   [ItemType.Egg]: 'Egg',
@@ -235,19 +234,19 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.Log]: 'Log',
   [ItemType.Berry]: 'Berry',
   [ItemType.Shovel]: 'Shovel',
-  [ItemType.FurnitureBed]: "Bed",
-  [ItemType.FurniturePainting]: "Painting",
-  [ItemType.FurnitureRugLarge]: "Large Rug",
-  [ItemType.FurnitureTable]: "Table",
-  [ItemType.FurnitureLamp]: "Lamp",
-  [ItemType.Sprinkler]: "Sprinkler",
-}
+  [ItemType.FurnitureBed]: 'Bed',
+  [ItemType.FurniturePainting]: 'Painting',
+  [ItemType.FurnitureRugLarge]: 'Large Rug',
+  [ItemType.FurnitureTable]: 'Table',
+  [ItemType.FurnitureLamp]: 'Lamp',
+  [ItemType.Sprinkler]: 'Sprinkler',
+};
 
 export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   // keys
   [ItemType.GateKey]: 'Gate Keys',
   [ItemType.HouseKey]: 'House Keys',
-  [ItemType.RoomKeyFarmersSonBedroom]: `Farmer's Son's Bedroom Keys`,
+  [ItemType.RoomKeyFarmersSonBedroom]: 'Farmer\'s Son\'s Bedroom Keys',
   //
   [ItemType.Chicken]: 'Chickens',
   [ItemType.Egg]: 'Eggs',
@@ -264,19 +263,19 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.Log]: 'Logs',
   [ItemType.Berry]: 'Berries',
   [ItemType.Shovel]: 'Shovels',
-  [ItemType.FurnitureBed]: "Beds",
-  [ItemType.FurniturePainting]: "Paintings",
-  [ItemType.FurnitureRugLarge]: "Large Rugs",
-  [ItemType.FurnitureTable]: "Tables",
-  [ItemType.FurnitureLamp]: "Lamps",
-  [ItemType.Sprinkler]: "Sprinkler",
-}
+  [ItemType.FurnitureBed]: 'Beds',
+  [ItemType.FurniturePainting]: 'Paintings',
+  [ItemType.FurnitureRugLarge]: 'Large Rugs',
+  [ItemType.FurnitureTable]: 'Tables',
+  [ItemType.FurnitureLamp]: 'Lamps',
+  [ItemType.Sprinkler]: 'Sprinkler',
+};
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   // keys
-  [ItemType.GateKey]: `A key for a Gate, it's old and rusty looking. It tastes kinda funny too.`,
-  [ItemType.HouseKey]: `A key for the House at the farm. This is the key to my future.`,
-  [ItemType.RoomKeyFarmersSonBedroom]: `A key to the Farmer's Son's bedroom.`,
+  [ItemType.GateKey]: 'A key for a Gate, it\'s old and rusty looking. It tastes kinda funny too.',
+  [ItemType.HouseKey]: 'A key for the House at the farm. This is the key to my future.',
+  [ItemType.RoomKeyFarmersSonBedroom]: 'A key to the Farmer\'s Son\'s bedroom.',
   //
   [ItemType.Chicken]: 'The thing that comes out of an Egg.',
   [ItemType.Egg]: 'The thing that comes out of a Chicken.',
@@ -284,22 +283,22 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.Wheat]: 'Wheat, can be made into things like bread (not in this game though, sorry pal).',
   [ItemType.TomatoSeeds]: 'If I plant these they will grow into a Tomato.',
   [ItemType.Tomato]: 'Like an Orange but red (trust me on this one).',
-  [ItemType.Hoe]: `A long-handled gardening tool with a thin metal blade. I can use this to prepare the ground for planting seeds. Some bearded guy in a red jacket is always raving on about these.`,
+  [ItemType.Hoe]: 'A long-handled gardening tool with a thin metal blade. I can use this to prepare the ground for planting seeds. Some bearded guy in a red jacket is always raving on about these.',
   [ItemType.WateringCan]: 'I can use this to water dirt.',
   [ItemType.Chest]: 'I can put my treasures in here, or maybe just my socks or something.',
-  [ItemType.Axe]: `A tool with a sharp blade. I can use this to chop down trees.`,
-  [ItemType.Pickaxe]: `A tool with a pointed blunt head. I can use this to break rocks.`,
-  [ItemType.Rock]: `A rock that was broken from an even larger rock, I can use this to make things.`,
-  [ItemType.Log]: `A log that was cut from a mighty tree, I can use this to make things.`,
-  [ItemType.Berry]: `A declious berry. If I plant it a berry tree will grow.`,
-  [ItemType.Shovel]: `A tool with a blunt head. I can use this to dig holes.`,
-  [ItemType.FurnitureBed]: "Somewhere for me to sleep.",
-  [ItemType.FurniturePainting]: "A lovely painting to hang on the wall.",
-  [ItemType.FurnitureRugLarge]: "A lovely rug to place on the floor.",
-  [ItemType.FurnitureTable]: "La mesa.",
-  [ItemType.FurnitureLamp]: "Lamps.",
-  [ItemType.Sprinkler]: "Automagically waters surrounding crops.",
-}
+  [ItemType.Axe]: 'A tool with a sharp blade. I can use this to chop down trees.',
+  [ItemType.Pickaxe]: 'A tool with a pointed blunt head. I can use this to break rocks.',
+  [ItemType.Rock]: 'A rock that was broken from an even larger rock, I can use this to make things.',
+  [ItemType.Log]: 'A log that was cut from a mighty tree, I can use this to make things.',
+  [ItemType.Berry]: 'A declious berry. If I plant it a berry tree will grow.',
+  [ItemType.Shovel]: 'A tool with a blunt head. I can use this to dig holes.',
+  [ItemType.FurnitureBed]: 'Somewhere for me to sleep.',
+  [ItemType.FurniturePainting]: 'A lovely painting to hang on the wall.',
+  [ItemType.FurnitureRugLarge]: 'A lovely rug to place on the floor.',
+  [ItemType.FurnitureTable]: 'La mesa.',
+  [ItemType.FurnitureLamp]: 'Lamps.',
+  [ItemType.Sprinkler]: 'Automagically waters surrounding crops.',
+};
 
 export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   // keys
@@ -328,7 +327,7 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
   [ItemType.Sprinkler]: true,
-}
+};
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   // keys
@@ -357,7 +356,7 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
   [ItemType.Sprinkler]: true,
-}
+};
 
 export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   // keys
@@ -386,7 +385,7 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
   [ItemType.Sprinkler]: true,
-}
+};
 
 export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   // keys
@@ -415,7 +414,7 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureTable]: false,
   [ItemType.FurnitureLamp]: true,
   [ItemType.Sprinkler]: false,
-}
+};
 
 export interface ItemSprite {
   tileset: string;
@@ -434,7 +433,6 @@ export type ItemList = Array<Item | undefined>;
  * A reusable inventory class for managing item storage with utilities
  */
 export class Inventory {
-
   items: ItemList = [];
   rows: number;
   columns: number;
@@ -454,8 +452,8 @@ export class Inventory {
 
   /**
    * finds the index of first slot with room in stack (ignoring empty slots), otherwise returns undefined
-   * @param type 
-   * @returns 
+   * @param type
+   * @returns
    */
   getFirstSlotWithRoom(type: ItemType): number | undefined {
     for (let i = 0; i < this.size; i++) {
@@ -470,7 +468,7 @@ export class Inventory {
       }
 
       if (item.currentStackSize >= Inventory.getItemMaxStackSize(item.type)) {
-        continue
+        continue;
       }
 
       return i;
@@ -481,7 +479,7 @@ export class Inventory {
 
   /**
    * finds the index of the first free slot, if none available, returns undefined
-   * @returns 
+   * @returns
    */
   getFirstSlotAvailable(): number | undefined {
     for (let i = 0; i < this.size; i++) {
@@ -495,7 +493,7 @@ export class Inventory {
 
   /**
   * finds the index of the first slot for a given type, if none found, returns undefined
-  * @returns 
+  * @returns
   */
   getFirstIndexForType(type: ItemType): number | undefined {
     for (let i = 0; i < this.size; i++) {
@@ -518,11 +516,10 @@ export class Inventory {
    * Failing that, create a new stack, returning the new stack
    * Failing that, returns undefined if item was not added to inventory
    * TODO(shane): handle passing a number also (i.e. more than one of an item)
-   * @param type 
-   * @returns 
+   * @param type
+   * @returns
    */
   addToInventory(type: ItemType): Item | undefined {
-
     // existing stack
     const stackIndex = this.getFirstSlotWithRoom(type);
     if (stackIndex !== undefined) {
@@ -546,8 +543,8 @@ export class Inventory {
   /**
    * Removes the specified amount from item stack at given index.
    * Failing that, returns undefined.
-   * @param index 
-   * @returns 
+   * @param index
+   * @returns
    */
   removeFromInventoryByIndex(index: number, amount: number): Item | undefined {
     const item = this.items[index];
@@ -572,12 +569,12 @@ export class Inventory {
 
   /**
    * Returns true if the inventory contains the specificed amount and item, across multiple stacks
-   * @param type 
-   * @param amount 
+   * @param type
+   * @param amount
    */
   hasItem(type: ItemType, amount: number): boolean {
     const items = this.items.filter(item => item !== undefined && item.type === type);
-    const total = items.reduce((acc, curr) => acc + curr.currentStackSize, 0)
+    const total = items.reduce((acc, curr) => acc + curr.currentStackSize, 0);
 
     if (total >= amount) {
       return true;
@@ -587,9 +584,9 @@ export class Inventory {
   }
 
   /**
-   * Removes items until the provided amount has been removed or we are at the end of the inventory 
-   * @param type 
-   * @param amount 
+   * Removes items until the provided amount has been removed or we are at the end of the inventory
+   * @param type
+   * @param amount
    */
   removeItems(type: ItemType, amount: number): boolean {
     let removed = 0;
@@ -645,9 +642,9 @@ export class Inventory {
     }
 
     return {
-      type: type,
-      currentStackSize: currentStackSize
-    }
+      type,
+      currentStackSize,
+    };
   }
 
   static getItemName(type: ItemType, plural: boolean = false): string {
@@ -693,5 +690,4 @@ export class Inventory {
   static canItemBeInteractedWith(type: ItemType): boolean {
     return TYPE_TO_CAN_INTERACT_MAP[type];
   }
-
 }

@@ -1,9 +1,9 @@
 import { type Client } from '@core/client';
 import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 import { Scene, type SceneGlobalsBaseConfig } from '@core/model/scene';
-import { Inventory, Item, ItemList, ItemType } from '@game/models/inventory.model';
+import { Inventory, type Item, type ItemList, ItemType } from '@game/models/inventory.model';
 import { SCENE_GAME_MAP_FARM_HOUSE } from './maps/farm-house/map';
-import { SceneMapConstructorSignature } from '@core/model/scene-map';
+import { type SceneMapConstructorSignature } from '@core/model/scene-map';
 import { SCENE_GAME_MAP_UNDERGROUND } from './maps/underground/map';
 import { QuestName } from '@game/models/quest.model';
 import { SCENE_GAME_MAP_FARM } from './maps/farm/map';
@@ -11,7 +11,7 @@ import { SCENE_GAME_MAP_HOUSE } from './maps/house/map';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { SaveFileKeys, Store } from '@game/utils/store.utils';
 import { SCENE_GAME_MAP_TOWN } from './maps/town/map';
-import { Coordinate } from '@core/model/coordinate';
+import { type Coordinate } from '@core/model/coordinate';
 import { WorldTimeObject } from '@game/objects/world-time.object';
 import { SCENE_GAME_MAP_TEST_PATHING_1 } from './maps/test/pathing/map.1';
 import { SCENE_GAME_MAP_TEST_PATHING_2 } from './maps/test/pathing/map.2';
@@ -32,14 +32,14 @@ export enum Day {
   Thursday = 'Thursday',
   Friday = 'Friday',
   Saturday = 'Saturday',
-  Sunday = 'Sunday',
+  Sunday = 'Sunday'
 }
 
 export enum Season {
   Spring = 'Spring',
   Summer = 'Summer',
   Autumn = 'Autumn',
-  Winter = 'Winter',
+  Winter = 'Winter'
 }
 
 export interface QuestStatus {
@@ -61,7 +61,7 @@ export enum SceneFlag {
   path_to_farm_cleared = 'path_to_farm_cleared',
   farm_visited = 'farm_visited',
   house_visited = 'house_visited',
-  slept_in_farm_house_bed = 'slept_in_farm_house_bed',
+  slept_in_farm_house_bed = 'slept_in_farm_house_bed'
 }
 
 export enum StoryFlag {
@@ -91,7 +91,7 @@ export enum StoryFlag {
   world_collect_berries_watering_can = 'world_collect_berries_watering_can',
   // farm house
   farm_house_bedroom_door_locked_started = 'farm_house_bedroom_door_locked_started',
-  farm_house_bedroom_door_locked_completed = 'farm_house_bedroom_door_locked_completed',
+  farm_house_bedroom_door_locked_completed = 'farm_house_bedroom_door_locked_completed'
 }
 
 interface Globals extends SceneGlobalsBaseConfig {
@@ -101,16 +101,16 @@ interface Globals extends SceneGlobalsBaseConfig {
   gold: number;
   player: {
     enabled: boolean;
-    movementEnabled: boolean
+    movementEnabled: boolean;
     actionsEnabled: boolean;
     interactEnabled: boolean;
-  }
-  flags: Record<SceneFlag, boolean>,
+  };
+  flags: Record<SceneFlag, boolean>;
   quests: Record<QuestName, QuestStatus>;
   warp: {
-    position: Coordinate | null,
-    target: Coordinate | null,
-  },
+    position: Coordinate | null;
+    target: Coordinate | null;
+  };
   story_flags: Record<StoryFlag, boolean | number>;
   time: number;
   day: number;
@@ -225,7 +225,7 @@ export class SCENE_GAME extends Scene {
 
     // persistent objects
     [
-      new WorldTimeObject(this, { x: 0, y: 0})
+      new WorldTimeObject(this, { x: 0, y: 0, })
     ].forEach(object => {
       this.persistentObjects.set(object.id, object);
       this.objects.set(object.id, object);
@@ -234,19 +234,19 @@ export class SCENE_GAME extends Scene {
     if (CanvasConstants.SAVE_FILE_ID) {
       this.globals.quests = {
         ...this.globals.quests,
-        ...Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests)
+        ...Store.get<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests),
       };
 
       this.globals.flags = {
         ...this.globals.flags,
-        ...Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags)
+        ...Store.get<Record<SceneFlag, boolean>>(SaveFileKeys.Flags),
       };
 
       this.globals.story_flags = {
         ...this.globals.story_flags,
-        ...Store.get<Record<StoryFlag, boolean>>(SaveFileKeys.StoryFlags)
+        ...Store.get<Record<StoryFlag, boolean>>(SaveFileKeys.StoryFlags),
       };
-      
+
       this.globals.inventory.items = Store.get<ItemList>(SaveFileKeys.Inventory).map(item => {
         // JSON Store doesn't have undefined, only null so it needs to be mapped
         if (item === null) {
@@ -265,16 +265,16 @@ export class SCENE_GAME extends Scene {
 
     // this is for debugging, letting us launch into a specific map
     const MAP_MAP: Record<string, SceneMapConstructorSignature> = {
-      'world': SCENE_GAME_MAP_WORLD,
-      'underground': SCENE_GAME_MAP_UNDERGROUND,
+      world: SCENE_GAME_MAP_WORLD,
+      underground: SCENE_GAME_MAP_UNDERGROUND,
       'farm-house': SCENE_GAME_MAP_FARM_HOUSE,
-      'farm': SCENE_GAME_MAP_FARM,
-      'house': SCENE_GAME_MAP_HOUSE,
-      'town': SCENE_GAME_MAP_TOWN,
+      farm: SCENE_GAME_MAP_FARM,
+      house: SCENE_GAME_MAP_HOUSE,
+      town: SCENE_GAME_MAP_TOWN,
       'test/pathing/1': SCENE_GAME_MAP_TEST_PATHING_1,
       'test/pathing/2': SCENE_GAME_MAP_TEST_PATHING_2,
       'test/pathing/3': SCENE_GAME_MAP_TEST_PATHING_3,
-    }
+    };
     const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? SCENE_GAME_MAP_WORLD;
 
     this.changeMap(map);
@@ -319,7 +319,7 @@ export class SCENE_GAME extends Scene {
     // run callback for current map
     // this will need to be called for other maps on entry
     this.objects.forEach(object => {
-      if(hasOnNewDay(object)){
+      if (hasOnNewDay(object)) {
         object.onNewDay();
       }
     });
@@ -327,7 +327,7 @@ export class SCENE_GAME extends Scene {
 
   get day(): Day {
     const index = this.globals.day % DAYS_PER_WEEK;
-    switch(index){
+    switch (index) {
       case 0:
         return Day.Monday;
       case 1:
@@ -347,7 +347,7 @@ export class SCENE_GAME extends Scene {
 
   get season(): Season {
     const index = Math.floor(this.globals.day / DAYS_PER_SEASON) % SEASONS_PER_YEAR;
-    switch(index){
+    switch (index) {
       case 0:
         return Season.Spring;
       case 1:
@@ -362,5 +362,4 @@ export class SCENE_GAME extends Scene {
   get year(): number {
     return Math.floor(this.globals.day / (DAYS_PER_SEASON * SEASONS_PER_YEAR)) + 1;
   }
-
 }

@@ -5,7 +5,7 @@ import { type Interactable } from '@game/models/components/interactable.model';
 import { InventoryObject } from '@game/objects/inventory/inventory.object';
 import { Assets } from '@core/utils/assets.utils';
 import { Inventory } from '@game/models/inventory.model';
-import { PlayerObject } from '@game/objects/player.object';
+import { type PlayerObject } from '@game/objects/player.object';
 
 const TILE_SET: string = 'tileset_chest';
 const RENDERER_LAYER = 8;
@@ -15,7 +15,7 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class ChestObject extends SceneObject implements Interactable {
-  private player: PlayerObject;
+  private readonly player: PlayerObject;
 
   inventory: Inventory;
   rows: number = 5;
@@ -55,7 +55,7 @@ export class ChestObject extends SceneObject implements Interactable {
         x: 0,
         y: 0,
         otherInventory: this.inventory,
-        onClose: () => { this.actionClose() },
+        onClose: () => { this.actionClose(); },
         player: this.player,
       }
     ));
@@ -75,7 +75,7 @@ export class ChestObject extends SceneObject implements Interactable {
         this.transform.position.world.x,
         this.transform.position.world.y - 1,
         1,
-        2,
+        2
       );
     } else {
       RenderUtils.renderSprite(
@@ -86,9 +86,8 @@ export class ChestObject extends SceneObject implements Interactable {
         this.transform.position.world.x,
         this.transform.position.world.y - 1,
         1,
-        2,
+        2
       );
     }
   }
-
 }

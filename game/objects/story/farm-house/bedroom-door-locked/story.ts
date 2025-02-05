@@ -1,4 +1,4 @@
-import { SceneObjectBaseConfig } from '@core/model/scene-object';
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { StoryObject } from '../../story.object';
 import { FarmHouseBedroomDoorObject } from './bedroom-door.object';
@@ -6,9 +6,7 @@ import { FarmHouseBedroomDoorObject } from './bedroom-door.object';
 export interface Config extends SceneObjectBaseConfig {
 }
 
-
 export class StoryFarmHouseBedroomDoorLockedObject extends StoryObject {
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -25,11 +23,10 @@ export class StoryFarmHouseBedroomDoorLockedObject extends StoryObject {
   }
 
   onStart(): void {
-    this.addChild(new FarmHouseBedroomDoorObject(this.scene, {  x: 18, y: 7 }));
+    this.addChild(new FarmHouseBedroomDoorObject(this.scene, { x: 18, y: 7, }));
   }
 
   onComplete(): void {
     this.destroy();
   }
-
 }

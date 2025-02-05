@@ -1,6 +1,6 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
-import { Interactable } from '@game/models/components/interactable.model';
+import { type Interactable } from '@game/models/components/interactable.model';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { MessageUtils } from '@game/utils/message.utils';
 
@@ -8,7 +8,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class HoleObject extends SceneObject implements Interactable {
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -24,7 +23,7 @@ export class HoleObject extends SceneObject implements Interactable {
       this.boundingBox.world.left,
       this.boundingBox.world.top,
       {
-        width: 0.5
+        width: 0.5,
       }
     );
   }
@@ -32,7 +31,7 @@ export class HoleObject extends SceneObject implements Interactable {
   interact(): void {
     MessageUtils.showMessage(
       this.scene,
-      `It's a hole in the ground, I'd better not fall in. I can plant things here.`,
+      'It\'s a hole in the ground, I\'d better not fall in. I can plant things here.'
     );
   }
 }

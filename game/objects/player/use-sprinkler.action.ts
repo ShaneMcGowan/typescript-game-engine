@@ -1,11 +1,11 @@
-import { Input } from "@core/utils/input.utils";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { PlayerObject } from '@game/objects/player.object';
-import { SceneObject } from "@core/model/scene-object";
-import { SprinklerObject } from "../sprinkler.object";
+import { Input } from '@core/utils/input.utils';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { type PlayerObject } from '@game/objects/player.object';
+import { type SceneObject } from '@core/model/scene-object';
+import { SprinklerObject } from '../sprinkler.object';
 
 export function useSprinkler(scene: SCENE_GAME, player: PlayerObject, target?: SceneObject): void {
-  if(target){
+  if (target) {
     return;
   }
 
@@ -15,8 +15,8 @@ export function useSprinkler(scene: SCENE_GAME, player: PlayerObject, target?: S
   const object = new SprinklerObject(
     scene,
     {
-      x: x,
-      y: y,
+      x,
+      y,
     }
   );
 

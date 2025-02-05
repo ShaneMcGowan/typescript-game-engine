@@ -7,7 +7,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class MainMenuButtonNewGameObject extends ButtonObject {
-
   width = 8;
   height = 2;
 
@@ -19,11 +18,10 @@ export class MainMenuButtonNewGameObject extends ButtonObject {
   }
 
   get label(): string {
-    return `New Game`
+    return 'New Game';
   }
 
   onClick(): void {
     this.scene.changeScene(SCENE_GAME);
   }
-
 }

@@ -27,7 +27,7 @@ interface Config extends SceneObjectBaseConfig {
 
 export class FenceObject extends SceneObject implements Interactable {
   private readonly type: { x: number; y: number; } = FenceType.FencePost;
-  private open = false;
+  private readonly open = false;
 
   constructor(
     protected scene: Scene,
@@ -59,7 +59,6 @@ export class FenceObject extends SceneObject implements Interactable {
   }
 
   interact(): void {
-    return;
-    
+
   }
 }

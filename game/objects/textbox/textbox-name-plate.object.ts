@@ -11,7 +11,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class TextboxNamePlateObject extends UiObject {
-
   // config
   name: string;
   height = 1.5;
@@ -32,7 +31,6 @@ export class TextboxNamePlateObject extends UiObject {
   }
 
   private renderContainer(context: CanvasRenderingContext2D): void {
-
     // left
     RenderUtils.renderSprite(
       context,
@@ -42,7 +40,7 @@ export class TextboxNamePlateObject extends UiObject {
       this.transform.position.world.x,
       this.transform.position.world.y,
       TilesetDialogueBox.TopLeft.Default.Default.width,
-      TilesetDialogueBox.TopLeft.Default.Default.height,
+      TilesetDialogueBox.TopLeft.Default.Default.height
     );
 
     RenderUtils.renderSprite(
@@ -53,11 +51,11 @@ export class TextboxNamePlateObject extends UiObject {
       this.transform.position.world.x,
       this.transform.position.world.y + 0.5,
       TilesetDialogueBox.BottomLeft.Default.Default.width,
-      TilesetDialogueBox.BottomLeft.Default.Default.height,
+      TilesetDialogueBox.BottomLeft.Default.Default.height
     );
 
     // center
-    for(let i = 1; i < this.width - 1; i++){
+    for (let i = 1; i < this.width - 1; i++) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetDialogueBox.id],
@@ -66,7 +64,7 @@ export class TextboxNamePlateObject extends UiObject {
         this.transform.position.world.x + i,
         this.transform.position.world.y,
         TilesetDialogueBox.Top.Default.Default.width,
-        TilesetDialogueBox.Top.Default.Default.height,
+        TilesetDialogueBox.Top.Default.Default.height
       );
       RenderUtils.renderSprite(
         context,
@@ -76,7 +74,7 @@ export class TextboxNamePlateObject extends UiObject {
         this.transform.position.world.x + i,
         this.transform.position.world.y + 0.5,
         TilesetDialogueBox.Bottom.Default.Default.width,
-        TilesetDialogueBox.Bottom.Default.Default.height,
+        TilesetDialogueBox.Bottom.Default.Default.height
       );
     }
 
@@ -89,7 +87,7 @@ export class TextboxNamePlateObject extends UiObject {
       this.transform.position.world.x + this.width - 1,
       this.transform.position.world.y,
       TilesetDialogueBox.TopRight.Default.Default.width,
-      TilesetDialogueBox.TopRight.Default.Default.height,
+      TilesetDialogueBox.TopRight.Default.Default.height
     );
 
     RenderUtils.renderSprite(
@@ -100,10 +98,8 @@ export class TextboxNamePlateObject extends UiObject {
       this.transform.position.world.x + this.width - 1,
       this.transform.position.world.y + 0.5,
       TilesetDialogueBox.BottomRight.Default.Default.width,
-      TilesetDialogueBox.BottomRight.Default.Default.height,
+      TilesetDialogueBox.BottomRight.Default.Default.height
     );
-
-   
   }
 
   private renderName(context: CanvasRenderingContext2D): void {
@@ -113,7 +109,7 @@ export class TextboxNamePlateObject extends UiObject {
       this.centre.world.x,
       this.centre.world.y + (CanvasConstants.TILE_PIXEL_SIZE * 2),
       {
-        align: 'center'
+        align: 'center',
       }
     );
   }

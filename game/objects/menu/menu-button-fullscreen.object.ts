@@ -1,12 +1,11 @@
 import { type Scene } from '@core/model/scene';
 import { ButtonObject } from '../button.object';
-import { SceneObjectBaseConfig } from '@core/model/scene-object';
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
 export class MenuButtonFullscreenObject extends ButtonObject {
-
   constructor(
     protected scene: Scene,
     config: Config
@@ -15,33 +14,32 @@ export class MenuButtonFullscreenObject extends ButtonObject {
   }
 
   get label(): string {
-    if(!this.isFullscreenAvailable){
-      return `Fullscreen Unavailable`;
+    if (!this.isFullscreenAvailable) {
+      return 'Fullscreen Unavailable';
     }
 
     return this.isFullscreen ? 'Exit Fullscreen' : 'Go Fullscreen';
   }
 
   onClick(): void {
-    if(!this.isFullscreenAvailable){
+    if (!this.isFullscreenAvailable) {
       return;
     }
 
-    if (this.isFullscreen) { 
+    if (this.isFullscreen) {
       document.exitFullscreen();
-    }
-    else { 
+    } else {
       this.scene.displayContext.canvas.requestFullscreen()
-      .then(() => {
-      })
-      .catch((error) => {
-        throw new Error(error);
-      })
+        .then(() => {
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
     }
   }
 
   private get isFullscreen(): boolean {
-    if(document.fullscreenElement || document.webkitIsFullScreen){
+    if (document.fullscreenElement || document.webkitIsFullScreen) {
       return true;
     }
 
@@ -52,5 +50,4 @@ export class MenuButtonFullscreenObject extends ButtonObject {
     const available = document.fullscreenEnabled || document.mozFullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled;
     return available;
   }
-
 }

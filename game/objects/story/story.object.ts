@@ -1,12 +1,10 @@
-import { SceneObject, SceneObjectBaseConfig } from '@core/model/scene-object';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { SceneFlag, StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 
 export interface Config extends SceneObjectBaseConfig {
 }
 
-
 export class StoryObject extends SceneObject {
-
   started: boolean = false;
   completing: boolean = false;
 
@@ -33,42 +31,42 @@ export class StoryObject extends SceneObject {
   }
 
   onAwake(): void {
-    if(!this.scene.getStoryFlag(this.flagComplete)){
+    if (!this.scene.getStoryFlag(this.flagComplete)) {
       return;
     }
-    
+
     this.flags.update = false;
 
     this.destroy();
   }
 
   onUpdate(): void {
-    if(!this.scene.getStoryFlag(this.flagStart)){
+    if (!this.scene.getStoryFlag(this.flagStart)) {
       return;
     }
 
-    if(!this.started){
+    if (!this.started) {
       this.started = true;
       this.onStart();
       return;
     }
 
-    if(!this.scene.getStoryFlag(this.flagComplete)){
+    if (!this.scene.getStoryFlag(this.flagComplete)) {
       return;
     }
 
-    if(this.completing){
+    if (this.completing) {
       return;
     }
 
     this.completing = true;
     this.onComplete();
 
-    if(this.flagNext === undefined){
+    if (this.flagNext === undefined) {
       return;
     }
 
-    this.flagNext.forEach(flag => this.scene.setStoryFlag(flag, true));
+    this.flagNext.forEach(flag => { this.scene.setStoryFlag(flag, true); });
   }
 
   onStart(): void {
@@ -78,6 +76,4 @@ export class StoryObject extends SceneObject {
   onComplete(): void {
     console.log('[StoryObject] onComplete');
   }
-
-
 }

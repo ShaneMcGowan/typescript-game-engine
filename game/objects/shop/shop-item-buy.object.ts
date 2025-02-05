@@ -1,13 +1,12 @@
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input, MouseKey } from "@core/utils/input.utils";
-import { Assets } from "@core/utils/assets.utils";
-import { ShopObject } from "../shop.object";
-import { Inventory, ItemType, TYPE_TO_SPRITE_MAP } from "@game/models/inventory.model";
-
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { MouseUtils } from '@core/utils/mouse.utils';
+import { Input, MouseKey } from '@core/utils/input.utils';
+import { Assets } from '@core/utils/assets.utils';
+import { type ShopObject } from '../shop.object';
+import { type Inventory, type ItemType, TYPE_TO_SPRITE_MAP } from '@game/models/inventory.model';
 
 interface Config extends SceneObjectBaseConfig {
   type: ItemType;
@@ -58,15 +57,13 @@ export class ShopItemBuyObject extends SceneObject {
       return;
     }
 
-
     const item = this.inventory.addToInventory(this.type);
 
-    if(item){
+    if (item) {
       this.scene.globals.gold -= this.price;
     } else {
       // TODO: some sort of indication that the player has no room
     }
-
 
     (this.parent as ShopObject).refreshShopState();
   }
@@ -80,13 +77,12 @@ export class ShopItemBuyObject extends SceneObject {
       this.height,
       {
         colour: 'white',
-        type: 'tile'
+        type: 'tile',
       }
     );
   }
 
   private renderItem(context: CanvasRenderingContext2D): void {
-
     RenderUtils.renderSprite(
       context,
       Assets.images[this.sprite.tileset],
@@ -96,7 +92,7 @@ export class ShopItemBuyObject extends SceneObject {
       this.transform.position.world.y,
       undefined,
       undefined,
-      {centered: true}
+      { centered: true, }
     );
   }
 
@@ -105,7 +101,7 @@ export class ShopItemBuyObject extends SceneObject {
       context,
       `$${this.price}`,
       this.transform.position.world.x,
-      this.transform.position.world.y + 1,
+      this.transform.position.world.y + 1
     );
   }
 

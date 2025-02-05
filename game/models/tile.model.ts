@@ -1,4 +1,4 @@
-export type TileConfig = {
+export interface TileConfig {
   x: number;
   y: number;
   width?: number;

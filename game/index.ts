@@ -1,14 +1,14 @@
 import { Client } from '@core/client';
 import { EditorUtils } from '@core/editor/editor.utils';
 import { MapEditor } from '@core/editor/map-editor.utils';
-import { Assets, AssetsConfig } from '@core/utils/assets.utils';
+import { Assets, type AssetsConfig } from '@core/utils/assets.utils';
 import { type SceneConstructorSignature } from '@core/model/scene';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
 import { SCENE_GAME } from '@game/scenes/game/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { DeviceType } from '@core/model/device-type';
 
-(function () {
+(function() {
   /**
    * Declare your canvas constants here
    */
@@ -17,14 +17,14 @@ import { DeviceType } from '@core/model/device-type';
 
   const params = new URLSearchParams(window.location.search);
 
-  // debug 
-  if(params.get('debug')){
+  // debug
+  if (params.get('debug')) {
     CanvasConstants.DEBUG_MODE = true;
   }
 
   // viewport
   const deviceParam = params.get('device');
-  if(deviceParam === 'mobile'){
+  if (deviceParam === 'mobile') {
     CanvasConstants.CANVAS_TILE_WIDTH = 15;
     CanvasConstants.CANVAS_TILE_HEIGHT = 24;
     CanvasConstants.DEVICE_TYPE = DeviceType.Mobile;
@@ -36,8 +36,8 @@ import { DeviceType } from '@core/model/device-type';
 
   const SCENE_MAP: Record<string, SceneConstructorSignature> = {
     'main-menu': SCENE_MAIN_MENU,
-    'game': SCENE_GAME
-  }
+    game: SCENE_GAME,
+  };
   const scene: SceneConstructorSignature = SCENE_MAP[sceneParam] ?? SCENE_MAIN_MENU;
 
   const config: AssetsConfig = {
@@ -71,7 +71,7 @@ import { DeviceType } from '@core/model/device-type';
     },
     audio: {},
     fonts: {
-      bookxel: 'assets/fonts/bookxel.woff'
+      bookxel: 'assets/fonts/bookxel.woff',
     },
   };
   Assets.initialise(config);

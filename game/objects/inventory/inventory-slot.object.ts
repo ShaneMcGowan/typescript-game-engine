@@ -1,20 +1,20 @@
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input, MouseKey } from "@core/utils/input.utils";
-import { Assets } from "@core/utils/assets.utils";
-import { InventoryObject } from "./inventory.object";
-import { ItemSprite, Item, TYPE_TO_SPRITE_MAP, Inventory } from "@game/models/inventory.model";
-import { TilesetUI } from "@game/constants/tilesets/ui.tileset";
-import { UiObject } from "@core/objects/ui.object";
-import { Scene } from "@core/model/scene";
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { MouseUtils } from '@core/utils/mouse.utils';
+import { Input, MouseKey } from '@core/utils/input.utils';
+import { Assets } from '@core/utils/assets.utils';
+import { type InventoryObject } from './inventory.object';
+import { type ItemSprite, type Item, TYPE_TO_SPRITE_MAP, Inventory } from '@game/models/inventory.model';
+import { TilesetUI } from '@game/constants/tilesets/ui.tileset';
+import { UiObject } from '@core/objects/ui.object';
+import { Scene } from '@core/model/scene';
 
 export enum SlotType {
   Inventory = 'Inventory',
   ShopBuy = 'ShopBuy',
-  ShopSell = 'ShopSell',
+  ShopSell = 'ShopSell'
 }
 
 enum Controls {
@@ -80,11 +80,11 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    if(this.type === SlotType.Inventory){
+    if (this.type === SlotType.Inventory) {
       this.onClickInventory();
-    } else if(this.type === SlotType.ShopBuy){
+    } else if (this.type === SlotType.ShopBuy) {
       this.onClickShopBuy();
-    } else if(this.type === SlotType.ShopSell){
+    } else if (this.type === SlotType.ShopSell) {
       this.onClickShopSell();
     }
   }
@@ -98,18 +98,18 @@ export class InventorySlotObject extends SceneObject {
   }
 
   private onClickShopBuy(): void {
-    if(this.item === undefined){
+    if (this.item === undefined) {
       return;
     }
 
     // check if enough room
-    if(!this.inventory.hasRoomForItem(this.item.type)){
+    if (!this.inventory.hasRoomForItem(this.item.type)) {
       return;
     }
 
     // can afford
     const value = Inventory.getItemBuyValue(this.item.type);
-    if(value > this.scene.globals.gold){
+    if (value > this.scene.globals.gold) {
       return;
     }
 
@@ -121,12 +121,12 @@ export class InventorySlotObject extends SceneObject {
   }
 
   private onClickShopSell(): void {
-    if(this.item === undefined){
+    if (this.item === undefined) {
       return;
     }
 
     // can be sold
-    if(!Inventory.canItemBeSold(this.item.type)){
+    if (!Inventory.canItemBeSold(this.item.type)) {
       return;
     }
 
@@ -161,7 +161,7 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    const opacity = (this.type === SlotType.ShopSell && !Inventory.canItemBeSold(this.item.type) ? 0.25 : 1)
+    const opacity = (this.type === SlotType.ShopSell && !Inventory.canItemBeSold(this.item.type) ? 0.25 : 1);
 
     RenderUtils.renderSprite(
       context,
@@ -172,7 +172,7 @@ export class InventorySlotObject extends SceneObject {
       this.transform.position.world.y + 0.5,
       1,
       1,
-      { opacity: opacity }
+      { opacity, }
     );
   }
 
@@ -181,7 +181,7 @@ export class InventorySlotObject extends SceneObject {
       return;
     }
 
-    if(this.type === SlotType.ShopBuy){
+    if (this.type === SlotType.ShopBuy) {
       return;
     }
 
@@ -193,24 +193,24 @@ export class InventorySlotObject extends SceneObject {
       context,
       `${this.item.currentStackSize}`,
       this.transform.position.world.x + 1.25,
-      this.transform.position.world.y + 1.75,
+      this.transform.position.world.y + 1.75
     );
   }
-  
+
   private renderValue(context: CanvasRenderingContext2D): void {
     if (this.item === undefined) {
       return;
     }
-    
-    if(this.type === SlotType.Inventory){
+
+    if (this.type === SlotType.Inventory) {
       return;
     }
 
-    if(this.type === SlotType.ShopSell && !Inventory.canItemBeSold(this.item.type)){
+    if (this.type === SlotType.ShopSell && !Inventory.canItemBeSold(this.item.type)) {
       return;
     }
 
-    const value = this.type === SlotType.ShopBuy ? Inventory.getItemBuyValue(this.item.type) : Inventory.getItemSellValue(this.item.type)
+    const value = this.type === SlotType.ShopBuy ? Inventory.getItemBuyValue(this.item.type) : Inventory.getItemSellValue(this.item.type);
 
     RenderUtils.renderText(
       context,
@@ -219,7 +219,7 @@ export class InventorySlotObject extends SceneObject {
       this.transform.position.world.y + 0.75,
       {
         colour: 'black',
-        align: 'left'
+        align: 'left',
       }
     );
   }
@@ -243,5 +243,4 @@ export class InventorySlotObject extends SceneObject {
 
     return TYPE_TO_SPRITE_MAP[this.item.type];
   }
-
 }

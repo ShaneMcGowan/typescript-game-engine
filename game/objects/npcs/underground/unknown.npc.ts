@@ -1,6 +1,6 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { InteractionStage, NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
-import { Portrait, TextboxObject } from '@game/objects/textbox.object';
+import { type InteractionStage, NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
+import { type Portrait, TextboxObject } from '@game/objects/textbox.object';
 
 type Stage = 'idle' | 'intro' | 'outro';
 
@@ -55,8 +55,8 @@ export class UnknownNpcObject extends NpcObject {
   get default(): InteractionStage {
     return {
       text: '',
-      callback: () => { this.startStageIntro(); }
-    }
+      callback: () => { this.startStageIntro(); },
+    };
   }
 
   private startStageIntro(): void {

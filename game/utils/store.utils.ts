@@ -1,11 +1,11 @@
-import { ItemType } from "@game/models/inventory.model";
+import { ItemType } from '@game/models/inventory.model';
 
 export enum SaveFileKeys {
   Id = 'Id',
   Quests = 'Quests',
   Flags = 'Flags',
   StoryFlags = 'StoryFlags',
-  Inventory = 'Inventory',
+  Inventory = 'Inventory'
 };
 
 export abstract class Store {

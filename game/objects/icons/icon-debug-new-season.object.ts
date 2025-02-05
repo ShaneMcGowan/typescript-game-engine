@@ -1,21 +1,20 @@
-import { SceneObjectBaseConfig } from "@core/model/scene-object";
-import { DAYS_PER_SEASON, SCENE_GAME } from "@game/scenes/game/scene";
-import { IconObject } from "./icon.object";
-import { Assets } from "@core/utils/assets.utils";
-import { RenderUtils } from "@core/utils/render.utils";
-import { TilesetBasic } from "@game/constants/tilesets/basic.tileset";
+import { type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { DAYS_PER_SEASON, type SCENE_GAME } from '@game/scenes/game/scene';
+import { IconObject } from './icon.object';
+import { Assets } from '@core/utils/assets.utils';
+import { RenderUtils } from '@core/utils/render.utils';
+import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
 export class IconDebugNewSeasonObject extends IconObject {
-
-  constructor(protected scene: SCENE_GAME, config: Config){
+  constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
   }
-  
+
   onRender(context: CanvasRenderingContext2D): void {
-    if(!this.enabled){
+    if (!this.enabled) {
       return;
     }
 
@@ -41,11 +40,10 @@ export class IconDebugNewSeasonObject extends IconObject {
       TilesetBasic.ArrowRight.White.Default.height
     );
   }
-  
+
   onClick(): void {
-    for(let i = 0; i < DAYS_PER_SEASON; i++){
+    for (let i = 0; i < DAYS_PER_SEASON; i++) {
       this.scene.newDay();
     };
   }
-
 }

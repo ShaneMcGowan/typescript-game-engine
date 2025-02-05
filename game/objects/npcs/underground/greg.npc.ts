@@ -1,6 +1,6 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { InteractionStage, InteractionStageIntro, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
-import { Portrait, TextboxObject } from '@game/objects/textbox.object';
+import { type InteractionStage, InteractionStageIntro, NpcObject, type NpcObjectConfig } from '@game/objects/npc.object';
+import { type Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SCENE_GAME_MAP_UNDERGROUND_TEXT } from '@game/scenes/game/maps/underground/constants/map-text.constants';
 
 type Stage = 'idle' | 'hi' | 'pause' | 'bye';
@@ -43,8 +43,8 @@ export class GregNpcObject extends NpcObject {
     }
   }
 
-  get name (): string {
-    return 'Greg'
+  get name(): string {
+    return 'Greg';
   }
 
   get portrait(): Portrait {
@@ -62,8 +62,8 @@ export class GregNpcObject extends NpcObject {
       text: 'TODO:',
       callback: () => {
         this.startStageHi();
-      }
-    }
+      },
+    };
   }
 
   private startStageHi(): void {
@@ -139,5 +139,4 @@ export class GregNpcObject extends NpcObject {
       this.destroy();
     }
   }
-
 }

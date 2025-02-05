@@ -1,11 +1,10 @@
-import { SCENE_GAME, SceneFlag } from "@game/scenes/game/scene";
-import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
-import { ItemType } from "@game/models/inventory.model";
-import { NpcObject } from "@game/objects/npc.object";
-import { Quest, QuestName, QuestText } from "@game/models/quest.model";
+import { type SCENE_GAME, SceneFlag } from '@game/scenes/game/scene';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { ItemType } from '@game/models/inventory.model';
+import { type NpcObject } from '@game/objects/npc.object';
+import { Quest, QuestName, type QuestText } from '@game/models/quest.model';
 
 export class QuestClearPathToFarm extends Quest {
-
   id: QuestName = QuestName.clear_path_to_farm;
 
   constructor(
@@ -26,6 +25,4 @@ export class QuestClearPathToFarm extends Quest {
   check(): boolean {
     return this.scene.globals.flags[SceneFlag.path_to_farm_cleared];
   }
-
-
 }

@@ -6,16 +6,16 @@ import { RenderUtils } from '@core/utils/render.utils';
 import { GamepadKey, Input, MouseKey } from '@core/utils/input.utils';
 import { Assets } from '@core/utils/assets.utils';
 import { InventorySlotObject, SlotType } from './inventory-slot.object';
-import { ObjectFilter } from '@core/model/scene';
+import { type ObjectFilter } from '@core/model/scene';
 import { FillObject } from '@core/objects/fill.object';
 import { InventoryButtonCloseObject } from './inventory-button-close.object';
-import { Inventory, Item } from '@game/models/inventory.model';
+import { Inventory, type Item } from '@game/models/inventory.model';
 import { InventoryButtonTrashObject } from './inventory-button-trash.object';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 import { InventoryTooltipObject } from './inventory-tooltip.object';
 import { InventoryButtonDropObject } from './inventory-button-drop.object';
 import { ItemObject } from '../item.object';
-import { PlayerObject } from '../player.object';
+import { type PlayerObject } from '../player.object';
 import { DeviceType } from '@core/model/device-type';
 import { InventoryGoldCountObject } from './inventory-gold-count.object';
 import { PortraitObject } from '../portrait.object';
@@ -27,13 +27,13 @@ type DraggingType = 'mouse' | 'controller';
 
 export enum InventoryType {
   Inventory = 'Inventory',
-  Shop = 'Shop',
+  Shop = 'Shop'
 }
 
 interface Config extends SceneObjectBaseConfig {
   player?: PlayerObject;
   // chest?: ChestObject;
-  
+
   otherInventory?: Inventory;
   onClose?: () => void;
   type?: InventoryType;
@@ -42,23 +42,22 @@ interface Config extends SceneObjectBaseConfig {
 interface Grid {
   columns: number;
   rows: number;
-  positions: { x: number; y: number; }[][];
+  positions: Array<Array<{ x: number; y: number; }>>;
   selector: {
-    x: 0,
-    y: 0,
-  }
+    x: 0;
+    y: 0;
+  };
 }
 
 export class InventoryObject extends SceneObject {
-  private player?: PlayerObject;
+  private readonly player?: PlayerObject;
 
   otherInventory?: Inventory;
   onClose?: () => void;
   type: InventoryType = InventoryType.Inventory;
-  
 
   private grid: Grid;
-  private gridPosition: { x: number, y: number } = { x: 0, y: 0 };
+  private readonly gridPosition: { x: number; y: number; } = { x: 0, y: 0, };
 
   dragging: {
     type: DraggingType;
@@ -94,7 +93,7 @@ export class InventoryObject extends SceneObject {
         x: 0,
         y: 0,
       },
-      positions: []
+      positions: [],
     };
 
     const slots = [];
@@ -123,7 +122,6 @@ export class InventoryObject extends SceneObject {
 
     for (let row = 0; row < rows; row++) {
       for (let column = 0; column < columns; column++) {
-
         // initialise position array
         if (column === 0) {
           this.grid.positions[row] = [];
@@ -135,8 +133,7 @@ export class InventoryObject extends SceneObject {
         const positionY = marginTopInventory + (row * height);
 
         // store position
-        this.grid.positions[row][column] = { x: positionX, y: positionY };
-
+        this.grid.positions[row][column] = { x: positionX, y: positionY, };
 
         // skip extra slots rendered by grid, mainly for mobile
         if (index >= this.scene.globals.inventory.size) {
@@ -147,8 +144,8 @@ export class InventoryObject extends SceneObject {
           new InventorySlotObject(this.scene, {
             x: positionX,
             y: positionY,
-            index: index,
-            type: this.type === InventoryType.Inventory ? SlotType.Inventory : SlotType.ShopSell
+            index,
+            type: this.type === InventoryType.Inventory ? SlotType.Inventory : SlotType.ShopSell,
           })
         );
       }
@@ -163,21 +160,21 @@ export class InventoryObject extends SceneObject {
             new InventorySlotObject(this.scene, {
               x: marginLeft + gap + (column * width),
               y: marginTopChest + (row * height),
-              index: index,
+              index,
               otherInventory: this.otherInventory,
-              type: this.type === InventoryType.Inventory ? SlotType.Inventory : SlotType.ShopBuy
+              type: this.type === InventoryType.Inventory ? SlotType.Inventory : SlotType.ShopBuy,
             })
           );
         }
       }
     }
 
-    slots.forEach(slot => this.addChild(slot));
+    slots.forEach(slot => { this.addChild(slot); });
 
     const buttons = [
       new InventoryButtonCloseObject(this.scene, {}),
       ...(this.player ? [new InventoryButtonTrashObject(this.scene, {})] : []),
-      ...(this.player ? [new InventoryButtonDropObject(this.scene, {})] : []),
+      ...(this.player ? [new InventoryButtonDropObject(this.scene, {})] : [])
     ];
 
     const x = CanvasConstants.DEVICE_TYPE === DeviceType.Desktop ? CanvasConstants.CANVAS_TILE_WIDTH - 3 : CanvasConstants.CANVAS_TILE_WIDTH - 3;
@@ -203,7 +200,7 @@ export class InventoryObject extends SceneObject {
       y: 0,
       hexColourCode: '#00000099',
       width: CanvasConstants.CANVAS_TILE_WIDTH,
-      height: CanvasConstants.CANVAS_TILE_HEIGHT
+      height: CanvasConstants.CANVAS_TILE_HEIGHT,
     }));
   }
 
@@ -246,8 +243,8 @@ export class InventoryObject extends SceneObject {
     return this.scene.globals.inventory;
   }
 
-  get controllerSelectorPosition(): { x: number, y: number } | undefined {
-    return this.grid.positions[this.gridPosition.y][this.gridPosition.x]
+  get controllerSelectorPosition(): { x: number; y: number; } | undefined {
+    return this.grid.positions[this.gridPosition.y][this.gridPosition.x];
   }
 
   private updateStopMouseDragging(): void {
@@ -270,9 +267,9 @@ export class InventoryObject extends SceneObject {
         Input.mouse.position.x,
         Input.mouse.position.y,
         CanvasConstants.TILE_PIXEL_SIZE,
-        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE
       ),
-      typeMatch: [InventorySlotObject, InventoryButtonTrashObject, InventoryButtonDropObject]
+      typeMatch: [InventorySlotObject, InventoryButtonTrashObject, InventoryButtonDropObject],
     };
 
     const slot = this.scene.getObject(filter);
@@ -328,9 +325,9 @@ export class InventoryObject extends SceneObject {
         Input.mouse.position.x,
         Input.mouse.position.y,
         CanvasConstants.TILE_PIXEL_SIZE,
-        CanvasConstants.TILE_PIXEL_SIZE,
-      )
-    }
+        CanvasConstants.TILE_PIXEL_SIZE
+      ),
+    };
     const slot = this.scene.getObject(filter) as InventorySlotObject;
 
     if (slot === undefined) {
@@ -365,9 +362,9 @@ export class InventoryObject extends SceneObject {
         Input.mouse.position.x,
         Input.mouse.position.y,
         CanvasConstants.TILE_PIXEL_SIZE,
-        CanvasConstants.TILE_PIXEL_SIZE,
-      )
-    }
+        CanvasConstants.TILE_PIXEL_SIZE
+      ),
+    };
     const slot = this.scene.getObject(filter) as InventorySlotObject;
 
     if (this.dragging || slot === undefined || slot.index !== this.tooltip.index) {
@@ -435,9 +432,9 @@ export class InventoryObject extends SceneObject {
         this.controllerSelectorPosition.x,
         this.controllerSelectorPosition.y,
         CanvasConstants.TILE_PIXEL_SIZE,
-        CanvasConstants.TILE_PIXEL_SIZE,
-      )
-    }
+        CanvasConstants.TILE_PIXEL_SIZE
+      ),
+    };
     const slot = this.scene.getObject(filter);
 
     if (slot === undefined) {
@@ -468,8 +465,8 @@ export class InventoryObject extends SceneObject {
       position: {
         x: this.controllerSelectorPosition.x + 1,
         y: this.controllerSelectorPosition.y + 1,
-      }
-    }
+      },
+    };
     const slot = this.scene.getObject(filter) as InventorySlotObject;
 
     if (slot === undefined) {
@@ -510,9 +507,9 @@ export class InventoryObject extends SceneObject {
         this.controllerSelectorPosition.x,
         this.controllerSelectorPosition.y,
         CanvasConstants.TILE_PIXEL_SIZE,
-        CanvasConstants.TILE_PIXEL_SIZE,
+        CanvasConstants.TILE_PIXEL_SIZE
       ),
-      typeMatch: [InventorySlotObject, InventoryButtonTrashObject]
+      typeMatch: [InventorySlotObject, InventoryButtonTrashObject],
     };
 
     const slot = this.scene.getObject(filter);
@@ -554,7 +551,7 @@ export class InventoryObject extends SceneObject {
       sprite.x,
       sprite.y,
       Input.mouse.position.x - 0.5,
-      Input.mouse.position.y - 0.5,
+      Input.mouse.position.y - 0.5
     );
   }
 
@@ -575,7 +572,7 @@ export class InventoryObject extends SceneObject {
       sprite.x,
       sprite.y,
       this.controllerSelectorPosition.x + 0.5,
-      this.controllerSelectorPosition.y + 0.5,
+      this.controllerSelectorPosition.y + 0.5
     );
   }
 
@@ -591,8 +588,8 @@ export class InventoryObject extends SceneObject {
     this.renderInventoryItemStackSize(
       context,
       Input.mouse.position.x + 0.25,
-      Input.mouse.position.y + 0.75,
-    )
+      Input.mouse.position.y + 0.75
+    );
   }
 
   private renderControllerInventoryItemStackSize(context: CanvasRenderingContext2D): void {
@@ -607,8 +604,8 @@ export class InventoryObject extends SceneObject {
     this.renderInventoryItemStackSize(
       context,
       this.controllerSelectorPosition.x + 1.25,
-      this.controllerSelectorPosition.y + 1.75,
-    )
+      this.controllerSelectorPosition.y + 1.75
+    );
   }
 
   private renderInventoryItemStackSize(context: CanvasRenderingContext2D, x: number, y: number): void {
@@ -620,7 +617,7 @@ export class InventoryObject extends SceneObject {
       context,
       `${this.dragging.item.currentStackSize}`,
       x,
-      y,
+      y
     );
   }
 
@@ -645,7 +642,7 @@ export class InventoryObject extends SceneObject {
       this.controllerSelectorPosition.x,
       this.controllerSelectorPosition.y,
       2,
-      2,
+      2
     );
   }
 
@@ -655,7 +652,7 @@ export class InventoryObject extends SceneObject {
       item: this.getInventoryFromSource(source).items[inventoryIndex],
       index: inventoryIndex,
       source,
-    }
+    };
 
     this.getInventoryFromSource(this.dragging.source).items[inventoryIndex] = undefined;
   }
@@ -695,9 +692,8 @@ export class InventoryObject extends SceneObject {
       case 'chest':
         return this.otherInventory;
       case 'inventory':
-      default: ''
+      default: '';
         return this.inventory;
     }
   }
 }
-

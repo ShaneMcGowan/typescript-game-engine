@@ -1,15 +1,15 @@
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { Assets } from "@core/utils/assets.utils";
-import { RenderUtils } from "@core/utils/render.utils";
-import { TilesetGrassBiome } from "@game/constants/tilesets/grass-biome.tileset";
-import { Interactable } from "@game/models/components/interactable.model";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { TextboxObject } from "./textbox.object";
-import { ItemObject } from "./item.object";
-import { ItemType } from "@game/models/inventory.model";
-import { MathUtils } from "@core/utils/math.utils";
-import { ObjectFilter, Scene } from "@core/model/scene";
-import { PlayerObject } from "./player.object";
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { Assets } from '@core/utils/assets.utils';
+import { RenderUtils } from '@core/utils/render.utils';
+import { TilesetGrassBiome } from '@game/constants/tilesets/grass-biome.tileset';
+import { type Interactable } from '@game/models/components/interactable.model';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { TextboxObject } from './textbox.object';
+import { ItemObject } from './item.object';
+import { ItemType } from '@game/models/inventory.model';
+import { MathUtils } from '@core/utils/math.utils';
+import { type ObjectFilter, Scene } from '@core/model/scene';
+import { PlayerObject } from './player.object';
 
 const DEFAULT_STUMP_ON_DESTROY: boolean = true;
 const DEFAULT_LOG_ON_DESTROY: boolean = true;
@@ -25,7 +25,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class TreeObject extends SceneObject implements Interactable {
-
   // config
   stumpOnDestroy: boolean;
   logOnDestroy: boolean;
@@ -40,7 +39,7 @@ export class TreeObject extends SceneObject implements Interactable {
   fruit: number = 0; // current amount of fruit on the tree
   fruitMax: number = 3; // max fruit that can grow at once
 
-  constructor(protected scene: SCENE_GAME, protected config: Config){
+  constructor(protected scene: SCENE_GAME, protected config: Config) {
     super(scene, config);
 
     this.collision.enabled = true;
@@ -54,13 +53,13 @@ export class TreeObject extends SceneObject implements Interactable {
 
   onUpdate(delta: number): void {
     // only grow fruit on big trees
-    if(this.type === 'big'){
+    if (this.type === 'big') {
       this.updateFruit(delta);
     }
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    switch(this.config.type){
+    switch (this.config.type) {
       case 'big':
         this.renderTree(context);
         break;
@@ -74,7 +73,7 @@ export class TreeObject extends SceneObject implements Interactable {
   }
 
   onDestroy(): void {
-    if(super.onDestroy){
+    if (super.onDestroy) {
       super.onDestroy();
     }
   }
@@ -86,13 +85,13 @@ export class TreeObject extends SceneObject implements Interactable {
   private updateFruit(delta: number): void {
     this.fruitTimer += delta;
 
-    if(this.fruitTimer < this.fruitTimerMax){
+    if (this.fruitTimer < this.fruitTimerMax) {
       return;
     }
 
     this.fruitTimer -= this.fruitTimerMax;
 
-    if(this.fruit >= this.fruitMax){
+    if (this.fruit >= this.fruitMax) {
       return;
     }
 
@@ -109,7 +108,7 @@ export class TreeObject extends SceneObject implements Interactable {
       this.transform.position.world.y - 1,
       TilesetGrassBiome.Tree.Default.Default.width,
       TilesetGrassBiome.Tree.Default.Default.height
-    )
+    );
   }
 
   private renderSmallTree(context: CanvasRenderingContext2D): void {
@@ -126,7 +125,7 @@ export class TreeObject extends SceneObject implements Interactable {
   }
 
   private renderFruit(context: CanvasRenderingContext2D): void {
-    if(this.fruit > 0){
+    if (this.fruit > 0) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetGrassBiome.id],
@@ -136,10 +135,10 @@ export class TreeObject extends SceneObject implements Interactable {
         this.transform.position.world.y - (19 / 16),
         TilesetGrassBiome.Fruit.Berry.OnTree.width,
         TilesetGrassBiome.Fruit.Berry.OnTree.height
-      )
+      );
     }
 
-    if(this.fruit > 1){
+    if (this.fruit > 1) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetGrassBiome.id],
@@ -149,10 +148,10 @@ export class TreeObject extends SceneObject implements Interactable {
         this.transform.position.world.y - (12 / 16),
         TilesetGrassBiome.Fruit.Berry.OnTree.width,
         TilesetGrassBiome.Fruit.Berry.OnTree.height
-      )
+      );
     }
 
-    if(this.fruit > 2){
+    if (this.fruit > 2) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetGrassBiome.id],
@@ -162,18 +161,18 @@ export class TreeObject extends SceneObject implements Interactable {
         this.transform.position.world.y - (8 / 16),
         TilesetGrassBiome.Fruit.Berry.OnTree.width,
         TilesetGrassBiome.Fruit.Berry.OnTree.height
-      )
+      );
     }
   }
 
   interact(): void {
-    if(this.fruit === 0){
+    if (this.fruit === 0) {
       this.scene.globals.player.enabled = false;
 
       const textbox = new TextboxObject(
         this.scene,
         {
-          text: this.type === 'small' ? `It's a tree, I should be able to cut it down with an Axe...` : `It's a berry tree.`,
+          text: this.type === 'small' ? 'It\'s a tree, I should be able to cut it down with an Axe...' : 'It\'s a berry tree.',
           onComplete: () => {
             this.scene.globals.player.enabled = true;
           },
@@ -190,17 +189,17 @@ export class TreeObject extends SceneObject implements Interactable {
 
     // drop at a random position around the tree
     const positions = this.findDropPositions();
-    const position = MathUtils.getRandomElement<{x: number, y: number}>(positions);
+    const position = MathUtils.getRandomElement<{ x: number; y: number; }>(positions);
 
     // no valid position
     // this shouldn't really ever happen but just being safe
-    if(position === undefined){
+    if (position === undefined) {
       return;
     }
 
     const item = new ItemObject(
-      this.scene, 
-      { 
+      this.scene,
+      {
         type: ItemType.Berry,
         x: position.x,
         y: position.y,
@@ -210,20 +209,20 @@ export class TreeObject extends SceneObject implements Interactable {
 
   /**
    * find a position to drop around the tree, ignoring the tree itself or behind the tree
-   * @returns 
+   * @returns
    */
-  private findDropPositions(): {x: number, y: number}[] {
-    const available: {x: number, y: number}[] = [];
+  private findDropPositions(): Array<{ x: number; y: number; }> {
+    const available: Array<{ x: number; y: number; }> = [];
 
-    for(let x = -1; x <= 1; x++){
-      for(let y = -1; y <= 1; y++){
+    for (let x = -1; x <= 1; x++) {
+      for (let y = -1; y <= 1; y++) {
         // on top of the tree itself is not a valid position
-        if(x === 0 && y === 0){
+        if (x === 0 && y === 0) {
           continue;
         }
 
         // behind the tree is not a valid position
-        if(x === 0 && y === -1){
+        if (x === 0 && y === -1) {
           continue;
         }
 
@@ -232,14 +231,14 @@ export class TreeObject extends SceneObject implements Interactable {
             this.transform.position.world.x + x,
             this.transform.position.world.y + y,
             1,
-            1,
+            1
           ),
-          typeIgnore: [PlayerObject, ItemObject]
-        }
+          typeIgnore: [PlayerObject, ItemObject],
+        };
         const object = this.scene.getObject(filter);
-        
+
         // on top of another object is not a valid position
-        if(object !== undefined){
+        if (object !== undefined) {
           continue;
         }
 
@@ -251,5 +250,4 @@ export class TreeObject extends SceneObject implements Interactable {
     }
     return available;
   }
-
 }

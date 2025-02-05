@@ -1,25 +1,24 @@
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { Assets } from "@core/utils/assets.utils";
-import { RenderUtils } from "@core/utils/render.utils";
-import { TilesetGrassBiome } from "@game/constants/tilesets/grass-biome.tileset";
-import { Interactable } from "@game/models/components/interactable.model";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { TextboxObject } from "./textbox.object";
-import { TreeObject } from "./tree.object";
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { Assets } from '@core/utils/assets.utils';
+import { RenderUtils } from '@core/utils/render.utils';
+import { TilesetGrassBiome } from '@game/constants/tilesets/grass-biome.tileset';
+import { type Interactable } from '@game/models/components/interactable.model';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { TextboxObject } from './textbox.object';
+import { TreeObject } from './tree.object';
 
 interface Config extends SceneObjectBaseConfig {
   type?: 'big' | 'small';
 }
 
 export class TreeStumpObject extends SceneObject implements Interactable {
-
   chopCounter: number = 0; // used to store the number of times the tree stump has been chopped
   chopCounterMax: number = 5;
 
   regrowthTimer: number = 0;
   regrowthTimerMax: number = 5;
 
-  constructor(protected scene: SCENE_GAME, protected config: Config){
+  constructor(protected scene: SCENE_GAME, protected config: Config) {
     super(scene, config);
 
     this.collision.enabled = true;
@@ -42,7 +41,7 @@ export class TreeStumpObject extends SceneObject implements Interactable {
   private updateRegrowthTimer(delta: number): void {
     this.regrowthTimer += delta;
 
-    if(this.regrowthTimer <= this.regrowthTimerMax){
+    if (this.regrowthTimer <= this.regrowthTimerMax) {
       return;
     }
 
@@ -54,7 +53,7 @@ export class TreeStumpObject extends SceneObject implements Interactable {
         {
           x: this.transform.position.world.x,
           y: this.transform.position.world.y,
-          type: this.type
+          type: this.type,
         }
       )
     );
@@ -71,7 +70,7 @@ export class TreeStumpObject extends SceneObject implements Interactable {
       this.transform.position.world.y,
       TilesetGrassBiome.Stump.Default.Big.width,
       TilesetGrassBiome.Stump.Default.Big.height
-    )
+    );
   }
 
   interact(): void {
@@ -80,7 +79,7 @@ export class TreeStumpObject extends SceneObject implements Interactable {
     const textbox = new TextboxObject(
       this.scene,
       {
-        text: `A tree stump, a tree should grow from it eventually.`,
+        text: 'A tree stump, a tree should grow from it eventually.',
         onComplete: () => {
           this.scene.globals.player.enabled = true;
         },
@@ -89,5 +88,4 @@ export class TreeStumpObject extends SceneObject implements Interactable {
 
     this.scene.addObject(textbox);
   }
-
 }

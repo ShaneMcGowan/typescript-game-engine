@@ -2,9 +2,9 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { type PlayerObject } from '@game/objects/player.object';
 import { TimerObject } from '@core/objects/timer.object';
 import { TransitionObject } from '@core/objects/transition.object';
-import { SCENE_GAME } from '@game/scenes/game/scene';
-import { SceneMapConstructorSignature } from '@core/model/scene-map';
-import { Coordinate } from '@core/model/coordinate';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { type SceneMapConstructorSignature } from '@core/model/scene-map';
+import { type Coordinate } from '@core/model/coordinate';
 import { RenderUtils } from '@core/utils/render.utils';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 
@@ -33,12 +33,12 @@ export class WarpObject extends SceneObject {
     super(scene, config);
     this.renderer.enabled = true;
     this.renderer.layer = CanvasConstants.LAST_OBJECT_RENDER_LAYER;
-    
+
     this.player = config.player;
     this.map = config.map;
 
     if (config.isColliding !== undefined) {
-      this.isColliding = config.isColliding
+      this.isColliding = config.isColliding;
     }
   }
 
@@ -47,7 +47,7 @@ export class WarpObject extends SceneObject {
       return;
     }
 
-    if(!this.isCollidingWith(this.player)){
+    if (!this.isCollidingWith(this.player)) {
       this.isColliding = false;
       return;
     }
@@ -60,19 +60,19 @@ export class WarpObject extends SceneObject {
     this.scene.globals.player.enabled = false;
 
     // set up position and target
-    if(this.config.position){
+    if (this.config.position) {
       this.scene.globals.warp.position = {
-        ...this.config.position
+        ...this.config.position,
       };
       // default target to new position or we will start moving
       this.scene.globals.warp.target = {
-        ...this.config.position
+        ...this.config.position,
       };
     }
 
-    if(this.config.target){
+    if (this.config.target) {
       this.scene.globals.warp.target = {
-        ...this.config.target
+        ...this.config.target,
       };
     }
 
@@ -109,14 +109,13 @@ export class WarpObject extends SceneObject {
       this.height,
       {
         type: 'tile',
-        colour: '#00000022'
+        colour: '#00000022',
       }
-    )
+    );
   }
 
   private reset(): void {
     this.isWarping = false;
     this.scene.globals.player.enabled = true;
   }
-
 }

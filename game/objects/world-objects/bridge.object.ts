@@ -10,7 +10,6 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class BridgeObject extends SceneObject {
-
   type: Type;
 
   constructor(
@@ -75,7 +74,6 @@ export class BridgeObject extends SceneObject {
         }
       );
     }
-
   }
 
   private renderBottom(context: CanvasRenderingContext2D): void {
@@ -101,5 +99,4 @@ export class BridgeObject extends SceneObject {
   private renderLadderCenter(context: CanvasRenderingContext2D): void {
 
   }
-
 }

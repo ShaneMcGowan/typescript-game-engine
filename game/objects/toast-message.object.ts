@@ -1,19 +1,18 @@
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { Scene } from "@core/model/scene";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { type Scene } from '@core/model/scene';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
 
 const IN_SPEED: number = 8;
 const OUT_SPEED: number = 8;
-const TIMER_DELAY_MAX: number = 1; 
-const TIMER_PAUSE_MAX: number = 5; 
+const TIMER_DELAY_MAX: number = 1;
+const TIMER_PAUSE_MAX: number = 5;
 
 interface Config extends SceneObjectBaseConfig {
   text: string;
 }
 
 export class ToastMessageObject extends SceneObject {
-  
   width: number = CanvasConstants.CANVAS_TILE_WIDTH / 3;
   height: number = 2;
 
@@ -22,7 +21,7 @@ export class ToastMessageObject extends SceneObject {
   timerDelay: number = 0;
   timerPause: number = 0;
 
-  constructor(protected scene: Scene, protected config: Config){
+  constructor(protected scene: Scene, protected config: Config) {
     super(scene, config);
 
     this.renderer.enabled = true;
@@ -33,26 +32,25 @@ export class ToastMessageObject extends SceneObject {
   }
 
   onUpdate(delta: number): void {
-
     this.timerDelay += delta;
-    if(this.timerDelay < TIMER_DELAY_MAX){
+    if (this.timerDelay < TIMER_DELAY_MAX) {
       return;
     }
-    
+
     this.updateMoveIn(delta);
 
-    if(!this.moveInComplete){
+    if (!this.moveInComplete) {
       return;
     }
 
     this.timerPause += delta;
-    if(this.timerPause < TIMER_PAUSE_MAX){
+    if (this.timerPause < TIMER_PAUSE_MAX) {
       return;
     }
 
     this.updateMoveOut(delta);
 
-    if(!this.moveOutComplete){
+    if (!this.moveOutComplete) {
       return;
     }
 
@@ -60,13 +58,13 @@ export class ToastMessageObject extends SceneObject {
   }
 
   updateMoveIn(delta: number): void {
-    if(this.moveInComplete){
+    if (this.moveInComplete) {
       return;
     }
 
     const targetPosition = 1;
 
-    if(this.transform.position.local.y > targetPosition){
+    if (this.transform.position.local.y > targetPosition) {
       this.moveInComplete = true;
       return;
     }
@@ -75,17 +73,17 @@ export class ToastMessageObject extends SceneObject {
   }
 
   updateMoveOut(delta: number): void {
-    if(!this.moveInComplete){
+    if (!this.moveInComplete) {
       return;
     }
 
-    if(this.moveOutComplete){
+    if (this.moveOutComplete) {
       return;
     }
 
     const targetPosition = 0 - this.height;
 
-    if(this.transform.position.local.y < targetPosition){
+    if (this.transform.position.local.y < targetPosition) {
       this.moveOutComplete = true;
       return;
     }
@@ -112,7 +110,7 @@ export class ToastMessageObject extends SceneObject {
         align: 'center',
         baseline: 'middle',
       }
-    )
+    );
   }
 
   private renderTextbox(context: CanvasRenderingContext2D): void {
@@ -128,5 +126,4 @@ export class ToastMessageObject extends SceneObject {
       }
     );
   }
-  
 }

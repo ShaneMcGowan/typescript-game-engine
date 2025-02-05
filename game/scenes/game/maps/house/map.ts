@@ -4,8 +4,8 @@ import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { WarpObject } from '@game/objects/warp.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
-import { JsonBackgroundMap } from '@core/model/background';
-import * as background from './background.json'
+import { type JsonBackgroundMap } from '@core/model/background';
+import * as background from './background.json';
 import { FurnitureWallAreaObject } from '@game/objects/areas/furniture-wall.object';
 import { FurnitureFloorAreaObject } from '@game/objects/areas/furniture-floor.object';
 import { FurnitureLampObject } from '@game/objects/furniture/item/furniture-lamp.object';
@@ -18,10 +18,9 @@ import { SCENE_GAME_MAP_FARM } from '@game/scenes/game/maps/farm/map';
 import { Warps } from '@game/constants/warp.constants';
 
 export class SCENE_GAME_MAP_HOUSE extends SceneMap {
-
   background: JsonBackgroundMap = background;
 
-  private player: PlayerObject;
+  private readonly player: PlayerObject;
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);
@@ -34,22 +33,22 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
 
     // walls
     // top
-    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 6, width: 10 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 6, width: 10, }));
     // left
-    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 7, height: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 7, height: 5, }));
     // right
-    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 7, height: 5 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 20, y: 7, height: 5, }));
     // bottom
-    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 12, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { x: 17, y: 12, width: 4 }));
-    this.scene.addObject(new CollisionObject(scene, { x: 15, y: 13, width: 2 }));
+    this.scene.addObject(new CollisionObject(scene, { x: 11, y: 12, width: 4, }));
+    this.scene.addObject(new CollisionObject(scene, { x: 17, y: 12, width: 4, }));
+    this.scene.addObject(new CollisionObject(scene, { x: 15, y: 13, width: 2, }));
 
     // areas
-    this.scene.addObject(new FurnitureWallAreaObject(scene, { x: 12, y: 6, width: 8 }));
-    this.scene.addObject(new FurnitureFloorAreaObject(scene, { x: 12, y: 7, width: 8, height: 5 }));
+    this.scene.addObject(new FurnitureWallAreaObject(scene, { x: 12, y: 6, width: 8, }));
+    this.scene.addObject(new FurnitureFloorAreaObject(scene, { x: 12, y: 7, width: 8, height: 5, }));
 
     // lighting
-    this.scene.addObject(new LightingObject(scene, { enabled: true, timeBased: false }));
+    this.scene.addObject(new LightingObject(scene, { enabled: true, timeBased: false, }));
 
     // warp - door
     this.scene.addObject(new WarpObject(scene, {
@@ -69,9 +68,9 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
 
   onEnter(): void {
     // set renderer
-    this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player }));
+    this.scene.addObject(new ObjectTrackingCameraObject(this.scene, { object: this.player, }));
 
-    MessageUtils.showToast(this.scene, `My House`);
+    MessageUtils.showToast(this.scene, 'My House');
 
     // fade in
     const transitionLength = 2;
@@ -92,14 +91,13 @@ export class SCENE_GAME_MAP_HOUSE extends SceneMap {
         onComplete: () => {
           MessageUtils.showMessage(
             this.scene,
-            `So this is my new home. This place is quite dark and depressing... I need to decorate.`
-          )
-        }
+            'So this is my new home. This place is quite dark and depressing... I need to decorate.'
+          );
+        },
       }));
     }
   }
 
   onLeave(): void {
   }
-
 }

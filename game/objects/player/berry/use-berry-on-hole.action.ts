@@ -1,12 +1,12 @@
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { HoleObject } from "@game/objects/hole.object";
-import { ItemType } from "@game/models/inventory.model";
-import { TreeObject } from "@game/objects/tree.object";
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { type HoleObject } from '@game/objects/hole.object';
+import { ItemType } from '@game/models/inventory.model';
+import { TreeObject } from '@game/objects/tree.object';
 
 /**
  * Plant berry
- * @param scene 
- * @param object 
+ * @param scene
+ * @param object
  */
 export function useBerryOnHole(scene: SCENE_GAME, object: HoleObject): void {
   // remove berry

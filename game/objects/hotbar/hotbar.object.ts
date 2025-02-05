@@ -1,7 +1,7 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { Inventory, Item } from '@game/models/inventory.model';
+import { type Inventory, Item } from '@game/models/inventory.model';
 import { HotbarSlotObject } from './hotbar-slot.object';
 import { Input } from '@core/utils/input.utils';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
@@ -29,8 +29,8 @@ export class HotbarObject extends UiObject {
       this.addChild(new HotbarSlotObject(this.scene, {
         index: i,
         x: i * 2,
-        y: 0
-      }))
+        y: 0,
+      }));
     }
   }
 
@@ -48,29 +48,28 @@ export class HotbarObject extends UiObject {
       return;
     }
 
-    if (Input.isKeyPressed('1') === true) {
+    if (Input.isKeyPressed('1')) {
       this.scene.globals['hotbar_selected_index'] = 0;
       return;
     }
 
-    if (Input.isKeyPressed('2') === true) {
+    if (Input.isKeyPressed('2')) {
       this.scene.globals['hotbar_selected_index'] = 1;
       return;
     }
 
-    if (Input.isKeyPressed('3') === true) {
+    if (Input.isKeyPressed('3')) {
       this.scene.globals['hotbar_selected_index'] = 2;
       return;
     }
 
-    if (Input.isKeyPressed('4') === true) {
+    if (Input.isKeyPressed('4')) {
       this.scene.globals['hotbar_selected_index'] = 3;
       return;
     }
 
-    if (Input.isKeyPressed('5') === true) {
+    if (Input.isKeyPressed('5')) {
       this.scene.globals['hotbar_selected_index'] = 4;
-      return;
     }
 
     // TODO: this is hard coded, if hotbar size changes this won't work properly
@@ -93,15 +92,14 @@ export class HotbarObject extends UiObject {
     } else if (Input.mouse.wheel.event.deltaY < 0) {
       this.hotbarDecrement();
     }
-
   }
 
   private updateHotbarViaController(): void {
-    if(Input.isPressed<Control>(CONTROL_SCHEME, Control.HotbarLeft)) {
+    if (Input.isPressed<Control>(CONTROL_SCHEME, Control.HotbarLeft)) {
       this.hotbarDecrement();
     }
 
-    if(Input.isPressed<Control>(CONTROL_SCHEME, Control.HotbarRight)) {
+    if (Input.isPressed<Control>(CONTROL_SCHEME, Control.HotbarRight)) {
       this.hotbarIncrement();
     }
 
@@ -127,5 +125,4 @@ export class HotbarObject extends UiObject {
   get hotbar(): Inventory {
     return this.scene.globals.hotbar;
   }
-
 }

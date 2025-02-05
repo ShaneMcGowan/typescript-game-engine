@@ -1,8 +1,8 @@
-import { DAY_LENGTH_IN_SECONDS, SCENE_GAME } from "@game/scenes/game/scene";
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { isLightSource, LightSource } from "@game/models/components/lightsource.model";
-import { MathUtils } from "@core/utils/math.utils";
+import { DAY_LENGTH_IN_SECONDS, type SCENE_GAME } from '@game/scenes/game/scene';
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { isLightSource, type LightSource } from '@game/models/components/lightsource.model';
+import { MathUtils } from '@core/utils/math.utils';
 
 type LightType = 'v1' | 'v2';
 
@@ -19,14 +19,13 @@ interface Config extends SceneObjectBaseConfig {
 }
 
 export class LightingObject extends SceneObject {
-
   // config
   type: LightType;
   timeBased: boolean = false;
   enabled: boolean = false;
 
   // sources
-  lightSources: (SceneObject & LightSource)[] = [];
+  lightSources: Array<SceneObject & LightSource> = [];
   lightSourceCacheEnabled: boolean;
   lightSourceCacheTimer: number = 0;
   lightSourceCacheTimerMax: number = 0;
@@ -60,11 +59,11 @@ export class LightingObject extends SceneObject {
     const min: number = 0;
     const max: number = 200;
 
-    if(!this.enabled){
+    if (!this.enabled) {
       return MathUtils.numberToHexString(min);
     }
 
-    if(!this.timeBased){
+    if (!this.timeBased) {
       return MathUtils.numberToHexString(max);
     }
 
@@ -75,13 +74,13 @@ export class LightingObject extends SceneObject {
 
   /**
    * Store light sources
-   * @param delta 
-   * @returns 
+   * @param delta
+   * @returns
    */
   private cacheLightSources(delta: number): void {
     this.lightSourceCacheTimer += delta;
 
-    if(this.lightSourceCacheEnabled && this.lightSourceCacheTimer < this.lightSourceCacheTimerMax){
+    if (this.lightSourceCacheEnabled && this.lightSourceCacheTimer < this.lightSourceCacheTimerMax) {
       return;
     }
 
@@ -91,8 +90,8 @@ export class LightingObject extends SceneObject {
     // cache expiered - clear cache
     this.lightSources = [];
 
-    for(const [_ ,object] of this.scene.objects){
-      if(!isLightSource(object)){
+    for (const [_, object] of this.scene.objects) {
+      if (!isLightSource(object)) {
         continue;
       }
       this.lightSources.push(object);
@@ -102,12 +101,12 @@ export class LightingObject extends SceneObject {
   /**
    * Light rendering v1
    * Works well but there isn't much control over opacity
-   * @param context 
-   * @param object 
-   * @returns 
+   * @param context
+   * @param object
+   * @returns
    */
   private renderLightSourceV1(context: CanvasRenderingContext2D, object: SceneObject & LightSource): void {
-    if(!object.lightSource.enabled){
+    if (!object.lightSource.enabled) {
       return;
     }
 
@@ -132,7 +131,7 @@ export class LightingObject extends SceneObject {
       y * CanvasConstants.TILE_SIZE,
       radius * CanvasConstants.TILE_SIZE,
       0,
-      2 * Math.PI,
+      2 * Math.PI
     );
 
     context.fill();
@@ -140,13 +139,13 @@ export class LightingObject extends SceneObject {
   }
 
   private renderLightSourceV2(context: CanvasRenderingContext2D, object: SceneObject & LightSource): void {
-    if(!object.lightSource.enabled){
+    if (!object.lightSource.enabled) {
       return;
     }
 
-    const ambientLight = .1;
+    const ambientLight = 0.1;
     const intensity = 2;
-    const amb = 'rgba(0,0,0,' + (1-ambientLight) + ')';
+    const amb = 'rgba(0,0,0,' + (1 - ambientLight) + ')';
     const radius = object.lightSource.radius * CanvasConstants.TILE_SIZE;
     const x = object.centre.world.x * CanvasConstants.TILE_SIZE;
     const y = object.centre.world.y * CanvasConstants.TILE_SIZE;
@@ -160,9 +159,9 @@ export class LightingObject extends SceneObject {
   }
 
   private renderDarkness(context: CanvasRenderingContext2D): void {
-    if(this.type === 'v1'){
+    if (this.type === 'v1') {
       context.fillStyle = `#${DEFAULT_DARKNESS_COLOUR_V1}${this.alpha}`;
-    } else if(this.type === 'v2') {
+    } else if (this.type === 'v2') {
       context.fillStyle = `#${DEFAULT_DARKNESS_COLOUR_V2}${this.alpha}`;
     }
 
@@ -174,7 +173,7 @@ export class LightingObject extends SceneObject {
       0,
       0,
       this.scene.map.width * CanvasConstants.TILE_SIZE,
-      this.scene.map.height * CanvasConstants.TILE_SIZE,
+      this.scene.map.height * CanvasConstants.TILE_SIZE
     );
 
     context.fill();
@@ -186,25 +185,24 @@ export class LightingObject extends SceneObject {
 
     // set up
     // context.globalCompositeOperation = 'xor';
-    
+
     // darkness
     this.renderDarkness(context);
-    
+
     // loop all lights sources
     this.lightSources.forEach((source, index) => {
-      if(this.type === 'v1'){
+      if (this.type === 'v1') {
         this.renderLightSourceV1(context, source);
       }
-      if(this.type === 'v2'){
+      if (this.type === 'v2') {
         this.renderLightSourceV2(context, source);
       }
-    })
+    });
   }
 
   debuggerRenderBackground(context: CanvasRenderingContext2D): void {
     // this covers the whole screen so we want to overwrite this with a no op
   }
-
 }
 
 // from https://stackoverflow.com/a/10401701
@@ -212,7 +210,7 @@ function addLight(ctx: CanvasRenderingContext2D, intsy: number, amb: string, xSt
   xOff = xOff || 0;
   yOff = yOff || 0;
 
-  var g = ctx.createRadialGradient(xStart, yStart, rStart, xEnd, yEnd, rEnd);
+  let g = ctx.createRadialGradient(xStart, yStart, rStart, xEnd, yEnd, rEnd);
   g.addColorStop(1, 'rgba(0,0,0,' + (1 - intsy) + ')');
   g.addColorStop(0, amb);
   ctx.fillStyle = g;

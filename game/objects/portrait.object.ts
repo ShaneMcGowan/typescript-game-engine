@@ -4,15 +4,13 @@ import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { RenderUtils } from '@core/utils/render.utils';
 import { Assets } from '@core/utils/assets.utils';
 import { TilesetUI } from '@game/constants/tilesets/ui.tileset';
-import { Portrait } from './textbox.object';
-
+import { type Portrait } from './textbox.object';
 
 interface Config extends SceneObjectBaseConfig {
   portrait: Portrait;
 }
 
 export class PortraitObject extends SceneObject {
-
   private readonly portrait: Portrait | undefined;
 
   // portrait animation - copied from ChickenObjeect
@@ -43,8 +41,8 @@ export class PortraitObject extends SceneObject {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-      this.renderPortraitContainer(context);
-      this.renderPortrait(context);
+    this.renderPortraitContainer(context);
+    this.renderPortrait(context);
   }
 
   private renderPortrait(context: CanvasRenderingContext2D): void {
@@ -57,10 +55,10 @@ export class PortraitObject extends SceneObject {
       this.transform.position.world.y + 1,
       this.portrait.width,
       this.portrait.height,
-      { 
+      {
         // scale: this.portrait.scale ?? 1,
         // centered: this.portrait.scale !== undefined
-       }
+      }
     );
   }
 
@@ -74,10 +72,10 @@ export class PortraitObject extends SceneObject {
       this.transform.position.world.x,
       this.transform.position.world.y,
       TilesetUI.PortraitContainer.Darker.TopLeft.width,
-      TilesetUI.PortraitContainer.Darker.TopLeft.height,
+      TilesetUI.PortraitContainer.Darker.TopLeft.height
     );
 
-    for(let i = 0; i < this.width - 2; i++){
+    for (let i = 0; i < this.width - 2; i++) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetUI.id],
@@ -86,7 +84,7 @@ export class PortraitObject extends SceneObject {
         this.transform.position.world.x + 1 + i,
         this.transform.position.world.y,
         TilesetUI.PortraitContainer.Darker.Top.width,
-        TilesetUI.PortraitContainer.Darker.Top.height,
+        TilesetUI.PortraitContainer.Darker.Top.height
       );
     }
 
@@ -98,12 +96,12 @@ export class PortraitObject extends SceneObject {
       this.transform.position.world.x + this.width - 1,
       this.transform.position.world.y,
       TilesetUI.PortraitContainer.Darker.TopRight.width,
-      TilesetUI.PortraitContainer.Darker.TopRight.height,
+      TilesetUI.PortraitContainer.Darker.TopRight.height
     );
 
     // center
 
-    for(let i = 0; i < this.height - 2; i++){
+    for (let i = 0; i < this.height - 2; i++) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetUI.id],
@@ -112,12 +110,12 @@ export class PortraitObject extends SceneObject {
         this.transform.position.world.x,
         this.transform.position.world.y + 1 + i,
         TilesetUI.PortraitContainer.Darker.Left.width,
-        TilesetUI.PortraitContainer.Darker.Left.height,
+        TilesetUI.PortraitContainer.Darker.Left.height
       );
     }
 
-    for(let h = 0; h < this.height - 2; h++){
-      for(let w = 0; w < this.width - 2; w++){
+    for (let h = 0; h < this.height - 2; h++) {
+      for (let w = 0; w < this.width - 2; w++) {
         RenderUtils.renderSprite(
           context,
           Assets.images[TilesetUI.id],
@@ -126,12 +124,12 @@ export class PortraitObject extends SceneObject {
           this.transform.position.world.x + 1 + w,
           this.transform.position.world.y + 1 + h,
           TilesetUI.PortraitContainer.Darker.Centre.width,
-          TilesetUI.PortraitContainer.Darker.Centre.height,
+          TilesetUI.PortraitContainer.Darker.Centre.height
         );
       }
     }
 
-    for(let i = 0; i < this.height - 2; i++){
+    for (let i = 0; i < this.height - 2; i++) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetUI.id],
@@ -140,7 +138,7 @@ export class PortraitObject extends SceneObject {
         this.transform.position.world.x + this.width - 1,
         this.transform.position.world.y + 1 + i,
         TilesetUI.PortraitContainer.Darker.Right.width,
-        TilesetUI.PortraitContainer.Darker.Right.height,
+        TilesetUI.PortraitContainer.Darker.Right.height
       );
     }
 
@@ -153,19 +151,19 @@ export class PortraitObject extends SceneObject {
       this.transform.position.world.x,
       this.transform.position.world.y + this.height - 1,
       TilesetUI.PortraitContainer.Darker.BottomLeft.width,
-      TilesetUI.PortraitContainer.Darker.BottomLeft.height,
+      TilesetUI.PortraitContainer.Darker.BottomLeft.height
     );
 
-    for(let i = 0; i < this.width - 2; i++){
+    for (let i = 0; i < this.width - 2; i++) {
       RenderUtils.renderSprite(
         context,
         Assets.images[TilesetUI.id],
         TilesetUI.PortraitContainer.Darker.Bottom.x,
         TilesetUI.PortraitContainer.Darker.Bottom.y,
         this.transform.position.world.x + i + 1,
-        this.transform.position.world.y + this.height - 1, 
+        this.transform.position.world.y + this.height - 1,
         TilesetUI.PortraitContainer.Darker.Bottom.width,
-        TilesetUI.PortraitContainer.Darker.Bottom.height,
+        TilesetUI.PortraitContainer.Darker.Bottom.height
       );
     }
 
@@ -177,7 +175,7 @@ export class PortraitObject extends SceneObject {
       this.transform.position.world.x + this.width - 1,
       this.transform.position.world.y + this.height - 1,
       TilesetUI.PortraitContainer.Darker.BottomRight.width,
-      TilesetUI.PortraitContainer.Darker.BottomRight.height,
+      TilesetUI.PortraitContainer.Darker.BottomRight.height
     );
   }
 
@@ -189,5 +187,4 @@ export class PortraitObject extends SceneObject {
       this.animationIndex = 1;
     }
   }
-
 }

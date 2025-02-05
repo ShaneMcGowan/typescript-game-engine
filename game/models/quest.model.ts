@@ -1,6 +1,6 @@
-import { QuestStatus, SCENE_GAME } from "@game/scenes/game/scene";
-import { NpcObject } from "@game/objects/npc.object";
-import { ItemType } from "./inventory.model";
+import { type QuestStatus, type SCENE_GAME } from '@game/scenes/game/scene';
+import { type NpcObject } from '@game/objects/npc.object';
+import { type ItemType } from './inventory.model';
 
 export enum QuestName {
   default = 'default',
@@ -11,7 +11,7 @@ export enum QuestName {
   plant_tree = 'plant_tree',
   collect_berries = 'collect_berries',
   clear_path_to_farm = 'clear_path_to_farm',
-  get_some_sleep = 'get_some_sleep',
+  get_some_sleep = 'get_some_sleep'
 }
 
 export interface QuestText {
@@ -21,7 +21,6 @@ export interface QuestText {
 }
 
 export abstract class Quest {
-
   id: QuestName = QuestName.collect_wheat;
 
   constructor(
@@ -42,7 +41,7 @@ export abstract class Quest {
       intro: `TODO: quest ${this.id} intro`,
       success: `TODO: quest ${this.id} success`,
       failure: `TODO: quest ${this.id} failure`,
-    }
+    };
   }
 
   run(): void {
@@ -69,7 +68,7 @@ export abstract class Quest {
       () => {
         this.status.intro = true;
         this.onIntro();
-      },
+      }
     );
   }
 
@@ -126,5 +125,4 @@ export abstract class Quest {
   static setup(scene: SCENE_GAME): void {
     // for setting up the world for the quest
   }
-
 }

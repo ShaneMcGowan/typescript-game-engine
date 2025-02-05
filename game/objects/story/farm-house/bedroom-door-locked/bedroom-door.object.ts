@@ -1,14 +1,12 @@
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
-import { LockConfig, LockObject, LockType } from '@game/objects/lock.object';
+import { type LockConfig, LockObject, LockType } from '@game/objects/lock.object';
 import { ItemType } from '@game/models/inventory.model';
-
 
 interface Config extends LockConfig {
 
 }
 
 export class FarmHouseBedroomDoorObject extends LockObject {
-
   // config
 
   // state
@@ -32,7 +30,6 @@ export class FarmHouseBedroomDoorObject extends LockObject {
   }
 
   get messageIntro(): string {
-    return `The door to the Farmer's Son's bedroom is locked. I wonder if he would let me in?`;
+    return 'The door to the Farmer\'s Son\'s bedroom is locked. I wonder if he would let me in?';
   }
-
 }

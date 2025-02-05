@@ -1,17 +1,17 @@
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { RenderUtils } from "@core/utils/render.utils";
-import { SCENE_GAME } from "@game/scenes/game/scene";
-import { MouseUtils } from "@core/utils/mouse.utils";
-import { Input, MouseKey } from "@core/utils/input.utils";
-import { Assets } from "@core/utils/assets.utils";
-import { TilesetBasic } from "@game/constants/tilesets/basic.tileset";
-import { UiObject } from "@core/objects/ui.object";
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { RenderUtils } from '@core/utils/render.utils';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { MouseUtils } from '@core/utils/mouse.utils';
+import { Input, MouseKey } from '@core/utils/input.utils';
+import { Assets } from '@core/utils/assets.utils';
+import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
+import { UiObject } from '@core/objects/ui.object';
 
 enum ButtonState {
-  Default,// not pressed && colliding
+  Default, // not pressed && colliding
   Down, // pressed && colliding
-  Up, // not pressed and colliding
+  Up // not pressed and colliding
 }
 
 interface Config extends SceneObjectBaseConfig {
@@ -93,7 +93,7 @@ export class InventoryButtonCloseObject extends SceneObject {
       this.transform.position.world.y,
       tileset.width,
       tileset.height,
-      { centered: true }
+      { centered: true, }
     );
   }
 
@@ -110,8 +110,7 @@ export class InventoryButtonCloseObject extends SceneObject {
       this.transform.position.world.y + offset.y,
       tileset.width,
       tileset.height,
-      { centered: true }
+      { centered: true, }
     );
   }
-
 }

@@ -1,13 +1,12 @@
 import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig } from '@core/model/scene-object';
-import { MenuObject } from './menu.object';
+import { type MenuObject } from './menu.object';
 import { ButtonObject } from '../button.object';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
 export class MenuButtonContinueObject extends ButtonObject {
-
   constructor(
     protected scene: Scene,
     config: Config
@@ -22,5 +21,4 @@ export class MenuButtonContinueObject extends ButtonObject {
   onClick(): void {
     (this.parent as MenuObject).destroy();
   }
-
 }

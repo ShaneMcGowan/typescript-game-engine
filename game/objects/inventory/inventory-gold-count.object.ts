@@ -1,15 +1,13 @@
-import { CanvasConstants } from "@core/constants/canvas.constants";
-import { SceneObject, SceneObjectBaseConfig } from "@core/model/scene-object";
-import { UiObject } from "@core/objects/ui.object";
-import { RenderUtils } from "@core/utils/render.utils";
-import { SCENE_GAME } from "@game/scenes/game/scene";
+import { CanvasConstants } from '@core/constants/canvas.constants';
+import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
+import { UiObject } from '@core/objects/ui.object';
+import { RenderUtils } from '@core/utils/render.utils';
+import { type SCENE_GAME } from '@game/scenes/game/scene';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
 export class InventoryGoldCountObject extends SceneObject {
-
-
   constructor(
     protected scene: SCENE_GAME,
     config: Config
@@ -23,7 +21,6 @@ export class InventoryGoldCountObject extends SceneObject {
     this.renderGoldContainer(context);
     this.renderGoldValue(context);
   }
-
 
   private renderGoldContainer(context: CanvasRenderingContext2D): void {
     // const tileset = this.state === ButtonState.Default ? TilesetBasic.Button.White.Default : TilesetBasic.Button.White.Pressed;
@@ -52,7 +49,6 @@ export class InventoryGoldCountObject extends SceneObject {
         baseline: 'top',
         align: 'center',
       }
-    )
+    );
   }
-
 }

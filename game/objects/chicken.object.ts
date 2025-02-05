@@ -1,14 +1,14 @@
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { MathUtils } from '@core/utils/math.utils';
-import { Movement, MovementUtils } from '@core/utils/movement.utils';
+import { type Movement, MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
 import { EggObject } from '@game/objects/egg.object';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/components/interactable.model';
-import { Portrait, TextboxObject } from '@game/objects/textbox.object';
+import { type Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { Assets } from '@core/utils/assets.utils';
-import { ObjectFilter } from '@core/model/scene';
-import { Inventory, ItemType } from '@game/models/inventory.model';
+import { type ObjectFilter } from '@core/model/scene';
+import { type Inventory, ItemType } from '@game/models/inventory.model';
 import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 
 const PORTRAIT: Portrait = {
@@ -17,7 +17,7 @@ const PORTRAIT: Portrait = {
   y: 0,
   width: 1,
   height: 1,
-}
+};
 
 const TILE_SET: string = 'tileset_chicken';
 const RENDERER_LAYER: number = 8;
@@ -27,7 +27,7 @@ const DEFAULT_CAN_MOVE: boolean = false;
 
 const TEXT_STANDARD: string = 'bock bock ... can i help you? ... cluck cluck ...';
 const TEXT_ANNOYED: string = "cluck cluck ... you're sort of annoying you know that? ... bock bock ...";
-const TEXT_CONFUSED: string = "bock cluck ... is... is this a simulation? ... cluck bock ...";
+const TEXT_CONFUSED: string = 'bock cluck ... is... is this a simulation? ... cluck bock ...';
 
 const TEXT_EDGY_1: string = 'GET OUT OF MY ROOM MOM! GODDDD!!1!';
 const TEXT_EDGY_2: string = 'UGHHHH! YOU ARE LIKE SO EMBARRASSING!1!11!';
@@ -165,7 +165,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       // move in a random direction
       movement = MovementUtils.MoveInRandomDirection({
         x: this.transform.position.world.x,
-        y: this.transform.position.world.y
+        y: this.transform.position.world.y,
       });
     }
 
@@ -178,7 +178,7 @@ export class ChickenObject extends SceneObject implements Interactable {
       ),
       objectIgnore: new Map([
         [this, true]
-      ])
+      ]),
     };
 
     // cancel if next position would be on top of another entity
@@ -241,7 +241,7 @@ export class ChickenObject extends SceneObject implements Interactable {
 
     // only lay egg if there are less than 10 chickens
     const totalObjects = this.scene.getObjects({
-      typeMatch: [ChickenObject, EggObject]
+      typeMatch: [ChickenObject, EggObject],
     }).length;
 
     if ((totalObjects) > this.eggMax) {
@@ -306,7 +306,6 @@ export class ChickenObject extends SceneObject implements Interactable {
         return;
       case ItemType.Wheat:
         this.actionGiveWheat();
-        return;
     }
   }
 
@@ -323,7 +322,7 @@ export class ChickenObject extends SceneObject implements Interactable {
         onComplete: () => {
           // enable inputs
           this.scene.globals.player.enabled = true;
-        }
+        },
       }
     );
 
@@ -345,14 +344,14 @@ export class ChickenObject extends SceneObject implements Interactable {
         onComplete: () => {
           // enable inputs
           this.scene.globals.player.enabled = true;
-        }
+        },
       }
     );
 
     this.scene.addObject(textbox);
   }
 
-  say(text: string, onComplete?: () => void):void {
+  say(text: string, onComplete?: () => void): void {
     // disable inputs
     this.scene.globals.player.enabled = false;
 
@@ -366,9 +365,9 @@ export class ChickenObject extends SceneObject implements Interactable {
         {
           name: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.name,
           portrait: SCENE_GAME_MAP_WORLD_TEXT.npcs.chicken.details.portrait,
-          text: text,
+          text,
           onComplete: () => {
-            if(onComplete){
+            if (onComplete) {
               onComplete();
             }
 
@@ -376,10 +375,9 @@ export class ChickenObject extends SceneObject implements Interactable {
             this.scene.globals.player.enabled = true;
             // restore can move
             this.canMove = canMoveState;
-          }
+          },
         }
       )
     );
   }
-
 }

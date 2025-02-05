@@ -1,15 +1,13 @@
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
-import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants"
-import { LockConfig, LockObject, LockType } from '@game/objects/lock.object';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { type LockConfig, LockObject, LockType } from '@game/objects/lock.object';
 import { ItemType } from '@game/models/inventory.model';
-
 
 interface Config extends LockConfig {
 
 }
 
 export class HillGateObject extends LockObject {
-
   // config
 
   // state
@@ -35,5 +33,4 @@ export class HillGateObject extends LockObject {
   get messageNoKey(): string {
     return SCENE_GAME_MAP_WORLD_TEXT.objects.gate.interact.no_key;
   }
-
 }

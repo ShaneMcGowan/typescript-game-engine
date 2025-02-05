@@ -10,7 +10,6 @@ import { TilesetButtons } from '@game/constants/tilesets/buttons.tileset';
 interface Config extends SceneObjectBaseConfig { }
 
 export class ButtonObject extends SceneObject {
-  
   // config
   width = 6;
   height = 2;
@@ -46,20 +45,20 @@ export class ButtonObject extends SceneObject {
   }
 
   private updateClickStart(): void {
-    if(this.held){
+    if (this.held) {
       return;
     }
 
-    if(!Input.isMousePressed(MouseKey.Left)){
+    if (!Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
-    if(!MouseUtils.isMouseWithinObject(this)){
+    if (!MouseUtils.isMouseWithinObject(this)) {
       return;
     }
 
     // ensure click started on the button
-    if(Input.mouse.click.details === null){
+    if (Input.mouse.click.details === null) {
       return;
     }
     const isWithin = MouseUtils.isMouseWithinBoundary(
@@ -69,7 +68,7 @@ export class ButtonObject extends SceneObject {
       this.width,
       this.height
     );
-    if(!isWithin){
+    if (!isWithin) {
       return;
     }
 
@@ -77,31 +76,31 @@ export class ButtonObject extends SceneObject {
   }
 
   private updateClickEnd(): void {
-    if(!this.held){
+    if (!this.held) {
       return;
     }
 
-    if(Input.isMousePressed(MouseKey.Left)){
+    if (Input.isMousePressed(MouseKey.Left)) {
       return;
     }
 
     this.held = false;
 
-    if(!MouseUtils.isMouseWithinObject(this)){
+    if (!MouseUtils.isMouseWithinObject(this)) {
       return;
     }
 
     this.onClick();
   }
 
-  private renderButtonContainer(context:CanvasRenderingContext2D): void {
+  private renderButtonContainer(context: CanvasRenderingContext2D): void {
     let state: 'Default' | 'Hover' | 'Pressed' = 'Default';
-    if(this.isHovering){
+    if (this.isHovering) {
       state = 'Hover';
     }
-    if(this.held){
+    if (this.held) {
       state = 'Pressed';
-    } 
+    }
 
     // left
     RenderUtils.renderSprite(
@@ -112,7 +111,7 @@ export class ButtonObject extends SceneObject {
       this.transform.position.world.x,
       this.transform.position.world.y,
       TilesetButtons.TopLeft.Default[state].width,
-      TilesetButtons.TopLeft.Default[state].height,
+      TilesetButtons.TopLeft.Default[state].height
     );
 
     RenderUtils.renderSprite(
@@ -123,10 +122,10 @@ export class ButtonObject extends SceneObject {
       this.transform.position.world.x,
       this.transform.position.world.y + 1,
       TilesetButtons.BottomLeft.Default[state].width,
-      TilesetButtons.BottomLeft.Default[state].height,
+      TilesetButtons.BottomLeft.Default[state].height
     );
 
-    for(let i = 1; i <= this.width - 2; i++){
+    for (let i = 1; i <= this.width - 2; i++) {
       // center
       RenderUtils.renderSprite(
         context,
@@ -136,7 +135,7 @@ export class ButtonObject extends SceneObject {
         this.transform.position.world.x + i,
         this.transform.position.world.y,
         TilesetButtons.Top.Default[state].width,
-        TilesetButtons.Top.Default[state].height,
+        TilesetButtons.Top.Default[state].height
       );
 
       RenderUtils.renderSprite(
@@ -147,7 +146,7 @@ export class ButtonObject extends SceneObject {
         this.transform.position.world.x + i,
         this.transform.position.world.y + 1,
         TilesetButtons.Bottom.Default[state].width,
-        TilesetButtons.Bottom.Default[state].height,
+        TilesetButtons.Bottom.Default[state].height
       );
     }
 
@@ -160,7 +159,7 @@ export class ButtonObject extends SceneObject {
       this.transform.position.world.x + this.width - 1,
       this.transform.position.world.y,
       TilesetButtons.TopRight.Default[state].width,
-      TilesetButtons.TopRight.Default[state].height,
+      TilesetButtons.TopRight.Default[state].height
     );
 
     RenderUtils.renderSprite(
@@ -171,7 +170,7 @@ export class ButtonObject extends SceneObject {
       this.transform.position.world.x + this.width - 1,
       this.transform.position.world.y + 1,
       TilesetButtons.BottomRight.Default[state].width,
-      TilesetButtons.BottomRight.Default[state].height,
+      TilesetButtons.BottomRight.Default[state].height
     );
   }
 
@@ -190,5 +189,4 @@ export class ButtonObject extends SceneObject {
 
   onClick(): void {
   }
-
 }

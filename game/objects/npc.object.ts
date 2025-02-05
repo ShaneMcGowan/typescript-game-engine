@@ -2,22 +2,22 @@ import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-objec
 import { MathUtils } from '@core/utils/math.utils';
 import { MovementUtils } from '@core/utils/movement.utils';
 import { RenderUtils } from '@core/utils/render.utils';
-import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
+import { type SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { type Interactable } from '@game/models/components/interactable.model';
-import { Portrait, TextboxObject } from '@game/objects/textbox.object';
+import { type Portrait, TextboxObject } from '@game/objects/textbox.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
 import { Assets } from '@core/utils/assets.utils';
-import { Quest } from '@game/models/quest.model';
+import { type Quest } from '@game/models/quest.model';
 import { TilesetBasic } from '@game/constants/tilesets/basic.tileset';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { PlayerObject } from './player.object';
-import { TileConfig } from '@game/models/tile.model';
+import { type TileConfig } from '@game/models/tile.model';
 import { Direction } from '@game/models/direction.model';
 import { Inventory } from '@game/models/inventory.model';
 import { InventoryObject, InventoryType } from './inventory/inventory.object';
 import { assertUnreachable } from '@core/utils/typescript.utils';
-import { Coordinate } from '@core/model/coordinate';
-import { ObjectFilter } from '@core/model/scene';
+import { type Coordinate } from '@core/model/coordinate';
+import { type ObjectFilter } from '@core/model/scene';
 import { UiObject } from '@core/objects/ui.object';
 import { AreaObject } from './areas/area.object';
 
@@ -25,7 +25,7 @@ export enum MovementType {
   None = 'None', // doesn't move
   Follow = 'Follow', // follows a target if provided, otherwise same as None
   Random = 'Random', // moves in a random direction
-  Goal = 'Goal', // move to target x and target y
+  Goal = 'Goal' // move to target x and target y
 }
 
 export interface InteractionStage {
@@ -60,7 +60,7 @@ const DEFAULT_PORTRAIT: Portrait = {
   x: 0,
   y: 0,
   width: 0,
-  height: 0
+  height: 0,
 };
 const DEFAULT_DIRECTION: Direction = Direction.Down;
 
@@ -101,10 +101,10 @@ export class NpcObject extends SceneObject implements Interactable {
   // movement
   movementType: MovementType;
   movementDelayTimer: number = 0;
-  pathDelayTimer: number; // wait 2 seconds before trying to calculate path as it is expensive 
+  pathDelayTimer: number; // wait 2 seconds before trying to calculate path as it is expensive
   following: SceneObject | undefined;
-  
-  target: Coordinate = { x: 0, y: 0 };
+
+  target: Coordinate = { x: 0, y: 0, };
   goal: Coordinate | undefined = undefined;
   onGoal: () => void = () => {};
   path: Coordinate[] = [];
@@ -142,7 +142,7 @@ export class NpcObject extends SceneObject implements Interactable {
     this.renderSprite(context);
     this.renderIcon(context);
 
-    if(CanvasConstants.DEBUG_MODE){
+    if (CanvasConstants.DEBUG_MODE) {
       this.renderRadius(context);
       this.renderPath(context);
     }
@@ -178,11 +178,11 @@ export class NpcObject extends SceneObject implements Interactable {
     return undefined;
   }
 
-  get name (): string {
+  get name(): string {
     return DEFAULT_NAME;
   }
 
-  get portrait (): Portrait {
+  get portrait(): Portrait {
     return DEFAULT_PORTRAIT;
   }
 
@@ -206,7 +206,7 @@ export class NpcObject extends SceneObject implements Interactable {
       }
 
       return false;
-    })
+    });
   }
 
   /**
@@ -221,7 +221,7 @@ export class NpcObject extends SceneObject implements Interactable {
       }
 
       return true;
-    })
+    });
   }
 
   private updateAnimationTimer(delta: number): void {
@@ -229,7 +229,7 @@ export class NpcObject extends SceneObject implements Interactable {
   }
 
   private updatePosition(delta: number): void {
-    if(this.atTarget){
+    if (this.atTarget) {
       return;
     }
 
@@ -256,19 +256,19 @@ export class NpcObject extends SceneObject implements Interactable {
       return;
     }
 
-    if(!this.atTarget){
+    if (!this.atTarget) {
       return;
     }
 
     // delay
     this.movementDelayTimer += delta;
-    if(this.movementDelay && this.movementDelayTimer < this.movementDelay){
+    if (this.movementDelay && this.movementDelayTimer < this.movementDelay) {
       return;
     }
     this.movementDelayTimer = 0;
 
     // update target
-    switch(this.movementType){
+    switch (this.movementType) {
       case MovementType.Follow:
         this.updateTargetPositionObject(delta);
         return;
@@ -279,7 +279,7 @@ export class NpcObject extends SceneObject implements Interactable {
         this.updateTargetPositionRandom();
         break;
       default:
-        assertUnreachable(this.movementType)
+        assertUnreachable(this.movementType);
     }
   }
 
@@ -290,15 +290,14 @@ export class NpcObject extends SceneObject implements Interactable {
    *  check if next coordinate in path is valid
    *      valid       - set target to next coordinate
    *      not valid   - invalidate path, recalculate path
-   * @returns 
+   * @returns
    */
   private updateTargetPositionGoal(delta: number): void {
-
-    if(this.goal === undefined){
+    if (this.goal === undefined) {
       return;
     }
 
-    if(this.goal.x === this.transform.position.world.x && this.goal.y === this.transform.position.world.y){
+    if (this.goal.x === this.transform.position.world.x && this.goal.y === this.transform.position.world.y) {
       this.goal = undefined;
       this.onGoal();
       return;
@@ -306,17 +305,17 @@ export class NpcObject extends SceneObject implements Interactable {
 
     this.pathDelayTimer += delta;
 
-    if(this.path.length === 0 && this.pathDelayTimer > this.pathDelay){
+    if (this.path.length === 0 && this.pathDelayTimer > this.pathDelay) {
       this.pathDelayTimer = 0;
 
       this.generatePath({
         x: this.goal.x,
-        y: this.goal.y
+        y: this.goal.y,
       });
     }
 
     const target = this.path.pop();
-    if(target === undefined){
+    if (target === undefined) {
       return;
     }
 
@@ -325,7 +324,7 @@ export class NpcObject extends SceneObject implements Interactable {
         target.x,
         target.y,
         this.width,
-        this.height,
+        this.height
       ),
       collision: {
         enabled: true,
@@ -337,7 +336,7 @@ export class NpcObject extends SceneObject implements Interactable {
     };
 
     const object = this.scene.getObject(filter);
-    if(object){
+    if (object) {
       this.path = [];
       return;
     }
@@ -353,17 +352,16 @@ export class NpcObject extends SceneObject implements Interactable {
    *  check if next coordinate in path is valid
    *      valid       - set target to next coordinate
    *      not valid   - invalidate path, recalculate path
-   * @param delta 
-   * @returns 
+   * @param delta
+   * @returns
    */
   private updateTargetPositionObject(delta: number): void {
-
     if (this.following === undefined) {
       return;
     }
 
     // clear path
-    if(this.path.length > 0){
+    if (this.path.length > 0) {
       this.pathDelayTimer = DEFAULT_PATH_DELAY;
       this.path = [];
     }
@@ -374,26 +372,26 @@ export class NpcObject extends SceneObject implements Interactable {
     const xDifference = Math.abs(x - this.transform.position.world.x);
     const yDifference = Math.abs(y - this.transform.position.world.y);
 
-    if(
+    if (
       (xDifference === 1 && yDifference === 0) ||
-      (xDifference === 0 && yDifference === 1) 
-    ){
+      (xDifference === 0 && yDifference === 1)
+    ) {
       return;
     }
 
     this.pathDelayTimer += delta;
 
-    if(this.path.length === 0 && this.pathDelayTimer > this.pathDelay){
+    if (this.path.length === 0 && this.pathDelayTimer > this.pathDelay) {
       this.pathDelayTimer = 0;
     }
 
     this.generatePath({
       x: Math.floor(x),
-      y: Math.floor(y)
+      y: Math.floor(y),
     });
 
     const target = this.path.pop();
-    if(target === undefined){
+    if (target === undefined) {
       return;
     }
 
@@ -402,7 +400,7 @@ export class NpcObject extends SceneObject implements Interactable {
         target.x,
         target.y,
         this.width,
-        this.height,
+        this.height
       ),
       collision: {
         enabled: true,
@@ -414,18 +412,16 @@ export class NpcObject extends SceneObject implements Interactable {
     };
 
     const object = this.scene.getObject(filter);
-    if(object){
+    if (object) {
       this.path = [];
       return;
     }
 
     this.target.x = target.x;
     this.target.y = target.y;
-
   }
 
   private updateTargetPositionRandom(): void {
-
     const movement = MovementUtils.MoveInRandomDirection({
       x: this.transform.position.world.x,
       y: this.transform.position.world.y,
@@ -439,12 +435,12 @@ export class NpcObject extends SceneObject implements Interactable {
 
   interact(): void {
     // intro
-    if(this.intro && !this.scene.getFlag(this.intro.flag)){
+    if (this.intro && !this.scene.getFlag(this.intro.flag)) {
       this.scene.setFlag(this.intro.flag, true);
-      
+
       this.say(
         this.intro.text,
-        () => { if(this.intro.callback) { this.intro.callback(); } },
+        () => { if (this.intro.callback) { this.intro.callback(); } }
       );
       return;
     }
@@ -454,20 +450,20 @@ export class NpcObject extends SceneObject implements Interactable {
         continue;
       }
 
-      // run first incomplete quest 
+      // run first incomplete quest
       quest.run();
       return;
     }
 
     // default
-    if(this.default) {
+    if (this.default) {
       this.say(
         this.default.text,
-        () => { 
-          if(this.default.callback){
+        () => {
+          if (this.default.callback) {
             this.default.callback();
-          } 
-        },
+          }
+        }
       );
     }
   };
@@ -481,13 +477,13 @@ export class NpcObject extends SceneObject implements Interactable {
         {
           name: this.name,
           portrait: this.portrait,
-          text: text,
+          text,
           onComplete: () => {
             if (onComplete) {
               onComplete();
             }
             this.scene.globals.player.enabled = true;
-          }
+          },
         }
       )
     );
@@ -520,12 +516,12 @@ export class NpcObject extends SceneObject implements Interactable {
         context,
         {
           id: TilesetBasic.id,
-          tile: TilesetBasic.QuestionMark.White.Default
+          tile: TilesetBasic.QuestionMark.White.Default,
         },
         {
           id: TilesetBasic.id,
-          tile: TilesetBasic.QuestionMark.Darker.Default
-        },
+          tile: TilesetBasic.QuestionMark.Darker.Default,
+        }
       );
       return;
     }
@@ -535,26 +531,25 @@ export class NpcObject extends SceneObject implements Interactable {
         context,
         {
           id: TilesetBasic.id,
-          tile: TilesetBasic.ExclamationMark.White.Default
+          tile: TilesetBasic.ExclamationMark.White.Default,
         },
         {
           id: TilesetBasic.id,
-          tile: TilesetBasic.ExclamationMark.Darker.Default
-        },
+          tile: TilesetBasic.ExclamationMark.Darker.Default,
+        }
       );
-      return;
     }
   }
 
   private iconRenderer(
     context: CanvasRenderingContext2D,
     foreground: {
-      id: string,
-      tile: TileConfig
+      id: string;
+      tile: TileConfig;
     },
     background: {
-      id: string,
-      tile: TileConfig
+      id: string;
+      tile: TileConfig;
     }
   ): void {
     RenderUtils.renderSprite(
@@ -565,7 +560,7 @@ export class NpcObject extends SceneObject implements Interactable {
       this.transform.position.world.x - CanvasConstants.TILE_PIXEL_SIZE,
       this.transform.position.world.y - 1 - CanvasConstants.TILE_PIXEL_SIZE,
       background.tile.width,
-      background.tile.height,
+      background.tile.height
     );
 
     RenderUtils.renderSprite(
@@ -576,10 +571,10 @@ export class NpcObject extends SceneObject implements Interactable {
       this.transform.position.world.x,
       this.transform.position.world.y - 1,
       foreground.tile.width,
-      foreground.tile.height,
+      foreground.tile.height
     );
   }
-  
+
   openInventory(): void {
     this.scene.addObject(new InventoryObject(
       this.scene,
@@ -587,7 +582,7 @@ export class NpcObject extends SceneObject implements Interactable {
         otherInventory: this.inventory,
         type: this.inventoryType,
       }
-    ))
+    ));
   }
 
   get inventoryType(): InventoryType {
@@ -598,9 +593,9 @@ export class NpcObject extends SceneObject implements Interactable {
     this.goal = {
       x,
       y,
-    }
+    };
     this.onGoal = callback;
-    
+
     // set delay so we move immediately
     this.pathDelayTimer = delay ? this.pathDelay - delay : this.pathDelay;
   }
@@ -617,28 +612,28 @@ export class NpcObject extends SceneObject implements Interactable {
     const start: Coordinate = {
       x: this.transform.position.world.x,
       y: this.transform.position.world.y,
-    }
+    };
 
     // prevent outside radius
-    if(Math.abs(start.x - target.x) > this.pathRadius){
+    if (Math.abs(start.x - target.x) > this.pathRadius) {
       return;
     }
 
-    if(Math.abs(start.y - target.y) > this.pathRadius){
+    if (Math.abs(start.y - target.y) > this.pathRadius) {
       return;
     }
 
     queue.push(start);
 
-    while(queue.length > 0){
+    while (queue.length > 0) {
       const current = queue.shift();
       const currentKey = `${current.x}x${current.y}`;
 
       const neighbours = [
-        { x: current.x - 1, y: current.y },
-        { x: current.x, y: current.y + 1 },
-        { x: current.x + 1, y: current.y },
-        { x: current.x, y: current.y - 1 },
+        { x: current.x - 1, y: current.y, },
+        { x: current.x, y: current.y + 1, },
+        { x: current.x + 1, y: current.y, },
+        { x: current.x, y: current.y - 1, }
       ];
 
       for (let i = 0; i < neighbours.length; ++i) {
@@ -646,28 +641,28 @@ export class NpcObject extends SceneObject implements Interactable {
         const nY = neighbours[i].y;
 
         // limit radius
-        if(Math.abs(nX - target.x) > this.pathRadius){
+        if (Math.abs(nX - target.x) > this.pathRadius) {
           continue;
         }
 
-        if(Math.abs(nY - target.y) > this.pathRadius){
+        if (Math.abs(nY - target.y) > this.pathRadius) {
           continue;
         }
-        
+
         const filter: ObjectFilter = {
           boundingBox: SceneObject.calculateBoundingBox(
             nX,
             nY,
             this.width,
-            this.height,
+            this.height
           ),
           typeIgnore: [UiObject, AreaObject],
           collision: {
             enabled: true,
-          }
+          },
         };
         const object = this.scene.getObject(filter);
-        if(object && (target.x !== nX || target.y !== nY)){
+        if (object && (target.x !== nX || target.y !== nY)) {
           continue;
         }
 
@@ -679,14 +674,14 @@ export class NpcObject extends SceneObject implements Interactable {
         }
 
         parentForCell.set(
-          key, 
+          key,
           {
             key: currentKey,
-            cell: current
+            cell: current,
           }
         );
 
-        queue.push(neighbours[i])
+        queue.push(neighbours[i]);
       }
     }
 
@@ -694,16 +689,16 @@ export class NpcObject extends SceneObject implements Interactable {
     let current = target;
 
     while (current !== start) {
-      this.path.push(current)
+      this.path.push(current);
 
       console.log(this.path);
 
-      if(parentForCell.get(currentKey) === undefined){
+      if (parentForCell.get(currentKey) === undefined) {
         // too far away / no path
         this.path = [];
         return;
       }
-      const { key, cell } = parentForCell.get(currentKey);
+      const { key, cell, } = parentForCell.get(currentKey);
 
       currentKey = key;
       current = cell;
@@ -739,5 +734,4 @@ export class NpcObject extends SceneObject implements Interactable {
       );
     });
   }
-
 }

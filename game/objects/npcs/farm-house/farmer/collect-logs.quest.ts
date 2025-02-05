@@ -1,12 +1,11 @@
-import { SCENE_GAME, StoryFlag } from "@game/scenes/game/scene";
-import { SCENE_GAME_MAP_WORLD_TEXT } from "@game/constants/world-text.constants";
-import { ItemType } from "@game/models/inventory.model";
-import { NpcObject } from "@game/objects/npc.object";
-import { Quest, QuestName, QuestText } from "@game/models/quest.model";
-import { ItemObject } from "@game/objects/item.object";
+import { type SCENE_GAME, StoryFlag } from '@game/scenes/game/scene';
+import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { ItemType } from '@game/models/inventory.model';
+import { type NpcObject } from '@game/objects/npc.object';
+import { Quest, QuestName, type QuestText } from '@game/models/quest.model';
+import { ItemObject } from '@game/objects/item.object';
 
 export class QuestCollectLogs extends Quest {
-
   id: QuestName = QuestName.collect_logs;
 
   constructor(
@@ -31,5 +30,4 @@ export class QuestCollectLogs extends Quest {
   check(): boolean {
     return this.checkAndRemoveItem(ItemType.Log, 4);
   }
-
 }
