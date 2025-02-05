@@ -82,7 +82,7 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
   }
 
   onEnter(): void {
-    MessageUtils.showToast(this.scene, 'The Farmer\'s House');
+    MessageUtils.showToast(this.scene, `The Farmer's House`);
 
     // this.scene.globals.player.actionsEnabled = false;
   }

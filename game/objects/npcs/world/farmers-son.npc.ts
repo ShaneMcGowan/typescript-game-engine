@@ -46,7 +46,7 @@ export class FarmersSonObject extends NpcObject {
 
   get default(): InteractionStage {
     return {
-      text: 'Hi, you must be new around here. I\'m the farmer\'s son. If you\'re looking for something to do, you should go speak with my father. He should be back at our house.',
+      text: `Hi, you must be new around here. I'm the farmer's son. If you're looking for something to do, you should go speak with my father. He should be back at our house.`,
       callback: () => {
         const steps: Sequence = [
           this.stepStart,

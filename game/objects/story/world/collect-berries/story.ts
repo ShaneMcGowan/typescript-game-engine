@@ -68,7 +68,7 @@ export class StoryWorldCollectBerriesObject extends StoryObject {
           x: 12,
           y: 4,
           type: ItemType.WateringCan,
-          pickupMessage: 'This must be the watering can the Farmer was talking about. It looks pretty beat up but it\'s better than nothing.',
+          pickupMessage: `This must be the watering can the Farmer was talking about. It looks pretty beat up but it's better than nothing.`,
           onDestroy: callback,
         }
       )

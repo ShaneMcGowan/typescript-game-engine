@@ -1,5 +1,5 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type ObjectFilter, Scene } from '@core/model/scene';
+import { type ObjectFilter } from '@core/model/scene';
 import { SceneObject } from '@core/model/scene-object';
 import { FarmableAreaObject } from '@game/objects/areas/farmable-area.object';
 import { MessageUtils } from './message.utils';
@@ -25,7 +25,7 @@ export class FarmingUtils {
   static showMessageNotFarmable(scene: SCENE_GAME): void {
     MessageUtils.showMessage(
       scene,
-      'I can\'t farm here.'
+      `I can't farm here.`
     );
   }
 }

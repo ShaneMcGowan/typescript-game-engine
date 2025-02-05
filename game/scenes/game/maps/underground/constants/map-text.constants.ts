@@ -5,7 +5,7 @@ export const SCENE_GAME_MAP_UNDERGROUND_TEXT = {
       unknown_npc_2: 'If you do not do as we wish, a terrible plague will befall the land.',
       unknown_npc_3: 'You have no idea of the power that we posess.',
       greg: {
-        line_1: 'Hi, I\'m Greg.',
+        line_1: `Hi, I'm Greg.`,
         line_2: '........',
         line_3: 'Byeeeeeeee',
       },

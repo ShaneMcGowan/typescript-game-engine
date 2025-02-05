@@ -54,5 +54,7 @@ module.exports = {
       functions: 'never',
     }],
     '@typescript-eslint/dot-notation': 'off',
+    '@typescript-eslint/quotes': 'off',
+    '@typescript-eslint/class-literal-property-style': 'off',
   },
 };

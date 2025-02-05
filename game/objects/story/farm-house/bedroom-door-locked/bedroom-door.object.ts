@@ -30,6 +30,6 @@ export class FarmHouseBedroomDoorObject extends LockObject {
   }
 
   get messageIntro(): string {
-    return 'The door to the Farmer\'s Son\'s bedroom is locked. I wonder if he would let me in?';
+    return `The door to the Farmer's Son's bedroom is locked. I wonder if he would let me in?`;
   }
 }
