@@ -19,7 +19,6 @@ import { WaterAreaObject } from '@game/objects/areas/water-area.object';
 import { SCENE_GAME_MAP_HOUSE } from '../house/map';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
 import { LightingObject } from '@game/objects/lights/lighting.object';
-import { ToastMessageObject } from '@game/objects/toast-message.object';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
   background: JsonBackgroundMap = background;

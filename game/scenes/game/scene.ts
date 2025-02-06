@@ -89,6 +89,8 @@ export enum StoryFlag {
   world_collect_berries_completed = 'world_collect_berries_completed',
   world_collect_berries_berry_counter = 'world_collect_berries_berry_counter',
   world_collect_berries_watering_can = 'world_collect_berries_watering_can',
+  world_plant_tree_started = 'world_plant_tree_started',
+  world_plant_tree_completed = 'world_plant_tree_completed',
   // farm house
   farm_house_son_bedroom_door_locked_started = 'farm_house_son_bedroom_door_locked_started',
   farm_house_son_bedroom_door_locked_completed = 'farm_house_son_bedroom_door_locked_completed',
@@ -214,6 +216,8 @@ export class SCENE_GAME extends Scene {
       [StoryFlag.world_collect_berries_completed]: false,
       [StoryFlag.world_collect_berries_berry_counter]: 0,
       [StoryFlag.world_collect_berries_watering_can]: false,
+      [StoryFlag.world_plant_tree_started]: true, // TODO: set to false
+      [StoryFlag.world_plant_tree_completed]: false,
       // farm house
       [StoryFlag.farm_house_son_bedroom_door_locked_started]: true,
       [StoryFlag.farm_house_son_bedroom_door_locked_completed]: false,

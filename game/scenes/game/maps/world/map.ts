@@ -28,6 +28,8 @@ import { StoryWorldCollectLogsObject } from '@game/objects/story/world/collect-l
 import { StoryWorldCollectRocksObject } from '@game/objects/story/world/collect-rocks/story';
 import { StoryWorldCollectBerriesObject } from '@game/objects/story/world/collect-berries/story';
 import { MessageUtils } from '@game/utils/message.utils';
+import { StoryWorldPlantTree } from '@game/objects/story/world/plant-tree/story';
+import { hasOnNewDay } from '@game/models/components/new-day.model';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   // config
@@ -35,6 +37,8 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
   // state
   player: PlayerObject;
+
+  day: number = 0;
 
   constructor(protected scene: SCENE_GAME) {
     super(scene);
@@ -55,6 +59,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new StoryWorldCollectLogsObject(scene, { x: 0, y: 0, }));
     this.scene.addObject(new StoryWorldCollectRocksObject(scene, { x: 0, y: 0, }));
     this.scene.addObject(new StoryWorldCollectBerriesObject(scene, { x: 0, y: 0, }));
+    this.scene.addObject(new StoryWorldPlantTree(scene, { }));
 
     // chickens
     this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));
@@ -212,6 +217,17 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     MessageUtils.showToast(this.scene, 'Town outskirts');
 
     Warps.onMapEnter(this.scene, this.player);
+
+    // run onNewDay for each day since
+    while (this.day < this.scene.globals.day) {
+      this.day++;
+
+      this.scene.objects.forEach(object => {
+        if (hasOnNewDay(object)) {
+          object.onNewDay();
+        }
+      });
+    }
   }
 
   onLeave(scene: Scene): void {

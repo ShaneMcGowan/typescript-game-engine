@@ -8,8 +8,9 @@ import { TextboxObject } from './textbox.object';
 import { ItemObject } from './item.object';
 import { ItemType } from '@game/models/inventory.model';
 import { MathUtils } from '@core/utils/math.utils';
-import { type ObjectFilter, Scene } from '@core/model/scene';
+import { type ObjectFilter } from '@core/model/scene';
 import { PlayerObject } from './player.object';
+import { type OnNewDay } from '@game/models/components/new-day.model';
 
 const DEFAULT_STUMP_ON_DESTROY: boolean = true;
 const DEFAULT_LOG_ON_DESTROY: boolean = true;
@@ -24,7 +25,7 @@ interface Config extends SceneObjectBaseConfig {
   berryOnDestroy?: boolean;
 }
 
-export class TreeObject extends SceneObject implements Interactable {
+export class TreeObject extends SceneObject implements Interactable, OnNewDay {
   // config
   stumpOnDestroy: boolean;
   logOnDestroy: boolean;
@@ -34,8 +35,6 @@ export class TreeObject extends SceneObject implements Interactable {
   chopCounter: number = 0; // used to store the number of times the tree has been chopped
   chopCounterMax: number = 5;
 
-  fruitTimer: number = MathUtils.randomStartingDelta(4);
-  fruitTimerMax: number = 60; // time in seconds until fruit is grown
   fruit: number = 0; // current amount of fruit on the tree
   fruitMax: number = 3; // max fruit that can grow at once
 
@@ -49,13 +48,6 @@ export class TreeObject extends SceneObject implements Interactable {
     this.stumpOnDestroy = config.stumpOnDestroy ?? DEFAULT_STUMP_ON_DESTROY;
     this.logOnDestroy = config.logOnDestroy ?? DEFAULT_LOG_ON_DESTROY;
     this.berryOnDestroy = config.berryOnDestroy ?? DEFAULT_BERRY_ON_DESTROY;
-  }
-
-  onUpdate(delta: number): void {
-    // only grow fruit on big trees
-    if (this.type === 'big') {
-      this.updateFruit(delta);
-    }
   }
 
   onRender(context: CanvasRenderingContext2D): void {
@@ -78,24 +70,14 @@ export class TreeObject extends SceneObject implements Interactable {
     }
   }
 
-  get type(): Type {
-    return this.config.type;
+  onNewDay(): void {
+    if (this.type === 'big') {
+      this.fruit = this.fruitMax;
+    }
   }
 
-  private updateFruit(delta: number): void {
-    this.fruitTimer += delta;
-
-    if (this.fruitTimer < this.fruitTimerMax) {
-      return;
-    }
-
-    this.fruitTimer -= this.fruitTimerMax;
-
-    if (this.fruit >= this.fruitMax) {
-      return;
-    }
-
-    this.fruit++;
+  get type(): Type {
+    return this.config.type;
   }
 
   private renderTree(context: CanvasRenderingContext2D): void {
@@ -172,7 +154,7 @@ export class TreeObject extends SceneObject implements Interactable {
       const textbox = new TextboxObject(
         this.scene,
         {
-          text: this.type === 'small' ? 'It\'s a tree, I should be able to cut it down with an Axe...' : 'It\'s a berry tree.',
+          text: this.type === 'small' ? `It's a tree, I should be able to cut it down with an Axe...` : `It's a berry tree.`,
           onComplete: () => {
             this.scene.globals.player.enabled = true;
           },
@@ -185,7 +167,6 @@ export class TreeObject extends SceneObject implements Interactable {
 
     // drop a piece of fruit
     this.fruit--;
-    this.fruitTimer = 0;
 
     // drop at a random position around the tree
     const positions = this.findDropPositions();

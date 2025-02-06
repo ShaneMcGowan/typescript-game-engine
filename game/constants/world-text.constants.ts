@@ -48,20 +48,10 @@ const NPC_FARMER: Npc = {
         failure: `Come back to me once you've collected 8 ${Inventory.getItemName(ItemType.Rock, true)}. Don't worry if some are too tough to break, we can deal with those later.`,
         success: `Great work, my field has never looked so ${Inventory.getItemName(ItemType.Rock)} free, and that's a compliment where I come from.`,
       },
-      [QuestName.collect_berries]: {
-        intro: `Next we need to find some ${Inventory.getItemName(ItemType.Berry, true)}. There should be some ${Inventory.getItemName(ItemType.Berry, true)} up on the hill beside us. The gate to the hill is locked so take this ${Inventory.getItemName(ItemType.GateKey)}. Bring me back 4 ${Inventory.getItemName(ItemType.Berry, true)}. I think I also left my ${Inventory.getItemName(ItemType.WateringCan)} somewhere around there. Try find that too.`,
-        failure: `Head up the the hill and bring me back 4 ${Inventory.getItemName(ItemType.Berry, true)} and the ${Inventory.getItemName(ItemType.WateringCan)}.`,
-        success: `Fantastic, I've been looking for that ${Inventory.getItemName(ItemType.WateringCan)} for ages. Did you lock the gate again after you left? I don't want people wandering around up there stealing my berries.`,
-      },
       [QuestName.clear_path_to_farm]: {
         intro: `You're almost ready to do some actual farming, you just need one thing: a farm. The path to the farm has become overgrown. There are some trees blocking the path. Take this ${Inventory.getItemName(ItemType.Axe)} and clear a path.`,
         failure: `Take that ${Inventory.getItemName(ItemType.Axe)} I gave you and clear a path to the farm. I know you broke the ${Inventory.getItemName(ItemType.GateKey)} and left the gate open by the way so you should have no problem getting back up there. I can't believe you broke the ${Inventory.getItemName(ItemType.GateKey)}, I was going to give that to my son for his birthday.`,
         success: 'Fantastic, now the farming can begin!',
-      },
-      [QuestName.plant_tree]: {
-        intro: `Now for your next task. Take this ${Inventory.getItemName(ItemType.Shovel)}, head to the farm and plant some ${Inventory.getItemName(ItemType.Berry)} trees. Also take this ${Inventory.getItemName(ItemType.Berry)}, you'll need to plant it. As for the other 3 ${Inventory.getItemName(ItemType.Berry, true)} you gave me, I ate them. They were tasty. Yum. Come back to me once they have grown and you've collected 9 ${Inventory.getItemName(ItemType.Berry, true)}.`,
-        failure: `Head to the farm and plant some ${Inventory.getItemName(ItemType.Berry)} trees, wait for them to grow and bring me back 9 ${Inventory.getItemName(ItemType.Berry)}.`,
-        success: `You did it, now we can have all the ${Inventory.getItemName(ItemType.Berry, true)} we want! Unless you chop down all the trees and eat all the ${Inventory.getItemName(ItemType.Berry, true)}, but that would just be silly to do.`,
       },
     },
     dialogue: {

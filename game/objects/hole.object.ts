@@ -31,7 +31,7 @@ export class HoleObject extends SceneObject implements Interactable {
   interact(): void {
     MessageUtils.showMessage(
       this.scene,
-      'It\'s a hole in the ground, I\'d better not fall in. I can plant things here.'
+      `It's a hole in the ground, I'd better not fall in. I can plant things here.`
     );
   }
 }

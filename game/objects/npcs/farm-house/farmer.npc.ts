@@ -29,10 +29,10 @@ export class FarmerObject extends NpcObject {
   quests: Quest[] = [
     new QuestCollectLogs(this.scene, this),
     new QuestCollectRocks(this.scene, this),
-    new QuestCollectBerries(this.scene, this)
+    new QuestCollectBerries(this.scene, this),
+    new QuestPlantTree(this.scene, this)
     // new QuestBreakRocks(this.scene, this),
     // new QuestClearPathToFarm(this.scene, this),
-    // new QuestPlantTree(this.scene, this),
     // new QuestCollectWheat(this.scene, this),
   ];
 
