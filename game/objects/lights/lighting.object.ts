@@ -165,8 +165,6 @@ export class LightingObject extends SceneObject {
       context.fillStyle = `#${DEFAULT_DARKNESS_COLOUR_V2}${this.alpha}`;
     }
 
-    console.log(context.fillStyle);
-
     context.beginPath();
 
     context.rect(
