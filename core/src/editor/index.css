@@ -39,6 +39,26 @@ body {
   width: 600px;
 }
 
+.editor-container.collapsed {
+  width: 50px;
+}
+
+.editor-container.collapsed .editor-container-btn-collapse {
+  display: none;
+}
+
+.editor-container .editor-container-btn-expand {
+  display: none;
+}
+.editor-container.collapsed .editor-container-btn-expand {
+  display: block;
+}
+
+.editor-container.collapsed .editor-container-content,
+.editor-container.collapsed .editor-container-header { 
+  display: none; 
+}
+
 .client-container {
   width: 100%;
 }
@@ -136,6 +156,9 @@ body {
 .m-r-1 {
   margin-right: 0.5rem;
 }
+
+.ml-auto { margin-left: auto; }
+.mr-auto { margin-right: auto; }
 
 .border-bottom {
   border-bottom: 1px solid var(--colour-white);

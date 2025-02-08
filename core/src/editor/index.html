@@ -15,6 +15,38 @@
     document.getElementById('tab-objects').classList.add('hidden');
     document.getElementById(id).classList.remove('hidden');
   }
+
+  function expand(id) {
+    const source = 'expand';
+
+    const element = document.getElementById('editor-container');
+    if (element === null) {
+      throw Error(`[expand] no element found for id: ${id}`);
+    }
+
+    const className = 'collapsed';
+    if (element.classList.contains(className)) {
+      element.classList.remove(className);
+      setStore(source, id, false);
+    } else {
+      element.classList.add(className);
+      setStore(source, id, true);
+    }
+  }
+
+  function setStore(source, key, value) {
+    localStorage.setItem(source, JSON.stringify({ [key]: value }))
+  }
+
+  function getStore(source, key, value) {
+    const item = localStorage.getItem(source);
+
+    if (item === null) {
+      return {};
+    }
+
+    return JSON.parse(item);
+  }
 </script>
 
 <body>
@@ -40,31 +72,42 @@
 
     <div class="flex h-100">
       <!-- Engine container -->
-      <div class="editor-container">
-        <div class="w-100 border-right border-bottom p-1">
-          <button onclick="changeTab('map-objects')">Maps</button>
-          <button onclick="changeTab('tab-objects')">Objects</button>
-        </div>
-
-        <!-- Maps Tab -->
-        <div id="map-objects" class="flex h-100">
-          <div class="map-list-container" id="map-list">
+      <div id="editor-container" class="editor-container collapsed">
+        <div class="flex w-100 border-right border-bottom p-1">
+          <div class="editor-container-header">
+            <button onclick="changeTab('map-objects')">Maps</button>
+            <button onclick="changeTab('tab-objects')">Objects</button>
+          </div>
+          <div onclick="expand('editor-container')" class="ml-auto editor-container-btn-collapse">
+            ←
+          </div>
+          <div onclick="expand('editor-container')" class="ml-auto editor-container-btn-expand">
+            →
           </div>
         </div>
 
-        <!-- Objects Tab -->
-        <div id="tab-objects" class="object-tab-container hidden">
-          <div class="object-list-container" id="object-list">
-          </div>
-          <div class="object-details-container" id="object-details">
-            <div class="object-details-header" id="object-details-header">
-
-            </div>
-            <div class="object-details-content" id="object-details-content">
-
+        <div class="editor-container-content">
+          <!-- Maps Tab -->
+          <div id="map-objects" class="flex h-100">
+            <div class="map-list-container" id="map-list">
             </div>
           </div>
+
+          <!-- Objects Tab -->
+          <div id="tab-objects" class="object-tab-container hidden">
+            <div class="object-list-container" id="object-list">
+            </div>
+            <div class="object-details-container" id="object-details">
+              <div class="object-details-header" id="object-details-header">
+
+              </div>
+              <div class="object-details-content" id="object-details-content">
+
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
 
       <!-- Client container -->
