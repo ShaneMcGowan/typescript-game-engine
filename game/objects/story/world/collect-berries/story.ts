@@ -2,7 +2,7 @@ import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { StoryFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { StoryObject } from '../../story.object';
 import { ItemObject } from '@game/objects/item.object';
-import { ItemType } from '@game/models/inventory.model';
+import { Inventory, ItemType } from '@game/models/inventory.model';
 
 export interface Config extends SceneObjectBaseConfig {
 }
@@ -68,7 +68,7 @@ export class StoryWorldCollectBerriesObject extends StoryObject {
           x: 12,
           y: 4,
           type: ItemType.WateringCan,
-          pickupMessage: `This must be the watering can the Farmer was talking about. It looks pretty beat up but it's better than nothing.`,
+          pickupMessage: `This must be the ${Inventory.getItemName(ItemType.WateringCan)} the Farmer was talking about. It looks pretty beat up but it's better than nothing.`,
           onDestroy: callback,
         }
       )
