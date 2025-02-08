@@ -1,15 +1,12 @@
 import { type SCENE_GAME, SceneFlag } from '@game/scenes/game/scene';
-import { type InteractionStage, type InteractionStageIntro, NpcDetails, NpcDialogue, NpcObject, type NpcObjectConfig, type NpcState } from '../../npc.object';
+import { type InteractionStage, type InteractionStageIntro, NpcObject, type NpcObjectConfig, type NpcState } from '../../npc.object';
 import { SpriteAnimation } from '@core/model/sprite-animation';
-import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
+import { NPC_FARMER_NAME, NPC_FARMER_PORTRAIT } from '@game/constants/world-text.constants';
 import { type Quest } from '@game/models/quest.model';
-import { QuestBreakRocks } from './farmer/break-rocks.quest';
 import { QuestCollectRocks } from './farmer/collect-rocks.quest';
 import { QuestCollectLogs } from './farmer/collect-logs.quest';
 import { QuestPlantTree } from './farmer/plant-tree.quest';
 import { QuestCollectBerries } from './farmer/collect-berries.quest';
-import { QuestClearPathToFarm } from './farmer/clear-path-to-farm.quest';
-import { QuestCollectWheat } from './farmer/collect-wheat.quest';
 import { type Portrait } from '@game/objects/textbox.object';
 
 const ANIMATION: Record<NpcState, SpriteAnimation> = {
@@ -44,23 +41,23 @@ export class FarmerObject extends NpcObject {
   }
 
   get name(): string {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.name;
+    return NPC_FARMER_NAME;
   }
 
   get portrait(): Portrait {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.details.portrait;
+    return NPC_FARMER_PORTRAIT;
   }
 
   get intro(): InteractionStageIntro {
     return {
-      text: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.dialogue.intro,
+      text: `Hi, I don't think we've met. I'm the Farmer. If you're looking for something to do I'm sure I can find something for you.`,
       flag: SceneFlag.intro_farmer,
     };
   }
 
   get default(): InteractionStage {
     return {
-      text: SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.dialogue.default,
+      text: `The guy who made this game is lazy and hasn't added more quests for you to do yet, just go mess about I guess.`,
     };
   }
 

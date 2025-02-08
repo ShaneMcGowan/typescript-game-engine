@@ -1,6 +1,7 @@
 import { Inventory, ItemType } from '@game/models/inventory.model';
 import { QuestName, type QuestText } from '@game/models/quest.model';
 import { type NpcDetails } from '@game/objects/npc.object';
+import { Portrait } from '@game/objects/textbox.object';
 
 interface Npc {
   details: NpcDetails;
@@ -13,52 +14,13 @@ interface Npc {
   };
 }
 
-const NPC_FARMER_DETAILS: NpcDetails = {
-  name: 'Farmer',
-  portrait: {
-    tileset: 'tileset_emotes',
-    x: 0,
-    y: 0,
-    height: 2,
-    width: 2,
-  },
-};
-
-const NPC_FARMER: Npc = {
-  details: { ...NPC_FARMER_DETAILS, },
-  text: {
-    quests: {
-      [QuestName.collect_wheat]: { // TODO: update
-        intro: 'Hi, I don\'t think we\'ve met. I\'m the Farmer. If you\'re looking for something to do, go collect some Wheat for me. Collect 9 Wheat for me and I\'ll give you the key to the gate out front.',
-        failure: 'Collect 9 Wheat for me and I\'ll give you the key to the gate out front, then I\'ll have more for you to do.',
-        success: 'Thanks! I really wasn\'t feeling up to collecting Wheat today, good thing you showed up. Here is the key to the gate out front. Come back to me for more to do once you\'re done exploring.',
-      },
-      [QuestName.collect_logs]: {
-        intro: `If you want to get to work, we will need to get you some tools. I'm out of supplies at the minute so to start, bring me 4 ${Inventory.getItemName(ItemType.Log, true)}. You should be able to find some washed up on the beach.`,
-        failure: `Bring me 4 ${Inventory.getItemName(ItemType.Log, true)}. You should be able to find some washed up on the beach.`,
-        success: 'Great work, just a few more tasks and you\'ll be right on your way to being a farmer like me.',
-      },
-      [QuestName.collect_rocks]: {
-        intro: `Next we need to find some ${Inventory.getItemName(ItemType.Rock, true)}, then I can start making you some tools. There should be some ${Inventory.getItemName(ItemType.Rock, true)} on the beach. Bring me back 4 ${Inventory.getItemName(ItemType.Rock, true)}.`,
-        failure: `Head down to the beach and bring me back 4 ${Inventory.getItemName(ItemType.Rock, true)}, then I can make you some tools.`,
-        success: 'Fantastic! Now I can make you some tools.',
-      },
-      [QuestName.break_rocks]: {
-        intro: `Here is a ${Inventory.getItemName(ItemType.Pickaxe)}, time to make yourself useful. it's not very strong but should be able to break through most of the ${Inventory.getItemName(ItemType.Rock, true)} there. I need someone to get rid of all those damn ${Inventory.getItemName(ItemType.Rock, true)} in my field. You can't grow plants if there are ${Inventory.getItemName(ItemType.Rock, true)} in the way. I used to break ${Inventory.getItemName(ItemType.Rock, true)} all day long as part of a chain gang. Went down for 3 counts of not thanking the bus driver. I've since seen the error of my ways, but I refuse to ever break ${Inventory.getItemName(ItemType.Rock, true)} myself again. Bring me back 8 ${Inventory.getItemName(ItemType.Rock, true)}.`,
-        failure: `Come back to me once you've collected 8 ${Inventory.getItemName(ItemType.Rock, true)}. Don't worry if some are too tough to break, we can deal with those later.`,
-        success: `Great work, my field has never looked so ${Inventory.getItemName(ItemType.Rock)} free, and that's a compliment where I come from.`,
-      },
-      [QuestName.clear_path_to_farm]: {
-        intro: `You're almost ready to do some actual farming, you just need one thing: a farm. The path to the farm has become overgrown. There are some trees blocking the path. Take this ${Inventory.getItemName(ItemType.Axe)} and clear a path.`,
-        failure: `Take that ${Inventory.getItemName(ItemType.Axe)} I gave you and clear a path to the farm. I know you broke the ${Inventory.getItemName(ItemType.GateKey)} and left the gate open by the way so you should have no problem getting back up there. I can't believe you broke the ${Inventory.getItemName(ItemType.GateKey)}, I was going to give that to my son for his birthday.`,
-        success: 'Fantastic, now the farming can begin!',
-      },
-    },
-    dialogue: {
-      intro: 'Hi, I don\'t think we\'ve met. I\'m the Farmer. If you\'re looking for something to do I\'m sure I can find something for you.',
-      default: 'The guy who made this game is lazy and hasn\'t added more quests for you to do yet, just go mess about I guess.',
-    },
-  },
+export const NPC_FARMER_NAME: string = 'Farmer';
+export const NPC_FARMER_PORTRAIT: Portrait = {
+  tileset: 'tileset_emotes',
+  x: 0,
+  y: 0,
+  height: 2,
+  width: 2,
 };
 
 const NPC_FARMERS_SON_DETAILS: NpcDetails = {
@@ -218,7 +180,6 @@ const OBJECT_SHACK = {
 
 export const SCENE_GAME_MAP_WORLD_TEXT = {
   npcs: {
-    farmer: { ...NPC_FARMER, },
     farmers_son: { ...NPC_FARMERS_SON, },
     chicken: { ...NPC_CHICKEN, },
     furniture_salesman: { ...NPC_FURNITURE_SALESMAN, },

@@ -1,5 +1,4 @@
 import { type SCENE_GAME } from '@game/scenes/game/scene';
-import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
 import { ItemType } from '@game/models/inventory.model';
 import { type NpcObject } from '@game/objects/npc.object';
 import { Quest, QuestName, type QuestText } from '@game/models/quest.model';
@@ -15,7 +14,11 @@ export class QuestCollectWheat extends Quest {
   }
 
   get text(): QuestText {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_wheat;
+    return {
+      intro: `Hi, I don't think we've met. I'm the Farmer. If you're looking for something to do, go collect some Wheat for me. Collect 9 Wheat for me and I'll give you the key to the gate out front.`,
+      failure: `Collect 9 Wheat for me and I'll give you the key to the gate out front, then I'll have more for you to do.`,
+      success: `Thanks! I really wasn't feeling up to collecting Wheat today, good thing you showed up. Here is the key to the gate out front. Come back to me for more to do once you're done exploring.`,
+    };
   }
 
   onSuccess(): void {

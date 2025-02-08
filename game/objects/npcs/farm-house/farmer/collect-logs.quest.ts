@@ -1,9 +1,7 @@
 import { type SCENE_GAME, StoryFlag } from '@game/scenes/game/scene';
-import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
-import { ItemType } from '@game/models/inventory.model';
+import { Inventory, ItemType } from '@game/models/inventory.model';
 import { type NpcObject } from '@game/objects/npc.object';
 import { Quest, QuestName, type QuestText } from '@game/models/quest.model';
-import { ItemObject } from '@game/objects/item.object';
 
 export class QuestCollectLogs extends Quest {
   id: QuestName = QuestName.collect_logs;
@@ -16,7 +14,11 @@ export class QuestCollectLogs extends Quest {
   }
 
   get text(): QuestText {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_logs;
+    return {
+      intro: `If you want to get to work, we will need to get you some tools. I'm out of supplies at the minute so to start, bring me 4 ${Inventory.getItemName(ItemType.Log, true)}. You should be able to find some washed up on the beach.`,
+      failure: `Bring me 4 ${Inventory.getItemName(ItemType.Log, true)}. You should be able to find some washed up on the beach.`,
+      success: `Great work, just a few more tasks and you'll be right on your way to being a farmer like me.`,
+    };
   }
 
   onIntro(): void {

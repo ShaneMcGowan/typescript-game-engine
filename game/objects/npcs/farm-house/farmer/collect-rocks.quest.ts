@@ -1,6 +1,5 @@
 import { type SCENE_GAME, StoryFlag } from '@game/scenes/game/scene';
-import { SCENE_GAME_MAP_WORLD_TEXT } from '@game/constants/world-text.constants';
-import { ItemType } from '@game/models/inventory.model';
+import { Inventory, ItemType } from '@game/models/inventory.model';
 import { type NpcObject } from '@game/objects/npc.object';
 import { Quest, QuestName, type QuestText } from '@game/models/quest.model';
 
@@ -15,7 +14,11 @@ export class QuestCollectRocks extends Quest {
   }
 
   get text(): QuestText {
-    return SCENE_GAME_MAP_WORLD_TEXT.npcs.farmer.text.quests.collect_rocks;
+    return {
+      intro: `Next we need to find some ${Inventory.getItemName(ItemType.Rock, true)}, then I can start making you some tools. There should be some ${Inventory.getItemName(ItemType.Rock, true)} on the beach. Bring me back 4 ${Inventory.getItemName(ItemType.Rock, true)}.`,
+      failure: `Head down to the beach and bring me back 4 ${Inventory.getItemName(ItemType.Rock, true)}, then I can make you some tools.`,
+      success: `Always remember, if you get stuck for resources, things tend to wash up on the beach over night, so be sure to check the beach every morning.`,
+    };
   }
 
   onIntro(): void {
