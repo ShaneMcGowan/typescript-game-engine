@@ -3,13 +3,17 @@ import { type Scene } from '@core/model/scene';
 import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { RenderUtils } from '@core/utils/render.utils';
 
-const IN_SPEED: number = 8;
-const OUT_SPEED: number = 8;
+const SPEED_IN: number = 8;
+const SPEED_OUT: number = 8;
 const TIMER_DELAY_MAX: number = 1;
 const TIMER_PAUSE_MAX: number = 5;
 
 interface Config extends SceneObjectBaseConfig {
   text: string;
+  speedIn?: number;
+  speedOut?: number;
+  timerDelay?: number;
+  timerPause?: number;
 }
 
 export class ToastMessageObject extends SceneObject {
@@ -33,7 +37,7 @@ export class ToastMessageObject extends SceneObject {
 
   onUpdate(delta: number): void {
     this.timerDelay += delta;
-    if (this.timerDelay < TIMER_DELAY_MAX) {
+    if (this.timerDelay < this.timerDelayLength) {
       return;
     }
 
@@ -44,7 +48,7 @@ export class ToastMessageObject extends SceneObject {
     }
 
     this.timerPause += delta;
-    if (this.timerPause < TIMER_PAUSE_MAX) {
+    if (this.timerPause < this.timerPauseLength) {
       return;
     }
 
@@ -55,6 +59,22 @@ export class ToastMessageObject extends SceneObject {
     }
 
     this.destroy();
+  }
+
+  get speedIn(): number {
+    return this.config.speedIn ?? SPEED_IN;
+  }
+
+  get speedOut(): number {
+    return this.config.speedOut ?? SPEED_OUT;
+  }
+
+  get timerDelayLength(): number {
+    return this.config.timerDelay ?? TIMER_DELAY_MAX;
+  }
+
+  get timerPauseLength(): number {
+    return this.config.timerPause ?? TIMER_PAUSE_MAX;
   }
 
   updateMoveIn(delta: number): void {
@@ -69,7 +89,7 @@ export class ToastMessageObject extends SceneObject {
       return;
     }
 
-    this.transform.position.local.y += delta * IN_SPEED;
+    this.transform.position.local.y += delta * this.speedIn;
   }
 
   updateMoveOut(delta: number): void {
@@ -88,7 +108,7 @@ export class ToastMessageObject extends SceneObject {
       return;
     }
 
-    this.transform.position.local.y -= delta * OUT_SPEED;
+    this.transform.position.local.y -= delta * this.speedOut;
   }
 
   onRender(context: CanvasRenderingContext2D): void {

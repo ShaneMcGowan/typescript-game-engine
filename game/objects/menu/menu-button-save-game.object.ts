@@ -23,15 +23,6 @@ export class MenuButtonSaveGameObject extends ButtonObject {
 
   onClick(): void {
     // if no previous save, create an ID
-    if (!CanvasConstants.SAVE_FILE_ID) {
-      Store.set<string>(SaveFileKeys.Id, crypto.randomUUID());
-    }
-
-    Store.set<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests, this.scene.globals.quests);
-    Store.set<Record<SceneFlag, boolean>>(SaveFileKeys.Flags, this.scene.globals.flags);
-    Store.set<Record<StoryFlag, boolean | number>>(SaveFileKeys.StoryFlags, this.scene.globals.story_flags);
-    Store.set<ItemList>(SaveFileKeys.Inventory, this.scene.globals.inventory.items);
-
-    alert('Saved');
+    Store.SaveGame(this.scene, CanvasConstants.SAVE_FILE_ID);
   }
 }

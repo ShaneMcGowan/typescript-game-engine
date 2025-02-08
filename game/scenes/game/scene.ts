@@ -18,6 +18,16 @@ import { SCENE_GAME_MAP_TEST_PATHING_2 } from './maps/test/pathing/map.2';
 import { SCENE_GAME_MAP_TEST_PATHING_3 } from './maps/test/pathing/map.3';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
 
+export enum SavePoint {
+  House = 'House',
+  FarmHouse = 'FarmHouse',
+}
+
+export const SAVE_POINT_MAP: Record<SavePoint, SceneMapConstructorSignature> = {
+  [SavePoint.House]: SCENE_GAME_MAP_HOUSE,
+  [SavePoint.FarmHouse]: SCENE_GAME_MAP_FARM_HOUSE,
+}
+
 export const MINUTES_PER_DAY: number = 15;
 export const DAY_LENGTH_IN_SECONDS: number = 60 * MINUTES_PER_DAY;
 export const DAY_LENGTH_IN_MILLISECONDS: number = 1000 * DAY_LENGTH_IN_SECONDS;
@@ -118,6 +128,7 @@ interface Globals extends SceneGlobalsBaseConfig {
   story_flags: Record<StoryFlag, boolean | number>;
   time: number;
   day: number;
+  save_point?: SavePoint;
 }
 
 export class SCENE_GAME extends Scene {
@@ -226,6 +237,7 @@ export class SCENE_GAME extends Scene {
     },
     time: 0,
     day: 0,
+    save_point: undefined,
   };
 
   constructor(client: Client) {
@@ -262,6 +274,8 @@ export class SCENE_GAME extends Scene {
         }
         return item;
       });
+
+      this.globals.save_point = Store.get<SavePoint>(SaveFileKeys.SavePoint);
     }
 
     const params = new URLSearchParams(window.location.search);
@@ -283,7 +297,7 @@ export class SCENE_GAME extends Scene {
       'test/pathing/2': SCENE_GAME_MAP_TEST_PATHING_2,
       'test/pathing/3': SCENE_GAME_MAP_TEST_PATHING_3,
     };
-    const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? SCENE_GAME_MAP_WORLD;
+    const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? (this.globals.save_point ? SAVE_POINT_MAP[this.globals.save_point] : SCENE_GAME_MAP_WORLD);
 
     this.changeMap(map);
   }

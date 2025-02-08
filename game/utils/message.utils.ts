@@ -28,7 +28,29 @@ export class MessageUtils {
     scene.addObject(textbox);
   }
 
-  static showToast(scene: Scene, text: string): void {
-    scene.addObject(new ToastMessageObject(scene, { text, }));
+  static showToast(
+    scene: Scene,
+    text: string,
+    options: {
+      speedIn?: number,
+      speedOut?: number,
+      timerDelay?: number,
+      timerPause?: number,
+    } = {}
+  ): ToastMessageObject {
+    const toast = new ToastMessageObject(
+      scene,
+      {
+        text,
+        speedIn: options.speedIn,
+        speedOut: options.speedOut,
+        timerDelay: options.timerDelay,
+        timerPause: options.timerPause,
+      }
+    );
+
+    scene.addObject(toast);
+
+    return toast;
   }
 }

@@ -5,6 +5,7 @@ import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
 import { MainMenuButtonNewGameObject } from './main-menu-button-new-game.object';
 import { MainMenuButtonLoadGameObject } from './main-menu-button-load-game.object';
+import { MainMenuButtonDeleteSaveObject } from './main-menu-button-delete-save.object';
 
 const MAX_ITEMS = 15; // max objects allowed on screen at once
 const NEW_ITEM_DELAY = 3; // seconds unil new item is generated (if there is room)
@@ -26,7 +27,8 @@ export class MainMenuControllerObject extends SceneObject {
   onAwake(): void {
     const buttons = [
       new MainMenuButtonNewGameObject(this.scene, {}),
-      new MainMenuButtonLoadGameObject(this.scene, {})
+      new MainMenuButtonLoadGameObject(this.scene, {}),
+      ...(CanvasConstants.DEBUG_MODE ? [new MainMenuButtonDeleteSaveObject(this.scene, {})] : []),
     ];
 
     buttons.forEach((button, index) => {

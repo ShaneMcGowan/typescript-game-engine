@@ -34,8 +34,8 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
     this.scene.addObject(new FarmersSonObject(this.scene, { x: 17, y: 9, }));
 
     // stories
-    this.scene.addObject(new StoryFarmHouseSonBedroomDoorLocked(scene, { }));
-    this.scene.addObject(new StoryFarmHouseFarmerBedroomDoorLocked(scene, { }));
+    this.scene.addObject(new StoryFarmHouseSonBedroomDoorLocked(scene, {}));
+    this.scene.addObject(new StoryFarmHouseFarmerBedroomDoorLocked(scene, {}));
 
     // collision - vertical - sort by y
     this.scene.addObject(new CollisionObject(scene, { x: 8, y: 3, width: 16, }));
@@ -73,7 +73,7 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
     // furniture - sorted by y then x
     this.scene.addObject(new FurnitureLampObject(scene, { x: 9, y: 4, }));
     this.scene.addObject(new FurnitureBedObject(scene, { x: 10, y: 4, canSave: true, }));
-    this.scene.addObject(new FurnitureBedObject(scene, { x: 21, y: 4, canSave: true, onSave: () => { this.scene.setFlag(SceneFlag.slept_in_farm_house_bed, true); }, }));
+    this.scene.addObject(new FurnitureBedObject(scene, { x: 21, y: 4, canSave: true, beforeSave: () => { this.scene.setFlag(SceneFlag.slept_in_farm_house_bed, true); }, }));
     this.scene.addObject(new FurnitureLampObject(scene, { x: 22, y: 4, }));
     this.scene.addObject(new FurnitureLampObject(scene, { x: 15, y: 5, }));
 

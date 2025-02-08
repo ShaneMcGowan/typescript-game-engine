@@ -1,4 +1,4 @@
-import { type QuestStatus, type SCENE_GAME, type SceneFlag, type StoryFlag } from '@game/scenes/game/scene';
+import { SavePoint, type QuestStatus, type SCENE_GAME, type SceneFlag, type StoryFlag } from '@game/scenes/game/scene';
 import { type FurnitureConfig } from '../furniture.object';
 import { FurnitureItemObject } from '../furniture-item.object';
 import { type Interactable } from '@game/models/components/interactable.model';
@@ -14,7 +14,8 @@ const DEFAULT_CAN_SAVE: boolean = false;
 
 interface Config extends FurnitureConfig {
   canSave?: boolean;
-  onSave?: () => void;
+  beforeSave?: () => void;
+  afterSave?: () => void;
 }
 
 export class FurnitureBedObject extends FurnitureItemObject implements Interactable {
@@ -22,7 +23,8 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
   height = 1;
 
   canSave: boolean = false;
-  onSave: () => void = () => {};
+  beforeSave: () => void = () => { };
+  afterSave: () => void = () => { };
 
   constructor(
     protected scene: SCENE_GAME,
@@ -30,7 +32,8 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
   ) {
     super(scene, config);
     this.canSave = config.canSave ?? DEFAULT_CAN_SAVE;
-    this.onSave = config.onSave ?? this.onSave;
+    this.beforeSave = config.beforeSave ?? this.beforeSave;
+    this.afterSave = config.afterSave ?? this.afterSave;
   }
 
   get type(): ItemTypeFurniture {
@@ -76,17 +79,12 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
 
   private onSleep(): void {
     const callback = () => {
-      // if no previous save, create an ID
-      if (!CanvasConstants.SAVE_FILE_ID) {
-        Store.set<string>(SaveFileKeys.Id, crypto.randomUUID());
-      }
 
-      Store.set<Record<QuestName, QuestStatus>>(SaveFileKeys.Quests, this.scene.globals.quests);
-      Store.set<Record<SceneFlag, boolean>>(SaveFileKeys.Flags, this.scene.globals.flags);
-      Store.set<Record<StoryFlag, boolean | number>>(SaveFileKeys.StoryFlags, this.scene.globals.story_flags);
-      Store.set<ItemList>(SaveFileKeys.Inventory, this.scene.globals.inventory.items);
+      this.beforeSave();
 
-      this.onSave();
+      Store.SaveGame(this.scene, CanvasConstants.SAVE_FILE_ID);
+
+      this.afterSave();
 
       this.scene.addObject(new TransitionObject(
         this.scene,
