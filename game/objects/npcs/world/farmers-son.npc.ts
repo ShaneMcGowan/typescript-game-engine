@@ -57,9 +57,10 @@ export class FarmersSonObject extends NpcObject {
           this.stepFadeIn,
           this.stepEnd
         ];
-
         Run(steps);
       },
+      disablePlayer: true,
+      enablePlayer: false,
     };
   }
 

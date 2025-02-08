@@ -65,9 +65,11 @@ export abstract class Quest {
   intro(): void {
     this.npc.say(
       this.text.intro,
-      () => {
-        this.status.intro = true;
-        this.onIntro();
+      {
+        onComplete: () => {
+          this.status.intro = true;
+          this.onIntro();
+        }
       }
     );
   }
@@ -77,8 +79,10 @@ export abstract class Quest {
   failure(): void {
     this.npc.say(
       this.text.failure,
-      () => {
-        this.onFailure();
+      {
+        onComplete: () => {
+          this.onFailure();
+        }
       }
     );
   }
@@ -88,9 +92,11 @@ export abstract class Quest {
   success(): void {
     this.npc.say(
       this.text.success,
-      () => {
-        this.status.complete = true;
-        this.onSuccess();
+      {
+        onComplete: () => {
+          this.status.complete = true;
+          this.onSuccess();
+        }
       }
     );
   }

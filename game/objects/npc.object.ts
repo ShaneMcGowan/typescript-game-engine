@@ -31,6 +31,8 @@ export enum MovementType {
 export interface InteractionStage {
   text: string;
   callback?: () => void;
+  enablePlayer?: boolean;
+  disablePlayer?: boolean;
 }
 
 export interface InteractionStageIntro extends InteractionStage {
@@ -106,7 +108,7 @@ export class NpcObject extends SceneObject implements Interactable {
 
   target: Coordinate = { x: 0, y: 0, };
   goal: Coordinate | undefined = undefined;
-  onGoal: () => void = () => {};
+  onGoal: () => void = () => { };
   path: Coordinate[] = [];
 
   // config
@@ -440,7 +442,11 @@ export class NpcObject extends SceneObject implements Interactable {
 
       this.say(
         this.intro.text,
-        () => { if (this.intro.callback) { this.intro.callback(); } }
+        {
+          onComplete: () => { this.intro.callback(); },
+          enablePlayer: this.intro.enablePlayer,
+          disablePlayer: this.intro.disablePlayer,
+        }
       );
       return;
     }
@@ -459,17 +465,29 @@ export class NpcObject extends SceneObject implements Interactable {
     if (this.default) {
       this.say(
         this.default.text,
-        () => {
-          if (this.default.callback) {
-            this.default.callback();
-          }
+        {
+          onComplete: () => { this.default.callback(); },
+          enablePlayer: this.default.enablePlayer,
+          disablePlayer: this.default.disablePlayer,
         }
       );
     }
   };
 
-  say(text: string, onComplete?: () => void): void {
-    this.scene.globals.player.enabled = false;
+  say(
+    text: string, options: {
+      onComplete?: () => void,
+      disablePlayer?: boolean,
+      enablePlayer?: boolean
+    } = {}
+  ): void {
+    const disablePlayer = options.disablePlayer ?? true;
+    const enablePlayer = options.enablePlayer ?? true;
+    const onComplete: () => void = options.onComplete ?? (() => { });
+
+    if (disablePlayer) {
+      this.scene.globals.player.enabled = false;
+    }
 
     this.scene.addObject(
       new TextboxObject(
@@ -479,10 +497,10 @@ export class NpcObject extends SceneObject implements Interactable {
           portrait: this.portrait,
           text,
           onComplete: () => {
-            if (onComplete) {
-              onComplete();
+            onComplete();
+            if (enablePlayer) {
+              this.scene.globals.player.enabled = true;
             }
-            this.scene.globals.player.enabled = true;
           },
         }
       )
