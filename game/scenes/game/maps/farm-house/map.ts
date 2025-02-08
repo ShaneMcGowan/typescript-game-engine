@@ -1,6 +1,6 @@
 import { SceneMap } from '@core/model/scene-map';
 import { PlayerObject } from '@game/objects/player.object';
-import { SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
+import { SavePoint, SceneFlag, type SCENE_GAME } from '@game/scenes/game/scene';
 import { WarpObject } from '@game/objects/warp.object';
 import { CollisionObject } from '@game/objects/collision.object';
 import { SCENE_GAME_MAP_WORLD } from '../world/map';
@@ -72,8 +72,8 @@ export class SCENE_GAME_MAP_FARM_HOUSE extends SceneMap {
 
     // furniture - sorted by y then x
     this.scene.addObject(new FurnitureLampObject(scene, { x: 9, y: 4, }));
-    this.scene.addObject(new FurnitureBedObject(scene, { x: 10, y: 4, canSave: true, }));
-    this.scene.addObject(new FurnitureBedObject(scene, { x: 21, y: 4, canSave: true, beforeSave: () => { this.scene.setFlag(SceneFlag.slept_in_farm_house_bed, true); }, }));
+    this.scene.addObject(new FurnitureBedObject(scene, { x: 10, y: 4, savePoint: SavePoint.FarmHouse, }));
+    this.scene.addObject(new FurnitureBedObject(scene, { x: 21, y: 4, savePoint: SavePoint.FarmHouse, beforeSave: () => { this.scene.setFlag(SceneFlag.slept_in_farm_house_bed, true); }, }));
     this.scene.addObject(new FurnitureLampObject(scene, { x: 22, y: 4, }));
     this.scene.addObject(new FurnitureLampObject(scene, { x: 15, y: 5, }));
 

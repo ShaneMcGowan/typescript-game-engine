@@ -1,19 +1,18 @@
-import { SavePoint, type QuestStatus, type SCENE_GAME, type SceneFlag, type StoryFlag } from '@game/scenes/game/scene';
+import { SavePoint, type SCENE_GAME } from '@game/scenes/game/scene';
 import { type FurnitureConfig } from '../furniture.object';
 import { FurnitureItemObject } from '../furniture-item.object';
 import { type Interactable } from '@game/models/components/interactable.model';
 import { MessageUtils } from '@game/utils/message.utils';
-import { type ItemList, ItemType, type ItemTypeFurniture } from '@game/models/inventory.model';
+import { ItemType, type ItemTypeFurniture } from '@game/models/inventory.model';
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type QuestName } from '@game/models/quest.model';
-import { Store, SaveFileKeys } from '@game/utils/store.utils';
+import { Store } from '@game/utils/store.utils';
 import { TransitionObject } from '@core/objects/transition.object';
 import { PromptObject } from '@game/objects/prompt/prompt.object';
 
 const DEFAULT_CAN_SAVE: boolean = false;
 
 interface Config extends FurnitureConfig {
-  canSave?: boolean;
+  savePoint?: SavePoint;
   beforeSave?: () => void;
   afterSave?: () => void;
 }
@@ -22,7 +21,7 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
   width = 1;
   height = 1;
 
-  canSave: boolean = false;
+  savePoint?: SavePoint = undefined;
   beforeSave: () => void = () => { };
   afterSave: () => void = () => { };
 
@@ -31,7 +30,7 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
     config: Config
   ) {
     super(scene, config);
-    this.canSave = config.canSave ?? DEFAULT_CAN_SAVE;
+    this.savePoint = config.savePoint ?? this.savePoint;
     this.beforeSave = config.beforeSave ?? this.beforeSave;
     this.afterSave = config.afterSave ?? this.afterSave;
   }
@@ -41,7 +40,7 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
   }
 
   interact(): void {
-    if (!this.canSave) {
+    if (this.savePoint === undefined) {
       this.onCantSave();
       return;
     }
@@ -79,6 +78,8 @@ export class FurnitureBedObject extends FurnitureItemObject implements Interacta
 
   private onSleep(): void {
     const callback = () => {
+
+      this.scene.globals.save_point = this.savePoint;
 
       this.beforeSave();
 

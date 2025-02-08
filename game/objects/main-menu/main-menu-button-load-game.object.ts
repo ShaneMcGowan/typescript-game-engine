@@ -7,6 +7,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
 import { TransitionObject } from '@core/objects/transition.object';
 import { MessageUtils } from '@game/utils/message.utils';
 import { ToastMessageObject } from '../toast-message.object';
+import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -15,10 +16,8 @@ export class MainMenuButtonLoadGameObject extends ButtonObject {
   width = 8;
   height = 2;
 
-  toast: ToastMessageObject;
-
   constructor(
-    protected scene: Scene,
+    protected scene: SCENE_MAIN_MENU,
     config: Config
   ) {
     super(scene, config);
@@ -29,15 +28,14 @@ export class MainMenuButtonLoadGameObject extends ButtonObject {
   }
 
   onClick(): void {
+    if (this.scene.click) {
+      return;
+    }
+
     const id = Store.get<string>(SaveFileKeys.Id);
 
     if (id === null) {
-      if (this.toast) {
-        if (this.toast.flags.destroy === false) {
-          this.toast.destroy();
-        }
-      }
-      this.toast = MessageUtils.showToast(
+      MessageUtils.showToast(
         this.scene,
         'You have no saved game.',
         {
@@ -49,6 +47,8 @@ export class MainMenuButtonLoadGameObject extends ButtonObject {
       CanvasConstants.SAVE_FILE_ID = null;
       return;
     }
+
+    this.scene.click = true;
 
     CanvasConstants.SAVE_FILE_ID = id;
     this.scene.addObject(new TransitionObject(

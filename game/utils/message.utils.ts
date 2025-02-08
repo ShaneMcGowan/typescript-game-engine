@@ -28,6 +28,8 @@ export class MessageUtils {
     scene.addObject(textbox);
   }
 
+  private static toast: ToastMessageObject;
+
   static showToast(
     scene: Scene,
     text: string,
@@ -38,6 +40,13 @@ export class MessageUtils {
       timerPause?: number,
     } = {}
   ): ToastMessageObject {
+
+    if (this.toast) {
+      if (this.toast.flags.destroy === false) {
+        this.toast.destroy();
+      }
+    }
+
     const toast = new ToastMessageObject(
       scene,
       {
@@ -50,6 +59,8 @@ export class MessageUtils {
     );
 
     scene.addObject(toast);
+
+    this.toast = toast;
 
     return toast;
   }

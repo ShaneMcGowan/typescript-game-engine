@@ -6,6 +6,7 @@ import { MathUtils } from '@core/utils/math.utils';
 import { MainMenuButtonNewGameObject } from './main-menu-button-new-game.object';
 import { MainMenuButtonLoadGameObject } from './main-menu-button-load-game.object';
 import { MainMenuButtonDeleteSaveObject } from './main-menu-button-delete-save.object';
+import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
 
 const MAX_ITEMS = 15; // max objects allowed on screen at once
 const NEW_ITEM_DELAY = 3; // seconds unil new item is generated (if there is room)
@@ -18,7 +19,7 @@ export class MainMenuControllerObject extends SceneObject {
   newItemTimer = 0;
 
   constructor(
-    protected scene: Scene,
+    protected scene: SCENE_MAIN_MENU,
     config: Config
   ) {
     super(scene, config);

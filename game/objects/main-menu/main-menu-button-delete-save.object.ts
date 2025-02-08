@@ -3,6 +3,9 @@ import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { ButtonObject } from '../button.object';
 import { MessageUtils } from '@game/utils/message.utils';
 import { ToastMessageObject } from '../toast-message.object';
+import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
+import { ChickenObject } from '../chicken.object';
+import { PortraitObject } from '../portrait.object';
 
 interface Config extends SceneObjectBaseConfig {
 }
@@ -11,10 +14,8 @@ export class MainMenuButtonDeleteSaveObject extends ButtonObject {
   width = 8;
   height = 2;
 
-  toast: ToastMessageObject;
-
   constructor(
-    protected scene: Scene,
+    protected scene: SCENE_MAIN_MENU,
     config: Config
   ) {
     super(scene, config);
@@ -25,15 +26,9 @@ export class MainMenuButtonDeleteSaveObject extends ButtonObject {
   }
 
   onClick(): void {
-    if (this.toast) {
-      if (this.toast.flags.destroy === false) {
-        this.toast.destroy();
-      }
-    }
-
-    this.toast = MessageUtils.showToast(
+    MessageUtils.showToast(
       this.scene,
-      'Your Saved Game has been deleted',
+      'Your saved game has been deleted.',
       {
         speedIn: 16,
         speedOut: 16,

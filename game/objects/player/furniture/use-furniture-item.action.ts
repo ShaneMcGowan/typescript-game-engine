@@ -1,5 +1,5 @@
 import { Input } from '@core/utils/input.utils';
-import { type SCENE_GAME } from '@game/scenes/game/scene';
+import { SavePoint, type SCENE_GAME } from '@game/scenes/game/scene';
 import { ItemType, type ItemTypeFurnitureItem } from '@game/models/inventory.model';
 import { assertUnreachable } from '@core/utils/typescript.utils';
 import { FurnitureBedObject } from '@game/objects/furniture/item/furniture-bed.object';
@@ -28,7 +28,7 @@ export function useFurnitureItem(scene: SCENE_GAME, type: ItemTypeFurnitureItem)
   let object;
   switch (type) {
     case ItemType.FurnitureBed:
-      object = new FurnitureBedObject(scene, { canSave: true, });
+      object = new FurnitureBedObject(scene, { savePoint: SavePoint.House, });
       break;
     case ItemType.FurnitureTable:
       object = new FurnitureTableObject(scene, {});
