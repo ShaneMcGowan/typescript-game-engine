@@ -1,11 +1,7 @@
-import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig } from '@core/model/scene-object';
 import { ButtonObject } from '../button.object';
 import { MessageUtils } from '@game/utils/message.utils';
-import { ToastMessageObject } from '../toast-message.object';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
-import { ChickenObject } from '../chicken.object';
-import { PortraitObject } from '../portrait.object';
 
 interface Config extends SceneObjectBaseConfig {
 }

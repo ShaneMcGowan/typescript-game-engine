@@ -30,6 +30,7 @@ import { StoryWorldCollectBerriesObject } from '@game/objects/story/world/collec
 import { MessageUtils } from '@game/utils/message.utils';
 import { StoryWorldPlantTree } from '@game/objects/story/world/plant-tree/story';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
+import { Coordinate } from '@core/model/coordinate';
 
 export class SCENE_GAME_MAP_WORLD extends SceneMap {
   // config
@@ -59,7 +60,7 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
     this.scene.addObject(new StoryWorldCollectLogsObject(scene, { x: 0, y: 0, }));
     this.scene.addObject(new StoryWorldCollectRocksObject(scene, { x: 0, y: 0, }));
     this.scene.addObject(new StoryWorldCollectBerriesObject(scene, { x: 0, y: 0, }));
-    this.scene.addObject(new StoryWorldPlantTree(scene, { }));
+    this.scene.addObject(new StoryWorldPlantTree(scene, {}));
 
     // chickens
     this.scene.addObject(new ChickenObject(scene, { x: 10, y: 13, canMove: true, }));
@@ -208,6 +209,11 @@ export class SCENE_GAME_MAP_WORLD extends SceneMap {
 
     // warp - house
     this.scene.addObject(new WarpObject(this.scene, { x: 23, y: 1, player: this.player, map: SCENE_GAME_MAP_FARM_HOUSE, }));
+
+    // Load Save
+    const objects: Array<{ position: Coordinate }> = [
+      { position: { x: 17, y: 14 } }
+    ];
   }
 
   onEnter(scene: Scene): void {
