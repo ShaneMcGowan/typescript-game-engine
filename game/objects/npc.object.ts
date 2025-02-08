@@ -443,7 +443,11 @@ export class NpcObject extends SceneObject implements Interactable {
       this.say(
         this.intro.text,
         {
-          onComplete: () => { this.intro.callback(); },
+          onComplete: () => {
+            if (this.intro.callback) {
+              this.intro.callback();
+            }
+          },
           enablePlayer: this.intro.enablePlayer,
           disablePlayer: this.intro.disablePlayer,
         }
@@ -466,7 +470,11 @@ export class NpcObject extends SceneObject implements Interactable {
       this.say(
         this.default.text,
         {
-          onComplete: () => { this.default.callback(); },
+          onComplete: () => {
+            if (this.default.callback) {
+              this.default.callback();
+            }
+          },
           enablePlayer: this.default.enablePlayer,
           disablePlayer: this.default.disablePlayer,
         }
