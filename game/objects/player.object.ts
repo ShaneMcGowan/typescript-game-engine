@@ -38,6 +38,7 @@ import { IconsObject } from './icons/icons.object';
 import { Direction } from '@game/models/direction.model';
 import { WarpObject } from './warp.object';
 import { useSprinkler } from './player/use-sprinkler.action';
+import { LightSource, LightSourceConfig } from '@game/models/components/lightsource.model';
 
 const TILE_SET = 'tileset_player';
 
@@ -45,7 +46,7 @@ interface Config extends SceneObjectBaseConfig {
   playerIndex: number;
 }
 
-export class PlayerObject extends SceneObject {
+export class PlayerObject extends SceneObject implements LightSource {
   static RENDERER_LAYER: number = 10;
 
   playerIndex: number; // player index to be used mainly for controller access for now
@@ -121,6 +122,13 @@ export class PlayerObject extends SceneObject {
     }
     this.renderCursor(context);
     // this.renderControllerState(context);
+  }
+
+  get lightSource(): LightSourceConfig {
+    return {
+      enabled: true,
+      radius: 2,
+    };
   }
 
   get hotbar(): Inventory {

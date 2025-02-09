@@ -6,8 +6,9 @@ import { IconMenuObject } from './icon-menu.object';
 import { IconInventoryObject } from './icon-inventory.object';
 import { IconDebugNewDayObject } from './icon-debug-new-day.object';
 import { IconDebugNewSeasonObject } from './icon-debug-new-season.object';
+import { IconDebugAddHourObject } from './icon-debug-add-hour.object';
 
-interface Config extends SceneObjectBaseConfig {}
+interface Config extends SceneObjectBaseConfig { }
 
 export class IconsObject extends SceneObject {
   constructor(
@@ -25,6 +26,7 @@ export class IconsObject extends SceneObject {
     const icons = [
       new IconMenuObject(this.scene, { x, }),
       new IconInventoryObject(this.scene, { x, }),
+      ...(CanvasConstants.DEBUG_MODE ? [new IconDebugAddHourObject(this.scene, { x, })] : []),
       ...(CanvasConstants.DEBUG_MODE ? [new IconDebugNewDayObject(this.scene, { x, })] : []),
       ...(CanvasConstants.DEBUG_MODE ? [new IconDebugNewSeasonObject(this.scene, { x, })] : [])
     ];

@@ -229,4 +229,15 @@ export class TilesetBasic {
       },
     },
   };
+
+  static readonly Plus: Tile<'White', 'Default'> = {
+    White: {
+      Default: {
+        x: 44,
+        y: 14,
+        width: 1,
+        height: 1,
+      },
+    },
+  };
 }
