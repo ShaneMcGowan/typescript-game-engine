@@ -15,7 +15,7 @@ const SMELT_TIME: Partial<Record<ItemType, number>> = {
 };
 
 const INPUT_TO_OUTPUT_MAP: Partial<Record<ItemType, ItemType>> = {
-  [ItemType.Wheat]: ItemType.Berry,
+  [ItemType.Wheat]: ItemType.Bread,
   [ItemType.Copper]: ItemType.Axe,
 };
 

@@ -14,7 +14,7 @@ import { useChest } from './player/use-chest.action';
 import { Assets } from '@core/utils/assets.utils';
 import { HotbarObject } from './hotbar/hotbar.object';
 import { type ObjectFilter } from '@core/model/scene';
-import { Inventory, ItemRadius, ItemType, ItemTypeFurnitureItem } from '@game/models/inventory.model';
+import { Inventory, ItemRadius, ItemType } from '@game/models/inventory.model';
 import { Control, CONTROL_SCHEME } from '@game/constants/controls.constants';
 import { useShovel } from './player/shovel/use-shovel.action';
 import { CanvasConstants } from '@core/constants/canvas.constants';
@@ -583,6 +583,7 @@ export class PlayerObject extends SceneObject implements LightSource {
       case ItemType.Coal:
       case ItemType.Copper:
       case ItemType.Log:
+      case ItemType.Bread:
         return;
       default:
         assertUnreachable(item.type);

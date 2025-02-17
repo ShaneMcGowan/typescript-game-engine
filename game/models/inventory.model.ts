@@ -1,10 +1,6 @@
 import { TilesetFurniture } from '@game/constants/tilesets/furniture.tileset';
 
 export enum ItemType {
-  // machines
-  Sprinkler = 'Sprinkler',
-  Furnace = 'Furnace',
-
   // tools
   Axe = 'Axe',
   Hoe = 'Hoe',
@@ -33,6 +29,13 @@ export enum ItemType {
   Rock = 'Rock',
   Coal = 'Coal',
   Copper = 'Copper',
+
+  // machines
+  Sprinkler = 'Sprinkler',
+  Furnace = 'Furnace',
+
+  // food
+  Bread = 'Bread',
 
   // other
   Chicken = 'Chicken',
@@ -82,6 +85,8 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   // machines
   [ItemType.Sprinkler]: ItemRadius.Player,
   [ItemType.Furnace]: ItemRadius.Player,
+  // food
+  [ItemType.Bread]: ItemRadius.None,
   // other
   [ItemType.Chicken]: ItemRadius.Player,
   [ItemType.Egg]: ItemRadius.Player,
@@ -115,6 +120,8 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   // machines
   [ItemType.Sprinkler]: { tileset: 'tileset_sprinkler', x: 0, y: 0, },
   [ItemType.Furnace]: { tileset: 'tileset_furnace', x: 0, y: 0, },
+  // food
+  [ItemType.Bread]: { tileset: 'tileset_bread', x: 0, y: 0, },
   // other
   [ItemType.Chicken]: { tileset: 'tileset_chicken', x: 0, y: 0, },
   [ItemType.Egg]: { tileset: 'tileset_egg', x: 0, y: 0, },
@@ -148,6 +155,8 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   // machines
   [ItemType.Sprinkler]: 1,
   [ItemType.Furnace]: 1,
+  // food
+  [ItemType.Bread]: 9,
   // other
   [ItemType.Chicken]: 1,
   [ItemType.Egg]: 9,
@@ -207,6 +216,9 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Sprinkler]: 1,
   [ItemType.Furnace]: 1,
 
+  // food
+  [ItemType.Bread]: 999,
+
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -226,24 +238,32 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Shovel]: 5,
   [ItemType.WateringCan]: 5,
   [ItemType.Pickaxe]: 5,
+
   // furniture
   [ItemType.FurnitureBed]: 5,
   [ItemType.FurniturePainting]: 5,
   [ItemType.FurnitureRugLarge]: 5,
   [ItemType.FurnitureTable]: 5,
   [ItemType.FurnitureLamp]: 5,
+
   // keys
   [ItemType.GateKey]: 0,
   [ItemType.HouseKey]: 0,
   [ItemType.FarmersSonBedroomKey]: 0,
   [ItemType.FarmersBedroomKey]: 0,
+
   // resources
   [ItemType.Rock]: 1,
   [ItemType.Coal]: 5,
   [ItemType.Copper]: 10,
+
   // machines
   [ItemType.Sprinkler]: 1,
   [ItemType.Furnace]: 1,
+
+  // food
+  [ItemType.Bread]: 25,
+
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -262,13 +282,19 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.HouseKey]: 'House Key',
   [ItemType.FarmersSonBedroomKey]: `Farmer's Son's Bedroom Key`,
   [ItemType.FarmersBedroomKey]: `Farmer's Bedroom Key`,
+
   // resources
   [ItemType.Rock]: 'Rock',
   [ItemType.Coal]: 'Coal',
   [ItemType.Copper]: 'Copper',
+
   // machines
   [ItemType.Sprinkler]: 'Sprinkler',
   [ItemType.Furnace]: 'Furnace',
+
+  // food
+  [ItemType.Bread]: 'Bread',
+
   // other
   [ItemType.Chicken]: 'Chicken',
   [ItemType.Egg]: 'Egg',
@@ -297,13 +323,19 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.HouseKey]: 'House Keys',
   [ItemType.FarmersSonBedroomKey]: `Farmer's Son's Bedroom Keys`,
   [ItemType.FarmersBedroomKey]: `Farmer's Son's Bedroom Keys`,
+
   // resources
   [ItemType.Rock]: 'Rocks',
   [ItemType.Coal]: 'Coal',
   [ItemType.Copper]: 'Copper',
+
   // machines
   [ItemType.Sprinkler]: 'Sprinklers',
   [ItemType.Furnace]: 'Furnaces',
+
+  // food
+  [ItemType.Bread]: 'Bread',
+
   //
   [ItemType.Chicken]: 'Chickens',
   [ItemType.Egg]: 'Eggs',
@@ -332,13 +364,19 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.HouseKey]: 'A key for the House at the farm. This is the key to my future.',
   [ItemType.FarmersSonBedroomKey]: `A key to the Farmer's Son's bedroom.`,
   [ItemType.FarmersBedroomKey]: `A key to the Farmer's bedroom.`,
+
   // resources
   [ItemType.Rock]: 'A rock that was broken from an even larger rock, I can use this to make things.',
   [ItemType.Coal]: 'A lump of coal, can be used as fuel for a furnace.',
   [ItemType.Copper]: 'A piece of copper, can be melted down to be used to make things.',
+
   // machines
   [ItemType.Sprinkler]: 'Automagically waters surrounding crops.',
   [ItemType.Furnace]: 'Used for melting and smelting',
+
+  // food
+  [ItemType.Bread]: 'A tasty piece of bread. Yum.',
+
   //
   [ItemType.Chicken]: 'The thing that comes out of an Egg.',
   [ItemType.Egg]: 'The thing that comes out of a Chicken.',
@@ -367,13 +405,19 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+
   // resources
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+
   // machines
   [ItemType.Sprinkler]: true,
   [ItemType.Furnace]: true,
+
+  // food
+  [ItemType.Bread]: true,
+
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -402,13 +446,19 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+
   // resources
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+
   // machines
   [ItemType.Sprinkler]: true,
   [ItemType.Furnace]: true,
+
+  // food
+  [ItemType.Bread]: true,
+
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -437,13 +487,19 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+
   // resources
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+
   // machines
   [ItemType.Sprinkler]: true,
   [ItemType.Furnace]: true,
+
+  // food
+  [ItemType.Bread]: true,
+
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -472,13 +528,19 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+
   // resources
   [ItemType.Rock]: false,
   [ItemType.Coal]: false,
   [ItemType.Copper]: false,
+
   // machines
   [ItemType.Sprinkler]: false,
   [ItemType.Furnace]: false,
+
+  // food
+  [ItemType.Bread]: false,
+
   //
   [ItemType.Chicken]: false,
   [ItemType.Egg]: false,
