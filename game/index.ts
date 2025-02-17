@@ -71,6 +71,8 @@ import { DeviceType } from '@core/model/device-type';
       tileset_rocks_rock: 'assets/custom/rocks/rock.png',
       tileset_rocks_coal: 'assets/custom/rocks/coal.png',
       tileset_rocks_copper: 'assets/custom/rocks/copper.png',
+      tileset_sprinkler: 'assets/custom/sprinkler.png',
+      tileset_furnace: 'assets/custom/furnace.png',
     },
     audio: {},
     fonts: {

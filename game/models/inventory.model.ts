@@ -1,6 +1,10 @@
 import { TilesetFurniture } from '@game/constants/tilesets/furniture.tileset';
 
 export enum ItemType {
+  // machines
+  Sprinkler = 'Sprinkler',
+  Furnace = 'Furnace',
+
   // tools
   Axe = 'Axe',
   Hoe = 'Hoe',
@@ -25,6 +29,11 @@ export enum ItemType {
   FarmersSonBedroomKey = 'FarmersSonBedroomKey',
   FarmersBedroomKey = 'FarmersBedroomKey',
 
+  // resources
+  Rock = 'Rock',
+  Coal = 'Coal',
+  Copper = 'Copper',
+
   // other
   Chicken = 'Chicken',
   Egg = 'Egg',
@@ -33,12 +42,9 @@ export enum ItemType {
   TomatoSeeds = 'TomatoSeeds',
   Tomato = 'Tomato',
   Chest = 'Chest',
-  Rock = 'Rock',
-  Coal = 'Coal',
-  Copper = 'Copper',
+
   Log = 'Log',
-  Berry = 'Berry',
-  Sprinkler = 'Sprinkler'
+  Berry = 'Berry'
 
 }
 
@@ -73,6 +79,10 @@ const DEFAULT_SPRITE = { tileset: 'tileset_ui', x: 15, y: 5, };
 const DEFAULT_INVENTORY_ITEM_RADIUS: ItemRadius = ItemRadius.None;
 
 export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
+  // machines
+  [ItemType.Sprinkler]: ItemRadius.Player,
+  [ItemType.Furnace]: ItemRadius.Player,
+  // other
   [ItemType.Chicken]: ItemRadius.Player,
   [ItemType.Egg]: ItemRadius.Player,
   [ItemType.WheatSeeds]: ItemRadius.Player,
@@ -99,10 +109,13 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.FurnitureLamp]: ItemRadius.Anywhere,
   [ItemType.FarmersSonBedroomKey]: ItemRadius.None,
   [ItemType.FarmersBedroomKey]: ItemRadius.None,
-  [ItemType.Sprinkler]: ItemRadius.Player,
 };
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
+  // machines
+  [ItemType.Sprinkler]: { tileset: 'tileset_sprinkler', x: 0, y: 0, },
+  [ItemType.Furnace]: { tileset: 'tileset_furnace', x: 0, y: 0, },
+  // other
   [ItemType.Chicken]: { tileset: 'tileset_chicken', x: 0, y: 0, },
   [ItemType.Egg]: { tileset: 'tileset_egg', x: 0, y: 0, },
   [ItemType.WheatSeeds]: { tileset: 'tileset_plants', x: 0, y: 0, },
@@ -129,10 +142,13 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.HouseKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
   [ItemType.FarmersSonBedroomKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
   [ItemType.FarmersBedroomKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
-  [ItemType.Sprinkler]: { tileset: 'tileset_chicken', x: 0, y: 0, },
 };
 
 export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
+  // machines
+  [ItemType.Sprinkler]: 1,
+  [ItemType.Furnace]: 1,
+  // other
   [ItemType.Chicken]: 1,
   [ItemType.Egg]: 9,
   [ItemType.WheatSeeds]: 9,
@@ -159,7 +175,6 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.FurnitureLamp]: 1,
   [ItemType.FarmersSonBedroomKey]: 1,
   [ItemType.FarmersBedroomKey]: 1,
-  [ItemType.Sprinkler]: 1,
 };
 
 export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
@@ -188,6 +203,10 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Coal]: 999,
   [ItemType.Copper]: 999,
 
+  // machines
+  [ItemType.Sprinkler]: 1,
+  [ItemType.Furnace]: 1,
+
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -198,7 +217,6 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Chest]: 150,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
-  [ItemType.Sprinkler]: 1,
 };
 
 export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
@@ -223,6 +241,9 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Rock]: 1,
   [ItemType.Coal]: 5,
   [ItemType.Copper]: 10,
+  // machines
+  [ItemType.Sprinkler]: 1,
+  [ItemType.Furnace]: 1,
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -233,7 +254,6 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Chest]: 30,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
-  [ItemType.Sprinkler]: 1,
 };
 
 export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
@@ -246,7 +266,10 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.Rock]: 'Rock',
   [ItemType.Coal]: 'Coal',
   [ItemType.Copper]: 'Copper',
-  //
+  // machines
+  [ItemType.Sprinkler]: 'Sprinkler',
+  [ItemType.Furnace]: 'Furnace',
+  // other
   [ItemType.Chicken]: 'Chicken',
   [ItemType.Egg]: 'Egg',
   [ItemType.WheatSeeds]: 'Wheat Seeds',
@@ -266,7 +289,6 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.FurnitureRugLarge]: 'Large Rug',
   [ItemType.FurnitureTable]: 'Table',
   [ItemType.FurnitureLamp]: 'Lamp',
-  [ItemType.Sprinkler]: 'Sprinkler',
 };
 
 export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
@@ -279,6 +301,9 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.Rock]: 'Rocks',
   [ItemType.Coal]: 'Coal',
   [ItemType.Copper]: 'Copper',
+  // machines
+  [ItemType.Sprinkler]: 'Sprinklers',
+  [ItemType.Furnace]: 'Furnaces',
   //
   [ItemType.Chicken]: 'Chickens',
   [ItemType.Egg]: 'Eggs',
@@ -299,7 +324,6 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.FurnitureRugLarge]: 'Large Rugs',
   [ItemType.FurnitureTable]: 'Tables',
   [ItemType.FurnitureLamp]: 'Lamps',
-  [ItemType.Sprinkler]: 'Sprinkler',
 };
 
 export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
@@ -312,6 +336,9 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.Rock]: 'A rock that was broken from an even larger rock, I can use this to make things.',
   [ItemType.Coal]: 'A lump of coal, can be used as fuel for a furnace.',
   [ItemType.Copper]: 'A piece of copper, can be melted down to be used to make things.',
+  // machines
+  [ItemType.Sprinkler]: 'Automagically waters surrounding crops.',
+  [ItemType.Furnace]: 'Used for melting and smelting',
   //
   [ItemType.Chicken]: 'The thing that comes out of an Egg.',
   [ItemType.Egg]: 'The thing that comes out of a Chicken.',
@@ -332,7 +359,6 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.FurnitureRugLarge]: 'A lovely rug to place on the floor.',
   [ItemType.FurnitureTable]: 'La mesa.',
   [ItemType.FurnitureLamp]: 'Lamps.',
-  [ItemType.Sprinkler]: 'Automagically waters surrounding crops.',
 };
 
 export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
@@ -345,6 +371,9 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+  // machines
+  [ItemType.Sprinkler]: true,
+  [ItemType.Furnace]: true,
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -365,7 +394,6 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: true,
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
-  [ItemType.Sprinkler]: true,
 };
 
 export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
@@ -378,6 +406,9 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+  // machines
+  [ItemType.Sprinkler]: true,
+  [ItemType.Furnace]: true,
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -398,7 +429,6 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: true,
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
-  [ItemType.Sprinkler]: true,
 };
 
 export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
@@ -411,6 +441,9 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+  // machines
+  [ItemType.Sprinkler]: true,
+  [ItemType.Furnace]: true,
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -431,7 +464,6 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: true,
   [ItemType.FurnitureTable]: true,
   [ItemType.FurnitureLamp]: true,
-  [ItemType.Sprinkler]: true,
 };
 
 export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
@@ -444,6 +476,9 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: false,
   [ItemType.Coal]: false,
   [ItemType.Copper]: false,
+  // machines
+  [ItemType.Sprinkler]: false,
+  [ItemType.Furnace]: false,
   //
   [ItemType.Chicken]: false,
   [ItemType.Egg]: false,
@@ -464,7 +499,6 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.FurnitureRugLarge]: false,
   [ItemType.FurnitureTable]: false,
   [ItemType.FurnitureLamp]: true,
-  [ItemType.Sprinkler]: false,
 };
 
 export interface ItemSprite {

@@ -39,6 +39,7 @@ import { Direction } from '@game/models/direction.model';
 import { WarpObject } from './warp.object';
 import { useSprinkler } from './player/use-sprinkler.action';
 import { type LightSource, type LightSourceConfig } from '@game/models/components/lightsource.model';
+import { useFurnace } from './player/use-furnace.action';
 
 const TILE_SET = 'tileset_player';
 
@@ -570,6 +571,9 @@ export class PlayerObject extends SceneObject implements LightSource {
         return;
       case ItemType.Sprinkler:
         useSprinkler(this.scene, this, object);
+        return;
+      case ItemType.Furnace:
+        useFurnace(this.scene, this, object);
         return;
       case ItemType.GateKey:
       case ItemType.HouseKey:

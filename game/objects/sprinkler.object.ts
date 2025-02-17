@@ -3,17 +3,21 @@ import { SceneObject, type SceneObjectBaseConfig } from '@core/model/scene-objec
 import { RenderUtils } from '@core/utils/render.utils';
 import { type SCENE_GAME } from '@game/scenes/game/scene';
 import { DirtObject } from './dirt.object';
+import { Assets } from '@core/utils/assets.utils';
+import { MessageUtils } from '@game/utils/message.utils';
+import { type Interactable } from '@game/models/components/interactable.model';
 
 interface Config extends SceneObjectBaseConfig {}
 
 const CACHE_MAX: number = 5;
 
-export class SprinklerObject extends SceneObject {
+export class SprinklerObject extends SceneObject implements Interactable {
   cache: number = 0;
 
   constructor(protected scene: SCENE_GAME, config: Config) {
     super(scene, config);
 
+    this.collision.enabled = true;
     this.renderer.enabled = true;
   }
 
@@ -29,30 +33,24 @@ export class SprinklerObject extends SceneObject {
   }
 
   onRender(context: CanvasRenderingContext2D): void {
-    RenderUtils.fillRectangle(
+    RenderUtils.renderSprite(
       context,
+      Assets.images['tileset_sprinkler'],
+      0,
+      0,
       this.transform.position.world.x,
       this.transform.position.world.y,
-      this.width,
-      this.height,
+      1,
+      1,
       {
-        colour: 'grey',
         type: 'tile',
       }
     );
-
-    RenderUtils.renderText(
-      context,
-      'S',
-      this.centre.world.x,
-      this.centre.world.y,
-      {
-        colour: 'white',
-        align: 'center',
-        baseline: 'middle',
-      }
-    );
   }
+
+  interact(): void {
+    MessageUtils.showMessage(this.scene, `It's a sprinkler.`);
+  };
 
   private waterSurroundings(): void {
     const filter: ObjectFilter = {
