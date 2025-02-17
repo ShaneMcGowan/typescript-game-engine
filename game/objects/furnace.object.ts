@@ -98,15 +98,20 @@ export class FurnaceObject extends SceneObject implements Interactable {
     }
 
     if (this.smeltPercentage === 1) {
-      RenderUtils.fillRectangle(
+      const output = INPUT_TO_OUTPUT_MAP[this.smelting];
+      const sprite = Inventory.getItemSprite(output);
+
+      RenderUtils.renderSprite(
         context,
+        Assets.images[sprite.tileset],
+        sprite.x,
+        sprite.y,
         this.transform.position.world.x,
         this.transform.position.world.y - 1.25,
         1,
         1,
         {
           type: 'tile',
-          colour: '#00FF00',
         }
       );
     }
