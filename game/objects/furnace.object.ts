@@ -52,9 +52,11 @@ export class FurnaceObject extends SceneObject implements Interactable {
   interact(): void {
     if (!this.fuel) {
       this.onNoFuel();
+    } else if (this.smelting === undefined) {
+      this.onFuel();
+    } else {
+      this.onSmelting();
     }
-
-    this.onFuel();
   };
 
   private onNoFuel(): void {
@@ -77,5 +79,9 @@ export class FurnaceObject extends SceneObject implements Interactable {
     }
 
     MessageUtils.showMessage(this.scene, `The ${Inventory.getItemName(ItemType.Furnace)} has fuel.`);
+  }
+
+  private onSmelting(): void {
+    MessageUtils.showMessage(this.scene, `The ${Inventory.getItemName(ItemType.Furnace)} is currently smelting ${Inventory.getItemName(this.smelting)}.`);
   }
 }
