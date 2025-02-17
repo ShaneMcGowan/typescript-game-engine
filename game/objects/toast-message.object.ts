@@ -141,7 +141,7 @@ export class ToastMessageObject extends SceneObject {
       this.width,
       this.height,
       {
-        colour: 'brown',
+        colour: '#DCDCDD',
         type: 'tile',
       }
     );

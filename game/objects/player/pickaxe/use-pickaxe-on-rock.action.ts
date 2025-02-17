@@ -20,7 +20,7 @@ export function usePickaxeOnRock(scene: SCENE_GAME, player: PlayerObject, object
     scene.addObject(new ItemObject(
       scene,
       {
-        type: ItemType.Rock,
+        type: object.drops,
         x: object.transform.position.world.x,
         y: object.transform.position.world.y,
       }

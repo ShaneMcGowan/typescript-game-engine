@@ -38,7 +38,7 @@ import { IconsObject } from './icons/icons.object';
 import { Direction } from '@game/models/direction.model';
 import { WarpObject } from './warp.object';
 import { useSprinkler } from './player/use-sprinkler.action';
-import { LightSource, LightSourceConfig } from '@game/models/components/lightsource.model';
+import { type LightSource, type LightSourceConfig } from '@game/models/components/lightsource.model';
 
 const TILE_SET = 'tileset_player';
 
@@ -576,6 +576,8 @@ export class PlayerObject extends SceneObject implements LightSource {
       case ItemType.FarmersSonBedroomKey:
       case ItemType.FarmersBedroomKey:
       case ItemType.Rock:
+      case ItemType.Coal:
+      case ItemType.Copper:
       case ItemType.Log:
         return;
       default:

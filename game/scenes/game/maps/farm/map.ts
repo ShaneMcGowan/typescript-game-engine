@@ -19,6 +19,7 @@ import { WaterAreaObject } from '@game/objects/areas/water-area.object';
 import { SCENE_GAME_MAP_HOUSE } from '../house/map';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
 import { LightingObject } from '@game/objects/lights/lighting.object';
+import { SCENE_GAME_MAP_CAVE } from '../cave/map';
 
 export class SCENE_GAME_MAP_FARM extends SceneMap {
   background: JsonBackgroundMap = background;
@@ -149,6 +150,21 @@ export class SCENE_GAME_MAP_FARM extends SceneMap {
       position: {
         x: Warps.Farm.Beach.Town.Beach.position.x,
         y: Warps.Farm.Beach.Town.Beach.position.y,
+      },
+      isColliding: true,
+    }));
+
+    // warps - beach - world
+    this.scene.addObject(new WarpObject(scene, {
+      x: 94,
+      y: 1,
+      width: 1,
+      height: 1,
+      player: this.player,
+      map: SCENE_GAME_MAP_CAVE,
+      position: {
+        x: 14,
+        y: 7,
       },
       isColliding: true,
     }));

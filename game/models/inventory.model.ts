@@ -34,6 +34,8 @@ export enum ItemType {
   Tomato = 'Tomato',
   Chest = 'Chest',
   Rock = 'Rock',
+  Coal = 'Coal',
+  Copper = 'Copper',
   Log = 'Log',
   Berry = 'Berry',
   Sprinkler = 'Sprinkler'
@@ -85,6 +87,8 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.Axe]: ItemRadius.Player,
   [ItemType.Pickaxe]: ItemRadius.Player,
   [ItemType.Rock]: ItemRadius.None,
+  [ItemType.Coal]: ItemRadius.None,
+  [ItemType.Copper]: ItemRadius.None,
   [ItemType.Log]: ItemRadius.None,
   [ItemType.Berry]: ItemRadius.Player,
   [ItemType.Shovel]: ItemRadius.Player,
@@ -111,7 +115,9 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.GateKey]: { tileset: 'tileset_shop_key', x: 0, y: 0, },
   [ItemType.Axe]: { tileset: 'tileset_tools', x: 4, y: 2, },
   [ItemType.Pickaxe]: { tileset: 'tileset_tool_pickaxe', x: 0, y: 0, },
-  [ItemType.Rock]: { tileset: 'tileset_grass_biome', x: 7, y: 1, },
+  [ItemType.Rock]: { tileset: 'tileset_rocks_rock', x: 0, y: 0, },
+  [ItemType.Coal]: { tileset: 'tileset_rocks_coal', x: 0, y: 0, },
+  [ItemType.Copper]: { tileset: 'tileset_rocks_copper', x: 0, y: 0, },
   [ItemType.Log]: { tileset: 'tileset_grass_biome', x: 5, y: 2, },
   [ItemType.Berry]: { tileset: 'tileset_grass_biome', x: 1, y: 2, },
   [ItemType.Shovel]: { tileset: 'tileset_tool_shovel', x: 0, y: 0, },
@@ -141,6 +147,8 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.Axe]: 1,
   [ItemType.Pickaxe]: 1,
   [ItemType.Rock]: 9,
+  [ItemType.Coal]: 9,
+  [ItemType.Copper]: 9,
   [ItemType.Log]: 9,
   [ItemType.Berry]: 9,
   [ItemType.Shovel]: 1,
@@ -175,6 +183,11 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.FarmersSonBedroomKey]: 0,
   [ItemType.FarmersBedroomKey]: 0,
 
+  // resources
+  [ItemType.Rock]: 999,
+  [ItemType.Coal]: 999,
+  [ItemType.Copper]: 999,
+
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -183,7 +196,6 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.TomatoSeeds]: 5,
   [ItemType.Tomato]: 10,
   [ItemType.Chest]: 150,
-  [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
   [ItemType.Sprinkler]: 1,
@@ -207,6 +219,10 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.HouseKey]: 0,
   [ItemType.FarmersSonBedroomKey]: 0,
   [ItemType.FarmersBedroomKey]: 0,
+  // resources
+  [ItemType.Rock]: 1,
+  [ItemType.Coal]: 5,
+  [ItemType.Copper]: 10,
   // other
   [ItemType.Chicken]: 0,
   [ItemType.Egg]: 0,
@@ -215,7 +231,6 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.TomatoSeeds]: 5,
   [ItemType.Tomato]: 10,
   [ItemType.Chest]: 30,
-  [ItemType.Rock]: 1,
   [ItemType.Log]: 1,
   [ItemType.Berry]: 5,
   [ItemType.Sprinkler]: 1,
@@ -227,7 +242,10 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.HouseKey]: 'House Key',
   [ItemType.FarmersSonBedroomKey]: `Farmer's Son's Bedroom Key`,
   [ItemType.FarmersBedroomKey]: `Farmer's Bedroom Key`,
-
+  // resources
+  [ItemType.Rock]: 'Rock',
+  [ItemType.Coal]: 'Coal',
+  [ItemType.Copper]: 'Copper',
   //
   [ItemType.Chicken]: 'Chicken',
   [ItemType.Egg]: 'Egg',
@@ -240,7 +258,6 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.Chest]: 'Chest',
   [ItemType.Axe]: 'Axe',
   [ItemType.Pickaxe]: 'Pickaxe',
-  [ItemType.Rock]: 'Rock',
   [ItemType.Log]: 'Log',
   [ItemType.Berry]: 'Berry',
   [ItemType.Shovel]: 'Shovel',
@@ -258,6 +275,10 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.HouseKey]: 'House Keys',
   [ItemType.FarmersSonBedroomKey]: `Farmer's Son's Bedroom Keys`,
   [ItemType.FarmersBedroomKey]: `Farmer's Son's Bedroom Keys`,
+  // resources
+  [ItemType.Rock]: 'Rocks',
+  [ItemType.Coal]: 'Coal',
+  [ItemType.Copper]: 'Copper',
   //
   [ItemType.Chicken]: 'Chickens',
   [ItemType.Egg]: 'Eggs',
@@ -270,7 +291,6 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.Chest]: 'Chests',
   [ItemType.Axe]: 'Axes',
   [ItemType.Pickaxe]: 'Pickaxes',
-  [ItemType.Rock]: 'Rocks',
   [ItemType.Log]: 'Logs',
   [ItemType.Berry]: 'Berries',
   [ItemType.Shovel]: 'Shovels',
@@ -288,6 +308,10 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.HouseKey]: 'A key for the House at the farm. This is the key to my future.',
   [ItemType.FarmersSonBedroomKey]: `A key to the Farmer's Son's bedroom.`,
   [ItemType.FarmersBedroomKey]: `A key to the Farmer's bedroom.`,
+  // resources
+  [ItemType.Rock]: 'A rock that was broken from an even larger rock, I can use this to make things.',
+  [ItemType.Coal]: 'A lump of coal, can be used as fuel for a furnace.',
+  [ItemType.Copper]: 'A piece of copper, can be melted down to be used to make things.',
   //
   [ItemType.Chicken]: 'The thing that comes out of an Egg.',
   [ItemType.Egg]: 'The thing that comes out of a Chicken.',
@@ -300,7 +324,6 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   [ItemType.Chest]: 'I can put my treasures in here, or maybe just my socks or something.',
   [ItemType.Axe]: 'A tool with a sharp blade. I can use this to chop down trees.',
   [ItemType.Pickaxe]: 'A tool with a pointed blunt head. I can use this to break rocks.',
-  [ItemType.Rock]: 'A rock that was broken from an even larger rock, I can use this to make things.',
   [ItemType.Log]: 'A log that was cut from a mighty tree, I can use this to make things.',
   [ItemType.Berry]: 'A declious berry. If I plant it a berry tree will grow.',
   [ItemType.Shovel]: 'A tool with a blunt head. I can use this to dig holes.',
@@ -318,6 +341,10 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+  // resources
+  [ItemType.Rock]: true,
+  [ItemType.Coal]: true,
+  [ItemType.Copper]: true,
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -330,7 +357,6 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.Chest]: true,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
-  [ItemType.Rock]: true,
   [ItemType.Log]: true,
   [ItemType.Berry]: true,
   [ItemType.Shovel]: true,
@@ -348,6 +374,10 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+  // resources
+  [ItemType.Rock]: true,
+  [ItemType.Coal]: true,
+  [ItemType.Copper]: true,
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -360,7 +390,6 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Chest]: true,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
-  [ItemType.Rock]: true,
   [ItemType.Log]: true,
   [ItemType.Berry]: true,
   [ItemType.Shovel]: true,
@@ -378,6 +407,10 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+  // resources
+  [ItemType.Rock]: true,
+  [ItemType.Coal]: true,
+  [ItemType.Copper]: true,
   //
   [ItemType.Chicken]: true,
   [ItemType.Egg]: true,
@@ -390,7 +423,6 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.Chest]: true,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
-  [ItemType.Rock]: true,
   [ItemType.Log]: true,
   [ItemType.Berry]: true,
   [ItemType.Shovel]: true,
@@ -408,6 +440,10 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.HouseKey]: false,
   [ItemType.FarmersSonBedroomKey]: false,
   [ItemType.FarmersBedroomKey]: false,
+  // resources
+  [ItemType.Rock]: false,
+  [ItemType.Coal]: false,
+  [ItemType.Copper]: false,
   //
   [ItemType.Chicken]: false,
   [ItemType.Egg]: false,
@@ -420,7 +456,6 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.Chest]: false,
   [ItemType.Axe]: true,
   [ItemType.Pickaxe]: true,
-  [ItemType.Rock]: false,
   [ItemType.Log]: false,
   [ItemType.Berry]: false,
   [ItemType.Shovel]: true,

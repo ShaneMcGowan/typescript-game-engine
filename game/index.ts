@@ -68,6 +68,9 @@ import { DeviceType } from '@core/model/device-type';
       tileset_tool_pickaxe: 'assets/custom/tools/pickaxe.png',
       tileset_actions: 'assets/sample/Characters/Basic Charakter Actions.png',
       tileset_furniture: 'assets/sample/Objects/Basic_Furniture.png',
+      tileset_rocks_rock: 'assets/custom/rocks/rock.png',
+      tileset_rocks_coal: 'assets/custom/rocks/coal.png',
+      tileset_rocks_copper: 'assets/custom/rocks/copper.png',
     },
     audio: {},
     fonts: {

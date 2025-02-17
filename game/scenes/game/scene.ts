@@ -17,16 +17,17 @@ import { SCENE_GAME_MAP_TEST_PATHING_1 } from './maps/test/pathing/map.1';
 import { SCENE_GAME_MAP_TEST_PATHING_2 } from './maps/test/pathing/map.2';
 import { SCENE_GAME_MAP_TEST_PATHING_3 } from './maps/test/pathing/map.3';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
+import { SCENE_GAME_MAP_CAVE } from './maps/cave/map';
 
 export enum SavePoint {
   House = 'House',
-  FarmHouse = 'FarmHouse',
+  FarmHouse = 'FarmHouse'
 }
 
 export const SAVE_POINT_MAP: Record<SavePoint, SceneMapConstructorSignature> = {
   [SavePoint.House]: SCENE_GAME_MAP_HOUSE,
   [SavePoint.FarmHouse]: SCENE_GAME_MAP_FARM_HOUSE,
-}
+};
 
 export const MINUTES_PER_DAY: number = 15;
 export const DAY_LENGTH_IN_SECONDS: number = 60 * MINUTES_PER_DAY;
@@ -70,6 +71,7 @@ export enum SceneFlag {
   shack_door_open = 'shack_door_open',
   path_to_farm_cleared = 'path_to_farm_cleared',
   farm_visited = 'farm_visited',
+  cave_visited = 'cave_visited',
   house_visited = 'house_visited',
   slept_in_farm_house_bed = 'slept_in_farm_house_bed'
 }
@@ -157,6 +159,7 @@ export class SCENE_GAME extends Scene {
       [SceneFlag.shack_door_open]: false,
       [SceneFlag.path_to_farm_cleared]: false,
       [SceneFlag.farm_visited]: false,
+      [SceneFlag.cave_visited]: false,
       [SceneFlag.house_visited]: false,
       [SceneFlag.slept_in_farm_house_bed]: false,
     },
@@ -293,6 +296,7 @@ export class SCENE_GAME extends Scene {
       farm: SCENE_GAME_MAP_FARM,
       house: SCENE_GAME_MAP_HOUSE,
       town: SCENE_GAME_MAP_TOWN,
+      cave: SCENE_GAME_MAP_CAVE,
       'test/pathing/1': SCENE_GAME_MAP_TEST_PATHING_1,
       'test/pathing/2': SCENE_GAME_MAP_TEST_PATHING_2,
       'test/pathing/3': SCENE_GAME_MAP_TEST_PATHING_3,
