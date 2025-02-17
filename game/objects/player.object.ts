@@ -40,6 +40,7 @@ import { WarpObject } from './warp.object';
 import { useSprinkler } from './player/use-sprinkler.action';
 import { type LightSource, type LightSourceConfig } from '@game/models/components/lightsource.model';
 import { useFurnace } from './player/use-furnace.action';
+import { useItem } from './player/use-item.action';
 
 const TILE_SET = 'tileset_player';
 
@@ -320,7 +321,7 @@ export class PlayerObject extends SceneObject implements LightSource {
   }
 
   /**
-   * if object player is facing is interactable, run `interact` on that object
+   * if object player is facing is interactable, run `interact` on that object, otherwise attempt to use item you're holding
    */
   private updateButtonInteract(): void {
     if (!this.scene.globals.player.enabled) {
@@ -377,15 +378,13 @@ export class PlayerObject extends SceneObject implements LightSource {
 
     console.log(object);
 
-    if (object === undefined) {
-      return;
+    if (object === undefined || !isInteractable(object)) {
+      if (this.scene.selectedInventoryItem) {
+        useItem(this.scene, this, this.scene.selectedInventoryItem.type);
+      }
+    } else {
+      object.interact();
     }
-
-    if (!isInteractable(object)) {
-      return;
-    }
-
-    object.interact();
   }
 
   /**
