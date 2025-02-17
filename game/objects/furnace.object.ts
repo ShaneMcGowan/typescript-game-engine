@@ -71,6 +71,26 @@ export class FurnaceObject extends SceneObject implements Interactable {
       );
     }
 
+    // render item below progress bar
+    if (this.smeltPercentage === 1) {
+      const output = INPUT_TO_OUTPUT_MAP[this.smelting];
+      const sprite = Inventory.getItemSprite(output);
+
+      RenderUtils.renderSprite(
+        context,
+        Assets.images[sprite.tileset],
+        sprite.x,
+        sprite.y,
+        this.transform.position.world.x,
+        this.transform.position.world.y - 1.25,
+        1,
+        1,
+        {
+          type: 'tile',
+        }
+      );
+    }
+
     if (this.smelting) {
       // bar
       RenderUtils.fillRectangle(
@@ -93,25 +113,6 @@ export class FurnaceObject extends SceneObject implements Interactable {
         {
           type: 'tile',
           colour: '#00FF00',
-        }
-      );
-    }
-
-    if (this.smeltPercentage === 1) {
-      const output = INPUT_TO_OUTPUT_MAP[this.smelting];
-      const sprite = Inventory.getItemSprite(output);
-
-      RenderUtils.renderSprite(
-        context,
-        Assets.images[sprite.tileset],
-        sprite.x,
-        sprite.y,
-        this.transform.position.world.x,
-        this.transform.position.world.y - 1.25,
-        1,
-        1,
-        {
-          type: 'tile',
         }
       );
     }
