@@ -12,6 +12,10 @@ export abstract class RenderUtils {
     spriteHeight?: number,
     options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; centered?: boolean; } = {} // TODO: implement tile vs pixel
   ): void {
+    if (spriteSheet === undefined) {
+      throw new Error("[RenderUtils.renderSprite] spriteSheet is undefined");
+    }
+
     let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
     let scale = options.scale ?? 1; // use to scale the output
