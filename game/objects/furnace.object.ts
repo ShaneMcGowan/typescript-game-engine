@@ -6,20 +6,20 @@ import { type Interactable } from '@game/models/components/interactable.model';
 import { MessageUtils } from '@game/utils/message.utils';
 import { Inventory, ItemType } from '@game/models/inventory.model';
 
-const SMELTABLE: ItemType[] = [ItemType.Copper, ItemType.Wheat];
-
 // time in seconds
 const SMELT_TIME: Partial<Record<ItemType, number>> = {
   [ItemType.Wheat]: 5,
   [ItemType.Copper]: 5,
+  [ItemType.Iron]: 5,
 };
 
 const INPUT_TO_OUTPUT_MAP: Partial<Record<ItemType, ItemType>> = {
   [ItemType.Wheat]: ItemType.Bread,
-  [ItemType.Copper]: ItemType.Axe,
+  [ItemType.Copper]: ItemType.CopperBar,
+  [ItemType.Iron]: ItemType.IronBar,
 };
 
-interface Config extends SceneObjectBaseConfig {}
+interface Config extends SceneObjectBaseConfig { }
 
 export class FurnaceObject extends SceneObject implements Interactable {
   fuel: boolean;
@@ -45,7 +45,7 @@ export class FurnaceObject extends SceneObject implements Interactable {
   onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      Assets.images['tileset_furnace'],
+      Assets.images['tileset_machine_furnace'],
       0,
       0,
       this.transform.position.world.x,
@@ -131,7 +131,7 @@ export class FurnaceObject extends SceneObject implements Interactable {
   };
 
   get smeltTime(): number | undefined {
-    return SMELT_TIME[this.smelting];
+    return SMELT_TIME[this.smelting] ?? 1;
   }
 
   get smeltPercentage(): number {
@@ -155,7 +155,7 @@ export class FurnaceObject extends SceneObject implements Interactable {
 
   private onFuel(): void {
     const item = this.scene.selectedInventoryItem;
-    if (item !== undefined && SMELTABLE.includes(item.type)) {
+    if (item !== undefined && INPUT_TO_OUTPUT_MAP[item.type] !== undefined) {
       this.smelting = item.type;
       this.scene.globals.inventory.removeFromInventoryByIndex(this.scene.globals.hotbar_selected_index, 1);
       return;

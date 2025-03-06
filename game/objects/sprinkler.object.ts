@@ -7,7 +7,7 @@ import { Assets } from '@core/utils/assets.utils';
 import { MessageUtils } from '@game/utils/message.utils';
 import { type Interactable } from '@game/models/components/interactable.model';
 
-interface Config extends SceneObjectBaseConfig {}
+interface Config extends SceneObjectBaseConfig { }
 
 const CACHE_MAX: number = 5;
 
@@ -35,7 +35,7 @@ export class SprinklerObject extends SceneObject implements Interactable {
   onRender(context: CanvasRenderingContext2D): void {
     RenderUtils.renderSprite(
       context,
-      Assets.images['tileset_sprinkler'],
+      Assets.images['tileset_machine_sprinkler'],
       0,
       0,
       this.transform.position.world.x,

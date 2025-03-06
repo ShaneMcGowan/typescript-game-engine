@@ -11,6 +11,8 @@ import { MathUtils } from '@core/utils/math.utils';
 import { type ObjectFilter } from '@core/model/scene';
 import { PlayerObject } from './player.object';
 import { type OnNewDay } from '@game/models/components/new-day.model';
+import { FarmableAreaObject } from './areas/farmable-area.object';
+import { AreaObject } from './areas/area.object';
 
 const DEFAULT_STUMP_ON_DESTROY: boolean = true;
 const DEFAULT_LOG_ON_DESTROY: boolean = true;
@@ -214,7 +216,7 @@ export class TreeObject extends SceneObject implements Interactable, OnNewDay {
             1,
             1
           ),
-          typeIgnore: [PlayerObject, ItemObject],
+          typeIgnore: [PlayerObject, ItemObject, AreaObject],
         };
         const object = this.scene.getObject(filter);
 

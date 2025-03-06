@@ -8,7 +8,7 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { DeviceType } from '@core/model/device-type';
 
-(function() {
+(function () {
   /**
    * Declare your canvas constants here
    */
@@ -68,12 +68,19 @@ import { DeviceType } from '@core/model/device-type';
       tileset_tool_pickaxe: 'assets/custom/tools/pickaxe.png',
       tileset_actions: 'assets/sample/Characters/Basic Charakter Actions.png',
       tileset_furniture: 'assets/sample/Objects/Basic_Furniture.png',
+      tileset_bread: 'assets/custom/bread.png',
+      // resource
       tileset_rocks_rock: 'assets/custom/rocks/rock.png',
       tileset_rocks_coal: 'assets/custom/rocks/coal.png',
       tileset_rocks_copper: 'assets/custom/rocks/copper.png',
-      tileset_sprinkler: 'assets/custom/sprinkler.png',
-      tileset_furnace: 'assets/custom/furnace.png',
-      tileset_bread: 'assets/custom/bread.png',
+      tileset_resource_copper: 'assets/custom/resource/copper.png',
+      tileset_resource_copper_bar: 'assets/custom/resource/copper-bar.png',
+      tileset_resource_iron: 'assets/custom/resource/iron.png',
+      tileset_resource_iron_bar: 'assets/custom/resource/iron-bar.png',
+      // machines
+      tileset_machine_sprinkler: 'assets/custom/machine/sprinkler.png',
+      tileset_machine_furnace: 'assets/custom/machine/furnace.png',
+      tileset_machine_crafting_bench: 'assets/custom/machine/crafting-bench.png',
     },
     audio: {},
     fonts: {

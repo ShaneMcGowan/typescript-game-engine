@@ -18,6 +18,7 @@ import { SCENE_GAME_MAP_TEST_PATHING_2 } from './maps/test/pathing/map.2';
 import { SCENE_GAME_MAP_TEST_PATHING_3 } from './maps/test/pathing/map.3';
 import { hasOnNewDay } from '@game/models/components/new-day.model';
 import { SCENE_GAME_MAP_CAVE } from './maps/cave/map';
+import { SCENE_GAME_MAP_FLAT } from './maps/flat/map';
 
 export enum SavePoint {
   House = 'House',
@@ -300,6 +301,7 @@ export class SCENE_GAME extends Scene {
       'test/pathing/1': SCENE_GAME_MAP_TEST_PATHING_1,
       'test/pathing/2': SCENE_GAME_MAP_TEST_PATHING_2,
       'test/pathing/3': SCENE_GAME_MAP_TEST_PATHING_3,
+      flat: SCENE_GAME_MAP_FLAT,
     };
     const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? options.map ?? (this.globals.save_point ? SAVE_POINT_MAP[this.globals.save_point] : SCENE_GAME_MAP_WORLD);
 

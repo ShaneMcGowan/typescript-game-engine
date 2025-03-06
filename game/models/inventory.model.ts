@@ -29,8 +29,12 @@ export enum ItemType {
   Rock = 'Rock',
   Coal = 'Coal',
   Copper = 'Copper',
+  CopperBar = 'CopperBar',
+  Iron = 'Iron',
+  IronBar = 'IronBar',
 
   // machines
+  CraftingBench = 'CraftingBench',
   Sprinkler = 'Sprinkler',
   Furnace = 'Furnace',
 
@@ -65,7 +69,7 @@ export const ItemTypeFurnitures: ItemType[] = [...ItemTypeFurnitureItems, ...Ite
 export type ItemTypeFurniture = ItemTypeFurnitureItem | ItemTypeFurnitureFloor | ItemTypeFurnitureWall;
 
 // keys
-export type ItemTypeKey = Extract<ItemType, ItemType.GateKey | ItemType.HouseKey | ItemType.FarmersSonBedroomKey | ItemType.FarmersBedroomKey >;
+export type ItemTypeKey = Extract<ItemType, ItemType.GateKey | ItemType.HouseKey | ItemType.FarmersSonBedroomKey | ItemType.FarmersBedroomKey>;
 export const ItemTypeKeys: ItemTypeKey[] = [ItemType.GateKey, ItemType.HouseKey, ItemType.FarmersSonBedroomKey, ItemType.FarmersBedroomKey];
 
 /**
@@ -84,9 +88,15 @@ const DEFAULT_INVENTORY_ITEM_RADIUS: ItemRadius = ItemRadius.None;
 export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   // machines
   [ItemType.Sprinkler]: ItemRadius.Player,
-  [ItemType.Furnace]: ItemRadius.Player,
+  [ItemType.Furnace]: ItemRadius.Anywhere,
+  [ItemType.CraftingBench]: ItemRadius.Anywhere,
   // food
   [ItemType.Bread]: ItemRadius.None,
+  // resources
+  [ItemType.Copper]: ItemRadius.None,
+  [ItemType.CopperBar]: ItemRadius.None,
+  [ItemType.Iron]: ItemRadius.None,
+  [ItemType.IronBar]: ItemRadius.None,
   // other
   [ItemType.Chicken]: ItemRadius.Player,
   [ItemType.Egg]: ItemRadius.Player,
@@ -103,7 +113,6 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
   [ItemType.Pickaxe]: ItemRadius.Player,
   [ItemType.Rock]: ItemRadius.None,
   [ItemType.Coal]: ItemRadius.None,
-  [ItemType.Copper]: ItemRadius.None,
   [ItemType.Log]: ItemRadius.None,
   [ItemType.Berry]: ItemRadius.Player,
   [ItemType.Shovel]: ItemRadius.Player,
@@ -118,10 +127,16 @@ export const TYPE_TO_RADIUS_MAP: Record<ItemType, ItemRadius> = {
 
 export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   // machines
-  [ItemType.Sprinkler]: { tileset: 'tileset_sprinkler', x: 0, y: 0, },
-  [ItemType.Furnace]: { tileset: 'tileset_furnace', x: 0, y: 0, },
+  [ItemType.Sprinkler]: { tileset: 'tileset_machine_sprinkler', x: 0, y: 0, },
+  [ItemType.Furnace]: { tileset: 'tileset_machine_furnace', x: 0, y: 0, },
+  [ItemType.CraftingBench]: { tileset: 'tileset_machine_crafting_bench', x: 0, y: 0, },
   // food
   [ItemType.Bread]: { tileset: 'tileset_bread', x: 0, y: 0, },
+  // resources
+  [ItemType.Copper]: { tileset: 'tileset_resource_copper', x: 0, y: 0, },
+  [ItemType.CopperBar]: { tileset: 'tileset_resource_copper_bar', x: 0, y: 0, },
+  [ItemType.Iron]: { tileset: 'tileset_resource_iron', x: 0, y: 0, },
+  [ItemType.IronBar]: { tileset: 'tileset_resource_iron_bar', x: 0, y: 0, },
   // other
   [ItemType.Chicken]: { tileset: 'tileset_chicken', x: 0, y: 0, },
   [ItemType.Egg]: { tileset: 'tileset_egg', x: 0, y: 0, },
@@ -137,7 +152,6 @@ export const TYPE_TO_SPRITE_MAP: Record<ItemType, ItemSprite> = {
   [ItemType.Pickaxe]: { tileset: 'tileset_tool_pickaxe', x: 0, y: 0, },
   [ItemType.Rock]: { tileset: 'tileset_rocks_rock', x: 0, y: 0, },
   [ItemType.Coal]: { tileset: 'tileset_rocks_coal', x: 0, y: 0, },
-  [ItemType.Copper]: { tileset: 'tileset_rocks_copper', x: 0, y: 0, },
   [ItemType.Log]: { tileset: 'tileset_grass_biome', x: 5, y: 2, },
   [ItemType.Berry]: { tileset: 'tileset_grass_biome', x: 1, y: 2, },
   [ItemType.Shovel]: { tileset: 'tileset_tool_shovel', x: 0, y: 0, },
@@ -155,8 +169,14 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   // machines
   [ItemType.Sprinkler]: 1,
   [ItemType.Furnace]: 1,
+  [ItemType.CraftingBench]: 1,
   // food
   [ItemType.Bread]: 9,
+  // resources
+  [ItemType.Copper]: 9,
+  [ItemType.CopperBar]: 9,
+  [ItemType.Iron]: 9,
+  [ItemType.IronBar]: 9,
   // other
   [ItemType.Chicken]: 1,
   [ItemType.Egg]: 9,
@@ -173,7 +193,6 @@ export const TYPE_TO_MAX_STACK_MAP: Record<ItemType, number | undefined> = {
   [ItemType.Pickaxe]: 1,
   [ItemType.Rock]: 9,
   [ItemType.Coal]: 9,
-  [ItemType.Copper]: 9,
   [ItemType.Log]: 9,
   [ItemType.Berry]: 9,
   [ItemType.Shovel]: 1,
@@ -211,10 +230,14 @@ export const TYPE_TO_BUY_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Rock]: 999,
   [ItemType.Coal]: 999,
   [ItemType.Copper]: 999,
+  [ItemType.CopperBar]: 999,
+  [ItemType.Iron]: 999,
+  [ItemType.IronBar]: 999,
 
   // machines
   [ItemType.Sprinkler]: 1,
   [ItemType.Furnace]: 1,
+  [ItemType.CraftingBench]: 1,
 
   // food
   [ItemType.Bread]: 999,
@@ -256,10 +279,14 @@ export const TYPE_TO_SELL_VALUE_MAP: Record<ItemType, number> = {
   [ItemType.Rock]: 1,
   [ItemType.Coal]: 5,
   [ItemType.Copper]: 10,
+  [ItemType.CopperBar]: 25,
+  [ItemType.Iron]: 10,
+  [ItemType.IronBar]: 25,
 
   // machines
   [ItemType.Sprinkler]: 1,
   [ItemType.Furnace]: 1,
+  [ItemType.CraftingBench]: 1,
 
   // food
   [ItemType.Bread]: 25,
@@ -287,10 +314,14 @@ export const TYPE_TO_NAME_SINGULAR_MAP: Record<ItemType, string> = {
   [ItemType.Rock]: 'Rock',
   [ItemType.Coal]: 'Coal',
   [ItemType.Copper]: 'Copper',
+  [ItemType.CopperBar]: 'Copper Bar',
+  [ItemType.Iron]: 'Iron',
+  [ItemType.IronBar]: 'Iron Bar',
 
   // machines
   [ItemType.Sprinkler]: 'Sprinkler',
   [ItemType.Furnace]: 'Furnace',
+  [ItemType.CraftingBench]: 'Crafting Bench',
 
   // food
   [ItemType.Bread]: 'Bread',
@@ -328,10 +359,14 @@ export const TYPE_TO_NAME_PLURAL_MAP: Record<ItemType, string> = {
   [ItemType.Rock]: 'Rocks',
   [ItemType.Coal]: 'Coal',
   [ItemType.Copper]: 'Copper',
+  [ItemType.CopperBar]: 'Copper Bars',
+  [ItemType.Iron]: 'Iron',
+  [ItemType.IronBar]: 'Iron Bars',
 
   // machines
   [ItemType.Sprinkler]: 'Sprinklers',
   [ItemType.Furnace]: 'Furnaces',
+  [ItemType.CraftingBench]: 'Crafting Benchs',
 
   // food
   [ItemType.Bread]: 'Bread',
@@ -368,11 +403,15 @@ export const TYPE_TO_DESCRIPTION_MAP: Record<ItemType, string> = {
   // resources
   [ItemType.Rock]: 'A rock that was broken from an even larger rock, I can use this to make things.',
   [ItemType.Coal]: 'A lump of coal, can be used as fuel for a furnace.',
-  [ItemType.Copper]: 'A piece of copper, can be melted down to be used to make things.',
+  [ItemType.Copper]: 'A piece of Copper, can be melted down to be used to make things.',
+  [ItemType.CopperBar]: 'A bar of Copper, can be used to make tools and machines.',
+  [ItemType.Iron]: 'A piece of Iron, can be melted down to be used to make things.',
+  [ItemType.IronBar]: 'A bar of Iron, can be used to make tools and machines.',
 
   // machines
   [ItemType.Sprinkler]: 'Automagically waters surrounding crops.',
   [ItemType.Furnace]: 'Used for melting and smelting',
+  [ItemType.CraftingBench]: 'Used to craft basic tools and machines',
 
   // food
   [ItemType.Bread]: 'A tasty piece of bread. Yum.',
@@ -410,10 +449,14 @@ export const TYPE_TO_CAN_SELL_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+  [ItemType.CopperBar]: true,
+  [ItemType.Iron]: true,
+  [ItemType.IronBar]: true,
 
   // machines
   [ItemType.Sprinkler]: true,
   [ItemType.Furnace]: true,
+  [ItemType.CraftingBench]: true,
 
   // food
   [ItemType.Bread]: true,
@@ -451,10 +494,14 @@ export const TYPE_TO_CAN_DESTROY_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+  [ItemType.CopperBar]: true,
+  [ItemType.Iron]: true,
+  [ItemType.IronBar]: true,
 
   // machines
   [ItemType.Sprinkler]: true,
   [ItemType.Furnace]: true,
+  [ItemType.CraftingBench]: true,
 
   // food
   [ItemType.Bread]: true,
@@ -492,10 +539,14 @@ export const TYPE_TO_CAN_DROP_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: true,
   [ItemType.Coal]: true,
   [ItemType.Copper]: true,
+  [ItemType.CopperBar]: true,
+  [ItemType.Iron]: true,
+  [ItemType.IronBar]: true,
 
   // machines
   [ItemType.Sprinkler]: true,
   [ItemType.Furnace]: true,
+  [ItemType.CraftingBench]: true,
 
   // food
   [ItemType.Bread]: true,
@@ -533,10 +584,14 @@ export const TYPE_TO_CAN_INTERACT_MAP: Record<ItemType, boolean> = {
   [ItemType.Rock]: false,
   [ItemType.Coal]: false,
   [ItemType.Copper]: false,
+  [ItemType.CopperBar]: false,
+  [ItemType.Iron]: false,
+  [ItemType.IronBar]: false,
 
   // machines
   [ItemType.Sprinkler]: false,
   [ItemType.Furnace]: false,
+  [ItemType.CraftingBench]: false,
 
   // food
   [ItemType.Bread]: false,

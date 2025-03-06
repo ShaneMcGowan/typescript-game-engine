@@ -41,6 +41,7 @@ import { useSprinkler } from './player/use-sprinkler.action';
 import { type LightSource, type LightSourceConfig } from '@game/models/components/lightsource.model';
 import { useFurnace } from './player/use-furnace.action';
 import { useItem } from './player/use-item.action';
+import { useCraftingBench } from './player/use-crafting-bench.action';
 
 const TILE_SET = 'tileset_player';
 
@@ -574,6 +575,8 @@ export class PlayerObject extends SceneObject implements LightSource {
       case ItemType.Furnace:
         useFurnace(this.scene, this, object);
         return;
+      case ItemType.CraftingBench:
+        useCraftingBench(this.scene, this, object);
       case ItemType.GateKey:
       case ItemType.HouseKey:
       case ItemType.FarmersSonBedroomKey:
@@ -581,6 +584,9 @@ export class PlayerObject extends SceneObject implements LightSource {
       case ItemType.Rock:
       case ItemType.Coal:
       case ItemType.Copper:
+      case ItemType.CopperBar:
+      case ItemType.Iron:
+      case ItemType.IronBar:
       case ItemType.Log:
       case ItemType.Bread:
         return;
