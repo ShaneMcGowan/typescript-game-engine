@@ -6,8 +6,8 @@ export class SCENE_MAIN_MENU extends Scene {
 
   click: boolean = false;
 
-  constructor(protected client: Client) {
-    super(client);
+  constructor(protected client: Client, protected options: any = {}) {
+    super(client, options);
     this.changeMap(SCENE_MAIN_MENU_MAP_MAIN_MENU);
   }
 }

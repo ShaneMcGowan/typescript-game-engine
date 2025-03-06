@@ -171,8 +171,8 @@ export class Client {
     return canvas;
   }
 
-  changeScene(sceneClass: SceneConstructorSignature): void {
-    this.scene = Reflect.construct(sceneClass, [this]);
+  changeScene(sceneClass: SceneConstructorSignature, options: any = {}): void {
+    this.scene = Reflect.construct(sceneClass, [this, options]);
   }
 
   /**

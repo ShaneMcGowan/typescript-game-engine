@@ -243,7 +243,7 @@ export class SCENE_GAME extends Scene {
     save_point: undefined,
   };
 
-  constructor(client: Client) {
+  constructor(client: Client, protected options: any = {}) {
     super(client);
 
     // persistent objects
@@ -301,7 +301,7 @@ export class SCENE_GAME extends Scene {
       'test/pathing/2': SCENE_GAME_MAP_TEST_PATHING_2,
       'test/pathing/3': SCENE_GAME_MAP_TEST_PATHING_3,
     };
-    const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? (this.globals.save_point ? SAVE_POINT_MAP[this.globals.save_point] : SCENE_GAME_MAP_WORLD);
+    const map: SceneMapConstructorSignature = MAP_MAP[params.get('map')] ?? options.map ?? (this.globals.save_point ? SAVE_POINT_MAP[this.globals.save_point] : SCENE_GAME_MAP_WORLD);
 
     this.changeMap(map);
   }

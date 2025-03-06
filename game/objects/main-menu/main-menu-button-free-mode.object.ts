@@ -38,7 +38,7 @@ export class MainMenuButtonFreeModeObject extends ButtonObject {
         animationType: 'block',
         animationDirection: 'out',
         onDestroy: () => {
-          this.scene.changeScene(SCENE_GAME);
+          this.scene.changeScene(SCENE_GAME, { map: SCENE_GAME_MAP_FLAT });
         }
       }
     ));

@@ -77,7 +77,8 @@ export abstract class Scene {
   displayContext: CanvasRenderingContext2D;
 
   constructor(
-    protected client: Client
+    protected client: Client,
+    protected options: any = {}
   ) {
     this.renderContext = this.client.renderContext;
     this.displayContext = this.client.displayContext;
@@ -409,8 +410,8 @@ export abstract class Scene {
     }
   }
 
-  changeScene(sceneClass: any): void {
-    this.client.changeScene(sceneClass);
+  changeScene(sceneClass: SceneConstructorSignature, options?: any): void {
+    this.client.changeScene(sceneClass, options);
   }
 
   getCustomRenderer(): CustomRendererSignature | undefined {
