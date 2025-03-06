@@ -24,12 +24,11 @@ export class SCENE_GAME_MAP_FLAT extends SceneMap {
 
     this.scene.addObject(this.player);
 
-    this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Furnace, types: [ItemType.Furnace], x: 3, y: 1, }));
-    this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.CraftingBench, types: [ItemType.CraftingBench], x: 3, y: 3, }));
+    this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Furnace, types: [ItemType.Furnace], x: 4, y: 1, }));
+    this.scene.addObject(new DispenserObject(this.scene, { label: 'Craft Bench', types: [ItemType.CraftingBench], x: 4, y: 3, }));
 
-    // this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Egg, types: [ItemType.Egg], x: 1, y: 1, }));
-    // this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Rock, types: [ItemType.Rock], x: 5, y: 1, }));
-    this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Coal, types: [ItemType.Coal], x: 7, y: 1, }));
+    this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Rock, types: [ItemType.Rock], x: 7, y: 1, }));
+    this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Coal, types: [ItemType.Coal], x: 9, y: 1, }));
     this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Copper, types: [ItemType.Copper], x: 7, y: 3, }));
     this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Iron, types: [ItemType.Iron], x: 9, y: 3, }));
     this.scene.addObject(new FurnaceObject(this.scene, { x: 7, y: 5 }));
@@ -39,7 +38,7 @@ export class SCENE_GAME_MAP_FLAT extends SceneMap {
 
     // this.scene.addObject(new DispenserObject(this.scene, { label: ItemType.Berry, types: [ItemType.Berry], x: 9, y: 1, }));
 
-    this.scene.addObject(new DebugAddDayObject(this.scene, { x: 1, y: 5 }));
+    this.scene.addObject(new DebugAddDayObject(this.scene, { x: 1, y: 1 }));
 
     // areas
     this.scene.addObject(new FarmableAreaObject(this.scene, { x: 0, y: 0, width: this.width, height: this.height }));
