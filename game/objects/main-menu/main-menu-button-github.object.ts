@@ -9,7 +9,7 @@ import { SCENE_GAME_MAP_WORLD } from '@game/scenes/game/maps/world/map';
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class MainMenuButtonStoryModeObject extends ButtonObject {
+export class MainMenuButtonGithubObject extends ButtonObject {
   width = 8;
   height = 2;
 
@@ -21,26 +21,17 @@ export class MainMenuButtonStoryModeObject extends ButtonObject {
   }
 
   get label(): string {
-    return 'Story Mode';
+    return 'GitHub';
   }
 
   onClick(): void {
     if (this.scene.click) {
       return;
     }
-    this.scene.click = true;
 
-    CanvasConstants.SAVE_FILE_ID = null;
-
-    this.scene.addObject(new TransitionObject(
-      this.scene,
-      {
-        animationType: 'block',
-        animationDirection: 'out',
-        onDestroy: () => {
-          this.scene.changeScene(SCENE_GAME);
-        }
-      }
-    ));
+    const link = document.createElement('a');
+    link.href = `http://github.com/shanemcgowan/typescript-game-engine`;
+    link.target = '_blank';
+    link.click();
   }
 }

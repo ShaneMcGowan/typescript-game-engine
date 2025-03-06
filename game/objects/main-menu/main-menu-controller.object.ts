@@ -1,13 +1,13 @@
 import { CanvasConstants } from '@core/constants/canvas.constants';
-import { type Scene } from '@core/model/scene';
 import { type SceneObjectBaseConfig, SceneObject } from '@core/model/scene-object';
 import { GenericSpriteObject } from '@game/objects/generic-sprite.object';
 import { MathUtils } from '@core/utils/math.utils';
-import { MainMenuButtonStoryModeObject } from './main-menu-button-story-mode.object';
+import { MainMenuButtonNewGameObject } from './main-menu-button-new-game.object';
 import { MainMenuButtonLoadGameObject } from './main-menu-button-load-game.object';
 import { MainMenuButtonDeleteSaveObject } from './main-menu-button-delete-save.object';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
-import { MainMenuButtonFreeModeObject } from './main-menu-button-free-mode.object';
+import { MainMenuButtonGithubObject } from './main-menu-button-github.object';
+import { MainMenuButtonContactMeObject } from './main-menu-button-contact-me.object';
 
 const MAX_ITEMS = 15; // max objects allowed on screen at once
 const NEW_ITEM_DELAY = 3; // seconds unil new item is generated (if there is room)
@@ -28,10 +28,11 @@ export class MainMenuControllerObject extends SceneObject {
 
   onAwake(): void {
     const buttons = [
-      new MainMenuButtonStoryModeObject(this.scene, {}),
-      new MainMenuButtonFreeModeObject(this.scene, {}),
+      new MainMenuButtonNewGameObject(this.scene, {}),
       new MainMenuButtonLoadGameObject(this.scene, {}),
       ...(CanvasConstants.DEBUG_MODE ? [new MainMenuButtonDeleteSaveObject(this.scene, {})] : []),
+      new MainMenuButtonGithubObject(this.scene, {}),
+      new MainMenuButtonContactMeObject(this.scene, {}),
     ];
 
     buttons.forEach((button, index) => {

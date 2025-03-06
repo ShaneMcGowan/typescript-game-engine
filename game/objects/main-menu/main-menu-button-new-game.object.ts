@@ -4,12 +4,11 @@ import { SCENE_GAME } from '@game/scenes/game/scene';
 import { CanvasConstants } from '@core/constants/canvas.constants';
 import { TransitionObject } from '@core/objects/transition.object';
 import { SCENE_MAIN_MENU } from '@game/scenes/main-menu/scene';
-import { SCENE_GAME_MAP_FLAT } from '@game/scenes/game/maps/flat/map';
 
 interface Config extends SceneObjectBaseConfig {
 }
 
-export class MainMenuButtonFreeModeObject extends ButtonObject {
+export class MainMenuButtonNewGameObject extends ButtonObject {
   width = 8;
   height = 2;
 
@@ -21,7 +20,7 @@ export class MainMenuButtonFreeModeObject extends ButtonObject {
   }
 
   get label(): string {
-    return 'Free Mode';
+    return 'New Game';
   }
 
   onClick(): void {
@@ -38,7 +37,7 @@ export class MainMenuButtonFreeModeObject extends ButtonObject {
         animationType: 'block',
         animationDirection: 'out',
         onDestroy: () => {
-          this.scene.changeScene(SCENE_GAME, { map: SCENE_GAME_MAP_FLAT });
+          this.scene.changeScene(SCENE_GAME);
         }
       }
     ));
