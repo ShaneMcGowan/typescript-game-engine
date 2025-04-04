@@ -27,6 +27,8 @@ export interface SceneGlobalsBaseConfig {
 
 export interface ObjectFilter {
   boundingBox?: SceneObjectBoundingBox;
+  boundingBoxHorizontal?: SceneObjectBoundingBox;
+  boundingBoxVertical?: SceneObjectBoundingBox;
   position?: {
     x: number;
     y: number;
@@ -266,8 +268,10 @@ export abstract class Scene {
     sceneObjects.forEach(o => { this.addObject(o); });
   }
 
-  addObject(sceneObject: SceneObject): void {
+  addObject(sceneObject: SceneObject): SceneObject {
     this.objects.set(sceneObject.id, sceneObject);
+
+    return sceneObject;
   }
 
   private removeObjectById(sceneObjectId: string): void {
@@ -410,8 +414,8 @@ export abstract class Scene {
     }
   }
 
-  changeScene(sceneClass: SceneConstructorSignature, options?: any): void {
-    this.client.changeScene(sceneClass, options);
+  changeScene(sceneClass: any): void {
+    this.client.changeScene(sceneClass);
   }
 
   getCustomRenderer(): CustomRendererSignature | undefined {
@@ -470,7 +474,21 @@ function match(object: SceneObject, filter: ObjectFilter, enableDefaults = true)
 
   // boundingBox
   if (
-    filter.boundingBox && !isBoundingBoxWithinBoundingBox(object, filter)
+    filter.boundingBox && !isBoundingBoxWithinBoundingBox(object, filter.boundingBox)
+  ) {
+    return;
+  }
+
+  // boundingBoxHorizontal
+  if (
+    filter.boundingBoxHorizontal && !isBoundingBoxWithinBoundingBoxHorizontally(object, filter.boundingBoxHorizontal)
+  ) {
+    return;
+  }
+
+  // boundingBoxVertical
+  if (
+    filter.boundingBoxVertical && !isBoundingBoxWithinBoundingBoxVertically(object, filter.boundingBoxVertical)
   ) {
     return;
   }
@@ -498,12 +516,32 @@ function isPositionWithinBoundingBox(object: SceneObject, filter: ObjectFilter):
   return false;
 }
 
-function isBoundingBoxWithinBoundingBox(object: SceneObject, filter: ObjectFilter): boolean {
+function isBoundingBoxWithinBoundingBox(object: SceneObject, box: SceneObjectBoundingBox): boolean {
   if (
-    filter.boundingBox.left < object.boundingBox.world.right &&
-    filter.boundingBox.right > object.boundingBox.world.left &&
-    filter.boundingBox.top < object.boundingBox.world.bottom &&
-    filter.boundingBox.bottom > object.boundingBox.world.top
+    isBoundingBoxWithinBoundingBoxHorizontally(object, box) &&
+    isBoundingBoxWithinBoundingBoxVertically(object, box)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function isBoundingBoxWithinBoundingBoxHorizontally(object: SceneObject, box: SceneObjectBoundingBox): boolean {
+  if (
+    box.left < object.boundingBox.world.right &&
+    box.right > object.boundingBox.world.left
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function isBoundingBoxWithinBoundingBoxVertically(object: SceneObject, box: SceneObjectBoundingBox): boolean {
+  if (
+    box.top < object.boundingBox.world.bottom &&
+    box.bottom > object.boundingBox.world.top
   ) {
     return true;
   }

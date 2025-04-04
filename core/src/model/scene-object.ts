@@ -34,8 +34,8 @@ interface Renderer {
 
 interface Flags {
   awake: boolean; // flag to check if awake has been run for this object yet
-  update: boolean; // flag to check if update should be ran for the object this frame, TODO: implement the usage of this flag to improve engine performance
-  render: boolean; // flag to check if render should be ran for the object this frame, TODO: implement the usage of this flag to improve engine performance
+  update: boolean; // flag to check if update should be ran for the object this frame
+  render: boolean; // flag to check if render should be ran for the object this frame
   destroy: boolean; // used to remove object from scene during the "destroyObjects" segment of the frame. This is to avoid modifying the scene while iterating over it
   save: boolean; // used to check if an object should be saved
 }
@@ -191,6 +191,10 @@ export abstract class SceneObject {
   }
 
   update(delta: number): void {
+    if (!this.flags.awake) {
+      return;
+    }
+
     if (!this.flags.update) {
       return;
     }
@@ -203,6 +207,10 @@ export abstract class SceneObject {
   }
 
   render(context: CanvasRenderingContext2D): void {
+    if (!this.flags.awake) {
+      return;
+    }
+
     if (!this.renderer.enabled) {
       return;
     }
@@ -337,10 +345,12 @@ export abstract class SceneObject {
     };
   }
 
-  addChild(object: SceneObject): void {
+  addChild(object: SceneObject): SceneObject {
     this.children.set(object.id, object);
     object.parent = this;
     this.scene.addObject(object);
+
+    return object;
   }
 
   removeChild(object: SceneObject): void {

@@ -10,47 +10,42 @@ export abstract class RenderUtils {
     y: number,
     spriteWidth?: number,
     spriteHeight?: number,
-    options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; centered?: boolean; } = {} // TODO: implement tile vs pixel
+    options: { scale?: number; opacity?: number; type?: 'tile' | 'pixel'; rotation?: number; } = {} // TODO: implement tile vs pixel
   ): void {
     if (spriteSheet === undefined) {
       throw new Error("[RenderUtils.renderSprite] spriteSheet is undefined");
     }
-
-    let width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
-    let height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
-    let scale = options.scale ?? 1; // use to scale the output
-    let rotation = options.rotation ?? 0; // degrees to rotate the sprite by
+    const width = spriteWidth ? spriteWidth * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
+    const height = spriteHeight ? spriteHeight * CanvasConstants.TILE_SIZE : CanvasConstants.TILE_SIZE;
+    const scale = options.scale ?? 1; // use to scale the output
+    const rotation = options.rotation ?? 0; // degrees to rotate the sprite by
+    const opacity = options.opacity ?? 1;
 
     // save the current context if we need to apply opacity, then restore it after
     // we don't do this for all renders as it is a performance hit
-    let updateOpacity = (options.opacity && options.opacity < 1);
-    let updateRotation = (rotation !== 0);
+    const updateOpacity = (opacity < 1);
+    const updateRotation = (rotation !== 0);
 
-    let shouldSave = (updateOpacity || updateRotation);
+    const shouldSave = (updateOpacity || updateRotation);
+
     if (shouldSave) {
       context.save();
 
       if (updateOpacity) {
         context.globalAlpha = Math.max(0, options.opacity);
+        console.log('context.globalAlpha', context.globalAlpha);
       }
 
       if (updateRotation) {
         // translate to the center of the sprite, rotate, then translate back
-        let xTranslation = Math.floor((x + (spriteWidth / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
-        let yTranslation = Math.floor((y + (spriteHeight / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
+        const xTranslation = Math.floor((x + (spriteWidth / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
+        const yTranslation = Math.floor((y + (spriteHeight / 2)) * CanvasConstants.TILE_SIZE) + 0.5;
 
         context.translate(xTranslation, yTranslation);
         // TODO: any angle that isn't 90, 180, 270, etc will cause blurring / weird sprite interoplation. This is a known issue with canvas and will need to see if this can be worked around
         context.rotate((rotation * Math.PI) / 180);
         context.translate(-xTranslation, -yTranslation);
       }
-    }
-
-    let translateX = Math.floor(width / 2);
-    let translateY = Math.floor(height / 2);
-
-    if (options.centered) {
-      // context.translate(-translateX, -translateY);
     }
 
     context.drawImage(
@@ -64,10 +59,6 @@ export abstract class RenderUtils {
       width * scale,
       height * scale
     );
-
-    if (options.centered) {
-      // context.translate(translateX, translateY);
-    }
 
     if (shouldSave) {
       context.restore();

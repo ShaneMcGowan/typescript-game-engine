@@ -71,7 +71,7 @@ export class TransitionObject extends SceneObject {
   }
 
   private renderAnimationBlock(context: CanvasRenderingContext2D): void {
-    let alpha = this.animationDirection === 'in' ? 1 - this.animationPercentage : this.animationPercentage;
+    const alpha = this.animationDirection === 'in' ? 1 - this.animationPercentage : this.animationPercentage;
     RenderUtils.fillRectangle(
       context,
       0,
