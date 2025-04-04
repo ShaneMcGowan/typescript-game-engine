@@ -41,6 +41,7 @@ interface Flags {
 }
 
 export interface SceneObjectBaseConfig {
+  id?: string;
   x?: number;
   y?: number;
 
@@ -147,6 +148,7 @@ export abstract class SceneObject {
       save: FLAGS_SAVE_DEFAULT,
     };
 
+    this.id = config.id ?? this.id;
     this.transform.position.local.x = config.x ?? this.transform.position.local.x;
     this.transform.position.local.y = config.y ?? this.transform.position.local.y;
 
