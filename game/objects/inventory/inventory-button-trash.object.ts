@@ -52,7 +52,6 @@ export class InventoryButtonTrashObject extends SceneObject {
       this.transform.position.world.y,
       tileset.width,
       tileset.height,
-      { centered: true, }
     );
   }
 
@@ -69,7 +68,6 @@ export class InventoryButtonTrashObject extends SceneObject {
       this.transform.position.world.y + offset.y,
       tileset.width,
       tileset.height,
-      { centered: true, }
     );
   }
 }

@@ -74,9 +74,6 @@ export class HotbarSlotObject extends UiObject {
       this.transform.position.world.y,
       tile.width,
       tile.height,
-      {
-        centered: true,
-      }
     );
   }
 
@@ -94,7 +91,6 @@ export class HotbarSlotObject extends UiObject {
       this.transform.position.world.y + 0.5,
       1,
       1,
-      { centered: true, }
     );
   }
 

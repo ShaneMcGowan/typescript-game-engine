@@ -531,7 +531,6 @@ export class NpcObject extends SceneObject implements Interactable {
       {
         opacity: this.renderer.opacity,
         scale: this.renderer.scale,
-        centered: true,
       }
     );
   }

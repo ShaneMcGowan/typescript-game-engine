@@ -100,9 +100,6 @@ export class GenericSpriteObject extends SceneObject {
       this.transform.position.world.y,
       this.spriteWidth,
       this.spriteWidth,
-      {
-        centered: true,
-      }
     );
   }
 }

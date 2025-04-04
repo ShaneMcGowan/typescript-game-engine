@@ -60,9 +60,6 @@ export class LockedDoorObject extends SceneObject implements Interactable {
       this.transform.position.world.y,
       this.width,
       this.height,
-      {
-        centered: true,
-      }
     );
   }
 

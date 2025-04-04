@@ -34,7 +34,6 @@ export class InventoryGoldCountObject extends SceneObject {
     //   this.transform.position.world.y,
     //   tileset.width,
     //   tileset.height,
-    //   { centered: true }
     // );
   }
 

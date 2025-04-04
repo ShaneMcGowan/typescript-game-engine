@@ -150,9 +150,6 @@ export class InventorySlotObject extends SceneObject {
       this.transform.position.world.y,
       tile.width,
       tile.height,
-      {
-        centered: true,
-      }
     );
   }
 

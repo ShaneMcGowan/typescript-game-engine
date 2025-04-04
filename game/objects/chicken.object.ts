@@ -109,9 +109,6 @@ export class ChickenObject extends SceneObject implements Interactable {
       this.transform.position.world.y,
       undefined,
       undefined,
-      {
-        centered: true,
-      }
     );
   }
 

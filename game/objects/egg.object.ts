@@ -52,9 +52,6 @@ export class EggObject extends SceneObject implements Interactable {
       this.transform.position.world.y,
       1,
       1,
-      {
-        centered: true,
-      }
     );
   }
 

@@ -92,7 +92,6 @@ export class ShopItemBuyObject extends SceneObject {
       this.transform.position.world.y,
       undefined,
       undefined,
-      { centered: true, }
     );
   }
 
