@@ -31,6 +31,21 @@ export class Vector {
     );
   }
 
+  /**
+   * radians relative to X Axis
+   */
+  get radians(): number {
+    // note: atan2 Returns the angle (in radians) between the X axis and the line going through both the origin and the given point.
+    return Math.atan2(this.y, this.x);
+  }
+
+  /**
+   * degrees relative to X Axis
+   */
+  get degrees(): number {
+    return this.radians * 180 / Math.PI;
+  }
+
   add(vector: Vector): Vector {
     return new Vector(
       this.x + vector.x,
@@ -58,4 +73,6 @@ export class Vector {
       this.y / speed
     );
   }
+
+
 }
