@@ -256,4 +256,34 @@ export abstract class RenderUtils {
 
     return output;
   }
+
+  /**
+ * returns the text width in pixels
+ * @param text
+ * @param options 
+ * @returns 
+ */
+  static measureText(text: string, options: {
+    size?: number;
+    colour?: string;
+    font?: string;
+    align?: CanvasTextAlign;
+    baseline?: CanvasTextBaseline;
+    direction?: CanvasDirection;
+  } = {}): number {
+    // TODO: this is copied from Render text, as is the options signature, make this generic
+    const size = options.size ?? CanvasConstants.DEFAULT_FONT_SIZE;
+    const colour = options.colour ?? CanvasConstants.DEFAULT_FONT_COLOUR;
+    const font = options.font ?? CanvasConstants.DEFAULT_FONT_FAMILY;
+    const align = options.align ?? CanvasConstants.DEFAULT_TEXT_ALIGN;
+    const baseline = options.baseline ?? CanvasConstants.DEFAULT_TEXT_BASELINE;
+    const direction = options.direction ?? CanvasConstants.DEFAULT_TEXT_DIRECTION;
+
+    // configure context
+    const context = document.createElement('canvas').getContext('2d');
+    context.font = `${size}px ${font}`;
+    context.fillStyle = `${colour}`;
+
+    return context.measureText(text).width;
+  }
 }
