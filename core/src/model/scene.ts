@@ -42,6 +42,7 @@ export interface ObjectFilter {
     layerMatch?: Map<number, boolean>;
     layerIgnore?: Map<number, boolean>;
   };
+  custom?: (object: SceneObject) => boolean;
 }
 
 export type CustomRendererSignature = (renderingContext: SceneRenderingContext) => void;
@@ -298,6 +299,7 @@ export abstract class Scene {
    * @param enableDefaults applies some smart defaults
    * @returns
    */
+  // getObject<T>(filter: ObjectFilter, enableDefaults?: boolean): T | undefined; // TODO: implement this eventually
   getObject(filter: ObjectFilter = {}, enableDefaults: boolean = true): SceneObject | undefined {
     for (const [, object] of this.objects) {
       if (match(object, filter, enableDefaults)) {
@@ -414,8 +416,8 @@ export abstract class Scene {
     }
   }
 
-  changeScene(sceneClass: any): void {
-    this.client.changeScene(sceneClass);
+  changeScene(sceneClass: SceneConstructorSignature, options?: any): void {
+    this.client.changeScene(sceneClass, options);
   }
 
   getCustomRenderer(): CustomRendererSignature | undefined {
@@ -472,6 +474,7 @@ function match(object: SceneObject, filter: ObjectFilter, enableDefaults = true)
     return;
   }
 
+
   // boundingBox
   if (
     filter.boundingBox && !isBoundingBoxWithinBoundingBox(object, filter.boundingBox)
@@ -496,6 +499,13 @@ function match(object: SceneObject, filter: ObjectFilter, enableDefaults = true)
   // position
   if (
     filter.position && !isPositionWithinBoundingBox(object, filter)
+  ) {
+    return;
+  }
+
+  // custom
+  if (
+    filter.custom && !filter.custom(object)
   ) {
     return;
   }
