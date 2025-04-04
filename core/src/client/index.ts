@@ -52,6 +52,7 @@ export class Client {
   public readonly renderContext: CanvasRenderingContext2D;
 
   private delta: number = 0;
+  private timescale: number = 1;
   private lastRenderTimestamp: number = 0;
   readonly flags: Flags = {
     frame: {
@@ -277,7 +278,7 @@ export class Client {
    * @param timestamp
    */
   private setDelta(timestamp: number): void {
-    this.delta = (timestamp - this.lastRenderTimestamp) / 1000;
+    this.delta = ((timestamp - this.lastRenderTimestamp) / 1000) * this.timescale;
     this.lastRenderTimestamp = timestamp;
   }
 
@@ -580,6 +581,16 @@ export class Client {
 
     // log the object to the console
     console.log(object);
+  }
+
+  command(name: string, value: any): void {
+    console.log(name, value);
+
+    switch (name) {
+      case 'timescale':
+        this.timescale = value;
+        return;
+    }
   }
 }
 
